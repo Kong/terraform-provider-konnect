@@ -11,7 +11,7 @@ type CACertificate struct {
 	// PEM-encoded public certificate of the CA.
 	Cert string `json:"cert"`
 	// SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.
-	CertDigest *string `default:"null" json:"cert_digest"`
+	CertDigest *string `json:"cert_digest,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A string representing a UUID (universally unique identifier).

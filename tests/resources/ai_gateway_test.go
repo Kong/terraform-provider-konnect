@@ -323,6 +323,7 @@ func TestAIGateway(t *testing.T) {
 				},
 			})
 		})
+
 	})
 
 	t.Run("model", func(t *testing.T) {
@@ -368,6 +369,34 @@ func TestAIGateway(t *testing.T) {
 						ConfigDirectory: config.TestStepDirectory(),
 						Check: resource.ComposeTestCheckFunc(
 							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_model", "model.display_name", "My Test Azure model Updated"),
+						),
+					},
+				},
+			})
+		})
+
+		t.Run("bedrock", func(t *testing.T) {
+
+			resource.Test(t, resource.TestCase{
+				ProtoV6ProviderFactories: providerFactory,
+				Steps: []resource.TestStep{
+					{
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestNameDirectory(),
+						Check: resource.ComposeAggregateTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_bedrock", "bedrock.name", "tf-test-bedrock-provider"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_bedrock", "bedrock.display_name", "TF Test Bedrock AI Provider"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_bedrock", "model.name", "my-bedrock-model"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_bedrock", "model.display_name", "My Test Bedrock model"),
+						),
+					},
+					{
+						// Update display_name on both the provider and the model
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestStepDirectory(),
+						Check: resource.ComposeTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_bedrock", "bedrock.display_name", "TF Test Bedrock AI Provider Updated"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_bedrock", "model.display_name", "My Test Bedrock model Updated"),
 						),
 					},
 				},

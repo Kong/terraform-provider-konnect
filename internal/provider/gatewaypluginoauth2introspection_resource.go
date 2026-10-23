@@ -361,7 +361,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Create(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.CreateOauth2introspectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -421,7 +421,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Read(ctx context.Context, req
 	}
 	res, err := r.client.Plugins.GetOauth2introspectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -475,7 +475,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Update(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.UpdateOauth2introspectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -535,7 +535,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Delete(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.DeleteOauth2introspectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

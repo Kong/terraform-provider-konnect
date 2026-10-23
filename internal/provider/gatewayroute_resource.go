@@ -293,7 +293,7 @@ func (r *GatewayRouteResource) Create(ctx context.Context, req resource.CreateRe
 	}
 	res, err := r.client.Routes.CreateRoute(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -353,7 +353,7 @@ func (r *GatewayRouteResource) Read(ctx context.Context, req resource.ReadReques
 	}
 	res, err := r.client.Routes.GetRoute(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -407,7 +407,7 @@ func (r *GatewayRouteResource) Update(ctx context.Context, req resource.UpdateRe
 	}
 	res, err := r.client.Routes.UpsertRoute(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -467,7 +467,7 @@ func (r *GatewayRouteResource) Delete(ctx context.Context, req resource.DeleteRe
 	}
 	res, err := r.client.Routes.DeleteRoute(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

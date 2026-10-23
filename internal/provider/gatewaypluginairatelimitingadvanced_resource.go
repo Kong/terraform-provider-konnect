@@ -1148,7 +1148,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Create(ctx context.Context
 	}
 	res, err := r.client.Plugins.CreateAiratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1208,7 +1208,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Read(ctx context.Context, 
 	}
 	res, err := r.client.Plugins.GetAiratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1262,7 +1262,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Update(ctx context.Context
 	}
 	res, err := r.client.Plugins.UpdateAiratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1322,7 +1322,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Delete(ctx context.Context
 	}
 	res, err := r.client.Plugins.DeleteAiratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -1537,7 +1537,7 @@ func (r *GatewayPluginJwtSignerResource) Create(ctx context.Context, req resourc
 	}
 	res, err := r.client.Plugins.CreateJwtsignerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1597,7 +1597,7 @@ func (r *GatewayPluginJwtSignerResource) Read(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.GetJwtsignerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1651,7 +1651,7 @@ func (r *GatewayPluginJwtSignerResource) Update(ctx context.Context, req resourc
 	}
 	res, err := r.client.Plugins.UpdateJwtsignerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1711,7 +1711,7 @@ func (r *GatewayPluginJwtSignerResource) Delete(ctx context.Context, req resourc
 	}
 	res, err := r.client.Plugins.DeleteJwtsignerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

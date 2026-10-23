@@ -11,32 +11,32 @@ import (
 type PortalUpdateIdentityProviderConfigType string
 
 const (
-	PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig      PortalUpdateIdentityProviderConfigType = "OIDCIdentityProviderConfig"
-	PortalUpdateIdentityProviderConfigTypeSAMLIdentityProviderConfigInput PortalUpdateIdentityProviderConfigType = "SAMLIdentityProviderConfig_input"
+	PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig1 PortalUpdateIdentityProviderConfigType = "OIDCIdentityProviderConfig1"
+	PortalUpdateIdentityProviderConfigTypeSAMLIdentityProviderConfig2 PortalUpdateIdentityProviderConfigType = "SAMLIdentityProviderConfig2"
 )
 
 type PortalUpdateIdentityProviderConfig struct {
-	OIDCIdentityProviderConfig      *OIDCIdentityProviderConfig      `queryParam:"inline" union:"member"`
-	SAMLIdentityProviderConfigInput *SAMLIdentityProviderConfigInput `queryParam:"inline" union:"member"`
+	OIDCIdentityProviderConfig1 *OIDCIdentityProviderConfig1 `queryParam:"inline" union:"member"`
+	SAMLIdentityProviderConfig2 *SAMLIdentityProviderConfig2 `queryParam:"inline" union:"member"`
 
 	Type PortalUpdateIdentityProviderConfigType
 }
 
-func CreatePortalUpdateIdentityProviderConfigOIDCIdentityProviderConfig(oidcIdentityProviderConfig OIDCIdentityProviderConfig) PortalUpdateIdentityProviderConfig {
-	typ := PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig
+func CreatePortalUpdateIdentityProviderConfigOIDCIdentityProviderConfig1(oidcIdentityProviderConfig1 OIDCIdentityProviderConfig1) PortalUpdateIdentityProviderConfig {
+	typ := PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig1
 
 	return PortalUpdateIdentityProviderConfig{
-		OIDCIdentityProviderConfig: &oidcIdentityProviderConfig,
-		Type:                       typ,
+		OIDCIdentityProviderConfig1: &oidcIdentityProviderConfig1,
+		Type:                        typ,
 	}
 }
 
-func CreatePortalUpdateIdentityProviderConfigSAMLIdentityProviderConfigInput(samlIdentityProviderConfigInput SAMLIdentityProviderConfigInput) PortalUpdateIdentityProviderConfig {
-	typ := PortalUpdateIdentityProviderConfigTypeSAMLIdentityProviderConfigInput
+func CreatePortalUpdateIdentityProviderConfigSAMLIdentityProviderConfig2(samlIdentityProviderConfig2 SAMLIdentityProviderConfig2) PortalUpdateIdentityProviderConfig {
+	typ := PortalUpdateIdentityProviderConfigTypeSAMLIdentityProviderConfig2
 
 	return PortalUpdateIdentityProviderConfig{
-		SAMLIdentityProviderConfigInput: &samlIdentityProviderConfigInput,
-		Type:                            typ,
+		SAMLIdentityProviderConfig2: &samlIdentityProviderConfig2,
+		Type:                        typ,
 	}
 }
 
@@ -52,19 +52,19 @@ func (u *PortalUpdateIdentityProviderConfig) UnmarshalJSON(data []byte) (err err
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
-	var oidcIdentityProviderConfig OIDCIdentityProviderConfig = OIDCIdentityProviderConfig{}
-	if err := utils.UnmarshalJSON(data, &oidcIdentityProviderConfig, "", true, nil); err == nil {
+	var oidcIdentityProviderConfig1 OIDCIdentityProviderConfig1 = OIDCIdentityProviderConfig1{}
+	if err := utils.UnmarshalJSON(data, &oidcIdentityProviderConfig1, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig,
-			Value: &oidcIdentityProviderConfig,
+			Type:  PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig1,
+			Value: &oidcIdentityProviderConfig1,
 		})
 	}
 
-	var samlIdentityProviderConfigInput SAMLIdentityProviderConfigInput = SAMLIdentityProviderConfigInput{}
-	if err := utils.UnmarshalJSON(data, &samlIdentityProviderConfigInput, "", true, nil); err == nil {
+	var samlIdentityProviderConfig2 SAMLIdentityProviderConfig2 = SAMLIdentityProviderConfig2{}
+	if err := utils.UnmarshalJSON(data, &samlIdentityProviderConfig2, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  PortalUpdateIdentityProviderConfigTypeSAMLIdentityProviderConfigInput,
-			Value: &samlIdentityProviderConfigInput,
+			Type:  PortalUpdateIdentityProviderConfigTypeSAMLIdentityProviderConfig2,
+			Value: &samlIdentityProviderConfig2,
 		})
 	}
 
@@ -81,11 +81,11 @@ func (u *PortalUpdateIdentityProviderConfig) UnmarshalJSON(data []byte) (err err
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(PortalUpdateIdentityProviderConfigType)
 	switch best.Type {
-	case PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig:
-		u.OIDCIdentityProviderConfig = best.Value.(*OIDCIdentityProviderConfig)
+	case PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig1:
+		u.OIDCIdentityProviderConfig1 = best.Value.(*OIDCIdentityProviderConfig1)
 		return nil
-	case PortalUpdateIdentityProviderConfigTypeSAMLIdentityProviderConfigInput:
-		u.SAMLIdentityProviderConfigInput = best.Value.(*SAMLIdentityProviderConfigInput)
+	case PortalUpdateIdentityProviderConfigTypeSAMLIdentityProviderConfig2:
+		u.SAMLIdentityProviderConfig2 = best.Value.(*SAMLIdentityProviderConfig2)
 		return nil
 	}
 
@@ -93,12 +93,12 @@ func (u *PortalUpdateIdentityProviderConfig) UnmarshalJSON(data []byte) (err err
 }
 
 func (u PortalUpdateIdentityProviderConfig) MarshalJSON() ([]byte, error) {
-	if u.OIDCIdentityProviderConfig != nil {
-		return utils.MarshalJSON(u.OIDCIdentityProviderConfig, "", true)
+	if u.OIDCIdentityProviderConfig1 != nil {
+		return utils.MarshalJSON(u.OIDCIdentityProviderConfig1, "", true)
 	}
 
-	if u.SAMLIdentityProviderConfigInput != nil {
-		return utils.MarshalJSON(u.SAMLIdentityProviderConfigInput, "", true)
+	if u.SAMLIdentityProviderConfig2 != nil {
+		return utils.MarshalJSON(u.SAMLIdentityProviderConfig2, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type PortalUpdateIdentityProviderConfig: all fields are null")
@@ -108,8 +108,9 @@ func (u PortalUpdateIdentityProviderConfig) MarshalJSON() ([]byte, error) {
 type PortalUpdateIdentityProvider struct {
 	// Indicates whether the identity provider is enabled.
 	// Only one identity provider can be active at a time, such as SAML or OIDC.
+	// When omitted, the current value is left unchanged.
 	//
-	Enabled *bool                               `default:"false" json:"enabled"`
+	Enabled *bool                               `json:"enabled,omitempty"`
 	Config  *PortalUpdateIdentityProviderConfig `json:"config,omitempty"`
 }
 

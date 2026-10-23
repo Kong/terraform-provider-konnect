@@ -59,7 +59,7 @@ type AIGatewayModelProviderConfigAuthBasicParams struct {
 	//
 	Name string `json:"name"`
 	// Specify whether the param name and value options go in a query string, or the POST form/JSON body.
-	Location *Location `json:"location,omitempty"`
+	Location Location `json:"location"`
 }
 
 func (a AIGatewayModelProviderConfigAuthBasicParams) MarshalJSON() ([]byte, error) {
@@ -67,7 +67,7 @@ func (a AIGatewayModelProviderConfigAuthBasicParams) MarshalJSON() ([]byte, erro
 }
 
 func (a *AIGatewayModelProviderConfigAuthBasicParams) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "location"}); err != nil {
 		return err
 	}
 	return nil
@@ -80,9 +80,9 @@ func (a *AIGatewayModelProviderConfigAuthBasicParams) GetName() string {
 	return a.Name
 }
 
-func (a *AIGatewayModelProviderConfigAuthBasicParams) GetLocation() *Location {
+func (a *AIGatewayModelProviderConfigAuthBasicParams) GetLocation() Location {
 	if a == nil {
-		return nil
+		return Location("")
 	}
 	return a.Location
 }
@@ -168,7 +168,7 @@ type Params struct {
 	//
 	Value *string `json:"value,omitempty"`
 	// Specify whether the param name and value options go in a query string, or the POST form/JSON body.
-	Location *Location `json:"location,omitempty"`
+	Location Location `json:"location"`
 }
 
 func (p Params) MarshalJSON() ([]byte, error) {
@@ -176,7 +176,7 @@ func (p Params) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Params) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"name", "location"}); err != nil {
 		return err
 	}
 	return nil
@@ -196,9 +196,9 @@ func (p *Params) GetValue() *string {
 	return p.Value
 }
 
-func (p *Params) GetLocation() *Location {
+func (p *Params) GetLocation() Location {
 	if p == nil {
-		return nil
+		return Location("")
 	}
 	return p.Location
 }

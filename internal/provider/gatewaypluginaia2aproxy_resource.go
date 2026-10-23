@@ -326,7 +326,7 @@ func (r *GatewayPluginAiA2aProxyResource) Create(ctx context.Context, req resour
 	}
 	res, err := r.client.Plugins.CreateAia2aproxyPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -386,7 +386,7 @@ func (r *GatewayPluginAiA2aProxyResource) Read(ctx context.Context, req resource
 	}
 	res, err := r.client.Plugins.GetAia2aproxyPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -440,7 +440,7 @@ func (r *GatewayPluginAiA2aProxyResource) Update(ctx context.Context, req resour
 	}
 	res, err := r.client.Plugins.UpdateAia2aproxyPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -500,7 +500,7 @@ func (r *GatewayPluginAiA2aProxyResource) Delete(ctx context.Context, req resour
 	}
 	res, err := r.client.Plugins.DeleteAia2aproxyPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

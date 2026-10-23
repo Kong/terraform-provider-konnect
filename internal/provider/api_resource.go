@@ -96,7 +96,10 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Description: `The API identifier.`,
 			},
 			"implementation_mode": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement`,
 			},
 			"labels": schema.MapAttribute{
@@ -231,7 +234,7 @@ func (r *APIResource) Create(ctx context.Context, req resource.CreateRequest, re
 	}
 	res, err := r.client.API.CreateAPI(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -291,7 +294,7 @@ func (r *APIResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 	}
 	res, err := r.client.API.FetchAPI(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -345,7 +348,7 @@ func (r *APIResource) Update(ctx context.Context, req resource.UpdateRequest, re
 	}
 	res, err := r.client.API.UpdateAPI(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -405,7 +408,7 @@ func (r *APIResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 	}
 	res, err := r.client.API.DeleteAPI(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -67,7 +67,7 @@ type AIGatewayMCPConversionTool struct {
 	// The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
 	Headers any `json:"headers,omitempty"`
 	// The host used when forwarding the request to the upstream API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
-	Host *string `default:"null" json:"host"`
+	Host *string `json:"host,omitempty"`
 	// The HTTP method used when forwarding the request to the upstream API.
 	Method Method `json:"method"`
 	// The path of the exported API. Always treated as relative to the path component of
@@ -77,7 +77,7 @@ type AIGatewayMCPConversionTool struct {
 	// no URL path from a different host to append to. By default, Kong will extract the
 	// path from API configuration.
 	//
-	Path *string `default:"null" json:"path"`
+	Path *string `json:"path,omitempty"`
 	// The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
 	Query any `json:"query,omitempty"`
 	// The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that `$ref` is not supported.

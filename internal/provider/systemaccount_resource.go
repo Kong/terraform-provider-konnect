@@ -134,7 +134,7 @@ func (r *SystemAccountResource) Create(ctx context.Context, req resource.CreateR
 	}
 	res, err := r.client.SystemAccounts.PostSystemAccounts(ctx, request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -201,7 +201,7 @@ func (r *SystemAccountResource) Read(ctx context.Context, req resource.ReadReque
 	}
 	res, err := r.client.SystemAccounts.GetSystemAccountsID(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -255,7 +255,7 @@ func (r *SystemAccountResource) Update(ctx context.Context, req resource.UpdateR
 	}
 	res, err := r.client.SystemAccounts.PatchSystemAccountsID(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -315,7 +315,7 @@ func (r *SystemAccountResource) Delete(ctx context.Context, req resource.DeleteR
 	}
 	res, err := r.client.SystemAccounts.DeleteSystemAccountsID(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

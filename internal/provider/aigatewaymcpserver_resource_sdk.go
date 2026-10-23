@@ -28,7 +28,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls == nil {
 						r.ConversionListener.Access.Consumer.Acls = nil
 					} else {
-						r.ConversionListener.Access.Consumer.Acls = &tfTypes.AIGatewayACLS{}
+						r.ConversionListener.Access.Consumer.Acls = &tfTypes.AIGatewayMCPACLs{}
 						r.ConversionListener.Access.Consumer.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow {
 							r.ConversionListener.Access.Consumer.Acls.Allow = append(r.ConversionListener.Access.Consumer.Acls.Allow, types.StringValue(v))
@@ -45,7 +45,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls == nil {
 						r.ConversionListener.Access.Consumer.DefaultToolAcls = nil
 					} else {
-						r.ConversionListener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
+						r.ConversionListener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
 						r.ConversionListener.Access.Consumer.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow {
 							r.ConversionListener.Access.Consumer.DefaultToolAcls.Allow = append(r.ConversionListener.Access.Consumer.DefaultToolAcls.Allow, types.StringValue(v))
@@ -82,7 +82,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls == nil {
 						r.ConversionListener.Access.OauthAccessToken.Acls = nil
 					} else {
-						r.ConversionListener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayACLS{}
+						r.ConversionListener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayMCPACLs{}
 						r.ConversionListener.Access.OauthAccessToken.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow {
 							r.ConversionListener.Access.OauthAccessToken.Acls.Allow = append(r.ConversionListener.Access.OauthAccessToken.Acls.Allow, types.StringValue(v))
@@ -99,7 +99,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls == nil {
 						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls = nil
 					} else {
-						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
+						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
 						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow {
 							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow = append(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow, types.StringValue(v))
@@ -442,7 +442,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if toolsItem.Access.Acls == nil {
 						tools.Access.Acls = nil
 					} else {
-						tools.Access.Acls = &tfTypes.AIGatewayACLS{}
+						tools.Access.Acls = &tfTypes.AIGatewayMCPACLs{}
 						tools.Access.Acls.Allow = make([]types.String, 0, len(toolsItem.Access.Acls.Allow))
 						for _, v := range toolsItem.Access.Acls.Allow {
 							tools.Access.Acls.Allow = append(tools.Access.Acls.Allow, types.StringValue(v))
@@ -644,7 +644,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if toolsItem1.Access.Acls == nil {
 						tools1.Access.Acls = nil
 					} else {
-						tools1.Access.Acls = &tfTypes.AIGatewayACLS{}
+						tools1.Access.Acls = &tfTypes.AIGatewayMCPACLs{}
 						tools1.Access.Acls.Allow = make([]types.String, 0, len(toolsItem1.Access.Acls.Allow))
 						for _, v := range toolsItem1.Access.Acls.Allow {
 							tools1.Access.Acls.Allow = append(tools1.Access.Acls.Allow, types.StringValue(v))
@@ -734,7 +734,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls == nil {
 						r.Listener.Access.Consumer.Acls = nil
 					} else {
-						r.Listener.Access.Consumer.Acls = &tfTypes.AIGatewayACLS{}
+						r.Listener.Access.Consumer.Acls = &tfTypes.AIGatewayMCPACLs{}
 						r.Listener.Access.Consumer.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow {
 							r.Listener.Access.Consumer.Acls.Allow = append(r.Listener.Access.Consumer.Acls.Allow, types.StringValue(v))
@@ -751,7 +751,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls == nil {
 						r.Listener.Access.Consumer.DefaultToolAcls = nil
 					} else {
-						r.Listener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
+						r.Listener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
 						r.Listener.Access.Consumer.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow {
 							r.Listener.Access.Consumer.DefaultToolAcls.Allow = append(r.Listener.Access.Consumer.DefaultToolAcls.Allow, types.StringValue(v))
@@ -788,7 +788,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls == nil {
 						r.Listener.Access.OauthAccessToken.Acls = nil
 					} else {
-						r.Listener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayACLS{}
+						r.Listener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayMCPACLs{}
 						r.Listener.Access.OauthAccessToken.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow {
 							r.Listener.Access.OauthAccessToken.Acls.Allow = append(r.Listener.Access.OauthAccessToken.Acls.Allow, types.StringValue(v))
@@ -805,7 +805,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls == nil {
 						r.Listener.Access.OauthAccessToken.DefaultToolAcls = nil
 					} else {
-						r.Listener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
+						r.Listener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
 						r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow {
 							r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow = append(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow, types.StringValue(v))
@@ -1123,7 +1123,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls == nil {
 						r.PassthroughListener.Access.Consumer.Acls = nil
 					} else {
-						r.PassthroughListener.Access.Consumer.Acls = &tfTypes.AIGatewayACLS{}
+						r.PassthroughListener.Access.Consumer.Acls = &tfTypes.AIGatewayMCPACLs{}
 						r.PassthroughListener.Access.Consumer.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow {
 							r.PassthroughListener.Access.Consumer.Acls.Allow = append(r.PassthroughListener.Access.Consumer.Acls.Allow, types.StringValue(v))
@@ -1140,7 +1140,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls == nil {
 						r.PassthroughListener.Access.Consumer.DefaultToolAcls = nil
 					} else {
-						r.PassthroughListener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
+						r.PassthroughListener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
 						r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow {
 							r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow = append(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow, types.StringValue(v))
@@ -1177,7 +1177,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls == nil {
 						r.PassthroughListener.Access.OauthAccessToken.Acls = nil
 					} else {
-						r.PassthroughListener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayACLS{}
+						r.PassthroughListener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayMCPACLs{}
 						r.PassthroughListener.Access.OauthAccessToken.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow {
 							r.PassthroughListener.Access.OauthAccessToken.Acls.Allow = append(r.PassthroughListener.Access.OauthAccessToken.Acls.Allow, types.StringValue(v))
@@ -1194,7 +1194,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls == nil {
 						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls = nil
 					} else {
-						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
+						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
 						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow {
 							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow = append(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow, types.StringValue(v))
@@ -1541,7 +1541,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				if toolsItem2.Access.Acls == nil {
 					tools2.Access.Acls = nil
 				} else {
-					tools2.Access.Acls = &tfTypes.AIGatewayACLS{}
+					tools2.Access.Acls = &tfTypes.AIGatewayMCPACLs{}
 					tools2.Access.Acls.Allow = make([]types.String, 0, len(toolsItem2.Access.Acls.Allow))
 					for _, v := range toolsItem2.Access.Acls.Allow {
 						tools2.Access.Acls.Allow = append(tools2.Access.Acls.Allow, types.StringValue(v))
@@ -1869,7 +1869,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if toolsItem3.Access.Acls == nil {
 						tools3.Access.Acls = nil
 					} else {
-						tools3.Access.Acls = &tfTypes.AIGatewayACLS{}
+						tools3.Access.Acls = &tfTypes.AIGatewayMCPACLs{}
 						tools3.Access.Acls.Allow = make([]types.String, 0, len(toolsItem3.Access.Acls.Allow))
 						for _, v := range toolsItem3.Access.Acls.Allow {
 							tools3.Access.Acls.Allow = append(tools3.Access.Acls.Allow, types.StringValue(v))

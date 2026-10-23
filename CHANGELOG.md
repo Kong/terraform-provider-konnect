@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.27.0
+> Released 2026/10/23
+
+# Features
+* Added support for `allow_when` and `deny_when` CEL expression-based access control rules in `konnect_ai_gateway_agent` and `konnect_ai_gateway_model` resources, allowing users to define conditional access control rules for AI Gateway agents and models
+
+# Bug Fixes
+* Fixed error while running `terraform apply` for `konnect_ai_gateway_model`,`konnect_ai_gateway_model_provider` and `konnect_ai_gateway_mcp_server` resource when certain optional fields were left unset
+* Fixed delete operation for `konnect_cloud_gateway_configuration` resource
+
+# BREAKING CHANGES
+* NA
+
 ## 3.26.0
 > Released 2026/10/09
 

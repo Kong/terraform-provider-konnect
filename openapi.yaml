@@ -579,6 +579,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
         '429':
           $ref: '#/components/responses/TooManyRequests'
       tags:
@@ -684,6 +686,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
         '429':
           $ref: '#/components/responses/TooManyRequests'
       tags:
@@ -23815,6 +23819,63 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
         - Control Planes
+  /v2/cloud-gateways/configurations#delete:
+    put:
+      x-speakeasy-entity-operation: CloudGatewayConfiguration#delete
+      operationId: delete-cloud-gateway-configuration
+      summary: Delete Configuration
+      description: |
+        Deletes a control plane's Cloud Gateway configuration by replacing it with an empty
+        data-plane group set, which tears down all deployed data planes for that control plane.
+      requestBody:
+        description: Replaces the configuration's data-plane groups with an empty set.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                control_plane_id:
+                  $ref: '#/components/schemas/ControlPlaneId'
+                control_plane_geo:
+                  $ref: '#/components/schemas/ControlPlaneGeo'
+                version:
+                  $ref: '#/components/schemas/GatewayVersion'
+                kind:
+                  $ref: '#/components/schemas/ConfigurationKind'
+                type:
+                  $ref: '#/components/schemas/ConfigurationType'
+                dataplane_groups:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/CreateConfigurationDataPlaneGroup'
+                  format: set
+                  const: []
+              additionalProperties: false
+              required:
+                - control_plane_id
+                - control_plane_geo
+                - dataplane_groups
+              x-speakeasy-transform-to-api:
+                jq: '.dataplane_groups = []'
+      responses:
+        '200':
+          $ref: '#/components/responses/CreateConfigurationResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/CloudGatewaysForbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/CloudGatewaysConflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Data-Plane Group Configurations
+      x-speakeasy-group: CloudGateways
   /v2/audit-log-webhook#delete:
     patch:
       x-speakeasy-entity-operation:
@@ -25325,26 +25386,12 @@ components:
         - page
       title: PaginatedMeta
       x-speakeasy-terraform-ignore: true
-    ManagedBy:
-      description: |
-        Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
-
-        Keys must be 1–63 characters long and start with an alphanumeric character.
-      type: object
-      example:
-        owner: terraform
-      additionalProperties:
-        type: string
-        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
-        minLength: 1
-        maxLength: 63
-      maxProperties: 5
-      title: ManagedBy
     InvalidRules:
       description: invalid parameters rules
       type: string
       enum:
         - required
+        - unique
         - is_array
         - is_base64
         - is_boolean
@@ -25360,6 +25407,7 @@ components:
         - unknown_property
         - missing_reference
         - is_label
+        - key_invalid
         - matches_regex
         - invalid
         - is_supported_network_availability_zone_list
@@ -25477,6 +25525,80 @@ components:
         - reason
         - rule
         - maximum
+    InvalidParameterMinimumTime:
+      type: object
+      properties:
+        field:
+          type: string
+          example: to
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_time
+          nullable: false
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        minimum:
+          type: string
+          format: date-time
+          example: '2026-10-01T00:00:00Z'
+        source:
+          type: string
+          example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        reason:
+          type: string
+          example: 'must be no earlier than 2026-10-01T00:00:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterMaximumTime:
+      type: object
+      properties:
+        field:
+          type: string
+          example: to
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - max_time
+          nullable: false
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        maximum:
+          type: string
+          format: date-time
+          example: '2026-10-31T23:59:59Z'
+        source:
+          type: string
+          example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        reason:
+          type: string
+          example: 'must be no later than 2026-10-31T23:59:59Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - maximum
     InvalidParameterChoiceItem:
       type: object
       properties:
@@ -25544,11 +25666,9 @@ components:
           type: array
           items:
             type: string
-          default: null
           nullable: true
           readOnly: true
           uniqueItems: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         source:
           type: string
@@ -25570,6 +25690,8 @@ components:
           - $ref: '#/components/schemas/InvalidParameterStandard'
           - $ref: '#/components/schemas/InvalidParameterMinimumLength'
           - $ref: '#/components/schemas/InvalidParameterMaximumLength'
+          - $ref: '#/components/schemas/InvalidParameterMinimumTime'
+          - $ref: '#/components/schemas/InvalidParameterMaximumTime'
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
       minItems: 1
@@ -25957,6 +26079,21 @@ components:
         - instance
         - detail
       title: Error
+    ManagedBy:
+      description: |
+        Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+        Keys must be 1–63 characters long and start with an alphanumeric character.
+      type: object
+      example:
+        owner: terraform
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      maxProperties: 5
+      title: ManagedBy
     ControlPlaneId:
       description: ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI.
       type: string
@@ -28114,10 +28251,8 @@ components:
           type: string
           format: uuid
           example: 3b7cbeee-fbec-440e-a5ef-89e7dec3b9d0
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         sni_id:
           description: |
@@ -28126,10 +28261,8 @@ components:
           type: string
           format: uuid
           example: a8f11ea8-af09-4422-9735-5d4f8910aba1
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         state:
           $ref: '#/components/schemas/CustomDomainState'
@@ -30697,7 +30830,7 @@ components:
       type: object
       properties:
         enabled:
-          $ref: '#/components/schemas/IdentityProviderEnabled'
+          $ref: '#/components/schemas/UpdateIdentityProviderEnabled'
         login_path:
           $ref: '#/components/schemas/IdentityProviderLoginPath'
         config:
@@ -31039,6 +31172,14 @@ components:
       type: boolean
       example: true
       default: false
+      title: Identity Provider Enabled Property
+    UpdateIdentityProviderEnabled:
+      description: |
+        Indicates whether the identity provider is enabled.
+        Only one identity provider can be active at a time, such as SAML or OIDC.
+        When omitted, the current value is left unchanged.
+      type: boolean
+      example: true
       title: Identity Provider Enabled Property
     LegacyStringFieldFilter:
       description: 'Filter using **one** of the following operators: `eq`, `contains`'
@@ -33860,10 +34001,8 @@ components:
           type: array
           items:
             type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         owner:
           $ref: '#/components/schemas/ApplicationOwner'
@@ -34751,6 +34890,21 @@ components:
         - entity_type_name
         - entity_region
       title: PortalAssignedRoleResponse
+    TryItUIAudience:
+      description: |
+        The audience for the Try It UI feature.
+
+        `all` means that the Try It UI will be available to all users, including unauthenticated users.
+
+        `authenticated` means that the Try It UI will only be available to authenticated users.
+
+        `registered` means that the Try It UI will only be available to users who have registered for the API.
+      type: string
+      enum:
+        - all
+        - authenticated
+        - registered
+      x-speakeasy-unknown-values: allow
     SnippetName:
       description: The unique name of a snippet in a portal.
       type: string
@@ -34768,7 +34922,7 @@ components:
           nullable: false
           properties:
             name:
-              description: 'The theme name to apply to this portal. Supported names are ''ocean'' and ''glacier''. If another name is provided or this property is omitted, the portal uses the default ''ocean'' theme.'
+              description: 'The theme name to apply to this portal. Supported names are ''ocean'', ''mesa'', and ''grove''. If another name is provided or this property is omitted, the portal uses the default ''ocean'' theme.'
               type: string
               default: ocean
               nullable: false
@@ -34864,6 +35018,10 @@ components:
               description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
               type: boolean
               default: true
+            try_it_ui_audience:
+              allOf:
+                - $ref: '#/components/schemas/TryItUIAudience'
+                - default: all
           title: PortalCustomizationSpecRenderer
           x-speakeasy-param-computed: false
         robots:
@@ -35018,6 +35176,26 @@ components:
             items:
               type: string
       x-speakeasy-terraform-ignore: true
+    PortalOIDCIdentityProviderConfig:
+      description: The identity provider that contains configuration data for the OIDC authentication integration.
+      type: object
+      properties:
+        issuer_url:
+          $ref: '#/components/schemas/OIDCIdentityProviderIssuer'
+        client_id:
+          $ref: '#/components/schemas/OIDCIdentityProviderClientId'
+        client_secret:
+          $ref: '#/components/schemas/OIDCIdentityProviderClientSecret'
+        scopes:
+          $ref: '#/components/schemas/OIDCIdentityProviderScopes'
+        claim_mappings:
+          $ref: '#/components/schemas/OIDCIdentityProviderClaimMappings'
+      additionalProperties: false
+      required:
+        - issuer_url
+        - client_id
+      title: OIDC Identity Provider Config
+      x-speakeasy-name-override: OIDCIdentityProviderConfig
     PortalSAMLIdentityProviderConfig:
       description: The identity provider that contains configuration data for the SAML authentication integration.
       type: object
@@ -35061,7 +35239,7 @@ components:
         config:
           type: object
           oneOf:
-            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/PortalOIDCIdentityProviderConfig'
             - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
@@ -35079,20 +35257,144 @@ components:
         config:
           type: object
           oneOf:
-            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/PortalOIDCIdentityProviderConfig'
             - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
       title: Portal Identity Provider
+    UpdateOIDCIdentityProviderClaimMappings:
+      description: |
+        Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for
+        authentication. Only the provided mappings are updated and provided values cannot be empty.
+      type: object
+      properties:
+        name:
+          description: The claim mapping for the user's name.
+          type: string
+          example: name
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: \S
+          x-speakeasy-param-computed: false
+        email:
+          description: The claim mapping for the user's email address.
+          type: string
+          example: email
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: \S
+          x-speakeasy-param-computed: false
+        groups:
+          description: The claim mapping for the user's group membership information.
+          type: string
+          example: groups
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: \S
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      title: Update OIDC Claim Mappings
+    UpdateOIDCIdentityProviderConfig:
+      description: |
+        The properties of an OIDC identity provider to update. Only the provided properties are updated. When
+        provided, `scopes` must include `openid`.
+      type: object
+      properties:
+        issuer_url:
+          description: The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained.
+          type: string
+          example: 'https://konghq.okta.com/oauth2/default'
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: '^https?://\S+$'
+          x-speakeasy-param-computed: false
+        client_id:
+          description: The client ID assigned to your application by the identity provider.
+          type: string
+          example: YOUR_CLIENT_ID
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: \S
+          x-speakeasy-param-computed: false
+        client_secret:
+          description: The Client Secret assigned to your application by the identity provider.
+          type: string
+          example: YOUR_CLIENT_SECRET
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: \S
+          writeOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-sensitive: true
+          x-speakeasy-terraform-plan-only: true
+        scopes:
+          description: The scopes requested by your application when authenticating with the identity provider. Must include `openid`.
+          type: array
+          items:
+            description: A scope. Cannot be empty or contain whitespace.
+            type: string
+            minLength: 1
+            pattern: ^\S+$
+          example:
+            - openid
+            - email
+            - profile
+          default: null
+          minItems: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        claim_mappings:
+          $ref: '#/components/schemas/UpdateOIDCIdentityProviderClaimMappings'
+      additionalProperties: false
+      minProperties: 1
+      title: Update OIDC Identity Provider Config
+      x-speakeasy-name-override: OIDCIdentityProviderConfig
+    UpdateSAMLIdentityProviderConfig:
+      description: |
+        The properties of a SAML identity provider to update. Exactly one of `idp_metadata_url` or
+        `idp_metadata_xml` must be provided.
+      type: object
+      properties:
+        idp_metadata_url:
+          description: The identity provider's metadata URL where the identity provider's metadata can be obtained.
+          type: string
+          example: 'https://mocksaml.com/api/saml/metadata'
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: '^https?://\S+$'
+          x-speakeasy-param-computed: false
+        idp_metadata_xml:
+          description: |
+            The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the `idp_metadata_url` field instead.
+          type: string
+          default: null
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      maxProperties: 1
+      minProperties: 1
+      title: Update SAML Identity Provider Config
+      x-speakeasy-name-override: SAMLIdentityProviderConfig
     PortalUpdateIdentityProvider:
       description: The identity provider that contains configuration data for updating an authentication integration.
       type: object
       properties:
         enabled:
-          $ref: '#/components/schemas/IdentityProviderEnabled'
+          $ref: '#/components/schemas/UpdateIdentityProviderEnabled'
         config:
           type: object
+          minProperties: 1
           oneOf:
-            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
-            - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+            - $ref: '#/components/schemas/UpdateOIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/UpdateSAMLIdentityProviderConfig'
+      additionalProperties: false
+      minProperties: 1
       title: Portal Identity Provider
     PortalAllowedIPs:
       description: The list of allowed ips for the portal.
@@ -35207,10 +35509,8 @@ components:
         implementation_mode:
           description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
           type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         attributes:
           $ref: '#/components/schemas/ApiAttributes'
@@ -35469,6 +35769,34 @@ components:
       nullable: true
       title: API Publication Auth Strategy IDs
       x-speakeasy-param-computed: false
+    ApiPublicationSpecRenderer:
+      description: Customization settings for the API spec renderer in the portal.
+      type: object
+      properties:
+        try_it_ui:
+          description: Enable in-browser testing for your API. All linked gateways must have the CORS plugin configured.
+          type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        try_it_ui_audience:
+          description: |
+            The audience for the Try It UI feature.
+
+            `all` means that the Try It UI will be available to all users, including unauthenticated users.
+
+            `authenticated` means that the Try It UI will only be available to authenticated users.
+
+            `registered` means that the Try It UI will only be available to users who have registered for the API.
+          type: string
+          enum:
+            - all
+            - authenticated
+            - registered
+          nullable: true
+          x-speakeasy-unknown-values: allow
+      additionalProperties: false
+      title: ApiPublicationSpecRenderer
     AutoApproveRegistrations:
       description: 'Whether the application registration auto approval on this portal for the api is enabled. If set to false, fallbacks on portal''s auto_approve_applications value.'
       type: boolean
@@ -35483,6 +35811,8 @@ components:
           $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
         visibility:
           $ref: '#/components/schemas/ApiPublicationVisibility'
+        spec_renderer:
+          $ref: '#/components/schemas/ApiPublicationSpecRenderer'
         form_id:
           description: |
             UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
@@ -39113,8 +39443,6 @@ components:
         **Requires a minimum runtime version of `1.3`**.
       type: object
       properties:
-        schema_registry:
-          $ref: '#/components/schemas/SchemaRegistryReference'
         failure_mode:
           $ref: '#/components/schemas/ConsumeFailureMode'
         validate_key:
@@ -39152,8 +39480,6 @@ components:
         **Requires a minimum runtime version of `1.3`**.
       type: object
       properties:
-        schema_registry:
-          $ref: '#/components/schemas/SchemaRegistryReference'
         failure_mode:
           $ref: '#/components/schemas/ProduceFailureMode'
         validate_key:
@@ -40134,7 +40460,7 @@ components:
       description: The OAuth 2.0 client ID
       type: string
       example: kYa9iQFU5xPDSIUH9z1z
-      maxLength: 36
+      maxLength: 48
       minLength: 1
       pattern: '[-_\w]+'
       readOnly: true
@@ -41842,10 +42168,8 @@ components:
         cert_digest:
           description: SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
           type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         labels:
           $ref: '#/components/schemas/PublicLabels'
@@ -41875,10 +42199,8 @@ components:
         cert_digest:
           description: SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
           type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         labels:
           $ref: '#/components/schemas/PublicLabels'
@@ -41908,10 +42230,8 @@ components:
         cert_digest:
           description: SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
           type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         labels:
           $ref: '#/components/schemas/PublicLabels'
@@ -43285,8 +43605,6 @@ components:
         upstream_url:
           description: The URL of the embeddings model.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
@@ -43311,8 +43629,6 @@ components:
         upstream_url:
           description: The URL of the embeddings model.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
@@ -43322,14 +43638,10 @@ components:
             The AWS region for the model.
             Setting this option overrides the AWS_REGION environment variable.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         batch_bucket_prefix:
           description: S3 bucket prefix for batch inference jobs.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         embeddings_normalize:
           description: Whether to normalize embedding vectors in the response.
@@ -43338,14 +43650,10 @@ components:
         performance_config_latency:
           description: Latency performance configuration for the model invocation.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         video_output_s3_uri:
           description: S3 URI for storing video generation outputs.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
       required:
@@ -43357,8 +43665,6 @@ components:
         upstream_url:
           description: The URL of the embeddings model.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
@@ -43375,8 +43681,6 @@ components:
         upstream_url:
           description: The URL of the embeddings model.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
@@ -43398,8 +43702,6 @@ components:
         upstream_url:
           description: The URL of the embeddings model.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
@@ -43415,8 +43717,6 @@ components:
         upstream_url:
           description: The URL of the embeddings model.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
@@ -43431,8 +43731,6 @@ components:
         upstream_url:
           description: The URL of the embeddings model.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           type: string
@@ -43470,8 +43768,6 @@ components:
         threshold:
           description: the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         cloud_authentication:
           description: Auth related config for connecting to a Cloud Provider's Redis instance.
@@ -43488,7 +43784,6 @@ components:
         cluster:
           description: Cluster configuration for the Redis connection.
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
@@ -43514,7 +43809,6 @@ components:
                     default: 6379
                     maximum: 65535
                     minimum: 0
-              default: null
               minItems: 1
               nullable: true
               x-speakeasy-param-computed: false
@@ -43545,14 +43839,12 @@ components:
         keepalive:
           description: Keepalive configuration for the Redis connection.
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
             backlog:
               description: 'Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.'
               type: integer
-              default: null
               maximum: 2147483646
               minimum: 0
               nullable: true
@@ -43569,7 +43861,6 @@ components:
             Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -43602,14 +43893,12 @@ components:
         sentinel:
           description: Configuration for Redis Sentinel.
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
             master:
               description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             nodes:
@@ -43628,7 +43917,6 @@ components:
                     default: 6379
                     maximum: 65535
                     minimum: 0
-              default: null
               minItems: 1
               nullable: true
               x-speakeasy-param-computed: false
@@ -43637,7 +43925,6 @@ components:
                 Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
                 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
               type: string
-              default: null
               nullable: true
               x-referenceable: true
               x-speakeasy-param-computed: false
@@ -43654,7 +43941,6 @@ components:
                 Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
                 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
               type: string
-              default: null
               nullable: true
               x-referenceable: true
               x-speakeasy-param-computed: false
@@ -43664,7 +43950,6 @@ components:
             A string representing an SNI (server name indication) value for TLS.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -43681,7 +43966,6 @@ components:
             Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -43696,6 +43980,7 @@ components:
       x-speakeasy-transform-to-api:
         jq: |
           if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
+      x-terraform-no-default-null: true
     AIGatewayModelVectorDBConfigPgVector:
       type: object
       properties:
@@ -43715,8 +44000,6 @@ components:
         threshold:
           description: the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         database:
           description: the database of the pgvector database
@@ -43731,8 +44014,6 @@ components:
             the password of the pgvector database
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
-          nullable: true
           writeOnly: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -43744,7 +44025,6 @@ components:
           minimum: 0
         ssl:
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
@@ -43755,14 +44035,10 @@ components:
             cert:
               description: the path of ssl cert to use for the pgvector database
               type: string
-              default: null
-              nullable: true
               x-speakeasy-param-computed: false
             cert_key:
               description: the path of ssl cert key to use for the pgvector database
               type: string
-              default: null
-              nullable: true
               x-speakeasy-param-computed: false
             required:
               description: whether ssl is required for the pgvector database
@@ -43798,6 +44074,7 @@ components:
         - type
         - dimensions
         - distance_metric
+      x-terraform-no-default-null: true
     AIGatewayModelFormat:
       description: Request and response format supported by this model.
       type: object
@@ -44363,14 +44640,10 @@ components:
             The AWS region for the model.
             Setting this option overrides the AWS_REGION environment variable.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         batch_bucket_prefix:
           description: S3 bucket prefix for batch inference jobs.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         embeddings_normalize:
           description: Whether to normalize embedding vectors in the response.
@@ -44379,15 +44652,12 @@ components:
         performance_config_latency:
           description: Latency performance configuration for the model invocation.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         video_output_s3_uri:
           description: S3 URI for storing video generation outputs.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
+      additionalProperties: false
       required:
         - type
     AIGatewayTargetCerebrasConfig:
@@ -46330,62 +46600,54 @@ components:
           const: sagemaker
         aws:
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
             region:
               description: Overrides the AWS_REGION environment variable for SageMaker requests.
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             assume_role_arn:
               description: Assume a different IAM role after authenticating; mutually required with role_session_name.
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             role_session_name:
               description: Session identifier for the assumed role; mutually required with assume_role_arn.
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             sts_endpoint_url:
               description: Overrides the STS endpoint when assuming a role.
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         target:
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
             model:
               description: Sets the X-Amzn-SageMaker-Target-Model header (multi-model endpoints).
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             variant:
               description: Sets the X-Amzn-SageMaker-Target-Variant header (A/B variant testing).
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             container_hostname:
               description: Sets the X-Amzn-SageMaker-Target-Container-Hostname header (multi-container).
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
       required:
         - type
+      x-terraform-no-default-null: true
     AIGatewayTargetTypesafeConfig:
       description: |-
         Typesafe-specific configuration for a model.
@@ -46435,7 +46697,7 @@ components:
         - location_id
         - project_id
     AIGatewayACLS:
-      description: Access control rules. Configure exactly one of `allow` or `deny`.
+      description: 'Access control rules. Configure exactly one of `allow`, `deny`, `allow_when`, or `deny_when`.'
       properties:
         allow:
           description: 'List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.'
@@ -46449,6 +46711,30 @@ components:
           items:
             type: string
           x-speakeasy-param-computed: true
+        allow_when:
+          description: 'Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of `allow`, `deny`, `allow_when`, or `deny_when` must be specified.'
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            x-expression:
+              type: boolean
+          nullable: true
+          x-min-runtime-version: '2.2'
+          x-speakeasy-param-computed: false
+        deny_when:
+          description: 'Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of `allow`, `deny`, `allow_when`, or `deny_when` must be specified.'
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            x-expression:
+              type: boolean
+          nullable: true
+          x-min-runtime-version: '2.2'
+          x-speakeasy-param-computed: false
     AIGatewayAgentAccess:
       description: Access control configuration for an agent.
       type: object
@@ -49283,6 +49569,7 @@ components:
           required:
             - url
           title: AIGatewayMCPServerKongListenerConfig
+          x-terraform-no-default-null: true
         tools:
           description: |
             List of tools exposed by this MCP Server. Each tool's `path`, `method`, and `host`
@@ -49394,6 +49681,7 @@ components:
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
           title: AIGatewayMCPServerKongListenerConfig
+          x-terraform-no-default-null: true
         sources:
           description: |
             The explicit list of source MCP Servers whose tools this listener exposes.
@@ -49576,7 +49864,6 @@ components:
         host:
           description: 'The host used when forwarding the request to the upstream API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.'
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         method:
@@ -49598,7 +49885,6 @@ components:
             no URL path from a different host to append to. By default, Kong will extract the
             path from API configuration.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         query:
@@ -49621,6 +49907,7 @@ components:
         - name
         - description
         - method
+      x-terraform-no-default-null: true
     AIGatewayMCPServerListenerAccess:
       default:
         acl_attribute_type: consumer
@@ -49796,7 +50083,6 @@ components:
             AWS Access Key ID to be used for authentication.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -49805,7 +50091,6 @@ components:
             The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -49814,7 +50099,6 @@ components:
             The name of the AWS Elasticache cluster.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -49827,7 +50111,6 @@ components:
             The region of the AWS ElastiCache cluster.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -49836,7 +50119,6 @@ components:
             The session name for the temporary credentials when assuming the IAM role.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -49845,7 +50127,6 @@ components:
             AWS Secret Access Key.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-referenceable: true
@@ -49854,6 +50135,7 @@ components:
       required:
         - type
       title: AIGatewayRedisAWSAuthentication
+      x-terraform-no-default-null: true
     AIGatewayRedisAzureAuthentication:
       description: Azure specific configs for connecting to a Cloud Provider's redis instance.
       type: object
@@ -49866,7 +50148,6 @@ components:
             Azure Client ID.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -49875,7 +50156,6 @@ components:
             Azure Client Secret.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-referenceable: true
@@ -49885,7 +50165,6 @@ components:
             Azure Tenant ID.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -49893,6 +50172,7 @@ components:
       required:
         - type
       title: AIGatewayRedisAzureAuthentication
+      x-terraform-no-default-null: true
     AIGatewayRedisGCPAuthentication:
       description: GCP specific configs for connecting to a Cloud Provider's redis instance.
       type: object
@@ -49905,7 +50185,6 @@ components:
             GCP Service Account JSON.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-referenceable: true
@@ -49914,6 +50193,7 @@ components:
       required:
         - type
       title: AIGatewayRedisGCPAuthentication
+      x-terraform-no-default-null: true
     AIGatewayRedisCloudConfiguration:
       description: Config for connecting to a Cloud Provider's Redis instance.
       type: object
@@ -49933,7 +50213,6 @@ components:
         cluster:
           description: Cluster configuration for the Redis connection.
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
@@ -49959,7 +50238,6 @@ components:
                     default: 6379
                     maximum: 65535
                     minimum: 0
-              default: null
               minItems: 1
               nullable: true
               x-speakeasy-param-computed: false
@@ -49990,14 +50268,12 @@ components:
         keepalive:
           description: Keepalive configuration for the Redis connection.
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
             backlog:
               description: 'Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.'
               type: integer
-              default: null
               maximum: 2147483646
               minimum: 0
               nullable: true
@@ -50014,7 +50290,6 @@ components:
             Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -50047,14 +50322,12 @@ components:
         sentinel:
           description: Configuration for Redis Sentinel.
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
             master:
               description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             nodes:
@@ -50073,7 +50346,6 @@ components:
                     default: 6379
                     maximum: 65535
                     minimum: 0
-              default: null
               minItems: 1
               nullable: true
               x-speakeasy-param-computed: false
@@ -50082,7 +50354,6 @@ components:
                 Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
                 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
               type: string
-              default: null
               nullable: true
               x-referenceable: true
               x-speakeasy-param-computed: false
@@ -50099,7 +50370,6 @@ components:
                 Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
                 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
               type: string
-              default: null
               nullable: true
               x-referenceable: true
               x-speakeasy-param-computed: false
@@ -50109,7 +50379,6 @@ components:
             A string representing an SNI (server name indication) value for TLS.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -50126,7 +50395,6 @@ components:
             Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -50137,6 +50405,7 @@ components:
       x-speakeasy-transform-to-api:
         jq: |
           if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
+      x-terraform-no-default-null: true
     AIGatewayProxyConfig:
       description: HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider.
       type: object
@@ -50145,17 +50414,16 @@ components:
           description: HTTP proxy server to route plaintext outbound requests through.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             host:
               description: 'A string representing a host name, such as example.com.'
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             port:
               description: 'An integer representing a port number between 0 and 65535, inclusive.'
               type: integer
-              default: null
               maximum: 65535
               minimum: 0
               nullable: true
@@ -50165,17 +50433,16 @@ components:
           description: HTTPS proxy server to route TLS outbound requests through.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             host:
               description: 'A string representing a host name, such as example.com.'
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             port:
               description: 'An integer representing a port number between 0 and 65535, inclusive.'
               type: integer
-              default: null
               maximum: 65535
               minimum: 0
               nullable: true
@@ -50191,13 +50458,13 @@ components:
           description: Credentials used to authenticate to the proxy server.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             username:
               description: |
                 The username to use for proxy authentication.
                 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
               type: string
-              default: null
               nullable: true
               x-referenceable: true
               x-speakeasy-param-computed: false
@@ -50206,7 +50473,6 @@ components:
                 The password to use for proxy authentication.
                 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
               type: string
-              default: null
               nullable: true
               writeOnly: true
               x-referenceable: true
@@ -50215,9 +50481,10 @@ components:
         no_proxy:
           description: Comma-separated list of hosts that should not be proxied.
           type: string
+          nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
-      x-speakeasy-param-computed: false
+      x-terraform-no-default-null: true
     AIGatewayRouteConfig:
       description: Configuration for an AI Gateway route.
       type: object
@@ -50363,7 +50630,6 @@ components:
         server:
           description: Server-side configuration for the MCP Server.
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
@@ -50376,14 +50642,12 @@ components:
                 Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
                 This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
               type: object
-              default: null
               additionalProperties: false
               nullable: true
               properties:
                 client:
                   description: The configuration for client-side session storage.
                   type: object
-                  default: null
                   additionalProperties: false
                   nullable: true
                   properties:
@@ -50398,7 +50662,6 @@ components:
                         x-referenceable: true
                         description: |
                           This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-                      default: null
                       minItems: 1
                       nullable: true
                       x-speakeasy-param-computed: false
@@ -50430,6 +50693,7 @@ components:
               maximum: 2147483646
               minimum: 0
           x-speakeasy-param-computed: false
+          x-terraform-no-default-null: true
         url:
           description: |
             Helper field to set protocol, host, port and path of the upstream service using a URL.
@@ -50510,14 +50774,12 @@ components:
             Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
             This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
             client:
               description: The configuration for client-side session storage.
               type: object
-              default: null
               additionalProperties: false
               nullable: true
               properties:
@@ -50532,7 +50794,6 @@ components:
                     x-referenceable: true
                     description: |
                       This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-                  default: null
                   minItems: 1
                   nullable: true
                   x-speakeasy-param-computed: false
@@ -50564,6 +50825,7 @@ components:
           maximum: 2147483646
           minimum: 0
       additionalProperties: false
+      x-terraform-no-default-null: true
     AIGatewayMCPServerCacheHint:
       description: A cache hint Kong emits on a cacheable operation it serves.
       type: object
@@ -50571,7 +50833,6 @@ components:
         ttl_ms:
           description: 'How long a client may treat the result as fresh, in milliseconds.'
           type: integer
-          default: null
           minimum: 0
           nullable: true
           x-speakeasy-param-computed: false
@@ -50587,6 +50848,7 @@ components:
             - private
           x-speakeasy-unknown-values: allow
       additionalProperties: false
+      x-terraform-no-default-null: true
     AIGatewayMCPServerUpstreamServerServerConfig:
       description: Server-side configuration specific to `upstream-server` mode.
       type: object
@@ -50600,14 +50862,12 @@ components:
             Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
             This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
             client:
               description: The configuration for client-side session storage.
               type: object
-              default: null
               additionalProperties: false
               nullable: true
               properties:
@@ -50622,7 +50882,6 @@ components:
                     x-referenceable: true
                     description: |
                       This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-                  default: null
                   minItems: 1
                   nullable: true
                   x-speakeasy-param-computed: false
@@ -50679,6 +50938,7 @@ components:
           x-speakeasy-param-computed: false
           x-speakeasy-unknown-values: allow
       additionalProperties: false
+      x-terraform-no-default-null: true
     AIGatewayMCPServerUpstreamServerServerToolAuthConfig:
       description: Configuration for an Upstream Server's MCP Server Tools' Authentication.
       discriminator:
@@ -50697,7 +50957,6 @@ components:
             The scopes for the OAuth 2.0 client-credentials.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -50713,7 +50972,6 @@ components:
             include the header name and the token prefix if needed. Leave empty to omit the ID token
             when fetching the tools list.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         type:
@@ -50722,6 +50980,7 @@ components:
       additionalProperties: false
       required:
         - type
+      x-terraform-no-default-null: true
     AIGatewayMCPServerUpstreamServerToolOauth2ConfigCredentials:
       type: object
       properties:
@@ -50730,7 +50989,6 @@ components:
             The scopes for the OAuth 2.0 client-credentials.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -50746,7 +51004,6 @@ components:
             include the header name and the token prefix if needed. Leave empty to omit the ID token
             when fetching the tools list.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         type:
@@ -50770,7 +51027,6 @@ components:
             The client secret for the OAuth 2.0 client-credentials.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-referenceable: true
@@ -50780,6 +51036,7 @@ components:
         - type
         - token_endpoint
         - client_id
+      x-terraform-no-default-null: true
     CreateAIGatewayMCPServerRequest:
       discriminator:
         propertyName: type
@@ -50972,6 +51229,7 @@ components:
           required:
             - url
           title: AIGatewayMCPServerKongListenerConfig
+          x-terraform-no-default-null: true
         tools:
           description: |
             List of tools exposed by this MCP Server. Each tool's `path`, `method`, and `host`
@@ -51093,6 +51351,7 @@ components:
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
           title: AIGatewayMCPServerKongListenerConfig
+          x-terraform-no-default-null: true
         sources:
           description: |
             The explicit list of source MCP Servers whose tools this listener exposes.
@@ -51272,7 +51531,6 @@ components:
           description: A description of what the tool does.
           type: string
           example: Search for available flights
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         name:
@@ -51286,7 +51544,6 @@ components:
             The entire `inputSchema` section for the tool. Overrides the upstream server's `inputSchema`
             for the same tool name, if present.
           type: object
-          default: null
           additionalProperties: true
           nullable: true
           x-speakeasy-param-computed: false
@@ -51296,7 +51553,6 @@ components:
             The entire `outputSchema` section for the tool. Overrides the upstream server's `outputSchema`
             for the same tool name, if present.
           type: object
-          default: null
           additionalProperties: true
           nullable: true
           x-speakeasy-param-computed: false
@@ -51304,6 +51560,7 @@ components:
       additionalProperties: false
       required:
         - name
+      x-terraform-no-default-null: true
     AIGatewayMCPToolAnnotations:
       type: object
       properties:
@@ -52094,6 +52351,7 @@ components:
             additionalProperties: false
             required:
               - name
+              - location
             properties:
               name:
                 description: |
@@ -52218,6 +52476,7 @@ components:
           description: AWS role arn to use when calling the batch API.
           type: string
           x-speakeasy-param-computed: false
+      additionalProperties: false
       required:
         - type
       title: AIGatewayModelProviderConfigAuthAWS
@@ -52525,7 +52784,6 @@ components:
             path in the `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-referenceable: true
@@ -52536,6 +52794,7 @@ components:
       required:
         - source
       title: AuthGCPWorkloadIdentityFederationAwsIam
+      x-terraform-no-default-null: true
     AIGatewayModelProviderSagemaker:
       description: |
         Config for Sagemaker model provider.
@@ -52590,35 +52849,31 @@ components:
             - sagemaker
         aws:
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
           properties:
             access_key_id:
               description: static IAM user credential; overrides AWS_ACCESS_KEY_ID env var
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             secret_access_key:
               description: static IAM user credential; overrides AWS_SECRET_ACCESS_KEY env var
               type: string
-              default: null
               nullable: true
               writeOnly: true
               x-speakeasy-param-computed: false
             session_token:
               description: static IAM user credential; overrides AWS_SESSION_TOKEN env var
               type: string
-              default: null
               nullable: true
               writeOnly: true
               x-speakeasy-param-computed: false
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
       additionalProperties: false
       required:
         - type
       title: AIGatewayModelProviderConfigAuthSagemaker
+      x-terraform-no-default-null: true
     CreateAIGatewayConfigStoreRequest:
       type: object
       properties:
@@ -52634,6 +52889,10 @@ components:
           example: my-config-store
           allOf:
             - $ref: '#/components/schemas/AIGatewayConfigStoreName'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
       additionalProperties: false
       required:
         - name
@@ -52665,6 +52924,10 @@ components:
           example: my-config-store
           allOf:
             - $ref: '#/components/schemas/AIGatewayConfigStoreName'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
@@ -66717,10 +66980,8 @@ components:
         cert_digest:
           description: 'SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.'
           type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         created_at:
           description: Unix epoch when the resource was created.
@@ -66939,10 +67200,8 @@ components:
           items:
             description: 'A string representing a wildcard host name, such as *.example.com.'
             type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         tags:
           description: An optional set of strings associated with the Certificate for grouping and filtering.
@@ -96126,7 +96385,6 @@ components:
         anonymous:
           description: 'An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.'
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         hide_credentials:
@@ -96143,7 +96401,6 @@ components:
                 type: string
               region:
                 type: string
-                default: null
                 nullable: true
                 x-speakeasy-param-computed: false
               scope:
@@ -96154,7 +96411,6 @@ components:
                   - realm
                 x-speakeasy-unknown-values: allow
             type: object
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         key_in_body:
@@ -96196,13 +96452,13 @@ components:
         realm:
           description: When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         run_on_preflight:
           description: 'A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.'
           type: boolean
           default: true
+      x-terraform-no-default-null: true
     AIGWOpenIDConnectGeneratedConfig:
       type: object
       properties:
@@ -100200,10 +100456,8 @@ components:
               implementation_mode:
                 description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
                 type: string
-                default: null
                 nullable: true
                 readOnly: true
-                x-speakeasy-param-computed: false
                 x-speakeasy-param-suppress-computed-diff: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
@@ -100420,10 +100674,8 @@ components:
               implementation_mode:
                 description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
                 type: string
-                default: null
                 nullable: true
                 readOnly: true
-                x-speakeasy-param-computed: false
                 x-speakeasy-param-suppress-computed-diff: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
@@ -100966,7 +101218,7 @@ components:
                 description: The OAuth 2.0 client ID
                 type: string
                 example: kYa9iQFU5xPDSIUH9z1z
-                maxLength: 36
+                maxLength: 48
                 pattern: '[-_\w]+'
                 x-speakeasy-param-computed: true
               client_secret:
@@ -102641,24 +102893,6 @@ components:
                 $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
               visibility:
                 $ref: '#/components/schemas/ApiPublicationVisibility'
-              form_id:
-                description: |
-                  UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
-                type: string
-                format: uuid
-                nullable: true
-                x-speakeasy-param-computed: true
-              warnings:
-                description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
-                type: array
-                items:
-                  type: string
-                readOnly: true
-                x-speakeasy-param-suppress-computed-diff: true
-              created_at:
-                $ref: '#/components/schemas/CreatedAt'
-              updated_at:
-                $ref: '#/components/schemas/UpdatedAt'
               spec_renderer:
                 description: Customization settings for the API spec renderer in the portal.
                 type: object
@@ -102693,6 +102927,24 @@ components:
                   - try_it_ui_audience
                 title: ApiPublicationSpecRenderer
                 x-speakeasy-param-computed: false
+              form_id:
+                description: |
+                  UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
+                type: string
+                format: uuid
+                nullable: true
+                x-speakeasy-param-computed: true
+              warnings:
+                description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
+                type: array
+                items:
+                  type: string
+                readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
             additionalProperties: false
             required:
               - visibility
@@ -102700,6 +102952,7 @@ components:
               - updated_at
               - auth_strategy_ids
               - form_id
+              - spec_renderer
             title: API Publication
     ApiImplementationResponse:
       description: An API implementation

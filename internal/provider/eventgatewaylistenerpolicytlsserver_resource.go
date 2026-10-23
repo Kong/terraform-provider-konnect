@@ -271,7 +271,7 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Create(ctx context.Context
 	}
 	res, err := r.client.EventGatewayListenerPolicies.CreateEventGatewayListenerPolicyTLSServer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -331,7 +331,7 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Read(ctx context.Context, 
 	}
 	res, err := r.client.EventGatewayListenerPolicies.GetEventGatewayListenerPolicyTLSServer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -385,7 +385,7 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Update(ctx context.Context
 	}
 	res, err := r.client.EventGatewayListenerPolicies.UpdateEventGatewayListenerPolicyTLSServer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -445,7 +445,7 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Delete(ctx context.Context
 	}
 	res, err := r.client.EventGatewayListenerPolicies.DeleteEventGatewayListenerPolicyTLSServer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

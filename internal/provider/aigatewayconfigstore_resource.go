@@ -38,13 +38,15 @@ type AIGatewayConfigStoreResource struct {
 
 // AIGatewayConfigStoreResourceModel describes the resource data model.
 type AIGatewayConfigStoreResourceModel struct {
-	CreatedAt   types.String `tfsdk:"created_at"`
-	DisplayName types.String `tfsdk:"display_name"`
-	Force       types.Bool   `queryParam:"style=form,explode=true,name=force" tfsdk:"force"`
-	GatewayID   types.String `tfsdk:"gateway_id"`
-	ID          types.String `tfsdk:"id"`
-	Name        types.String `tfsdk:"name"`
-	UpdatedAt   types.String `tfsdk:"updated_at"`
+	CreatedAt   types.String            `tfsdk:"created_at"`
+	DisplayName types.String            `tfsdk:"display_name"`
+	Force       types.Bool              `queryParam:"style=form,explode=true,name=force" tfsdk:"force"`
+	GatewayID   types.String            `tfsdk:"gateway_id"`
+	ID          types.String            `tfsdk:"id"`
+	Labels      map[string]types.String `tfsdk:"labels"`
+	ManagedBy   map[string]types.String `tfsdk:"managed_by"`
+	Name        types.String            `tfsdk:"name"`
+	UpdatedAt   types.String            `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayConfigStoreResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -86,6 +88,24 @@ func (r *AIGatewayConfigStoreResource) Schema(ctx context.Context, req resource.
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Contains a unique identifier used for this resource.`,
+			},
+			"labels": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Public labels store information about an entity that can be used for filtering a list of objects.` + "\n" +
+					`` + "\n" +
+					`Public labels are intended to store **PUBLIC** metadata. ` + "\n" +
+					`` + "\n" +
+					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+			},
+			"managed_by": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
+					`` + "\n" +
+					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
 			},
 			"name": schema.StringAttribute{
 				Required: true,
@@ -156,7 +176,7 @@ func (r *AIGatewayConfigStoreResource) Create(ctx context.Context, req resource.
 	}
 	res, err := r.client.AIGatewayConfigStores.CreateAiGatewayConfigStore(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -223,7 +243,7 @@ func (r *AIGatewayConfigStoreResource) Read(ctx context.Context, req resource.Re
 	}
 	res, err := r.client.AIGatewayConfigStores.GetAiGatewayConfigStore(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -277,7 +297,7 @@ func (r *AIGatewayConfigStoreResource) Update(ctx context.Context, req resource.
 	}
 	res, err := r.client.AIGatewayConfigStores.UpdateAiGatewayConfigStore(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -337,7 +357,7 @@ func (r *AIGatewayConfigStoreResource) Delete(ctx context.Context, req resource.
 	}
 	res, err := r.client.AIGatewayConfigStores.DeleteAiGatewayConfigStore(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

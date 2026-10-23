@@ -218,7 +218,7 @@ func (r *GatewayTargetResource) Create(ctx context.Context, req resource.CreateR
 	}
 	res, err := r.client.Targets.CreateTargetWithUpstream(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -278,7 +278,7 @@ func (r *GatewayTargetResource) Read(ctx context.Context, req resource.ReadReque
 	}
 	res, err := r.client.Targets.GetTargetWithUpstream(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -356,7 +356,7 @@ func (r *GatewayTargetResource) Delete(ctx context.Context, req resource.DeleteR
 	}
 	res, err := r.client.Targets.DeleteTargetWithUpstream(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

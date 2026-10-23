@@ -91,6 +91,11 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 			r.SpecRenderer.ShowSchemas = types.BoolPointerValue(resp.SpecRenderer.ShowSchemas)
 			r.SpecRenderer.TryItInsomnia = types.BoolPointerValue(resp.SpecRenderer.TryItInsomnia)
 			r.SpecRenderer.TryItUI = types.BoolPointerValue(resp.SpecRenderer.TryItUI)
+			if resp.SpecRenderer.TryItUIAudience != nil {
+				r.SpecRenderer.TryItUIAudience = types.StringValue(string(*resp.SpecRenderer.TryItUIAudience))
+			} else {
+				r.SpecRenderer.TryItUIAudience = types.StringNull()
+			}
 		}
 		if resp.Theme == nil {
 			r.Theme = nil
@@ -323,6 +328,12 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		} else {
 			allowCustomServerUrls = nil
 		}
+		tryItUIAudience := new(shared.PortalCustomizationTryItUIAudience)
+		if !r.SpecRenderer.TryItUIAudience.IsUnknown() && !r.SpecRenderer.TryItUIAudience.IsNull() {
+			*tryItUIAudience = shared.PortalCustomizationTryItUIAudience(r.SpecRenderer.TryItUIAudience.ValueString())
+		} else {
+			tryItUIAudience = nil
+		}
 		specRenderer = &shared.PortalCustomizationSpecRenderer{
 			TryItUI:               tryItUI,
 			TryItInsomnia:         tryItInsomnia,
@@ -331,6 +342,7 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 			HideInternal:          hideInternal,
 			HideDeprecated:        hideDeprecated,
 			AllowCustomServerUrls: allowCustomServerUrls,
+			TryItUIAudience:       tryItUIAudience,
 		}
 	}
 	robots := new(string)

@@ -128,7 +128,7 @@ func (r *IdentityAuthServerClientResource) Schema(ctx context.Context, req resou
 				},
 				Description: `The OAuth 2.0 client ID. Requires replacement if changed.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 36),
+					stringvalidator.UTF8LengthBetween(1, 48),
 					stringvalidator.RegexMatches(regexp.MustCompile(`[-_\w]+`), "must match pattern "+regexp.MustCompile(`[-_\w]+`).String()),
 				},
 			},
@@ -234,7 +234,7 @@ func (r *IdentityAuthServerClientResource) Create(ctx context.Context, req resou
 	}
 	res, err := r.client.AuthServerClients.CreateAuthServerClient(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -301,7 +301,7 @@ func (r *IdentityAuthServerClientResource) Read(ctx context.Context, req resourc
 	}
 	res, err := r.client.AuthServerClients.GetAuthServerClient(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -355,7 +355,7 @@ func (r *IdentityAuthServerClientResource) Update(ctx context.Context, req resou
 	}
 	res, err := r.client.AuthServerClients.ReplaceAuthServerClient(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -418,7 +418,7 @@ func (r *IdentityAuthServerClientResource) Delete(ctx context.Context, req resou
 	}
 	res, err := r.client.AuthServerClients.DeleteAuthServerClient(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

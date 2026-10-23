@@ -656,7 +656,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -747,7 +747,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -848,7 +848,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -912,7 +912,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -975,7 +975,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1038,7 +1038,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1101,7 +1101,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1164,7 +1164,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1235,7 +1235,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1357,7 +1357,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1420,7 +1420,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1483,7 +1483,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1546,7 +1546,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1609,7 +1609,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1672,7 +1672,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1743,7 +1743,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1829,7 +1829,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1892,7 +1892,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -1955,7 +1955,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
@@ -2018,7 +2018,7 @@ This field is [referenceable](https://developer.konghq.com/gateway/entities/vaul
 
 Optional:
 
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null
 - `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
 - `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 

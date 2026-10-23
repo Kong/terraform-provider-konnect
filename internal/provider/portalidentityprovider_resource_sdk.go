@@ -265,25 +265,34 @@ func (r *PortalIdentityProviderResourceModel) ToSharedPortalUpdateIdentityProvid
 	}
 	var config *shared.PortalUpdateIdentityProviderConfig
 	if r.Config != nil {
-		var oidcIdentityProviderConfig *shared.OIDCIdentityProviderConfig
+		var oidcIdentityProviderConfig1 *shared.OIDCIdentityProviderConfig1
 		if r.Config.OIDCIdentityProviderConfig != nil {
-			var issuerURL string
-			issuerURL = r.Config.OIDCIdentityProviderConfig.IssuerURL.ValueString()
-
-			var clientID string
-			clientID = r.Config.OIDCIdentityProviderConfig.ClientID.ValueString()
-
+			issuerURL := new(string)
+			if !r.Config.OIDCIdentityProviderConfig.IssuerURL.IsUnknown() && !r.Config.OIDCIdentityProviderConfig.IssuerURL.IsNull() {
+				*issuerURL = r.Config.OIDCIdentityProviderConfig.IssuerURL.ValueString()
+			} else {
+				issuerURL = nil
+			}
+			clientID := new(string)
+			if !r.Config.OIDCIdentityProviderConfig.ClientID.IsUnknown() && !r.Config.OIDCIdentityProviderConfig.ClientID.IsNull() {
+				*clientID = r.Config.OIDCIdentityProviderConfig.ClientID.ValueString()
+			} else {
+				clientID = nil
+			}
 			clientSecret := new(string)
 			if !r.Config.OIDCIdentityProviderConfig.ClientSecret.IsUnknown() && !r.Config.OIDCIdentityProviderConfig.ClientSecret.IsNull() {
 				*clientSecret = r.Config.OIDCIdentityProviderConfig.ClientSecret.ValueString()
 			} else {
 				clientSecret = nil
 			}
-			scopes := make([]string, 0, len(r.Config.OIDCIdentityProviderConfig.Scopes))
-			for scopesIndex := range r.Config.OIDCIdentityProviderConfig.Scopes {
-				scopes = append(scopes, r.Config.OIDCIdentityProviderConfig.Scopes[scopesIndex].ValueString())
+			var scopes []string
+			if r.Config.OIDCIdentityProviderConfig.Scopes != nil {
+				scopes = make([]string, 0, len(r.Config.OIDCIdentityProviderConfig.Scopes))
+				for scopesIndex := range r.Config.OIDCIdentityProviderConfig.Scopes {
+					scopes = append(scopes, r.Config.OIDCIdentityProviderConfig.Scopes[scopesIndex].ValueString())
+				}
 			}
-			var claimMappings *shared.OIDCIdentityProviderClaimMappings
+			var claimMappings *shared.UpdateOIDCIdentityProviderClaimMappings
 			if r.Config.OIDCIdentityProviderConfig.ClaimMappings != nil {
 				name := new(string)
 				if !r.Config.OIDCIdentityProviderConfig.ClaimMappings.Name.IsUnknown() && !r.Config.OIDCIdentityProviderConfig.ClaimMappings.Name.IsNull() {
@@ -303,13 +312,13 @@ func (r *PortalIdentityProviderResourceModel) ToSharedPortalUpdateIdentityProvid
 				} else {
 					groups = nil
 				}
-				claimMappings = &shared.OIDCIdentityProviderClaimMappings{
+				claimMappings = &shared.UpdateOIDCIdentityProviderClaimMappings{
 					Name:   name,
 					Email:  email,
 					Groups: groups,
 				}
 			}
-			oidcIdentityProviderConfig = &shared.OIDCIdentityProviderConfig{
+			oidcIdentityProviderConfig1 = &shared.OIDCIdentityProviderConfig1{
 				IssuerURL:     issuerURL,
 				ClientID:      clientID,
 				ClientSecret:  clientSecret,
@@ -317,12 +326,12 @@ func (r *PortalIdentityProviderResourceModel) ToSharedPortalUpdateIdentityProvid
 				ClaimMappings: claimMappings,
 			}
 		}
-		if oidcIdentityProviderConfig != nil {
+		if oidcIdentityProviderConfig1 != nil {
 			config = &shared.PortalUpdateIdentityProviderConfig{
-				OIDCIdentityProviderConfig: oidcIdentityProviderConfig,
+				OIDCIdentityProviderConfig1: oidcIdentityProviderConfig1,
 			}
 		}
-		var samlIdentityProviderConfigInput *shared.SAMLIdentityProviderConfigInput
+		var samlIdentityProviderConfig2 *shared.SAMLIdentityProviderConfig2
 		if r.Config.SAMLIdentityProviderConfig != nil {
 			idpMetadataURL := new(string)
 			if !r.Config.SAMLIdentityProviderConfig.IdpMetadataURL.IsUnknown() && !r.Config.SAMLIdentityProviderConfig.IdpMetadataURL.IsNull() {
@@ -336,14 +345,14 @@ func (r *PortalIdentityProviderResourceModel) ToSharedPortalUpdateIdentityProvid
 			} else {
 				idpMetadataXML = nil
 			}
-			samlIdentityProviderConfigInput = &shared.SAMLIdentityProviderConfigInput{
+			samlIdentityProviderConfig2 = &shared.SAMLIdentityProviderConfig2{
 				IdpMetadataURL: idpMetadataURL,
 				IdpMetadataXML: idpMetadataXML,
 			}
 		}
-		if samlIdentityProviderConfigInput != nil {
+		if samlIdentityProviderConfig2 != nil {
 			config = &shared.PortalUpdateIdentityProviderConfig{
-				SAMLIdentityProviderConfigInput: samlIdentityProviderConfigInput,
+				SAMLIdentityProviderConfig2: samlIdentityProviderConfig2,
 			}
 		}
 	}

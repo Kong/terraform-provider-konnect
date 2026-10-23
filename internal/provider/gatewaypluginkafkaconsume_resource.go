@@ -1185,7 +1185,7 @@ func (r *GatewayPluginKafkaConsumeResource) Create(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.CreateKafkaconsumePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1245,7 +1245,7 @@ func (r *GatewayPluginKafkaConsumeResource) Read(ctx context.Context, req resour
 	}
 	res, err := r.client.Plugins.GetKafkaconsumePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1299,7 +1299,7 @@ func (r *GatewayPluginKafkaConsumeResource) Update(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.UpdateKafkaconsumePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1359,7 +1359,7 @@ func (r *GatewayPluginKafkaConsumeResource) Delete(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.DeleteKafkaconsumePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

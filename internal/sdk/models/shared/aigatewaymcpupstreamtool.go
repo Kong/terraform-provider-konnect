@@ -15,7 +15,7 @@ type AIGatewayMCPUpstreamTool struct {
 	Access      *AIGatewayMCPToolAccess      `json:"access,omitempty"`
 	Annotations *AIGatewayMCPToolAnnotations `json:"annotations,omitempty"`
 	// A description of what the tool does.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides.
 	Name string `json:"name"`
 	// The entire `inputSchema` section for the tool. Overrides the upstream server's `inputSchema`

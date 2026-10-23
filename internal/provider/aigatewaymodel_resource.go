@@ -22,7 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -94,14 +93,24 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										ElementType: types.StringType,
 										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.`,
 									},
+									"allow_when": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
+									},
 									"deny": schema.ListAttribute{
 										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access.`,
 									},
+									"deny_when": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
+									},
 								},
-								Description: `Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
+								Description: `Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + `.`,
 							},
 							"auth_strategies": schema.ListAttribute{
 								Computed:    true,
@@ -1083,16 +1092,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"ssl": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"cert":     types.StringType,
-																	"cert_key": types.StringType,
-																	"enabled":  types.BoolType,
-																	"required": types.BoolType,
-																	"verify":   types.BoolType,
-																	"version":  types.StringType,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"cert": schema.StringAttribute{
 																		Optional:    true,
@@ -1256,19 +1256,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
 															},
 															"cluster": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"max_redirections": types.Int64Type,
-																	"nodes": types.ListType{
-																		ElemType: types.ObjectType{
-																			AttrTypes: map[string]attr.Type{
-																				`ip`:   types.StringType,
-																				`port`: types.Int64Type,
-																			},
-																		},
-																	},
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"max_redirections": schema.Int64Attribute{
 																		Computed:    true,
@@ -1360,12 +1348,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																	`Default: "127.0.0.1"`,
 															},
 															"keepalive": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"backlog":   types.Int64Type,
-																	"pool_size": types.Int64Type,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"backlog": schema.Int64Attribute{
 																		Optional:    true,
@@ -1418,22 +1401,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"sentinel": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"master": types.StringType,
-																	"nodes": types.ListType{
-																		ElemType: types.ObjectType{
-																			AttrTypes: map[string]attr.Type{
-																				`host`: types.StringType,
-																				`port`: types.Int64Type,
-																			},
-																		},
-																	},
-																	"password": types.StringType,
-																	"role":     types.StringType,
-																	"username": types.StringType,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"master": schema.StringAttribute{
 																		Optional:    true,
@@ -1573,6 +1541,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 							"proxy": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"auth": schema.SingleNestedAttribute{
@@ -6329,14 +6298,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"aws": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"assume_role_arn":   types.StringType,
-														"region":            types.StringType,
-														"role_session_name": types.StringType,
-														"sts_endpoint_url":  types.StringType,
-													})),
 													Attributes: map[string]schema.Attribute{
 														"assume_role_arn": schema.StringAttribute{
 															Optional:    true,
@@ -6588,13 +6550,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"target": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"container_hostname": types.StringType,
-														"model":              types.StringType,
-														"variant":            types.StringType,
-													})),
 													Attributes: map[string]schema.Attribute{
 														"container_hostname": schema.StringAttribute{
 															Optional:    true,
@@ -7676,14 +7632,24 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										ElementType: types.StringType,
 										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.`,
 									},
+									"allow_when": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
+									},
 									"deny": schema.ListAttribute{
 										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access.`,
 									},
+									"deny_when": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
+									},
 								},
-								Description: `Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
+								Description: `Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + `.`,
 							},
 							"auth_strategies": schema.ListAttribute{
 								Computed:    true,
@@ -8665,16 +8631,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"ssl": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"cert":     types.StringType,
-																	"cert_key": types.StringType,
-																	"enabled":  types.BoolType,
-																	"required": types.BoolType,
-																	"verify":   types.BoolType,
-																	"version":  types.StringType,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"cert": schema.StringAttribute{
 																		Optional:    true,
@@ -8838,19 +8795,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
 															},
 															"cluster": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"max_redirections": types.Int64Type,
-																	"nodes": types.ListType{
-																		ElemType: types.ObjectType{
-																			AttrTypes: map[string]attr.Type{
-																				`ip`:   types.StringType,
-																				`port`: types.Int64Type,
-																			},
-																		},
-																	},
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"max_redirections": schema.Int64Attribute{
 																		Computed:    true,
@@ -8942,12 +8887,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																	`Default: "127.0.0.1"`,
 															},
 															"keepalive": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"backlog":   types.Int64Type,
-																	"pool_size": types.Int64Type,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"backlog": schema.Int64Attribute{
 																		Optional:    true,
@@ -9000,22 +8940,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"sentinel": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"master": types.StringType,
-																	"nodes": types.ListType{
-																		ElemType: types.ObjectType{
-																			AttrTypes: map[string]attr.Type{
-																				`host`: types.StringType,
-																				`port`: types.Int64Type,
-																			},
-																		},
-																	},
-																	"password": types.StringType,
-																	"role":     types.StringType,
-																	"username": types.StringType,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"master": schema.StringAttribute{
 																		Optional:    true,
@@ -9167,6 +9092,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 							"proxy": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"auth": schema.SingleNestedAttribute{
@@ -13923,14 +13849,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"aws": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"assume_role_arn":   types.StringType,
-														"region":            types.StringType,
-														"role_session_name": types.StringType,
-														"sts_endpoint_url":  types.StringType,
-													})),
 													Attributes: map[string]schema.Attribute{
 														"assume_role_arn": schema.StringAttribute{
 															Optional:    true,
@@ -14182,13 +14101,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"target": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"container_hostname": types.StringType,
-														"model":              types.StringType,
-														"variant":            types.StringType,
-													})),
 													Attributes: map[string]schema.Attribute{
 														"container_hostname": schema.StringAttribute{
 															Optional:    true,
@@ -15285,7 +15198,7 @@ func (r *AIGatewayModelResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.AIGatewayModels.CreateAiGatewayModel(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -15352,7 +15265,7 @@ func (r *AIGatewayModelResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	res, err := r.client.AIGatewayModels.GetAiGatewayModel(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -15406,7 +15319,7 @@ func (r *AIGatewayModelResource) Update(ctx context.Context, req resource.Update
 	}
 	res, err := r.client.AIGatewayModels.UpdateAiGatewayModel(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -15466,7 +15379,7 @@ func (r *AIGatewayModelResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.AIGatewayModels.DeleteAiGatewayModel(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

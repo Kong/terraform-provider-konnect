@@ -295,7 +295,7 @@ func (r *GatewayPluginDegraphqlResource) Create(ctx context.Context, req resourc
 	}
 	res, err := r.client.Plugins.CreateDegraphqlPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -355,7 +355,7 @@ func (r *GatewayPluginDegraphqlResource) Read(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.GetDegraphqlPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -409,7 +409,7 @@ func (r *GatewayPluginDegraphqlResource) Update(ctx context.Context, req resourc
 	}
 	res, err := r.client.Plugins.UpdateDegraphqlPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -469,7 +469,7 @@ func (r *GatewayPluginDegraphqlResource) Delete(ctx context.Context, req resourc
 	}
 	res, err := r.client.Plugins.DeleteDegraphqlPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

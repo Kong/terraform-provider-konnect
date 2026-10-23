@@ -180,7 +180,7 @@ type AIGatewayModelVectorDBConfigRedisCluster struct {
 	// Maximum retry attempts for redirection.
 	MaxRedirections *int64 `default:"5" json:"max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	Nodes []AIGatewayModelVectorDBConfigRedisNodes `json:"nodes"`
+	Nodes []AIGatewayModelVectorDBConfigRedisNodes `json:"nodes,omitempty"`
 }
 
 func (a AIGatewayModelVectorDBConfigRedisCluster) MarshalJSON() ([]byte, error) {
@@ -211,7 +211,7 @@ func (a *AIGatewayModelVectorDBConfigRedisCluster) GetNodes() []AIGatewayModelVe
 // AIGatewayModelVectorDBConfigRedisKeepalive - Keepalive configuration for the Redis connection.
 type AIGatewayModelVectorDBConfigRedisKeepalive struct {
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
-	Backlog *int64 `default:"null" json:"backlog"`
+	Backlog *int64 `json:"backlog,omitempty"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 	PoolSize *int64 `default:"256" json:"pool_size"`
 }
@@ -300,19 +300,19 @@ func (e *AIGatewayModelVectorDBConfigRedisRole) IsExact() bool {
 // AIGatewayModelVectorDBConfigRedisSentinel - Configuration for Redis Sentinel.
 type AIGatewayModelVectorDBConfigRedisSentinel struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-	Master *string `default:"null" json:"master"`
+	Master *string `json:"master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	Nodes []AIGatewayModelVectorDBConfigRedisSentinelNodes `json:"nodes"`
+	Nodes []AIGatewayModelVectorDBConfigRedisSentinelNodes `json:"nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Password *string `default:"null" json:"password"`
+	Password *string `json:"password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	Role *AIGatewayModelVectorDBConfigRedisRole `json:"role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Username *string `default:"null" json:"username"`
+	Username *string `json:"username,omitempty"`
 }
 
 func (a AIGatewayModelVectorDBConfigRedisSentinel) MarshalJSON() ([]byte, error) {
@@ -370,11 +370,11 @@ type AIGatewayModelVectorDBConfigRedisOutput struct {
 	// the distance metric to use for vector searches
 	DistanceMetric AIGatewayModelVectorDBConfigRedisDistanceMetric `json:"distance_metric"`
 	// the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
-	Threshold *float64 `default:"null" json:"threshold"`
+	Threshold *float64 `json:"threshold,omitempty"`
 	// Auth related config for connecting to a Cloud Provider's Redis instance.
 	CloudAuthentication *AIGatewayModelVectorDBConfigRedisCloudAuthenticationOutput `json:"cloud_authentication,omitempty"`
 	// Cluster configuration for the Redis connection.
-	Cluster *AIGatewayModelVectorDBConfigRedisCluster `json:"cluster"`
+	Cluster *AIGatewayModelVectorDBConfigRedisCluster `json:"cluster,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -386,11 +386,11 @@ type AIGatewayModelVectorDBConfigRedisOutput struct {
 	//
 	Host *string `default:"127.0.0.1" json:"host"`
 	// Keepalive configuration for the Redis connection.
-	Keepalive *AIGatewayModelVectorDBConfigRedisKeepalive `json:"keepalive"`
+	Keepalive *AIGatewayModelVectorDBConfigRedisKeepalive `json:"keepalive,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Password *string `default:"null" json:"password"`
+	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
@@ -400,11 +400,11 @@ type AIGatewayModelVectorDBConfigRedisOutput struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Configuration for Redis Sentinel.
-	Sentinel *AIGatewayModelVectorDBConfigRedisSentinel `json:"sentinel"`
+	Sentinel *AIGatewayModelVectorDBConfigRedisSentinel `json:"sentinel,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	ServerName *string `default:"null" json:"server_name"`
+	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
 	Ssl *bool `default:"true" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
@@ -412,7 +412,7 @@ type AIGatewayModelVectorDBConfigRedisOutput struct {
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Username *string `default:"null" json:"username"`
+	Username *string `json:"username,omitempty"`
 }
 
 func (a AIGatewayModelVectorDBConfigRedisOutput) MarshalJSON() ([]byte, error) {
@@ -717,11 +717,11 @@ type AIGatewayModelVectorDBConfigRedis struct {
 	// the distance metric to use for vector searches
 	DistanceMetric AIGatewayModelVectorDBConfigRedisDistanceMetric `json:"distance_metric"`
 	// the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
-	Threshold *float64 `default:"null" json:"threshold"`
+	Threshold *float64 `json:"threshold,omitempty"`
 	// Auth related config for connecting to a Cloud Provider's Redis instance.
 	CloudAuthentication *AIGatewayModelVectorDBConfigRedisCloudAuthentication `json:"cloud_authentication,omitempty"`
 	// Cluster configuration for the Redis connection.
-	Cluster *AIGatewayModelVectorDBConfigRedisCluster `json:"cluster"`
+	Cluster *AIGatewayModelVectorDBConfigRedisCluster `json:"cluster,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -733,11 +733,11 @@ type AIGatewayModelVectorDBConfigRedis struct {
 	//
 	Host *string `default:"127.0.0.1" json:"host"`
 	// Keepalive configuration for the Redis connection.
-	Keepalive *AIGatewayModelVectorDBConfigRedisKeepalive `json:"keepalive"`
+	Keepalive *AIGatewayModelVectorDBConfigRedisKeepalive `json:"keepalive,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Password *string `default:"null" json:"password"`
+	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
@@ -747,11 +747,11 @@ type AIGatewayModelVectorDBConfigRedis struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Configuration for Redis Sentinel.
-	Sentinel *AIGatewayModelVectorDBConfigRedisSentinel `json:"sentinel"`
+	Sentinel *AIGatewayModelVectorDBConfigRedisSentinel `json:"sentinel,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	ServerName *string `default:"null" json:"server_name"`
+	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
 	Ssl *bool `default:"true" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
@@ -759,7 +759,7 @@ type AIGatewayModelVectorDBConfigRedis struct {
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Username *string `default:"null" json:"username"`
+	Username *string `json:"username,omitempty"`
 }
 
 func (a AIGatewayModelVectorDBConfigRedis) MarshalJSON() ([]byte, error) {

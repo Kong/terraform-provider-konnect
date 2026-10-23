@@ -1248,7 +1248,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Create(ctx context.Context, req r
 	}
 	res, err := r.client.Plugins.CreateAisemanticcachePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1308,7 +1308,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Read(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.GetAisemanticcachePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1362,7 +1362,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Update(ctx context.Context, req r
 	}
 	res, err := r.client.Plugins.UpdateAisemanticcachePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1422,7 +1422,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Delete(ctx context.Context, req r
 	}
 	res, err := r.client.Plugins.DeleteAisemanticcachePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

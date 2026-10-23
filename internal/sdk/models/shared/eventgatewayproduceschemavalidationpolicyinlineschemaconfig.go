@@ -10,7 +10,6 @@ import (
 //
 // **Requires a minimum runtime version of `1.3`**.
 type EventGatewayProduceSchemaValidationPolicyInlineSchemaConfig struct {
-	SchemaRegistry *SchemaRegistryReference `json:"schema_registry,omitempty"`
 	// Describes how to handle a failure in a policy applied to produced records.
 	// * `reject` - rejects the record batch.
 	// * `passthrough` - passes the record silently to the backend cluster even though policy execution failed.
@@ -51,13 +50,6 @@ func (e *EventGatewayProduceSchemaValidationPolicyInlineSchemaConfig) UnmarshalJ
 		return err
 	}
 	return nil
-}
-
-func (e *EventGatewayProduceSchemaValidationPolicyInlineSchemaConfig) GetSchemaRegistry() *SchemaRegistryReference {
-	if e == nil {
-		return nil
-	}
-	return e.SchemaRegistry
 }
 
 func (e *EventGatewayProduceSchemaValidationPolicyInlineSchemaConfig) GetFailureMode() *ProduceFailureMode {

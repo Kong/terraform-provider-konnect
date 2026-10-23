@@ -11,7 +11,7 @@ type AIGatewayMCPServerServerConfigBaseClient struct {
 	// The secrets that are used in session encryption. Required when the strategy is 'client'.
 	// The first secret is used for encryption, while all secrets are used for decryption to support key rotation.
 	//
-	Secrets []string `json:"secrets"`
+	Secrets []string `json:"secrets,omitempty"`
 }
 
 func (a AIGatewayMCPServerServerConfigBaseClient) MarshalJSON() ([]byte, error) {
@@ -59,7 +59,7 @@ func (e *Strategy) IsExact() bool {
 // This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 type AIGatewayMCPServerServerConfigBaseSession struct {
 	// The configuration for client-side session storage.
-	Client *AIGatewayMCPServerServerConfigBaseClient `json:"client"`
+	Client *AIGatewayMCPServerServerConfigBaseClient `json:"client,omitempty"`
 	// If enabled, Kong will maintain managed sessions with the MCP server.
 	Managed *bool `default:"true" json:"managed"`
 	// Config for connecting to a Cloud Provider's Redis instance.
@@ -123,7 +123,7 @@ type AIGatewayMCPServerServerConfigBaseOutput struct {
 	// Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
 	// This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 	//
-	Session *AIGatewayMCPServerServerConfigBaseSession `json:"session"`
+	Session *AIGatewayMCPServerServerConfigBaseSession `json:"session,omitempty"`
 	// The timeout for calling the tools in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 }
@@ -164,7 +164,7 @@ func (a *AIGatewayMCPServerServerConfigBaseOutput) GetTimeout() *int64 {
 // This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 type Session struct {
 	// The configuration for client-side session storage.
-	Client *AIGatewayMCPServerServerConfigBaseClient `json:"client"`
+	Client *AIGatewayMCPServerServerConfigBaseClient `json:"client,omitempty"`
 	// If enabled, Kong will maintain managed sessions with the MCP server.
 	Managed *bool `default:"true" json:"managed"`
 	// Config for connecting to a Cloud Provider's Redis instance.
@@ -228,7 +228,7 @@ type AIGatewayMCPServerServerConfigBase struct {
 	// Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
 	// This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 	//
-	Session *Session `json:"session"`
+	Session *Session `json:"session,omitempty"`
 	// The timeout for calling the tools in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 }
