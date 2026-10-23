@@ -49,13 +49,13 @@ type GetWorkspaceResponse struct {
 	RawResponse *http.Response
 	// A response to retrieving a single workspace.
 	Workspace *shared.Workspace
-	// Forbidden
+	// Bad Request
 	KonnectCPLegacyBadRequestError *shared.KonnectCPLegacyBadRequestError
 	// Unauthorized
 	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
 	// Forbidden
 	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
-	// Forbidden
+	// Not Found
 	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 	// Internal
 	InternalError *shared.InternalError

@@ -48,15 +48,15 @@ type CreateWorkspaceResponse struct {
 	RawResponse *http.Response
 	// A response to creating a workspace.
 	Workspace *shared.Workspace
-	// Forbidden
+	// Bad Request
 	KonnectCPLegacyBadRequestError *shared.KonnectCPLegacyBadRequestError
 	// Unauthorized
 	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
 	// Forbidden
 	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
-	// Forbidden
+	// Not Found
 	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
-	// Forbidden
+	// Conflict
 	KonnectCPLegacyConflictError *shared.KonnectCPLegacyConflictError
 	// Internal
 	InternalError *shared.InternalError
