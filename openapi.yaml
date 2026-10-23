@@ -39443,8 +39443,6 @@ components:
         **Requires a minimum runtime version of `1.3`**.
       type: object
       properties:
-        schema_registry:
-          $ref: '#/components/schemas/SchemaRegistryReference'
         failure_mode:
           $ref: '#/components/schemas/ConsumeFailureMode'
         validate_key:
@@ -39482,8 +39480,6 @@ components:
         **Requires a minimum runtime version of `1.3`**.
       type: object
       properties:
-        schema_registry:
-          $ref: '#/components/schemas/SchemaRegistryReference'
         failure_mode:
           $ref: '#/components/schemas/ProduceFailureMode'
         validate_key:
@@ -40464,7 +40460,7 @@ components:
       description: The OAuth 2.0 client ID
       type: string
       example: kYa9iQFU5xPDSIUH9z1z
-      maxLength: 36
+      maxLength: 48
       minLength: 1
       pattern: '[-_\w]+'
       readOnly: true
@@ -44028,7 +44024,6 @@ components:
           minimum: 0
         ssl:
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
@@ -44078,6 +44073,7 @@ components:
         - type
         - dimensions
         - distance_metric
+      x-terraform-no-default-null: true
     AIGatewayModelFormat:
       description: Request and response format supported by this model.
       type: object
@@ -46603,62 +46599,54 @@ components:
           const: sagemaker
         aws:
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
             region:
               description: Overrides the AWS_REGION environment variable for SageMaker requests.
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             assume_role_arn:
               description: Assume a different IAM role after authenticating; mutually required with role_session_name.
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             role_session_name:
               description: Session identifier for the assumed role; mutually required with assume_role_arn.
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             sts_endpoint_url:
               description: Overrides the STS endpoint when assuming a role.
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         target:
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
             model:
               description: Sets the X-Amzn-SageMaker-Target-Model header (multi-model endpoints).
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             variant:
               description: Sets the X-Amzn-SageMaker-Target-Variant header (A/B variant testing).
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             container_hostname:
               description: Sets the X-Amzn-SageMaker-Target-Container-Hostname header (multi-container).
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
       required:
         - type
+      x-terraform-no-default-null: true
     AIGatewayTargetTypesafeConfig:
       description: |-
         Typesafe-specific configuration for a model.
@@ -52812,7 +52800,6 @@ components:
             path in the `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-referenceable: true
@@ -52823,6 +52810,7 @@ components:
       required:
         - source
       title: AuthGCPWorkloadIdentityFederationAwsIam
+      x-terraform-no-default-null: true
     AIGatewayModelProviderSagemaker:
       description: |
         Config for Sagemaker model provider.
@@ -52877,27 +52865,23 @@ components:
             - sagemaker
         aws:
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
             access_key_id:
               description: static IAM user credential; overrides AWS_ACCESS_KEY_ID env var
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             secret_access_key:
               description: static IAM user credential; overrides AWS_SECRET_ACCESS_KEY env var
               type: string
-              default: null
               nullable: true
               writeOnly: true
               x-speakeasy-param-computed: false
             session_token:
               description: static IAM user credential; overrides AWS_SESSION_TOKEN env var
               type: string
-              default: null
               nullable: true
               writeOnly: true
               x-speakeasy-param-computed: false
@@ -52906,6 +52890,7 @@ components:
       required:
         - type
       title: AIGatewayModelProviderConfigAuthSagemaker
+      x-terraform-no-default-null: true
     CreateAIGatewayConfigStoreRequest:
       type: object
       properties:
@@ -101250,7 +101235,7 @@ components:
                 description: The OAuth 2.0 client ID
                 type: string
                 example: kYa9iQFU5xPDSIUH9z1z
-                maxLength: 36
+                maxLength: 48
                 pattern: '[-_\w]+'
                 x-speakeasy-param-computed: true
               client_secret:
