@@ -4,7 +4,6 @@ package operations
 
 import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -79,37 +78,6 @@ func (a *AddConsumerToGroupRequest) GetRequestBody() *AddConsumerToGroupRequestB
 	return a.RequestBody
 }
 
-// AddConsumerToGroupResponseBody - Consumer added to group
-type AddConsumerToGroupResponseBody struct {
-	ConsumerGroup *shared.ConsumerGroup `json:"consumer_group,omitempty"`
-	Consumers     []shared.Consumer     `json:"consumers"`
-}
-
-func (a AddConsumerToGroupResponseBody) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AddConsumerToGroupResponseBody) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AddConsumerToGroupResponseBody) GetConsumerGroup() *shared.ConsumerGroup {
-	if a == nil {
-		return nil
-	}
-	return a.ConsumerGroup
-}
-
-func (a *AddConsumerToGroupResponseBody) GetConsumers() []shared.Consumer {
-	if a == nil {
-		return nil
-	}
-	return a.Consumers
-}
-
 type AddConsumerToGroupResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -117,8 +85,6 @@ type AddConsumerToGroupResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Consumer added to group
-	Object *AddConsumerToGroupResponseBody
 }
 
 func (a AddConsumerToGroupResponse) MarshalJSON() ([]byte, error) {
@@ -151,11 +117,4 @@ func (a *AddConsumerToGroupResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return a.RawResponse
-}
-
-func (a *AddConsumerToGroupResponse) GetObject() *AddConsumerToGroupResponseBody {
-	if a == nil {
-		return nil
-	}
-	return a.Object
 }

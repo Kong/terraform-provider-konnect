@@ -8790,20 +8790,6 @@ paths:
       responses:
         '201':
           description: Consumer added to group
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  consumer_group:
-                    $ref: '#/components/schemas/ConsumerGroup'
-                  consumers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Consumer'
-                    default: null
-                    nullable: true
-                    x-speakeasy-param-computed: false
       tags:
         - Consumer Groups
   '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumer_groups/{ConsumerGroupId}/consumers/{ConsumerId}':
