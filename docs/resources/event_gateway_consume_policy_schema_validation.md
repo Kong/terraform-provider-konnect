@@ -16,15 +16,15 @@ EventGatewayConsumePolicySchemaValidation Resource
 resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatewayconsumepolicyschemavalidation" {
   condition = "context.topic.name.endsWith(\"my_suffix\") && record.headers[\"x-flag\"] == \"a-value\""
   config = {
-    json = {
-      failure_mode          = "mark"
+    confluent_schema_registry = {
+      failure_mode          = "error"
       key_validation_action = "skip"
       schema_registry = {
-        id = "bd775494-cdf4-4d78-a6df-c21ccf6d9813"
+        id = "7dae82e2-f401-4f9c-bf87-ce7f92d34aa1"
       }
-      validate_key            = false
+      validate_key            = true
       validate_value          = false
-      value_validation_action = "skip"
+      value_validation_action = "mark"
     }
   }
   description = ""
@@ -70,6 +70,9 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 Optional:
 
 - `confluent_schema_registry` (Attributes) The configuration of the consume schema validation policy when using a schema registry. (see [below for nested schema](#nestedatt--config--confluent_schema_registry))
+- `inline_schema` (Attributes) The configuration of the consume schema validation policy when using an inline schema.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema))
 - `json` (Attributes) The configuration of the consume schema validation policy when using JSON parsing without schema. (see [below for nested schema](#nestedatt--config--json))
 
 <a id="nestedatt--config--confluent_schema_registry"></a>
@@ -113,6 +116,105 @@ possible known values include one of ["mark", "skip"]
 Required:
 
 - `id` (String) The unique identifier of the schema registry.
+
+
+
+<a id="nestedatt--config--inline_schema"></a>
+### Nested Schema for `config.inline_schema`
+
+Optional:
+
+- `failure_mode` (String) Describes how to handle a failure in a policy applied to consumed records.
+* `error` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.
+* `skip` - the record is not delivered to the client.
+* `passthrough` - passes the record to the client even though policy execution failed.
+* `mark` - passes the record to the client but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["error", "skip", "passthrough", "mark"]
+- `key` (Attributes) Defines the schema for a record key or value, inline.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema--key))
+- `key_validation_action` (String, Deprecated) Deprecated. Use `failure_mode`.
+
+Defines a behavior when record key is not valid.
+* mark - marks a record with kong/server header and client ID value
+  to help to identify the clients violating schema.
+* skip - skips delivering a record.
+possible known values include one of ["mark", "skip"]
+- `validate_key` (Boolean) If true, validate the record key.
+
+**Requires a minimum runtime version of `1.2`**.
+- `validate_value` (Boolean) If true, validate the record value.
+
+**Requires a minimum runtime version of `1.2`**.
+- `value` (Attributes) Defines the schema for a record key or value, inline.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema--value))
+- `value_validation_action` (String, Deprecated) Deprecated. Use `failure_mode`.
+
+Defines a behavior when record value is not valid.
+* mark - marks a record with kong/server header and client ID value
+  to help to identify the clients violating schema.
+* skip - skips delivering a record.
+possible known values include one of ["mark", "skip"]
+
+<a id="nestedatt--config--inline_schema--key"></a>
+### Nested Schema for `config.inline_schema.key`
+
+Optional:
+
+- `avro` (Attributes) The configuration of an inline schema when using Avro.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema--key--avro))
+- `json` (Attributes) The configuration of an inline schema when using JSON.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema--key--json))
+
+<a id="nestedatt--config--inline_schema--key--avro"></a>
+### Nested Schema for `config.inline_schema.key.avro`
+
+Required:
+
+- `schema` (String) A schema that applies according to `schema_type`.
+
+
+<a id="nestedatt--config--inline_schema--key--json"></a>
+### Nested Schema for `config.inline_schema.key.json`
+
+Required:
+
+- `schema` (String) A schema that applies according to `schema_type`.
+
+
+
+<a id="nestedatt--config--inline_schema--value"></a>
+### Nested Schema for `config.inline_schema.value`
+
+Optional:
+
+- `avro` (Attributes) The configuration of an inline schema when using Avro.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema--value--avro))
+- `json` (Attributes) The configuration of an inline schema when using JSON.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema--value--json))
+
+<a id="nestedatt--config--inline_schema--value--avro"></a>
+### Nested Schema for `config.inline_schema.value.avro`
+
+Required:
+
+- `schema` (String) A schema that applies according to `schema_type`.
+
+
+<a id="nestedatt--config--inline_schema--value--json"></a>
+### Nested Schema for `config.inline_schema.value.json`
+
+Required:
+
+- `schema` (String) A schema that applies according to `schema_type`.
+
 
 
 

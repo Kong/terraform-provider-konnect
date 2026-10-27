@@ -7,11 +7,14 @@ import (
 )
 
 // SchemaType - The format of the message.
+//
+// **`any` requires a minimum runtime version of `1.3`**.
 type SchemaType string
 
 const (
 	SchemaTypeAvro SchemaType = "avro"
 	SchemaTypeJSON SchemaType = "json"
+	SchemaTypeAny  SchemaType = "any"
 )
 
 func (e SchemaType) ToPointer() *SchemaType {
@@ -22,7 +25,7 @@ func (e SchemaType) ToPointer() *SchemaType {
 func (e *SchemaType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "avro", "json":
+		case "avro", "json", "any":
 			return true
 		}
 	}
@@ -32,6 +35,8 @@ func (e *SchemaType) IsExact() bool {
 // SchemaRegistryConfluentConfig - The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry)
 type SchemaRegistryConfluentConfig struct {
 	// The format of the message.
+	//
+	// **`any` requires a minimum runtime version of `1.3`**.
 	SchemaType SchemaType `json:"schema_type"`
 	// The endpoint of the Confluent schema registry.
 	Endpoint string `json:"endpoint"`

@@ -81,11 +81,54 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 Optional:
 
 - `anonymous` (Attributes) Anonymous authentication scheme for the backend cluster. (see [below for nested schema](#nestedatt--authentication--anonymous))
+- `sasl_aws_iam` (Attributes) AWS IAM-based OAUTHBEARER authentication scheme for the backend cluster, for example when connecting to
+Amazon MSK with IAM authentication.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--authentication--sasl_aws_iam))
 - `sasl_plain` (Attributes) SASL/PLAIN authentication scheme for the backend cluster without requiring sensitive password data. (see [below for nested schema](#nestedatt--authentication--sasl_plain))
 - `sasl_scram` (Attributes) SASL/SCRAM authentication scheme for the backend cluster without requiring sensitive password data. (see [below for nested schema](#nestedatt--authentication--sasl_scram))
 
 <a id="nestedatt--authentication--anonymous"></a>
 ### Nested Schema for `authentication.anonymous`
+
+
+<a id="nestedatt--authentication--sasl_aws_iam"></a>
+### Nested Schema for `authentication.sasl_aws_iam`
+
+Required:
+
+- `sasl_aws_iam` (Attributes) (see [below for nested schema](#nestedatt--authentication--sasl_aws_iam--sasl_aws_iam))
+
+<a id="nestedatt--authentication--sasl_aws_iam--sasl_aws_iam"></a>
+### Nested Schema for `authentication.sasl_aws_iam.sasl_aws_iam`
+
+Optional:
+
+- `assume_role` (Attributes) Configures whether to authenticate using credentials obtained by first assuming a role, using the AWS default credentials provider chain
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--authentication--sasl_aws_iam--sasl_aws_iam--assume_role))
+- `default_provider_chain` (Attributes) Configures whether to authenticate using credentials obtained from the AWS default credentials provider chain
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--authentication--sasl_aws_iam--sasl_aws_iam--default_provider_chain))
+
+<a id="nestedatt--authentication--sasl_aws_iam--sasl_aws_iam--assume_role"></a>
+### Nested Schema for `authentication.sasl_aws_iam.sasl_aws_iam.assume_role`
+
+Required:
+
+- `arn` (String) The [ARN](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns)
+of the IAM role to assume, formatted as `arn:aws:iam::<account-id>:role/<role-name>`.
+
+Optional:
+
+- `session_name` (String) The session name to attach to the assumed role session. The value becomes part of the assumed
+role user ARN, queryable as `arn:aws:sts::<account-id>:assumed-role/<role-name>/<session-name>`.
+
+
+<a id="nestedatt--authentication--sasl_aws_iam--sasl_aws_iam--default_provider_chain"></a>
+### Nested Schema for `authentication.sasl_aws_iam.sasl_aws_iam.default_provider_chain`
+
+
 
 
 <a id="nestedatt--authentication--sasl_plain"></a>

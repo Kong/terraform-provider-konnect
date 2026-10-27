@@ -27,6 +27,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -75,6 +76,66 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 						Description: `Anonymous authentication scheme for the backend cluster.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("sasl_aws_iam"),
+								path.MatchRelative().AtParent().AtName("sasl_plain"),
+								path.MatchRelative().AtParent().AtName("sasl_scram"),
+							}...),
+						},
+					},
+					"sasl_aws_iam": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"sasl_aws_iam": schema.SingleNestedAttribute{
+								Required: true,
+								Attributes: map[string]schema.Attribute{
+									"assume_role": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"arn": schema.StringAttribute{
+												Required: true,
+												MarkdownDescription: `The [ARN](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns)` + "\n" +
+													`of the IAM role to assume, formatted as ` + "`" + `arn:aws:iam::<account-id>:role/<role-name>` + "`" + `.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthBetween(10, 2048),
+													stringvalidator.RegexMatches(regexp.MustCompile(`^arn:aws(-[a-z-]+)?:iam:.+`), "must match pattern "+regexp.MustCompile(`^arn:aws(-[a-z-]+)?:iam:.+`).String()),
+												},
+											},
+											"session_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `The session name to attach to the assumed role session. The value becomes part of the assumed` + "\n" +
+													`role user ARN, queryable as ` + "`" + `arn:aws:sts::<account-id>:assumed-role/<role-name>/<session-name>` + "`" + `.`,
+											},
+										},
+										MarkdownDescription: `Configures whether to authenticate using credentials obtained by first assuming a role, using the AWS default credentials provider chain` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("default_provider_chain"),
+											}...),
+										},
+									},
+									"default_provider_chain": schema.SingleNestedAttribute{
+										Optional: true,
+										MarkdownDescription: `Configures whether to authenticate using credentials obtained from the AWS default credentials provider chain` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("assume_role"),
+											}...),
+										},
+									},
+								},
+							},
+						},
+						MarkdownDescription: `AWS IAM-based OAUTHBEARER authentication scheme for the backend cluster, for example when connecting to` + "\n" +
+							`Amazon MSK with IAM authentication.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("anonymous"),
 								path.MatchRelative().AtParent().AtName("sasl_plain"),
 								path.MatchRelative().AtParent().AtName("sasl_scram"),
 							}...),
@@ -111,6 +172,7 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("anonymous"),
+								path.MatchRelative().AtParent().AtName("sasl_aws_iam"),
 								path.MatchRelative().AtParent().AtName("sasl_scram"),
 							}...),
 						},
@@ -154,6 +216,7 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("anonymous"),
+								path.MatchRelative().AtParent().AtName("sasl_aws_iam"),
 								path.MatchRelative().AtParent().AtName("sasl_plain"),
 							}...),
 						},
