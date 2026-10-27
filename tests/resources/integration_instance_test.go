@@ -35,6 +35,8 @@ func TestIntegrationInstance(t *testing.T) {
 	})
 
 	t.Run("with-auth-config", func(t *testing.T) {
+		// need to investigate more about this along with catalog team
+		t.Skip("getting gitlab integration instances are currently disabled for the test organization (403 service_catalog_integration_blocked)")
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
