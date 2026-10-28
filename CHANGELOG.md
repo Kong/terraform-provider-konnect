@@ -11,6 +11,10 @@
     * Add support for `any` as a `schema_type` in `konnect_event_gateway_schema_registry`
     * Add validation for `namespace.prefix` in `konnect_event_gateway_virtual_cluster` against Kafka topic naming rules
 * Add support for Konnect United Kingdom (`uk`) region in `konnect_cloud_gateway_configuration`, `konnect_cloud_gateway_custom_domain` and `konnect_cloud_gateway_addon` resources
+* Add support for Konnect Gateway workspaces
+    * Add a `konnect_gateway_workspace` resource to manage workspaces in a control plane and a `konnect_gateway_workspace` data source to list them
+    * Add support for `workspace` in 133 `konnect_gateway_*` resources, using which users can manage entities in a workspace other than `default`. The value defaults to `default` and a change of this value replaces the resource. The import ID accepts `workspace`
+    * Existing state needs no manual change. A state upgrade adds `workspace = "default"` to the `konnect_gateway_*` resources that have no workspace in state
 
 # BREAKING CHANGES
 * NA
