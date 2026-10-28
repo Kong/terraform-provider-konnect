@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: f9d27d630cb79680b5de68efd3f9aadf
+  docChecksum: bcb0ced729c47ad3404a710279e5129b
   docVersion: 2.0.0
   speakeasyVersion: 1.803.1
   generationVersion: 2.950.2
   releaseVersion: 3.27.0
   configChecksum: 052ca05f0b36687546ebd197a70d07d0
 persistentEdits:
-  generation_id: a822dfe3-c3e5-4346-b60a-4561e7e81f17
-  pristine_commit_hash: ccf8f21f25c419bc04df81bcdddc29052e90ed46
-  pristine_tree_hash: f6a054b8c5514f413e154b0fa761dfccaddb6d34
+  generation_id: 24539a46-02ce-4d69-9cb5-a026bcee0b1e
+  pristine_commit_hash: a0e0c4309484a5ecbee77c45f3d12f103378410e
+  pristine_tree_hash: b751a578e989fdee95cf3f1a7d905a538e599921
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -14217,8 +14217,8 @@ trackedFiles:
     pristine_git_object: a3950b3dd94d35befaeaa53cc5f149df1aedfdea
   internal/sdk/models/shared/backendclusterauthenticationsaslawsiamassumerole.go:
     id: 937263bffcdc
-    last_write_checksum: sha1:58682bcbf868e6a31a33f90b57d63c229b0931a5
-    pristine_git_object: da421ab00f27148a00c63150ead5dfab5003acc1
+    last_write_checksum: sha1:ffd0f5a1931bda26ec37e42ad868a6f4b38fb40f
+    pristine_git_object: 83673041cc75cc25d4f99b6f29f024d64002d213
   internal/sdk/models/shared/backendclusterauthenticationsaslawsiamdefaultproviderchain.go:
     id: c7e17fd77700
     last_write_checksum: sha1:a08a930c57c15735b9f1a459bd990908fa6d1a79

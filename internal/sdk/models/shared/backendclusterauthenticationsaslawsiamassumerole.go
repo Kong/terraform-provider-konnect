@@ -19,7 +19,7 @@ type BackendClusterAuthenticationSaslAwsIamAssumeRole struct {
 	// The session name to attach to the assumed role session. The value becomes part of the assumed
 	// role user ARN, queryable as `arn:aws:sts::<account-id>:assumed-role/<role-name>/<session-name>`.
 	//
-	SessionName *string `default:"null" json:"session_name"`
+	SessionName *string `json:"session_name,omitempty"`
 }
 
 func (b BackendClusterAuthenticationSaslAwsIamAssumeRole) MarshalJSON() ([]byte, error) {
