@@ -20,7 +20,7 @@ resource "konnect_cloud_gateway_addon" "my_cloudgatewayaddon" {
   name = "my-add-on"
   owner = {
     control_plane_group = {
-      control_plane_group_geo = "me"
+      control_plane_group_geo = "in"
       control_plane_group_id  = "123e4567-e89b-12d3-a456-426614174000"
     }
   }
@@ -202,7 +202,8 @@ Optional:
 - `me` — Middle East
 - `in` — India
 - `sg` — Singapore
-possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.
+- `uk` — United Kingdom
+possible known values include one of ["us", "eu", "au", "me", "in", "sg", "uk"]; Not Null; Requires replacement if changed.
 - `control_plane_id` (String) ID of the control-plane that owns this add-on. Not Null; Requires replacement if changed.
 - `type` (String) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
@@ -224,7 +225,8 @@ Optional:
 - `me` — Middle East
 - `in` — India
 - `sg` — Singapore
-possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.
+- `uk` — United Kingdom
+possible known values include one of ["us", "eu", "au", "me", "in", "sg", "uk"]; Not Null; Requires replacement if changed.
 - `control_plane_group_id` (String) ID of the control-plane group that owns this add-on. Not Null; Requires replacement if changed.
 
 ## Import
