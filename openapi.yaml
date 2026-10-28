@@ -37580,7 +37580,6 @@ components:
             The session name to attach to the assumed role session. The value becomes part of the assumed
             role user ARN, queryable as `arn:aws:sts::<account-id>:assumed-role/<role-name>/<session-name>`.
           type: string
-          nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
       required:
