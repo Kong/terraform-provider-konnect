@@ -744,10 +744,13 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 					"prefix": schema.StringAttribute{
 						Required: true,
 						MarkdownDescription: `The namespace is differentiated by this chosen prefix.` + "\n" +
+							`The prefix is prepended to Kafka topic names, so it can only contain the characters Kafka allows in them: ASCII letters, digits, ` + "`" + `.` + "`" + `, ` + "`" + `_` + "`" + ` and ` + "`" + `-` + "`" + `.` + "\n" +
+							`It must contain at least one character other than ` + "`" + `.` + "`" + ` and be at most 100 characters long to leave room for the rest of the topic name (Kafka limits topic names to 249 characters).` + "\n" +
 							`For example, if the prefix is set to "analytics_" the topic named "analytics_user_clicks" is available to the clients` + "\n" +
 							`of the virtual cluster. Topics without the prefix will be ignored unless added via ` + "`" + `additional.topics` + "`" + `.`,
 						Validators: []validator.String{
-							stringvalidator.UTF8LengthAtLeast(1),
+							stringvalidator.UTF8LengthBetween(1, 100),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]*[A-Za-z0-9_-][A-Za-z0-9._-]*$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]*[A-Za-z0-9_-][A-Za-z0-9._-]*$`).String()),
 						},
 					},
 				},

@@ -105,8 +105,11 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 								},
 							},
 							"schema_type": schema.StringAttribute{
-								Required:    true,
-								Description: `The format of the message. possible known values include one of ["avro", "json"]`,
+								Required: true,
+								MarkdownDescription: `The format of the message.` + "\n" +
+									`` + "\n" +
+									`**` + "`" + `any` + "`" + ` requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.` + "\n" +
+									`possible known values include one of ["avro", "json", "any"]`,
 							},
 							"timeout_seconds": schema.Int64Attribute{
 								Computed:    true,

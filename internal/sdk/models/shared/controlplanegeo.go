@@ -9,6 +9,7 @@ package shared
 // - `me` — Middle East
 // - `in` — India
 // - `sg` — Singapore
+// - `uk` — United Kingdom
 type ControlPlaneGeo string
 
 const (
@@ -18,6 +19,7 @@ const (
 	ControlPlaneGeoMe ControlPlaneGeo = "me"
 	ControlPlaneGeoIn ControlPlaneGeo = "in"
 	ControlPlaneGeoSg ControlPlaneGeo = "sg"
+	ControlPlaneGeoUk ControlPlaneGeo = "uk"
 )
 
 func (e ControlPlaneGeo) ToPointer() *ControlPlaneGeo {
@@ -28,7 +30,7 @@ func (e ControlPlaneGeo) ToPointer() *ControlPlaneGeo {
 func (e *ControlPlaneGeo) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "us", "eu", "au", "me", "in", "sg":
+		case "us", "eu", "au", "me", "in", "sg", "uk":
 			return true
 		}
 	}

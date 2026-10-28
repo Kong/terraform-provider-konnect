@@ -1,5 +1,24 @@
 # Changelog
 
+## 3.28.0
+> Released 2026/10/??
+
+# Features
+* Add support for Event Gateway v1.3
+    * Add support for new resources `konnect_event_gateway_cluster_policy_request_rule_validator`, `konnect_event_gateway_consume_policy_mask_fields`, `konnect_event_gateway_produce_policy_mask_fields`, `konnect_event_gateway_consume_policy_transcode` and `konnect_event_gateway_produce_policy_transcode`
+    * Add support for `sasl_aws_iam` authentication in `konnect_event_gateway_backend_cluster` using which users can connect to Amazon MSK with AWS IAM-based OAUTHBEARER authentication, using either the AWS default credentials provider chain or an assumed role
+    * Add support for inline schemas in `konnect_event_gateway_consume_policy_schema_validation` and `konnect_event_gateway_produce_policy_schema_validation` using which users can provide Avro and JSON schemas directly in the policy configuration
+    * Add support for `any` as a `schema_type` in `konnect_event_gateway_schema_registry`
+    * Add validation for `namespace.prefix` in `konnect_event_gateway_virtual_cluster` against Kafka topic naming rules
+* Add support for Konnect United Kingdom (`uk`) region in `konnect_cloud_gateway_configuration`, `konnect_cloud_gateway_custom_domain` and `konnect_cloud_gateway_addon` resources
+* Add support for Konnect Gateway workspaces
+    * Add a `konnect_gateway_workspace` resource to manage workspaces in a control plane and a `konnect_gateway_workspace` data source to list them
+    * Add support for `workspace` in 133 `konnect_gateway_*` resources, using which users can manage entities in a workspace other than `default`. The value defaults to `default` and a change of this value replaces the resource. The import ID accepts `workspace`
+    * Existing state needs no manual change. A state upgrade adds `workspace = "default"` to the `konnect_gateway_*` resources that have no workspace in state
+
+# BREAKING CHANGES
+* NA
+
 ## 3.27.0
 > Released 2026/10/23
 
