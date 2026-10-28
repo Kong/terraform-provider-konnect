@@ -1,22 +1,22 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: bcb0ced729c47ad3404a710279e5129b
+  docChecksum: be5cc535fa38c79b21474b3bfac88f90
   docVersion: 2.0.0
-  speakeasyVersion: 1.803.1
-  generationVersion: 2.950.2
+  speakeasyVersion: 1.804.0
+  generationVersion: 2.952.5
   releaseVersion: 3.27.0
   configChecksum: 052ca05f0b36687546ebd197a70d07d0
 persistentEdits:
-  generation_id: 24539a46-02ce-4d69-9cb5-a026bcee0b1e
-  pristine_commit_hash: a0e0c4309484a5ecbee77c45f3d12f103378410e
-  pristine_tree_hash: b751a578e989fdee95cf3f1a7d905a538e599921
+  generation_id: 79a50a9b-084e-4525-8b71-4f9177028fe3
+  pristine_commit_hash: 332f6340926d55d213ec25d2c8b4a03bd5ee7a32
+  pristine_tree_hash: ee77dc6e9276ebf0b4486667c7b91ac69dff1b78
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.5
     constsAndDefaults: 0.3.2
-    core: 3.50.1
+    core: 3.50.3
     deepObjectParams: 0.1.0
     deprecations: 2.82.0
     globalSecurity: 2.82.3
@@ -3157,8 +3157,8 @@ trackedFiles:
     pristine_git_object: 1dd3598b7835e5c230dbf91646cfe4b205aa8d77
   go.mod:
     id: c47645c391ad
-    last_write_checksum: sha1:cdbcf4c28e057372630c855100ea773b78efa3e2
-    pristine_git_object: bb5447ddc7ab48832ecd86a97966eeeb729b86ac
+    last_write_checksum: sha1:0b6e25ccae78c62b54d3467dc7511f83e99abc4e
+    pristine_git_object: bdb57c9305f40424c4273f79314d1ad8be91cbd3
   internal/planmodifiers/boolplanmodifier/suppress_diff.go:
     id: 3cf85b98963e
     last_write_checksum: sha1:fd6984577c6c57e42da4c7aa4c45813eeded8092
@@ -9009,8 +9009,8 @@ trackedFiles:
     pristine_git_object: de6e80ba00b21ebe196bef40b3442ceab1158baf
   internal/sdk/konnect.go:
     id: defee4f1aaf8
-    last_write_checksum: sha1:6e61a5ca2c115d8e675ce3984a2b50c4dd0bd561
-    pristine_git_object: 260f2240c91283153922e16b17b1ad4094f116a5
+    last_write_checksum: sha1:2fea2a5d00c9f90f97147b001a5a6dd3b523aabd
+    pristine_git_object: f958182c547ebd662c9ef499110fca9e789485cc
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:debb643dd2f4706132d47584ec6eaea61339bd17
