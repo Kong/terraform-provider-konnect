@@ -404,6 +404,31 @@ func TestAIGateway(t *testing.T) {
 			})
 		})
 
+		t.Run("baseten", func(t *testing.T) {
+			resource.Test(t, resource.TestCase{
+				ProtoV6ProviderFactories: providerFactory,
+				Steps: []resource.TestStep{
+					{
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestNameDirectory(),
+						Check: resource.ComposeAggregateTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_baseten", "baseten.token_vault.storage.directory", "tf-test-baseten-tokens"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_baseten", "model.name", "my-baseten-model"),
+						),
+					},
+					{
+						// Update display_name on both the provider and the model
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestStepDirectory(),
+						Check: resource.ComposeTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_baseten", "baseten.display_name", "TF Test Baseten AI Provider Updated"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_baseten", "model.display_name", "My Test Baseten model Updated"),
+						),
+					},
+				},
+			})
+		})
+
 		t.Run("typesafe-api-skills", func(t *testing.T) {
 			resource.Test(t, resource.TestCase{
 				ProtoV6ProviderFactories: providerFactory,
