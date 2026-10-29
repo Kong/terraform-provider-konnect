@@ -54134,66 +54134,56 @@ components:
           x-referenceable: true
         aws_cache_name:
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         aws_region:
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         aws_is_serverless:
           type: boolean
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         aws_access_key_id:
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         aws_secret_access_key:
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
         aws_assume_role_arn:
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         aws_role_session_name:
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         gcp_service_account_json:
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
         azure_client_id:
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         azure_client_secret:
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
         azure_tenant_id:
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
+      x-terraform-no-default-null: true
     RedisCEDatastore:
       type: object
       properties:
@@ -54238,48 +54228,40 @@ components:
           example: 127.0.0.1
         port:
           type: integer
-          default: null
           maximum: 65535
           minimum: 1
           nullable: true
           x-speakeasy-param-computed: false
         username:
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         password:
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
         database:
           description: The Redis database index to use.
           type: integer
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         timeout:
           description: 'Timeout in milliseconds for connecting, reading, and writing to the Redis server.'
           type: integer
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         ssl:
           type: boolean
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         ssl_verify:
           type: boolean
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         server_name:
           description: SNI to use when connecting over SSL.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         cloud_authentication:
@@ -54288,6 +54270,7 @@ components:
       required:
         - host
       title: RedisCEDatastoreConfig
+      x-terraform-no-default-null: true
     RedisEEDatastore:
       type: object
       properties:
@@ -54350,72 +54333,59 @@ components:
           x-referenceable: true
         username:
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         password:
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
         database:
           description: The Redis database index to use.
           type: integer
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         connect_timeout:
           type: integer
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         send_timeout:
           type: integer
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         read_timeout:
           type: integer
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         keepalive_pool_size:
           type: integer
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         keepalive_backlog:
           type: integer
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         ssl:
           type: boolean
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         ssl_verify:
           type: boolean
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         server_name:
           description: SNI to use when connecting over SSL.
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         connection_is_proxied:
           type: boolean
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         sentinel_master:
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         sentinel_role:
@@ -54428,12 +54398,10 @@ components:
           x-speakeasy-unknown-values: allow
         sentinel_username:
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         sentinel_password:
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
@@ -54454,7 +54422,6 @@ components:
                 example: 6379
                 maximum: 65535
                 minimum: 1
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         cluster_nodes:
@@ -54474,12 +54441,10 @@ components:
                 example: 6379
                 maximum: 65535
                 minimum: 1
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         cluster_max_redirections:
           type: integer
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         cloud_authentication:
@@ -54488,6 +54453,7 @@ components:
       required:
         - host
       title: RedisEEDatastoreConfig
+      x-terraform-no-default-null: true
     VectorDBDatastore:
       description: |
         Carries the pgvector connection only. `strategy`, `dimensions`, `distance_metric`, and `threshold`
@@ -54582,6 +54548,7 @@ components:
         - host
         - database
       title: VectorDBDatastoreConfig
+      x-terraform-no-default-null: true
     TokenVaultDatastore:
       type: object
       properties:
@@ -54653,7 +54620,6 @@ components:
             A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.
           type: string
           example: '{vault://hcv/vault-enc-key}'
-          default: null
           nullable: true
           pattern: '^\{vault://.*\}$'
           x-referenceable: true
@@ -54662,6 +54628,7 @@ components:
       required:
         - version
       title: TokenVaultDatastoreKey
+      x-terraform-no-default-null: true
     CreateAIGatewayDatastoreRequest:
       description: Configuration for an AI Gateway Datastore.
       discriminator:
@@ -56301,7 +56268,6 @@ components:
           description: The MCP method this limit applies to.
           type: string
           example: tools/call
-          default: null
           nullable: true
           pattern: '^[A-Za-z0-9._/-]+$'
           x-speakeasy-param-computed: false
@@ -56309,7 +56275,6 @@ components:
           description: The name of the tool this limit applies to.
           type: string
           example: search_flights
-          default: null
           maxLength: 128
           minLength: 1
           nullable: true
@@ -56336,6 +56301,7 @@ components:
         - limit
         - window_size
       title: AIGatewayMCPServerRateLimit
+      x-terraform-no-default-null: true
     AIGatewayMCPServerUpstreamServer:
       type: object
       properties:
@@ -56693,7 +56659,6 @@ components:
             only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault
             Datastore before being cached.
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
@@ -56727,6 +56692,7 @@ components:
       title: AIGatewayTokenVault
       x-min-runtime-version: '2.3'
       x-speakeasy-param-computed: false
+      x-terraform-no-default-null: true
     AIGatewayTokenVaultCredential:
       description: |
         Where the caller's subject token is read from, and where the credential the Token Vault returns
@@ -56760,7 +56726,6 @@ components:
             Name of the header, query parameter, or body field carrying the credential. Defaults to
             `Authorization` for a header, `access_token` otherwise.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         prefix:
@@ -56769,7 +56734,6 @@ components:
             space) for a header, and to no prefix otherwise. Set it to an empty string when the provider
             expects the raw credential.
           type: string
-          default: null
           minLength: 0
           nullable: true
           x-speakeasy-param-computed: false
@@ -56779,6 +56743,7 @@ components:
         prefix: ''
       additionalProperties: false
       title: AIGatewayTokenVaultCredentialPlacement
+      x-terraform-no-default-null: true
     AIGatewayTokenVaultCredentialManager:
       description: |-
         Serves the self-service enrollment UI through which end users authorize the upstream providers
