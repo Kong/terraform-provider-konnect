@@ -166,6 +166,51 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Serverless Cloud Gateways
+  /v1/ai-cost-management/tag-capture:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCostManagementTags#read
+        terraform-datasource: null
+      operationId: get-cost-management-tags
+      summary: Get cost management tags
+      description: |
+        Returns the cost management tags configuration of the organization in this region.
+        If no configuration has been set, the defaults are returned.
+      responses:
+        '200':
+          $ref: '#/components/responses/CostManagementTagsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Cost Management Tags
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'AIGatewayCostManagementTags#create,update'
+        terraform-datasource: null
+      operationId: update-cost-management-tags
+      summary: Update cost management tags
+      description: |
+        Replaces the cost management tags configuration of the organization in this region.
+        Header names and prefixes are compared case-insensitively.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateCostManagementTags'
+      responses:
+        '200':
+          $ref: '#/components/responses/CostManagementTagsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Cost Management Tags
   /v1/ai-gateways:
     post:
       x-speakeasy-entity-operation:
@@ -60224,6 +60269,112 @@ components:
         - created_at
         - updated_at
       title: AIGatewayAuthStrategyOpenIDConnectConfig
+    UpdateCostManagementTags:
+      type: object
+      properties:
+        headers:
+          description: |
+            Request headers captured as cost tags. Each header is mapped to one tag key.
+            Together with `prefixes`, at most 32 entries are allowed.
+          type: array
+          items:
+            $ref: '#/components/schemas/CostTagHeader'
+          maxItems: 32
+        prefixes:
+          description: |
+            Request header prefixes. A request header matches a prefix when its name is the prefix
+            followed by `-` and a remainder, compared case-insensitively. For example, the prefix
+            `my-co` matches `my-co-region` but not `my-company`. The remainder becomes the tag key,
+            so `my-co-region` is captured as the tag `region`. Headers whose remainder is not a
+            valid tag key (see the `tag_key` pattern, at most 128 characters) produce no tag and
+            are skipped; capture continues for the remaining headers.
+            Headers starting with `ai-cost-` are always captured, in addition to any configured here.
+            Together with `headers`, at most 32 entries are allowed.
+          type: array
+          items:
+            $ref: '#/components/schemas/CostTagPrefix'
+          maxItems: 32
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      required:
+        - headers
+        - prefixes
+    CostManagementTags:
+      type: object
+      properties:
+        headers:
+          description: |
+            Request headers captured as cost tags. Each header is mapped to one tag key.
+            Together with `prefixes`, at most 32 entries are allowed.
+          type: array
+          items:
+            $ref: '#/components/schemas/CostTagHeader'
+          maxItems: 32
+        prefixes:
+          description: |
+            Request header prefixes. A request header matches a prefix when its name is the prefix
+            followed by `-` and a remainder, compared case-insensitively. For example, the prefix
+            `my-co` matches `my-co-region` but not `my-company`. The remainder becomes the tag key,
+            so `my-co-region` is captured as the tag `region`. Headers whose remainder is not a
+            valid tag key (see the `tag_key` pattern, at most 128 characters) produce no tag and
+            are skipped; capture continues for the remaining headers.
+            Headers starting with `ai-cost-` are always captured, in addition to any configured here.
+            Together with `headers`, at most 32 entries are allowed.
+          type: array
+          items:
+            $ref: '#/components/schemas/CostTagPrefix'
+          maxItems: 32
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - headers
+        - prefixes
+    CostTagHeader:
+      description: Maps a request header to a cost tag key.
+      type: object
+      properties:
+        name:
+          description: |
+            Name of the request header. Cannot be a credential header, such as `authorization`,
+            `x-api-key` or `cookie`. Names are compared case-insensitively.
+          type: string
+          example: my-tenant-id
+          pattern: '^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$'
+        tag_key:
+          description: Key of the cost tag the header value is stored under.
+          type: string
+          example: tenant
+          maxLength: 128
+          minLength: 1
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+      required:
+        - name
+        - tag_key
+      title: CostTagHeader
+    CostTagPrefix:
+      description: A request header prefix whose matching headers are captured as cost tags.
+      type: object
+      properties:
+        name:
+          description: |
+            Header prefix with at least two dash-separated segments. Cannot be a credential
+            header name, nor a prefix of one, such as `x-goog` for `x-goog-api-key`. Credential
+            headers are never captured, even when they match a configured prefix. Prefixes are
+            compared case-insensitively.
+          type: string
+          example: my-co
+          pattern: '^[A-Za-z0-9]+(-[A-Za-z0-9]+)+$'
+      required:
+        - name
+      title: CostTagPrefix
     TooManyRequestsError:
       description: standard error
       type: object
@@ -108928,6 +109079,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateCatalogMCPImplementation'
+    UpdateCostManagementTags:
+      description: The cost management tags configuration that replaces the existing one.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateCostManagementTags'
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -111079,6 +111237,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AIGatewayAuthStrategy'
+    CostManagementTagsResponse:
+      description: The cost management tags configuration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CostManagementTags'
     TooManyRequests:
       description: Too Many Requests
       content:
@@ -111475,6 +111639,8 @@ tags:
     description: MCP Servers that expose tools for AI Gateway integrations.
   - name: AI Gateway Model Providers
     description: Model providers that define the backend AI service connections for the AI Gateway.
+  - name: AI Gateway Cost Management Tags
+    description: Configure which request headers are captured as cost tags on AI usage events. The configuration applies to the organization in the region the request is sent to.
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
