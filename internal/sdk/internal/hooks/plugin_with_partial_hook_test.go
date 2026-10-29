@@ -156,6 +156,30 @@ func TestPluginWithPartialHook_BeforeRequest(t *testing.T) {
 		assert.JSONEq(t, body, readBody(t, result))
 	})
 
+	t.Run("strips partial-covered fields on workspace-scoped paths", func(t *testing.T) {
+		body := `{
+			"config": {"limit": [10], "redis": {"host": "localhost", "port": 6379}},
+			"partials": [{"id": "x", "path": "config.redis"}]
+		}`
+		for _, path := range []string{
+			"/v2/control-planes/cp-1/core-entities/default/plugins",
+			"/v2/control-planes/cp-1/core-entities/my-workspace/plugins",
+			"/v2/control-planes/cp-1/core-entities/default/plugins/plugin-1",
+		} {
+			req := &http.Request{
+				Method: http.MethodPut,
+				URL:    &url.URL{Path: path},
+				Body:   io.NopCloser(bytes.NewBufferString(body)),
+			}
+			result, err := hook.BeforeRequest(ctx, req)
+			require.NoError(t, err)
+			assert.JSONEq(t, `{
+				"config": {"limit": [10]},
+				"partials": [{"id": "x", "path": "config.redis"}]
+			}`, readBody(t, result), "path %s", path)
+		}
+	})
+
 	t.Run("content length is updated after body modification", func(t *testing.T) {
 		req := makeReq(http.MethodPost, `{
 			"config": {"redis": {"host": "localhost"}, "limit": [10]},

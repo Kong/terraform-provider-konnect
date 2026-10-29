@@ -6,27 +6,27 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// ClientCertificate - Certificate to be used as client certificate while TLS handshaking to the upstream server.
-type ClientCertificate struct {
+// ServiceClientCertificate - Certificate to be used as client certificate while TLS handshaking to the upstream server.
+type ServiceClientCertificate struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (c ClientCertificate) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (s ServiceClientCertificate) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
 }
 
-func (c *ClientCertificate) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (s *ServiceClientCertificate) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ClientCertificate) GetID() *string {
-	if c == nil {
+func (s *ServiceClientCertificate) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return c.ID
+	return s.ID
 }
 
 // ServiceProtocol - The protocol used to communicate with the upstream.
@@ -60,37 +60,37 @@ func (e *ServiceProtocol) IsExact() bool {
 	return false
 }
 
-// TLSSans - Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to `host`).
-type TLSSans struct {
+// ServiceTLSSans - Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to `host`).
+type ServiceTLSSans struct {
 	// A dnsName for TLS verification.
 	Dnsnames []string `json:"dnsnames"`
 	// An URI for TLS verification.
 	Uris []string `json:"uris"`
 }
 
-func (t TLSSans) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(t, "", false)
+func (s ServiceTLSSans) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
 }
 
-func (t *TLSSans) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+func (s *ServiceTLSSans) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *TLSSans) GetDnsnames() []string {
-	if t == nil {
+func (s *ServiceTLSSans) GetDnsnames() []string {
+	if s == nil {
 		return nil
 	}
-	return t.Dnsnames
+	return s.Dnsnames
 }
 
-func (t *TLSSans) GetUris() []string {
-	if t == nil {
+func (s *ServiceTLSSans) GetUris() []string {
+	if s == nil {
 		return nil
 	}
-	return t.Uris
+	return s.Uris
 }
 
 // Service entities, as the name implies, are abstractions of each of your own upstream services. Examples of Services would be a data transformation microservice, a billing API, etc. The main attribute of a Service is its URL (where Kong should proxy traffic to), which can be set as a single string or by specifying its `protocol`, `host`, `port` and `path` individually. Services are associated to Routes (a Service can have many Routes associated with it). Routes are entry-points in Kong and define rules to match client requests. Once a Route is matched, Kong proxies the request to its associated Service. See the [Proxy Reference][proxy-reference] for a detailed explanation of how Kong proxies traffic.
@@ -98,7 +98,7 @@ type Service struct {
 	// Array of `CA Certificate` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to `null` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).
 	CaCertificates []string `json:"ca_certificates"`
 	// Certificate to be used as client certificate while TLS handshaking to the upstream server.
-	ClientCertificate *ClientCertificate `json:"client_certificate"`
+	ClientCertificate *ServiceClientCertificate `json:"client_certificate"`
 	// The timeout in milliseconds for establishing a connection to the upstream server.
 	ConnectTimeout *int64 `default:"60000" json:"connect_timeout"`
 	// Unix epoch when the resource was created.
@@ -124,7 +124,7 @@ type Service struct {
 	// An optional set of strings associated with the Service for grouping and filtering.
 	Tags []string `json:"tags"`
 	// Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to `host`).
-	TLSSans *TLSSans `json:"tls_sans"`
+	TLSSans *ServiceTLSSans `json:"tls_sans"`
 	// Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.
 	TLSVerify *bool `default:"null" json:"tls_verify"`
 	// Maximum depth of chain while verifying Upstream server's TLS certificate. If set to `null`, then the Nginx default is respected.
@@ -153,7 +153,7 @@ func (s *Service) GetCaCertificates() []string {
 	return s.CaCertificates
 }
 
-func (s *Service) GetClientCertificate() *ClientCertificate {
+func (s *Service) GetClientCertificate() *ServiceClientCertificate {
 	if s == nil {
 		return nil
 	}
@@ -244,7 +244,7 @@ func (s *Service) GetTags() []string {
 	return s.Tags
 }
 
-func (s *Service) GetTLSSans() *TLSSans {
+func (s *Service) GetTLSSans() *ServiceTLSSans {
 	if s == nil {
 		return nil
 	}

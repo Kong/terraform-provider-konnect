@@ -179,6 +179,9 @@ func (r *GatewayPluginSolaceLogResourceModel) ToOperationsCreateSolacelogPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	solaceLogPlugin, solaceLogPluginDiags := r.ToSharedSolaceLogPlugin(ctx)
 	diags.Append(solaceLogPluginDiags...)
 
@@ -188,6 +191,7 @@ func (r *GatewayPluginSolaceLogResourceModel) ToOperationsCreateSolacelogPluginR
 
 	out := operations.CreateSolacelogPluginRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		SolaceLogPlugin: *solaceLogPlugin,
 	}
 
@@ -203,9 +207,13 @@ func (r *GatewayPluginSolaceLogResourceModel) ToOperationsDeleteSolacelogPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteSolacelogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -220,9 +228,13 @@ func (r *GatewayPluginSolaceLogResourceModel) ToOperationsGetSolacelogPluginRequ
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetSolacelogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -237,6 +249,9 @@ func (r *GatewayPluginSolaceLogResourceModel) ToOperationsUpdateSolacelogPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	solaceLogPlugin, solaceLogPluginDiags := r.ToSharedSolaceLogPlugin(ctx)
 	diags.Append(solaceLogPluginDiags...)
 
@@ -247,6 +262,7 @@ func (r *GatewayPluginSolaceLogResourceModel) ToOperationsUpdateSolacelogPluginR
 	out := operations.UpdateSolacelogPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		SolaceLogPlugin: *solaceLogPlugin,
 	}
 

@@ -140,6 +140,9 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsCreateAipromptguar
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiPromptGuardPlugin, aiPromptGuardPluginDiags := r.ToSharedAiPromptGuardPlugin(ctx)
 	diags.Append(aiPromptGuardPluginDiags...)
 
@@ -149,6 +152,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsCreateAipromptguar
 
 	out := operations.CreateAipromptguardPluginRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		AiPromptGuardPlugin: *aiPromptGuardPlugin,
 	}
 
@@ -164,9 +168,13 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsDeleteAipromptguar
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAipromptguardPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -181,9 +189,13 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsGetAipromptguardPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAipromptguardPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -198,6 +210,9 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsUpdateAipromptguar
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiPromptGuardPlugin, aiPromptGuardPluginDiags := r.ToSharedAiPromptGuardPlugin(ctx)
 	diags.Append(aiPromptGuardPluginDiags...)
 
@@ -208,6 +223,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsUpdateAipromptguar
 	out := operations.UpdateAipromptguardPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		AiPromptGuardPlugin: *aiPromptGuardPlugin,
 	}
 

@@ -13,6 +13,8 @@ type DeleteRouteRouteExpressionRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Route to lookup
 	RouteID string `pathParam:"style=simple,explode=false,name=RouteId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (d DeleteRouteRouteExpressionRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (d DeleteRouteRouteExpressionRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteRouteRouteExpressionRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "RouteId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "RouteId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,6 +40,13 @@ func (d *DeleteRouteRouteExpressionRequest) GetRouteID() string {
 		return ""
 	}
 	return d.RouteID
+}
+
+func (d *DeleteRouteRouteExpressionRequest) GetWorkspace() string {
+	if d == nil {
+		return ""
+	}
+	return d.Workspace
 }
 
 type DeleteRouteRouteExpressionResponse struct {

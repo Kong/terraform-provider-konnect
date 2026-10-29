@@ -143,6 +143,9 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsCreateWebsock
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	websocketValidatorPlugin, websocketValidatorPluginDiags := r.ToSharedWebsocketValidatorPlugin(ctx)
 	diags.Append(websocketValidatorPluginDiags...)
 
@@ -152,6 +155,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsCreateWebsock
 
 	out := operations.CreateWebsocketvalidatorPluginRequest{
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		WebsocketValidatorPlugin: *websocketValidatorPlugin,
 	}
 
@@ -167,9 +171,13 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsDeleteWebsock
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteWebsocketvalidatorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -184,9 +192,13 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsGetWebsocketv
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetWebsocketvalidatorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -201,6 +213,9 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsUpdateWebsock
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	websocketValidatorPlugin, websocketValidatorPluginDiags := r.ToSharedWebsocketValidatorPlugin(ctx)
 	diags.Append(websocketValidatorPluginDiags...)
 
@@ -211,6 +226,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsUpdateWebsock
 	out := operations.UpdateWebsocketvalidatorPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		WebsocketValidatorPlugin: *websocketValidatorPlugin,
 	}
 

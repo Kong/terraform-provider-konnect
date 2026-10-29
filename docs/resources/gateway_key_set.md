@@ -22,6 +22,7 @@ resource "konnect_gateway_key_set" "my_gatewaykeyset" {
     "..."
   ]
   updated_at = 0
+  workspace  = "team-payments"
 }
 ```
 
@@ -39,6 +40,7 @@ resource "konnect_gateway_key_set" "my_gatewaykeyset" {
 - `name` (String) The name to associate with the given key-set.
 - `tags` (List of String) A set of strings representing tags.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 ## Import
 
@@ -52,6 +54,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "6cc34248-50b4-4a81-9201-3bdf7a83f712"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -59,5 +62,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_key_set.my_konnect_gateway_key_set '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "6cc34248-50b4-4a81-9201-3bdf7a83f712"}'
+terraform import konnect_gateway_key_set.my_konnect_gateway_key_set '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "6cc34248-50b4-4a81-9201-3bdf7a83f712", "workspace": "team-payments"}'
 ```

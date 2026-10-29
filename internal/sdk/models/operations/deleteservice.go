@@ -13,6 +13,8 @@ type DeleteServiceRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Service to lookup
 	ServiceID string `pathParam:"style=simple,explode=false,name=ServiceId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (d DeleteServiceRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (d DeleteServiceRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteServiceRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "ServiceId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "ServiceId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,6 +40,13 @@ func (d *DeleteServiceRequest) GetServiceID() string {
 		return ""
 	}
 	return d.ServiceID
+}
+
+func (d *DeleteServiceRequest) GetWorkspace() string {
+	if d == nil {
+		return ""
+	}
+	return d.Workspace
 }
 
 type DeleteServiceResponse struct {

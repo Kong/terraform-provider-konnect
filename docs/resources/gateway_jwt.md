@@ -25,6 +25,7 @@ resource "konnect_gateway_jwt" "my_gatewayjwt" {
   tags = [
     "..."
   ]
+  workspace = "team-payments"
 }
 ```
 
@@ -45,6 +46,7 @@ resource "konnect_gateway_jwt" "my_gatewayjwt" {
 - `rsa_public_key` (String) Requires replacement if changed.
 - `secret` (String) Requires replacement if changed.
 - `tags` (List of String) A set of strings representing tags. Requires replacement if changed.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 ## Import
 
@@ -59,6 +61,7 @@ import {
     consumer_id      = ""
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "4a7f5faa-8c96-46d6-8214-c87573ef2ac4"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -66,5 +69,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_jwt.my_konnect_gateway_jwt '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "4a7f5faa-8c96-46d6-8214-c87573ef2ac4"}'
+terraform import konnect_gateway_jwt.my_konnect_gateway_jwt '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "4a7f5faa-8c96-46d6-8214-c87573ef2ac4", "workspace": "team-payments"}'
 ```

@@ -33,8 +33,8 @@ func newTargets(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 	}
 }
 
-// CreateTargetWithUpstream - Create a new Target associated with an Upstream
-// Create a new Target associated with an Upstream
+// CreateTargetWithUpstream - Create a new Target associated with an Upstream in a workspace
+// Create a new Target associated with an Upstream in a workspace
 func (s *Targets) CreateTargetWithUpstream(ctx context.Context, request operations.CreateTargetWithUpstreamRequest, opts ...operations.Option) (*operations.CreateTargetWithUpstreamResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -54,7 +54,7 @@ func (s *Targets) CreateTargetWithUpstream(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/upstreams/{UpstreamIdForTarget}/targets", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -239,8 +239,8 @@ func (s *Targets) CreateTargetWithUpstream(ctx context.Context, request operatio
 
 }
 
-// DeleteTargetWithUpstream - Delete a a Target associated with an Upstream
-// Delete a a Target associated with an Upstream using ID or target.
+// DeleteTargetWithUpstream - Delete a a Target associated with an Upstream in a workspace
+// Delete a a Target associated with an Upstream using ID or target in a workspace.
 func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operations.DeleteTargetWithUpstreamRequest, opts ...operations.Option) (*operations.DeleteTargetWithUpstreamResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -260,7 +260,7 @@ func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets/{TargetId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/upstreams/{UpstreamIdForTarget}/targets/{TargetId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -421,8 +421,8 @@ func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operatio
 
 }
 
-// GetTargetWithUpstream - Get a Target associated with an Upstream
-// Get a Target associated with an Upstream using ID or target.
+// GetTargetWithUpstream - Get a Target associated with an Upstream in a workspace
+// Get a Target associated with an Upstream using ID or target in a workspace.
 func (s *Targets) GetTargetWithUpstream(ctx context.Context, request operations.GetTargetWithUpstreamRequest, opts ...operations.Option) (*operations.GetTargetWithUpstreamResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -442,7 +442,7 @@ func (s *Targets) GetTargetWithUpstream(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets/{TargetId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/upstreams/{UpstreamIdForTarget}/targets/{TargetId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

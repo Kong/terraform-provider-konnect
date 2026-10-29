@@ -13,6 +13,8 @@ type CreateTargetWithUpstreamRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID or target of the Target to lookup
 	UpstreamID string `pathParam:"style=simple,explode=false,name=UpstreamIdForTarget"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of new Target for creation
 	TargetWithoutParents shared.TargetWithoutParents `request:"mediaType=application/json"`
 }
@@ -22,7 +24,7 @@ func (c CreateTargetWithUpstreamRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateTargetWithUpstreamRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "UpstreamIdForTarget", "TargetWithoutParents"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "UpstreamIdForTarget", "workspace", "TargetWithoutParents"}); err != nil {
 		return err
 	}
 	return nil
@@ -40,6 +42,13 @@ func (c *CreateTargetWithUpstreamRequest) GetUpstreamID() string {
 		return ""
 	}
 	return c.UpstreamID
+}
+
+func (c *CreateTargetWithUpstreamRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateTargetWithUpstreamRequest) GetTargetWithoutParents() shared.TargetWithoutParents {

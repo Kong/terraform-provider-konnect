@@ -287,6 +287,9 @@ func (r *GatewayPluginAiProxyResourceModel) ToOperationsCreateAiproxyPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiProxyPlugin, aiProxyPluginDiags := r.ToSharedAiProxyPlugin(ctx)
 	diags.Append(aiProxyPluginDiags...)
 
@@ -296,6 +299,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToOperationsCreateAiproxyPluginReque
 
 	out := operations.CreateAiproxyPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		AiProxyPlugin:  *aiProxyPlugin,
 	}
 
@@ -311,9 +315,13 @@ func (r *GatewayPluginAiProxyResourceModel) ToOperationsDeleteAiproxyPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAiproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -328,9 +336,13 @@ func (r *GatewayPluginAiProxyResourceModel) ToOperationsGetAiproxyPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAiproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -345,6 +357,9 @@ func (r *GatewayPluginAiProxyResourceModel) ToOperationsUpdateAiproxyPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiProxyPlugin, aiProxyPluginDiags := r.ToSharedAiProxyPlugin(ctx)
 	diags.Append(aiProxyPluginDiags...)
 
@@ -355,6 +370,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToOperationsUpdateAiproxyPluginReque
 	out := operations.UpdateAiproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		AiProxyPlugin:  *aiProxyPlugin,
 	}
 

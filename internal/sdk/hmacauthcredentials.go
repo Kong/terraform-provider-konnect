@@ -30,8 +30,8 @@ func newHMACAuthCredentials(rootSDK *Konnect, sdkConfig config.SDKConfiguration,
 	}
 }
 
-// CreateHmacAuthWithConsumer - Create a new HMAC-auth credential associated with a Consumer
-// Create a new HMAC-auth credential associated with a Consumer
+// CreateHmacAuthWithConsumer - Create a new HMAC-auth credential associated with a Consumer in a workspace
+// Create a new HMAC-auth credential associated with a Consumer in a workspace
 func (s *HMACAuthCredentials) CreateHmacAuthWithConsumer(ctx context.Context, request operations.CreateHmacAuthWithConsumerRequest, opts ...operations.Option) (*operations.CreateHmacAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -51,7 +51,7 @@ func (s *HMACAuthCredentials) CreateHmacAuthWithConsumer(ctx context.Context, re
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/hmac-auth", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/hmac-auth", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -236,8 +236,8 @@ func (s *HMACAuthCredentials) CreateHmacAuthWithConsumer(ctx context.Context, re
 
 }
 
-// DeleteHmacAuthWithConsumer - Delete a a HMAC-auth credential associated with a Consumer
-// Delete a a HMAC-auth credential associated with a Consumer using ID.
+// DeleteHmacAuthWithConsumer - Delete a a HMAC-auth credential associated with a Consumer in a workspace
+// Delete a a HMAC-auth credential associated with a Consumer using ID in a workspace.
 func (s *HMACAuthCredentials) DeleteHmacAuthWithConsumer(ctx context.Context, request operations.DeleteHmacAuthWithConsumerRequest, opts ...operations.Option) (*operations.DeleteHmacAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -257,7 +257,7 @@ func (s *HMACAuthCredentials) DeleteHmacAuthWithConsumer(ctx context.Context, re
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/hmac-auth/{HMACAuthId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/hmac-auth/{HMACAuthId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -418,8 +418,8 @@ func (s *HMACAuthCredentials) DeleteHmacAuthWithConsumer(ctx context.Context, re
 
 }
 
-// GetHmacAuthWithConsumer - Get a HMAC-auth credential associated with a Consumer
-// Get a HMAC-auth credential associated with a Consumer using ID.
+// GetHmacAuthWithConsumer - Get a HMAC-auth credential associated with a Consumer in a workspace
+// Get a HMAC-auth credential associated with a Consumer using ID in a workspace.
 func (s *HMACAuthCredentials) GetHmacAuthWithConsumer(ctx context.Context, request operations.GetHmacAuthWithConsumerRequest, opts ...operations.Option) (*operations.GetHmacAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -439,7 +439,7 @@ func (s *HMACAuthCredentials) GetHmacAuthWithConsumer(ctx context.Context, reque
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/hmac-auth/{HMACAuthId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/hmac-auth/{HMACAuthId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

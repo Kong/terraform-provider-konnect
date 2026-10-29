@@ -8,15 +8,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayConsumerGroupMemberResource{}
-var _ resource.ResourceWithImportState = &GatewayConsumerGroupMemberResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayConsumerGroupMemberResource{}
 
 func NewGatewayConsumerGroupMemberResource() resource.Resource {
 	return &GatewayConsumerGroupMemberResource{}
@@ -33,6 +35,7 @@ type GatewayConsumerGroupMemberResourceModel struct {
 	ConsumerGroupID types.String `tfsdk:"consumer_group_id"`
 	ConsumerID      types.String `tfsdk:"consumer_id"`
 	ControlPlaneID  types.String `tfsdk:"control_plane_id"`
+	Workspace       types.String `tfsdk:"workspace"`
 }
 
 func (r *GatewayConsumerGroupMemberResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -42,6 +45,7 @@ func (r *GatewayConsumerGroupMemberResource) Metadata(ctx context.Context, req r
 func (r *GatewayConsumerGroupMemberResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayConsumerGroupMember Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"consumer_group_id": schema.StringAttribute{
 				Required: true,
@@ -63,6 +67,15 @@ func (r *GatewayConsumerGroupMemberResource) Schema(ctx context.Context, req res
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
+			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
 			},
 		},
 	}
@@ -231,4 +244,10 @@ func (r *GatewayConsumerGroupMemberResource) Delete(ctx context.Context, req res
 
 func (r *GatewayConsumerGroupMemberResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource gateway_consumer_group_member.")
+}
+
+func (r *GatewayConsumerGroupMemberResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewayconsumergroupmemberStateUpgraderV0},
+	}
 }

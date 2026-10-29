@@ -107,6 +107,9 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsCreateWebsock
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	websocketSizeLimitPlugin, websocketSizeLimitPluginDiags := r.ToSharedWebsocketSizeLimitPlugin(ctx)
 	diags.Append(websocketSizeLimitPluginDiags...)
 
@@ -116,6 +119,7 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsCreateWebsock
 
 	out := operations.CreateWebsocketsizelimitPluginRequest{
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		WebsocketSizeLimitPlugin: *websocketSizeLimitPlugin,
 	}
 
@@ -131,9 +135,13 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsDeleteWebsock
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteWebsocketsizelimitPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -148,9 +156,13 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsGetWebsockets
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetWebsocketsizelimitPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -165,6 +177,9 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsUpdateWebsock
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	websocketSizeLimitPlugin, websocketSizeLimitPluginDiags := r.ToSharedWebsocketSizeLimitPlugin(ctx)
 	diags.Append(websocketSizeLimitPluginDiags...)
 
@@ -175,6 +190,7 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsUpdateWebsock
 	out := operations.UpdateWebsocketsizelimitPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		WebsocketSizeLimitPlugin: *websocketSizeLimitPlugin,
 	}
 

@@ -34,6 +34,7 @@ resource "konnect_gateway_certificate" "my_gatewaycertificate" {
   updated_at = 4
   vault      = "...my_vault..."
   vault_alt  = "...my_vault_alt..."
+  workspace  = "team-payments"
 }
 ```
 
@@ -61,6 +62,7 @@ Keys must be 1–63 characters long and start with an alphanumeric character.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 - `vault` (String) Shorthand that expands into cert and key; when both vault and cert/key are provided, the vault expansion takes precedence.
 - `vault_alt` (String) Shorthand that expands into cert_alt and key_alt; when both vault_alt and cert_alt/key_alt are provided, the vault_alt expansion takes precedence.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 ## Import
 
@@ -74,6 +76,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "ddf3cdaa-3329-4961-822a-ce6dbd38eff7"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -81,5 +84,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_certificate.my_konnect_gateway_certificate '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "ddf3cdaa-3329-4961-822a-ce6dbd38eff7"}'
+terraform import konnect_gateway_certificate.my_konnect_gateway_certificate '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "ddf3cdaa-3329-4961-822a-ce6dbd38eff7", "workspace": "team-payments"}'
 ```

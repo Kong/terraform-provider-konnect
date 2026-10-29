@@ -7,3 +7,4 @@ tests/e2e/local-plugins
 .terraform*
 *.tfstate*
 .DS_Store
+terraform-provider-konnect

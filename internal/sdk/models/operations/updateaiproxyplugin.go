@@ -12,8 +12,10 @@ type UpdateAiproxyPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	AiProxyPlugin  shared.AiProxyPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace     string               `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	AiProxyPlugin shared.AiProxyPlugin `request:"mediaType=application/json"`
 }
 
 func (u UpdateAiproxyPluginRequest) MarshalJSON() ([]byte, error) {
@@ -21,7 +23,7 @@ func (u UpdateAiproxyPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateAiproxyPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "AiProxyPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "workspace", "AiProxyPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -39,6 +41,13 @@ func (u *UpdateAiproxyPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return u.ControlPlaneID
+}
+
+func (u *UpdateAiproxyPluginRequest) GetWorkspace() string {
+	if u == nil {
+		return ""
+	}
+	return u.Workspace
 }
 
 func (u *UpdateAiproxyPluginRequest) GetAiProxyPlugin() shared.AiProxyPlugin {

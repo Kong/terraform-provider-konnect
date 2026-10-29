@@ -17,6 +17,9 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroup
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	requestBody, requestBodyDiags := r.ToOperationsAddConsumerToGroupRequestBody(ctx)
 	diags.Append(requestBodyDiags...)
 
@@ -27,6 +30,7 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroup
 	out := operations.AddConsumerToGroupRequest{
 		ConsumerGroupID: consumerGroupID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		RequestBody:     requestBody,
 	}
 
@@ -61,10 +65,14 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsRemoveConsumerFrom
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.RemoveConsumerFromGroupRequest{
 		ConsumerGroupID: consumerGroupID,
 		ConsumerID:      consumerID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 	}
 
 	return &out, diags

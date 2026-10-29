@@ -248,6 +248,9 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsCreate
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	graphqlProxyCacheAdvancedPlugin, graphqlProxyCacheAdvancedPluginDiags := r.ToSharedGraphqlProxyCacheAdvancedPlugin(ctx)
 	diags.Append(graphqlProxyCacheAdvancedPluginDiags...)
 
@@ -257,6 +260,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsCreate
 
 	out := operations.CreateGraphqlproxycacheadvancedPluginRequest{
 		ControlPlaneID:                  controlPlaneID,
+		Workspace:                       workspace,
 		GraphqlProxyCacheAdvancedPlugin: *graphqlProxyCacheAdvancedPlugin,
 	}
 
@@ -272,9 +276,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsDelete
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteGraphqlproxycacheadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -289,9 +297,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsGetGra
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetGraphqlproxycacheadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -306,6 +318,9 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsUpdate
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	graphqlProxyCacheAdvancedPlugin, graphqlProxyCacheAdvancedPluginDiags := r.ToSharedGraphqlProxyCacheAdvancedPlugin(ctx)
 	diags.Append(graphqlProxyCacheAdvancedPluginDiags...)
 
@@ -316,6 +331,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsUpdate
 	out := operations.UpdateGraphqlproxycacheadvancedPluginRequest{
 		PluginID:                        pluginID,
 		ControlPlaneID:                  controlPlaneID,
+		Workspace:                       workspace,
 		GraphqlProxyCacheAdvancedPlugin: *graphqlProxyCacheAdvancedPlugin,
 	}
 

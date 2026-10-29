@@ -13,6 +13,8 @@ type GetCertificateRequest struct {
 	CertificateID string `pathParam:"style=simple,explode=false,name=CertificateId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (g GetCertificateRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (g GetCertificateRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetCertificateRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"CertificateId", "controlPlaneId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"CertificateId", "controlPlaneId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,6 +40,13 @@ func (g *GetCertificateRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return g.ControlPlaneID
+}
+
+func (g *GetCertificateRequest) GetWorkspace() string {
+	if g == nil {
+		return ""
+	}
+	return g.Workspace
 }
 
 type GetCertificateResponse struct {

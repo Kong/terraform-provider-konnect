@@ -13,6 +13,8 @@ type CreateKeyAuthWithConsumerRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Consumer ID for nested entities
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of new API-key for creation
 	KeyAuthWithoutParents *shared.KeyAuthWithoutParents `request:"mediaType=application/json"`
 }
@@ -22,7 +24,7 @@ func (c CreateKeyAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateKeyAuthWithConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -40,6 +42,13 @@ func (c *CreateKeyAuthWithConsumerRequest) GetConsumerID() string {
 		return ""
 	}
 	return c.ConsumerID
+}
+
+func (c *CreateKeyAuthWithConsumerRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateKeyAuthWithConsumerRequest) GetKeyAuthWithoutParents() *shared.KeyAuthWithoutParents {
