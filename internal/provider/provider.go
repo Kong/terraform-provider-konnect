@@ -172,6 +172,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewAIGatewayConsumerCredentialResource,
 		NewAIGatewayConsumerGroupResource,
 		NewAIGatewayConsumerGroupMemberResource,
+		NewAIGatewayCostManagementTagsResource,
 		NewAIGatewayCustomPolicyResource,
 		NewAIGatewayDataPlaneCertificateResource,
 		NewAIGatewayDatastoreResource,
