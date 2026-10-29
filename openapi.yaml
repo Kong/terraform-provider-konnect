@@ -22223,6 +22223,1358 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - DCR Providers
+  /v2/directories:
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityDirectory#create
+        terraform-datasource: null
+      operationId: createDirectory
+      summary: Create a new Directory
+      description: |
+        Creates a new directory for grouping principals around an organizational identity boundary.
+        Directories can be configured with metadata, labels, and control plane access restrictions.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateDirectoryRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/KongDirectoryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - Kong Identity Directories
+  '/v2/directories/{directoryId}':
+    parameters:
+      - $ref: '#/components/parameters/IdentityDirectoryIdMatchingParam'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityDirectory#update
+        terraform-datasource: null
+      operationId: replaceDirectory
+      summary: Replace a Directory
+      description: |
+        Completely replaces an existing directory with the provided data.
+        All fields must be specified; any omitted fields will be reset to their defaults.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplaceDirectoryRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/KongDirectoryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - Kong Identity Directories
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityDirectory#read
+        terraform-datasource: null
+      operationId: getDirectory
+      summary: Get a Directory
+      description: Retrieves detailed information about a specific directory by its ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/KongDirectoryResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - Kong Identity Directories
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityDirectory#delete
+        terraform-datasource: null
+      operationId: deleteDirectory
+      summary: Delete a Directory
+      description: |
+        Deletes a directory and optionally all its associated resources (principals, keys, etc.).
+        Use the force parameter to control deletion behavior when dependencies exist.
+      parameters:
+        - name: force
+          in: query
+          description: 'If true, delete the specified directory and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server.'
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+          x-speakeasy-name-override: force_destroy
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - Kong Identity Directories
+  '/v2/directories/{directoryId}/groups':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityGroup#create
+        terraform-datasource: null
+      operationId: createGroup
+      summary: Create a Group in a Directory
+      description: |
+        Creates a new group within the specified directory. Groups organize principals, or other groups,
+        for authorization purposes.
+
+        `name` must be unique within the directory; creating a group
+        with a `name` already in use returns 409.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateGroupRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/KongGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - PrincipalGroup
+  '/v2/directories/{directoryId}/groups/{groupId}':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/IdentityGroupIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityGroup#read
+        terraform-datasource: null
+      operationId: getGroup
+      summary: Get a Group
+      description: Retrieves detailed information about a specific group by its ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/KongGroupResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - PrincipalGroup
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityGroup#update
+        terraform-datasource: null
+      operationId: replaceGroup
+      summary: Replace a Group
+      description: |
+        Completely replaces an existing group with the provided data.
+        All fields must be specified; any omitted fields will be reset to their defaults.
+
+        `name` must be unique within the directory; replacing a group
+        with a `name` already used by another group returns 409.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplaceGroupRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/KongGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - PrincipalGroup
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityGroup#delete
+        terraform-datasource: null
+      operationId: deleteGroup
+      summary: Delete a Group
+      description: |
+        Permanently deletes a group from the directory.
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - PrincipalGroup
+  '/v2/directories/{directoryId}/groups/{groupId}/api-keys':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/groupId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityGroupAPIKey#create
+        terraform-datasource: null
+      operationId: create-group-key
+      summary: Create a group API key
+      description: |
+        Creates a new API key for the specified group.
+        Keys can be system-generated (v1) or imported with a custom secret, and may have an optional expiration date.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateKeyRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/KongPrincipalCreateKeyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - PrincipalGroup
+  '/v2/directories/{directoryId}/groups/{groupId}/api-keys/{apiKeyId}':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/groupId'
+      - $ref: '#/components/parameters/IdentityAPIKeyIdMatchingParam'
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityGroupAPIKey#update
+        terraform-datasource: null
+      operationId: update-group-key
+      summary: Update a group API key
+      description: |
+        Partially updates an existing API key's metadata.
+        Note: The key secret cannot be modified after creation.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateKeyRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/KongPrincipalKeyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - PrincipalGroup
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityGroupAPIKey#read
+        terraform-datasource: null
+      operationId: get-group-key
+      summary: Get a group API key
+      description: |
+        Retrieves detailed information about a specific API key.
+        Note: The key secret is not returned; it is only available when the key is first created.
+      responses:
+        '200':
+          $ref: '#/components/responses/KongPrincipalKeyResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - PrincipalGroup
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityGroupAPIKey#delete
+        terraform-datasource: null
+      operationId: delete-group-key
+      summary: Delete an API key
+      description: |
+        Permanently deletes an API key, immediately revoking its access.
+        This operation cannot be undone.
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - PrincipalGroup
+  '/v2/directories/{directoryId}/groups/{groupId}/membership':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/groupId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityGroupMembership#create
+        terraform-datasource: null
+      operationId: createGroupMembershipEntry
+      summary: Add a member to a Group
+      description: |
+        Adds a single member, either a principal or another group, to a group's membership.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateGroupMembershipEntryRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/KongGroupMembershipEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - PrincipalGroup
+  '/v2/directories/{directoryId}/groups/{groupId}/membership/{groupMembershipId}':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/groupId'
+      - $ref: '#/components/parameters/IdentityGroupMembershipIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityGroupMembership#read
+        terraform-datasource: null
+      operationId: getGroupMembershipEntry
+      summary: Get a Group membership entry
+      description: Retrieves a specific group membership entry by the member's ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/KongGroupMembershipEntryResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - PrincipalGroup
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityGroupMembership#delete
+        terraform-datasource: null
+      operationId: deleteGroupMembershipEntry
+      summary: Remove a member from a Group
+      description: |
+        Removes a single member, either a principal or another group, from a group's membership.
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - PrincipalGroup
+  '/v2/directories/{directoryId}/principals':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipal#create
+        terraform-datasource: null
+      operationId: createPrincipal
+      summary: Create a Principal in a Directory
+      description: |
+        Creates a new principal identity within the specified directory.
+        Principals can be configured with metadata and labels for organizational purposes.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePrincipalRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/KongPrincipalResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipal
+  '/v2/directories/{directoryId}/principals/{principalId}':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/IdentityPrincipalIdMatchingParam'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipal#update
+        terraform-datasource: null
+      operationId: replacePrincipal
+      summary: Replace a Principal
+      description: |
+        Completely replaces an existing principal with the provided data.
+        All fields must be specified; any omitted fields will be reset to their defaults.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePrincipalRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/KongPrincipalResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipal
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipal#read
+        terraform-datasource: null
+      operationId: getPrincipal
+      summary: Get a Principal
+      description: Retrieves detailed information about a specific principal by its ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/KongPrincipalResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipal
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipal#delete
+        terraform-datasource: null
+      operationId: deletePrincipal
+      summary: Delete a Principal
+      description: |
+        Permanently deletes a principal from the directory.
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipal
+  '/v2/directories/{directoryId}/principals/{principalId}/api-keys':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/principalId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalAPIKey#create
+        terraform-datasource: null
+      operationId: create-principal-key
+      summary: Create a principal API key
+      description: |
+        Creates a new API key for the specified principal.
+        Keys can be system-generated (v1) or imported with a custom secret, and may have an optional expiration date.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateKeyRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/KongPrincipalCreateKeyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalCredential
+  '/v2/directories/{directoryId}/principals/{principalId}/api-keys/{apiKeyId}':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/principalId'
+      - $ref: '#/components/parameters/IdentityAPIKeyIdMatchingParam'
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalAPIKey#update
+        terraform-datasource: null
+      operationId: update-principal-key
+      summary: Update a principal API key
+      description: |
+        Partially updates an existing API key's metadata.
+        Note: The key secret cannot be modified after creation.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateKeyRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/KongPrincipalKeyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalCredential
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalAPIKey#read
+        terraform-datasource: null
+      operationId: get-identity-key
+      summary: Get a principal API key
+      description: |
+        Retrieves detailed information about a specific API key.
+        Note: The key secret is not returned; it is only available when the key is first created.
+      responses:
+        '200':
+          $ref: '#/components/responses/KongPrincipalKeyResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalCredential
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalAPIKey#delete
+        terraform-datasource: null
+      operationId: delete-principal-key
+      summary: Delete an API key
+      description: |
+        Permanently deletes an API key, immediately revoking its access.
+        This operation cannot be undone.
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalCredential
+  '/v2/directories/{directoryId}/principals/{principalId}/basic-auths':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/principalId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalBasicAuth#create
+        terraform-datasource: null
+      operationId: create-principal-basic-auth
+      summary: Create a basic auth credential
+      description: |
+        Creates a new basic auth credential for the specified principal.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateBasicAuthRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/KongBasicAuthResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalCredential
+  '/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/principalId'
+      - $ref: '#/components/parameters/IdentityPrincipalBasicAuthIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalBasicAuth#read
+        terraform-datasource: null
+      operationId: get-principal-basic-auth
+      summary: Get a basic auth credential
+      description: |
+        Retrieves a specific basic auth credential by ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/KongBasicAuthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalCredential
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalBasicAuth#update
+        terraform-datasource: null
+      operationId: replace-principal-basic-auth
+      summary: Replace a basic auth credential
+      description: |
+        Fully replaces an existing basic auth credential with the provided values.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplaceBasicAuthRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/KongBasicAuthResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalCredential
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalBasicAuth#delete
+        terraform-datasource: null
+      operationId: delete-principal-basic-auth
+      summary: Delete a basic auth credential
+      description: |
+        Permanently deletes a basic auth credential and all associated passwords.
+        This operation cannot be undone.
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalCredential
+  '/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}/passwords':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/principalId'
+      - $ref: '#/components/parameters/basicAuthId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalBasicAuthPassword#create
+        terraform-datasource: null
+      operationId: createPassword
+      summary: Create a password for a basic auth credential
+      description: |
+        Creates a new password for the specified basic auth credential.
+        The password value is only returned on creation and cannot be retrieved again.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePasswordRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/KongPasswordCreateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalCredential
+  '/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}/passwords/{passwordId}':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/principalId'
+      - $ref: '#/components/parameters/basicAuthId'
+      - $ref: '#/components/parameters/IdentityPrincipalBasicAuthPasswordIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalBasicAuthPassword#read
+        terraform-datasource: null
+      operationId: getPassword
+      summary: Get a password
+      description: |
+        Retrieves a specific password by ID. The password value is not returned.
+      responses:
+        '200':
+          $ref: '#/components/responses/KongPasswordResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalCredential
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalBasicAuthPassword#update
+        terraform-datasource: null
+      operationId: replacePassword
+      summary: Replace a password
+      description: |
+        Fully replaces an existing password with the provided values.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePasswordRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/KongPasswordResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalCredential
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalBasicAuthPassword#delete
+        terraform-datasource: null
+      operationId: deletePassword
+      summary: Delete a password
+      description: |
+        Permanently deletes a password, immediately revoking its access.
+        This operation cannot be undone.
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalCredential
+  '/v2/directories/{directoryId}/principals/{principalId}/identities':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/principalId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalIdentity#create
+        terraform-datasource: null
+      operationId: createIdentity
+      summary: Create an identity for a principal
+      description: |
+        Creates a new identity association for the specified principal.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePrincipalIdentityRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/KongPrincipalIdentityResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalIdentity
+  '/v2/directories/{directoryId}/principals/{principalId}/identities/{identityId}':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/principalId'
+      - $ref: '#/components/parameters/IdentityPrincipalIdentityIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalIdentity#read
+        terraform-datasource: null
+      operationId: getIdentity
+      summary: Get an identity
+      description: Retrieves detailed information about a specific principal identity by its ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/KongPrincipalIdentityResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalIdentity
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalIdentity#update
+        terraform-datasource: null
+      operationId: replaceIdentity
+      summary: Replace an identity
+      description: |
+        Completely replaces an existing principal identity with the provided data.
+        All fields must be specified; any omitted fields will be reset to their defaults.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePrincipalIdentityRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/KongPrincipalIdentityResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalIdentity
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityPrincipalIdentity#delete
+        terraform-datasource: null
+      operationId: deleteIdentity
+      summary: Delete an identity
+      description: |
+        Permanently deletes an identity association from the principal.
+        This operation cannot be undone.
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - KongPrincipalIdentity
+  '/v2/directories/{directoryId}/trusted-idps':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityTrustedIdp#create
+        terraform-datasource: null
+      operationId: createTrustedIdp
+      summary: Create a new trusted IdP
+      description: |
+        Create a trusted IdP for a given directory. The `issuer_url` must be unique within the directory.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateTrustedIdpRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/TrustedIdpResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - Trusted IdPs
+  '/v2/directories/{directoryId}/trusted-idps/{trustedIdpId}':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/IdentityTrustedIdpIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityTrustedIdp#read
+        terraform-datasource: null
+      operationId: getTrustedIdp
+      summary: Get a trusted IdP
+      description: Get a trusted IdP for a directory.
+      responses:
+        '200':
+          $ref: '#/components/responses/TrustedIdpResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - Trusted IdPs
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityTrustedIdp#update
+        terraform-datasource: null
+      operationId: updateTrustedIdp
+      summary: Update a trusted IdP
+      description: |
+        Replace a trusted IdP for a given directory. The request body is the full representation; omitted optional fields are reset to their defaults.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplaceTrustedIdpRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/TrustedIdpResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - Trusted IdPs
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityTrustedIdp#delete
+        terraform-datasource: null
+      operationId: deleteTrustedIdp
+      summary: Delete a trusted IdP
+      description: Delete a trusted IdP for a given directory.
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - Trusted IdPs
+  '/v2/directories/{directoryId}/vault/keys':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityVaultKey#create
+        terraform-datasource: null
+      operationId: createVaultKey
+      summary: Create a vault key
+      description: |
+        Adds a PEM-encoded RSA or EC public key used to encrypt token vault data for a
+        vault-enabled directory. Keys must be at least 2048 bits (RSA) or 256 bits (EC).
+        A directory can hold at most 5 vault keys.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateVaultKeyRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/VaultKeyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - TokenVaultKeys
+  '/v2/directories/{directoryId}/vault/keys/{keyId}':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/IdentityVaultKeyIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityVaultKey#read
+        terraform-datasource: null
+      operationId: getVaultKey
+      summary: Get a vault key
+      description: Retrieves a single vault key by its ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/VaultKeyResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - TokenVaultKeys
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityVaultKey#update
+        terraform-datasource: null
+      operationId: updateVaultKey
+      summary: Update a vault key
+      description: |
+        Partially updates an existing vault key. Only the key's name can be changed;
+        the public key material is immutable. A PUT operation is not offered because
+        key material cannot be replaced.
+      requestBody:
+        $ref: '#/components/requestBodies/PatchVaultKeyRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/VaultKeyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - TokenVaultKeys
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityVaultKey#delete
+        terraform-datasource: null
+      operationId: deleteVaultKey
+      summary: Delete a vault key
+      description: |
+        Deletes a vault key from a directory. Deleting a key does not affect
+        credentials that were already encrypted with it; the key simply stops
+        receiving newly encrypted credentials.
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - TokenVaultKeys
+  '/v2/directories/{directoryId}/vault/providers':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityVaultProvider#create
+        terraform-datasource: null
+      operationId: createVaultProvider
+      summary: Create a vault provider
+      description: |
+        Creates a new credential provider configuration for a vault-enabled directory.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateVaultProviderRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/VaultProviderResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - TokenVaultProviders
+  '/v2/directories/{directoryId}/vault/providers/{providerId}':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/IdentityVaultProviderIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityVaultProvider#read
+        terraform-datasource: null
+      operationId: getVaultProvider
+      summary: Get a vault provider
+      description: Retrieves a single vault provider by its ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/VaultProviderResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - TokenVaultProviders
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityVaultProvider#update
+        terraform-datasource: null
+      operationId: replaceVaultProvider
+      summary: Replace a vault provider
+      description: |
+        Completely replaces an existing vault provider's configuration.
+        All fields must be specified; any omitted fields will be reset to their defaults.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplaceVaultProviderRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/VaultProviderResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - TokenVaultProviders
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityVaultProvider#delete
+        terraform-datasource: null
+      operationId: deleteVaultProvider
+      summary: Delete a vault provider
+      description: Deletes a vault provider from a directory.
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - TokenVaultProviders
+  '/v2/directories/{directoryId}/vault/providers/{providerId}/credentials':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/providerId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityVaultProviderCredential#create
+        terraform-datasource: null
+      operationId: createVaultProviderCredential
+      summary: Create a shared credential for a provider
+      description: |
+        Creates a shared credential for a provider. For a static_secret provider, stores
+        a literal secret value (at most one, a second create returns 409). For a shared
+        authorization_code provider, mints an OAuth enrollment URL for an
+        admin to complete once instead of accepting a secret value.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateVaultProviderCredentialRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/VaultProviderCredentialResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - TokenVaultProviders
+  '/v2/directories/{directoryId}/vault/providers/{providerId}/credentials/{credentialId}':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+      - $ref: '#/components/parameters/providerId'
+      - $ref: '#/components/parameters/IdentityVaultProviderCredentialIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityVaultProviderCredential#read
+        terraform-datasource: null
+      operationId: getVaultProviderCredential
+      summary: Get a specific credential
+      description: |
+        Returns a single credential by id. For a shared authorization_code
+        credential, always mints a fresh enrollment_url on every call,
+        regardless of whether the credential is pending or active, so an
+        admin can re-enroll at any time.
+      responses:
+        '200':
+          $ref: '#/components/responses/VaultProviderCredentialResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - TokenVaultProviders
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityVaultProviderCredential#update
+        terraform-datasource: null
+      operationId: updateVaultProviderCredential
+      summary: Update a shared credential's value
+      description: |
+        Replaces the value of an existing credential and returns 200 with the
+        updated credential body, for both static_secret providers and shared
+        authorization_code providers (the latter re-mints a fresh enrollment URL).
+        Returns 404 when no secret/credential exists yet for this provider.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateVaultProviderCredentialRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/VaultProviderCredentialResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - TokenVaultProviders
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityVaultProviderCredential#delete
+        terraform-datasource: null
+      operationId: deleteVaultProviderCredential
+      summary: Delete a specific provider credential
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - TokenVaultProviders
   '/v2/portals/{portalId}/appearance':
     get:
       x-speakeasy-entity-operation:
@@ -26207,6 +27559,14 @@ components:
       schema:
         $ref: '#/components/schemas/UUID'
       x-speakeasy-match: id
+    basicAuthId:
+      name: basicAuthId
+      in: path
+      required: true
+      description: Unique identifier of the basic auth credential (UUID format)
+      schema:
+        type: string
+        format: uuid
     BasicAuthId:
       description: ID of the Basic-auth credential to lookup
       example: 80db1b58-ca7c-4d21-b92a-64eb07725872
@@ -26469,6 +27829,14 @@ components:
         format: uuid
         example: d32d905a-ed33-46a3-a093-d8f536af9a8a
       x-speakeasy-match: id
+    directoryId:
+      name: directoryId
+      in: path
+      required: true
+      description: ID of the directory
+      schema:
+        type: string
+        format: uuid
     DocumentId:
       schema:
         type: string
@@ -26543,6 +27911,14 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    groupId:
+      name: groupId
+      in: path
+      required: true
+      description: Unique identifier of the group (UUID format)
+      schema:
+        type: string
+        format: uuid
     HMACAuthId:
       description: ID of the HMAC-auth credential to lookup
       example: 70e7b00b-72f2-471b-a5ce-9c4171775360
@@ -26552,6 +27928,78 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    IdentityAPIKeyIdMatchingParam:
+      name: apiKeyId
+      in: path
+      required: true
+      description: Unique identifier of the API key (UUID format)
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+    IdentityDirectoryIdMatchingParam:
+      name: directoryId
+      in: path
+      required: true
+      description: ID of the directory
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+    IdentityGroupIdMatchingParam:
+      name: groupId
+      in: path
+      required: true
+      description: Unique identifier of the group (UUID format)
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+    IdentityGroupMembershipIdMatchingParam:
+      name: groupMembershipId
+      in: path
+      required: true
+      description: Unique identifier of the group membership entry
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+    IdentityPrincipalBasicAuthIdMatchingParam:
+      name: basicAuthId
+      in: path
+      required: true
+      description: Unique identifier of the basic auth credential (UUID format)
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+    IdentityPrincipalBasicAuthPasswordIdMatchingParam:
+      name: passwordId
+      in: path
+      required: true
+      description: Unique identifier of the password (UUID format)
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+    IdentityPrincipalIdentityIdMatchingParam:
+      name: identityId
+      in: path
+      required: true
+      description: Unique identifier of the principal identity (UUID format)
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+    IdentityPrincipalIdMatchingParam:
+      name: principalId
+      in: path
+      required: true
+      description: Unique identifier of the principal (UUID format)
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
     IdentityProviderId:
       schema:
         type: string
@@ -26561,6 +28009,42 @@ components:
       in: path
       required: true
       description: ID of the identity provider.
+    IdentityTrustedIdpIdMatchingParam:
+      name: trustedIdpId
+      in: path
+      required: true
+      description: Unique identifier of the trusted idp for the vault
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+    IdentityVaultKeyIdMatchingParam:
+      name: keyId
+      in: path
+      required: true
+      description: ID of the vault key
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+    IdentityVaultProviderCredentialIdMatchingParam:
+      name: credentialId
+      in: path
+      required: true
+      description: ID of the shared credential
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+    IdentityVaultProviderIdMatchingParam:
+      name: providerId
+      in: path
+      required: true
+      description: ID of the vault provider
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
     ImplementationId:
       schema:
         type: string
@@ -26722,6 +28206,14 @@ components:
         format: uuid
       example: d32d905a-ed33-46a3-a093-d8f536af9a8a
       x-speakeasy-name-override: identityProviderId
+    principalId:
+      name: principalId
+      in: path
+      required: true
+      description: Unique identifier of the principal (UUID format)
+      schema:
+        type: string
+        format: uuid
     PrivateDnsId:
       name: privateDnsId
       in: path
@@ -26730,6 +28222,14 @@ components:
       schema:
         $ref: '#/components/schemas/PrivateDnsId'
       x-speakeasy-match: id
+    providerId:
+      name: providerId
+      in: path
+      required: true
+      description: ID of the vault provider
+      schema:
+        type: string
+        format: uuid
     realmId:
       x-speakeasy-match: id
       name: realmId
@@ -33479,6 +34979,14 @@ components:
       example: false
       default: false
       title: KonnectManaged
+    ExpiresAt:
+      description: An ISO-8601 timestamp representation of entity expiration date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      nullable: true
+      readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
     ServerlessCloudGateway:
       x-speakeasy-entity: ServerlessCloudGateway
       description: A serverless cloud gateway
@@ -60427,6 +61935,1612 @@ components:
         - instance
         - detail
       title: Error
+    KongIdentityAllowedControlPlanes:
+      description: |
+        List of control plane IDs authorized to make authentication requests to this directory.
+        Maximum of 32 control planes can be specified. Use allow_all_control_planes for unrestricted access.
+      type: array
+      items:
+        type: string
+        format: uuid
+        uniqueItems: true
+        minItems: 0
+        maxItems: 32
+      default: []
+      nullable: false
+    KongIdentityAllowAllControlPlanes:
+      description: |
+        When set to true, all control planes within the organization can make authentication requests to this directory.
+        This overrides the allowed_control_planes list. Defaults to false for security.
+      type: boolean
+      default: false
+      nullable: false
+    DirectoryName:
+      description: |
+        Human-readable name of the directory, used to identify the organizational boundary.
+        A directory name is unique within the organization.
+      type: string
+      maxLength: 255
+      minLength: 1
+      pattern: '^[a-z0-9-_]+$'
+    DirectoryDescription:
+      description: |
+        Optional description providing additional context about the directory's purpose or usage.
+      type: string
+      maxLength: 255
+    CreateDirectoryBody:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/DirectoryName'
+        description:
+          $ref: '#/components/schemas/DirectoryDescription'
+        allowed_control_planes:
+          $ref: '#/components/schemas/KongIdentityAllowedControlPlanes'
+        allow_all_control_planes:
+          $ref: '#/components/schemas/KongIdentityAllowAllControlPlanes'
+        ttl_secs:
+          $ref: '#/components/schemas/DirectoryTTLSecs'
+        negative_ttl_secs:
+          $ref: '#/components/schemas/DirectoryNegativeTTLSecs'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        vault_enabled:
+          $ref: '#/components/schemas/DirectoryVaultEnabled'
+      additionalProperties: false
+      required:
+        - name
+    ReplaceDirectoryBody:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/DirectoryName'
+        description:
+          $ref: '#/components/schemas/DirectoryDescription'
+        allowed_control_planes:
+          $ref: '#/components/schemas/KongIdentityAllowedControlPlanes'
+        allow_all_control_planes:
+          $ref: '#/components/schemas/KongIdentityAllowAllControlPlanes'
+        ttl_secs:
+          $ref: '#/components/schemas/DirectoryTTLSecs'
+        negative_ttl_secs:
+          $ref: '#/components/schemas/DirectoryNegativeTTLSecs'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        vault_enabled:
+          $ref: '#/components/schemas/DirectoryVaultEnabled'
+      additionalProperties: false
+      required:
+        - name
+    DirectoryVaultEnabled:
+      description: |
+        Set to enabled to enable the Token Vault for this directory.
+        Defaults to disabled when omitted.
+      type: boolean
+    CreatePrincipalBody:
+      type: object
+      properties:
+        display_name:
+          $ref: '#/components/schemas/KongPrincipalDisplayName'
+        description:
+          $ref: '#/components/schemas/KongPrincipalDescription'
+        type:
+          $ref: '#/components/schemas/KongPrincipalType'
+        metadata:
+          $ref: '#/components/schemas/KongIdentityMetadata'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        active:
+          $ref: '#/components/schemas/KongPrincipalActive'
+    ReplacePrincipalBody:
+      type: object
+      properties:
+        display_name:
+          $ref: '#/components/schemas/KongPrincipalDisplayName'
+        description:
+          $ref: '#/components/schemas/KongPrincipalDescription'
+        type:
+          $ref: '#/components/schemas/KongPrincipalType'
+        metadata:
+          $ref: '#/components/schemas/KongIdentityMetadata'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        active:
+          $ref: '#/components/schemas/KongPrincipalActive'
+    CreateGroupBody:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/KongGroupName'
+        description:
+          $ref: '#/components/schemas/KongGroupDescription'
+        type:
+          description: |
+            Type of the group. Immutable after creation.
+          allOf:
+            - $ref: '#/components/schemas/KongGroupType'
+        metadata:
+          $ref: '#/components/schemas/KongIdentityMetadata'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      required:
+        - name
+    ReplaceGroupBody:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/KongGroupName'
+        description:
+          $ref: '#/components/schemas/KongGroupDescription'
+        type:
+          description: |
+            Type of the group. Immutable after creation.
+          allOf:
+            - $ref: '#/components/schemas/KongGroupType'
+        metadata:
+          $ref: '#/components/schemas/KongIdentityMetadata'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      required:
+        - name
+    KongGroupMembershipType:
+      description: |
+        Classifies the kind of member referenced by a group membership entry.
+      type: string
+      enum:
+        - principal
+        - group
+      x-speakeasy-unknown-values: allow
+    KongGroupMember:
+      description: |
+        Identifies a single member (principal or group) of a group.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/KongGroupMembershipType'
+        display_name:
+          description: 'Human-readable name of the member. For a principal, its `display_name`; for a group, its `name`.'
+          type: string
+          nullable: true
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      required:
+        - id
+        - type
+    CreateGroupMembershipEntryBody:
+      type: object
+      properties:
+        member:
+          $ref: '#/components/schemas/KongGroupMember'
+      required:
+        - member
+    CreatePrincipalKeyBody:
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          imported: '#/components/schemas/CreatePrincipalKeyBodyImported'
+          v1: '#/components/schemas/CreatePrincipalKeyBodyv1'
+      oneOf:
+        - $ref: '#/components/schemas/CreatePrincipalKeyBodyImported'
+        - $ref: '#/components/schemas/CreatePrincipalKeyBodyv1'
+    CreatePrincipalKeyBodyImported:
+      properties:
+        type:
+          type: string
+          const: imported
+        name:
+          $ref: '#/components/schemas/KongPrincipalKeyName'
+        secret:
+          type: string
+          maxLength: 255
+          minLength: 1
+          x-sensitive: true
+        expires_at:
+          $ref: '#/components/schemas/ExpiresAt'
+      additionalProperties: false
+      required:
+        - type
+        - secret
+    CreatePrincipalKeyBodyv1:
+      properties:
+        type:
+          type: string
+          const: v1
+        name:
+          $ref: '#/components/schemas/KongPrincipalKeyName'
+        expires_at:
+          $ref: '#/components/schemas/ExpiresAt'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - type
+    UpdatePrincipalKeyBody:
+      description: Request body for updating an API key's metadata
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/KongPrincipalKeyName'
+        expires_at:
+          $ref: '#/components/schemas/ExpiresAt'
+        managed_by:
+          $ref: '#/components/schemas/ManagedByUpdate'
+    CreateBasicAuthBody:
+      type: object
+      properties:
+        username:
+          description: The username for basic authentication.
+          type: string
+          maxLength: 255
+          minLength: 1
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      required:
+        - username
+    ReplaceBasicAuthBody:
+      type: object
+      properties:
+        username:
+          description: The username for basic authentication.
+          type: string
+          maxLength: 255
+          minLength: 1
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      required:
+        - username
+    CreatePasswordBody:
+      type: object
+      properties:
+        secret:
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-sensitive: true
+          x-speakeasy-param-computed: false
+        expires_at:
+          $ref: '#/components/schemas/ExpiresAt'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+    ReplacePasswordBody:
+      description: Request body for replacing a password
+      type: object
+      properties:
+        secret:
+          type: string
+          maxLength: 255
+          minLength: 1
+          x-sensitive: true
+        expires_at:
+          $ref: '#/components/schemas/ExpiresAt'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      required:
+        - secret
+        - expires_at
+    KongBasicAuth:
+      description: |
+        A basic auth credential associated with a principal, enabling username/password authentication.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        username:
+          description: The username for basic authentication.
+          type: string
+          maxLength: 255
+          minLength: 1
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      required:
+        - id
+        - username
+        - created_at
+        - updated_at
+        - managed_by
+    KongPassword:
+      description: |
+        A password credential associated with a basic auth entry. The password value is not returned after creation.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        expires_at:
+          $ref: '#/components/schemas/ExpiresAtNullable'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      required:
+        - id
+        - created_at
+        - updated_at
+        - expires_at
+        - managed_by
+    KongPasswordWithSecret:
+      description: |
+        A password credential with the secret value. The secret is only returned when the password is first created
+        and cannot be retrieved again later.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        secret:
+          description: |
+            The password secret value. This is only returned when the password is first created
+            and cannot be retrieved again later.
+          type: string
+          x-sensitive: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        expires_at:
+          $ref: '#/components/schemas/ExpiresAtNullable'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      required:
+        - id
+        - secret
+        - created_at
+        - updated_at
+        - expires_at
+        - managed_by
+    KongGroupMembershipEntry:
+      description: |
+        A single group membership entry, referencing either a principal or another group.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        member:
+          $ref: '#/components/schemas/KongGroupMember'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+      required:
+        - id
+        - member
+        - created_at
+    KongPrincipalKey:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/KongPrincipalKeyName'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        expires_at:
+          $ref: '#/components/schemas/ExpiresAtNullable'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - expires_at
+        - managed_by
+    KongPrincipalKeyWithSecret:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/KongPrincipalKeyName'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        expires_at:
+          $ref: '#/components/schemas/ExpiresAtNullable'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        secret:
+          description: |
+            The API key secret value. This is only returned when the key is first created
+            and cannot be retrieved again later.
+          type: string
+          x-sensitive: true
+      required:
+        - id
+        - name
+        - secret
+        - created_at
+        - updated_at
+        - expires_at
+        - managed_by
+    KongPrincipalKeyName:
+      description: |
+        Human-readable name of the API key. `null` if the key has no name.
+      type: string
+      default: null
+      maxLength: 255
+      nullable: true
+      x-speakeasy-param-computed: false
+    DirectoryTTLSecs:
+      description: |
+        The time in seconds that a principal will be cached in memory on a running Gateway if it is
+        successfully authenticated from this directory. Maximum is 86400 seconds (24 hours).
+      type: integer
+      default: 600
+      maximum: 86400
+      minimum: 300
+    DirectoryNegativeTTLSecs:
+      description: |
+        If a running Gateway triggers a lookup for a principal that cannot be authenticated in this directory,
+        a `negative_ttl_secs` is set. The Gateway will not try to look up the principal in Konnect for `negative_ttl_secs` seconds.
+
+        A principal will be cached for `negative_ttl_secs` if it does not exist in the directory, or if the provided credentials are invalid.
+        Maximum is 86400 seconds (24 hours).
+      type: integer
+      default: 600
+      maximum: 86400
+      minimum: 300
+    KongDirectory:
+      description: |
+        A directory represents an organizational boundary for grouping principals and managing their identities.
+        Directories are region-specific and can control which control planes have authentication access.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DirectoryName'
+        description:
+          $ref: '#/components/schemas/DirectoryDescription'
+        allowed_control_planes:
+          $ref: '#/components/schemas/KongIdentityAllowedControlPlanes'
+        allow_all_control_planes:
+          $ref: '#/components/schemas/KongIdentityAllowAllControlPlanes'
+        ttl_secs:
+          $ref: '#/components/schemas/DirectoryTTLSecs'
+        negative_ttl_secs:
+          $ref: '#/components/schemas/DirectoryNegativeTTLSecs'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        vault_enabled:
+          $ref: '#/components/schemas/DirectoryVaultEnabled'
+      required:
+        - id
+        - name
+        - description
+        - labels
+        - allowed_control_planes
+        - allow_all_control_planes
+        - ttl_secs
+        - negative_ttl_secs
+        - managed_by
+        - created_at
+        - updated_at
+    KongPrincipalDisplayName:
+      description: |
+        Human-readable name of the principal.
+      type: string
+      maxLength: 255
+    KongPrincipalDescription:
+      description: |
+        Optional description providing additional context about the principal's purpose or role.
+      type: string
+      maxLength: 255
+    KongPrincipalType:
+      description: |
+        Classifies the kind of principal. `agent` is a deployed AI agent,
+        `user` is a human in the organization.
+        When omitted or null, the principal is not classified.
+      type: string
+      enum:
+        - agent
+        - user
+      nullable: true
+      x-speakeasy-unknown-values: allow
+    KongPrincipal:
+      description: |
+        A principal represents an authenticated identity within a directory.
+        Principals can be associated with API keys and inherit metadata from their parent directory.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        display_name:
+          $ref: '#/components/schemas/KongPrincipalDisplayName'
+        description:
+          $ref: '#/components/schemas/KongPrincipalDescription'
+        type:
+          $ref: '#/components/schemas/KongPrincipalType'
+        metadata:
+          $ref: '#/components/schemas/KongIdentityMetadata'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        provisioned_by:
+          $ref: '#/components/schemas/ProvisionedBy'
+        active:
+          $ref: '#/components/schemas/KongPrincipalActive'
+        groups:
+          $ref: '#/components/schemas/KongGroups'
+      required:
+        - id
+        - description
+        - metadata
+        - labels
+        - created_at
+        - updated_at
+        - managed_by
+        - provisioned_by
+        - active
+    KongPrincipalActive:
+      description: |
+        Whether the principal is active. Inactive principals are treated as nonexistent when authenticating.
+        Defaults to `true` on create; omitting it on update or replace keeps the current value.
+        Setting it to `false` sets `provisioned_by` to `konnect_user`. Principals provisioned by the developer portal cannot be deactivated.
+      type: boolean
+      example: true
+    KongTeamManager:
+      description: |
+        The manager of a team, set through the team's `team_manager` custom identity. Always null for plain groups, and for teams without a manager.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        display_name:
+          description: Display name of the manager.
+          type: string
+          example: josh
+        email:
+          description: |
+            Value of the manager's `email` custom identity, or null when the manager has none.
+          type: string
+          example: josh@acme.com
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      default: null
+      nullable: true
+      required:
+        - id
+        - display_name
+        - email
+      x-speakeasy-param-computed: false
+    KongGroupName:
+      description: |
+        Human-readable name of the group. Must be alphanumeric, with no spaces.
+      type: string
+      maxLength: 255
+      pattern: '^[A-Za-z0-9]+$'
+    KongGroupDescription:
+      description: |
+        Optional description providing additional context about the group's purpose.
+      type: string
+      maxLength: 255
+    KongGroups:
+      description: |
+        List of IDs of the groups this principal is a member of.
+      type: array
+      items:
+        type: string
+        format: uuid
+      nullable: false
+      readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
+    KongGroup:
+      description: |
+        A group organizes principals, or other groups, within a directory for authorization purposes.
+        Plain groups (`group`) accept members of any principal type.
+        Teams (`team`) are nodes of the organization chart whose members are
+        principals of type `user` and other `team` groups; they may carry an
+        `team_manager` custom identity referencing a principal of type `user`.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/KongGroupName'
+        description:
+          $ref: '#/components/schemas/KongGroupDescription'
+        type:
+          $ref: '#/components/schemas/KongGroupType'
+        metadata:
+          $ref: '#/components/schemas/KongIdentityMetadata'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        provisioned_by:
+          $ref: '#/components/schemas/ProvisionedBy'
+        team_manager:
+          $ref: '#/components/schemas/KongTeamManager'
+      required:
+        - id
+        - name
+        - description
+        - metadata
+        - labels
+        - created_at
+        - updated_at
+        - managed_by
+        - provisioned_by
+        - team_manager
+    KongPrincipalIdentityBody:
+      discriminator:
+        propertyName: type
+        mapping:
+          oidc: '#/components/schemas/KongPrincipalIdentityOIDC'
+          auth_server_client: '#/components/schemas/KongPrincipalIdentityAuthServerClient'
+          control_plane_consumer: '#/components/schemas/KongPrincipalIdentityCPConsumer'
+          custom: '#/components/schemas/KongPrincipalIdentityCustom'
+      oneOf:
+        - $ref: '#/components/schemas/KongPrincipalIdentityOIDC'
+        - $ref: '#/components/schemas/KongPrincipalIdentityAuthServerClient'
+        - $ref: '#/components/schemas/KongPrincipalIdentityCPConsumer'
+        - $ref: '#/components/schemas/KongPrincipalIdentityCustom'
+    KongPrincipalIdentityOIDC:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        type:
+          type: string
+          const: oidc
+        issuer:
+          type: string
+        claim:
+          type: object
+          properties:
+            name:
+              type: string
+            value:
+              type: string
+          required:
+            - name
+            - value
+      required:
+        - type
+        - issuer
+        - claim
+    KongPrincipalIdentityAuthServerClient:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        type:
+          type: string
+          const: auth_server_client
+        auth_server_id:
+          type: string
+          format: uuid
+        client_id:
+          type: string
+      required:
+        - type
+        - auth_server_id
+        - client_id
+    KongPrincipalIdentityCPConsumer:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        type:
+          type: string
+          const: control_plane_consumer
+        control_plane_id:
+          type: string
+        consumer_id:
+          type: string
+        workspace_id:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      required:
+        - type
+        - control_plane_id
+        - consumer_id
+    KongPrincipalIdentityCustom:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        type:
+          type: string
+          const: custom
+        key:
+          type: string
+        value:
+          type: string
+      required:
+        - type
+        - key
+        - value
+    KongPrincipalIdentityOIDCResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        type:
+          type: string
+          const: oidc
+        issuer:
+          type: string
+        claim:
+          type: object
+          properties:
+            name:
+              type: string
+            value:
+              type: string
+          required:
+            - name
+            - value
+      required:
+        - id
+        - created_at
+        - updated_at
+        - labels
+        - managed_by
+        - type
+        - issuer
+        - claim
+    KongPrincipalIdentityAuthServerClientResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        type:
+          type: string
+          const: auth_server_client
+        auth_server_id:
+          type: string
+          format: uuid
+        client_id:
+          type: string
+      required:
+        - id
+        - created_at
+        - updated_at
+        - labels
+        - managed_by
+        - type
+        - auth_server_id
+        - client_id
+    KongPrincipalIdentityCPConsumerResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        type:
+          type: string
+          const: control_plane_consumer
+        control_plane_id:
+          type: string
+        consumer_id:
+          type: string
+        workspace_id:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        control_plane_type:
+          description: The kind of control plane the linked consumer was found in.
+          type: string
+          enum:
+            - api_gateway
+            - ai_gateway
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-unknown-values: allow
+      required:
+        - id
+        - created_at
+        - updated_at
+        - labels
+        - managed_by
+        - type
+        - control_plane_id
+        - consumer_id
+        - control_plane_type
+    KongPrincipalIdentityCustomResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        type:
+          type: string
+          const: custom
+        key:
+          type: string
+        value:
+          type: string
+      required:
+        - id
+        - created_at
+        - updated_at
+        - labels
+        - managed_by
+        - type
+        - key
+        - value
+    KongPrincipalIdentity:
+      discriminator:
+        propertyName: type
+        mapping:
+          oidc: '#/components/schemas/KongPrincipalIdentityOIDCResponse'
+          auth_server_client: '#/components/schemas/KongPrincipalIdentityAuthServerClientResponse'
+          control_plane_consumer: '#/components/schemas/KongPrincipalIdentityCPConsumerResponse'
+          custom: '#/components/schemas/KongPrincipalIdentityCustomResponse'
+      oneOf:
+        - $ref: '#/components/schemas/KongPrincipalIdentityOIDCResponse'
+        - $ref: '#/components/schemas/KongPrincipalIdentityAuthServerClientResponse'
+        - $ref: '#/components/schemas/KongPrincipalIdentityCPConsumerResponse'
+        - $ref: '#/components/schemas/KongPrincipalIdentityCustomResponse'
+    VaultProviderEnabled:
+      description: Defines if the provider is enabled or not
+      type: boolean
+    VaultProvider:
+      description: |
+        An credential provider configuration for a token-vault enabled directory.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        directory_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          pattern: '^[a-zA-Z0-9_-]+$'
+        template_name:
+          $ref: '#/components/schemas/ProviderTemplateName'
+        bearer_methods_supported:
+          type: array
+          items:
+            type: string
+          example:
+            - header
+        enabled:
+          $ref: '#/components/schemas/VaultProviderEnabled'
+        client_id:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        scopes:
+          type: array
+          items:
+            type: string
+        token_endpoint_effective:
+          description: Resolved token endpoint (provider override or template default).
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        authorization_endpoint_effective:
+          description: Resolved authorization endpoint (provider override or template default).
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        registration_endpoint_effective:
+          description: Resolved DCR registration endpoint (provider override or template default).
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        dcr_enabled:
+          description: |
+            True if this provider's OAuth client is obtained via Dynamic Client Registration (RFC 7591) rather than a statically-supplied client_id. When true, client_id is null on this provider -- each principal gets its own dynamically-registered client on first use.
+          type: boolean
+        credential_type:
+          type: string
+          example: user
+        pkce_enabled:
+          type: boolean
+        refresh_buffer_seconds:
+          type: integer
+          minimum: 0
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - directory_id
+        - name
+        - template_name
+        - bearer_methods_supported
+        - enabled
+        - scopes
+        - credential_type
+        - pkce_enabled
+        - dcr_enabled
+        - refresh_buffer_seconds
+        - created_at
+        - updated_at
+    VaultKeyAlgorithm:
+      description: The asymmetric algorithm of the vault key.
+      type: string
+      enum:
+        - RSA
+        - EC
+      x-speakeasy-unknown-values: allow
+    VaultKey:
+      description: |
+        A PEM-encoded RSA or EC public key registered to encrypt token vault data for a
+        token-vault enabled directory.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        directory_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          pattern: '^[a-zA-Z0-9_-]+$'
+        public_key:
+          description: The PEM-encoded public key.
+          type: string
+          example: |-
+            -----BEGIN PUBLIC KEY-----
+            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
+            -----END PUBLIC KEY-----
+        kid:
+          description: RFC 7638 JWK thumbprint (base64url-encoded SHA-256 digest) of the public key.
+          type: string
+          example: NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        algorithm:
+          $ref: '#/components/schemas/VaultKeyAlgorithm'
+        key_size:
+          description: 'Size of the key in bits (for example 2048 for RSA, 256 for EC P-256).'
+          type: integer
+          example: 2048
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - directory_id
+        - name
+        - public_key
+        - kid
+        - algorithm
+        - key_size
+        - created_at
+        - updated_at
+    CreateVaultKeyBody:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          pattern: '^[a-zA-Z0-9_-]+$'
+        public_key:
+          description: PEM-encoded RSA or EC public key used to encrypt token vault data. Keys must be at least 2048 bits (RSA) or 256 bits (EC).
+          type: string
+          example: |-
+            -----BEGIN PUBLIC KEY-----
+            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
+            -----END PUBLIC KEY-----
+          maxLength: 8192
+      required:
+        - name
+        - public_key
+    PatchVaultKeyBody:
+      type: object
+      properties:
+        name:
+          type: string
+          default: null
+          maxLength: 255
+          nullable: true
+          pattern: '^[a-zA-Z0-9_-]+$'
+          x-speakeasy-param-computed: false
+    SetVaultProviderCredentialBody:
+      description: 'The secret to store. Required and used verbatim for a static_secret provider. Must be omitted for a shared authorization_code provider, where the response instead carries an enrollment_url for an admin to complete OAuth consent.'
+      type: object
+      properties:
+        secret:
+          description: 'Pre-issued static credential (API key, PAT, etc.). Stored encrypted, never returned in read APIs.'
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        selector:
+          $ref: '#/components/schemas/VaultCredentialSelector'
+        priority:
+          $ref: '#/components/schemas/VaultCredentialPriority'
+    VaultCredentialSelector:
+      description: 'CEL expression deciding which callers this credential applies to. Omit to make it the provider''s default, which applies to every caller and is considered after all the others.'
+      type: string
+    VaultCredentialPriority:
+      description: 'Order in which this credential is considered, lowest first. Required with a selector, and must be omitted without one.'
+      type: integer
+      minimum: 0
+    VaultProviderCredentialShared:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        credential_type:
+          type: string
+          const: shared
+        selector:
+          allOf:
+            - $ref: '#/components/schemas/VaultCredentialSelector'
+          nullable: true
+        priority:
+          allOf:
+            - $ref: '#/components/schemas/VaultCredentialPriority'
+          nullable: true
+        status:
+          description: '"pending" until admin enrollment completes; "active" once the secret exists.'
+          type: string
+          enum:
+            - pending
+            - active
+          x-speakeasy-unknown-values: allow
+        enrollment_url:
+          description: URL to complete OAuth consent. Fresh on every get-by-id call; set on create for a shared authorization_code provider. Omitted from list responses.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      required:
+        - credential_type
+        - status
+    VaultProviderCredentialUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        credential_type:
+          type: string
+          const: user
+        principal:
+          type: object
+          properties:
+            id:
+              description: The principal's ID.
+              type: string
+              format: uuid
+            display_name:
+              description: The principal's display name.
+              type: string
+          required:
+            - id
+            - display_name
+        status:
+          description: 'A user credential exists only once authorization has completed, so this is always "active".'
+          type: string
+          enum:
+            - active
+        expires_at:
+          description: 'Expiry of the current access token, if any.'
+          type: string
+          format: date-time
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - credential_type
+        - principal
+        - status
+    VaultProviderCredential:
+      description: 'A provider''s shared secret, or one principal''s authorization of the provider, indicated by credential_type. Credential values are never returned.'
+      discriminator:
+        propertyName: credential_type
+        mapping:
+          shared: '#/components/schemas/VaultProviderCredentialShared'
+          user: '#/components/schemas/VaultProviderCredentialUser'
+      oneOf:
+        - $ref: '#/components/schemas/VaultProviderCredentialShared'
+        - $ref: '#/components/schemas/VaultProviderCredentialUser'
+    CreateVaultProviderBody:
+      type: object
+      properties:
+        template_name:
+          $ref: '#/components/schemas/ProviderTemplateName'
+        name:
+          type: string
+          pattern: '^[a-zA-Z0-9_-]+$'
+        client_id:
+          description: |
+            OAuth client identifier. Applies only to OAuth templates (authorization_code). Rejected with 400 for static_secret templates.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        client_secret:
+          description: |
+            OAuth client secret. Applies only to OAuth templates. Rejected with 400 for static_secret templates. Write-only; never returned in read APIs.
+          type: string
+          default: null
+          nullable: true
+          x-sensitive: true
+          x-speakeasy-param-computed: false
+        token_endpoint:
+          description: Overrides the template token endpoint.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        authorization_endpoint:
+          description: Overrides the template authorization endpoint.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        registration_endpoint:
+          description: Overrides the template DCR registration endpoint.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        dcr_enabled:
+          description: |
+            When true, requests Dynamic Client Registration (RFC 7591) instead of a static client_id. Requires a resolvable registration_endpoint (provider override or template default) and that client_id is omitted. Each principal using this provider is registered its own upstream OAuth client lazily, on first use. Templates that ship their own registration endpoint (e.g. datadog) are DCR-based: dcr_enabled defaults to true when neither dcr_enabled nor client_id is supplied, and supplying a client_id selects a static client.
+          type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        scopes:
+          description: Requested OAuth scopes. Defaults to the full set of template default scopes when omitted. Each scope must be a valid RFC 6749 §3.3 scope-token.
+          type: array
+          items:
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        credential_type:
+          description: |
+            Credential scope. Defaults to "user" for authorization_code templates when omitted; static_secret templates require "shared".
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        pkce_enabled:
+          description: |
+            Use PKCE (S256) on the authorization-code flow. Templates whose authorization server mandates PKCE (pkce_required, e.g. datadog) imply true when this field is omitted; setting it explicitly to false is rejected with 400.
+          type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        refresh_buffer_seconds:
+          type: integer
+          default: 0
+          minimum: 0
+      required:
+        - template_name
+        - name
+    ProviderTemplateName:
+      description: |
+        The static name of the vault provider template to base this provider on (e.g. "github"). For static_secret, provide only name and credential_type ("shared"); the credential is provisioned separately via the vault provider credentials API, and client_id/client_secret are rejected.
+      type: string
+      example: github
+      enum:
+        - github
+        - slack
+        - static_secret
+        - atlassian
+        - snowflake
+        - google
+        - databricks
+        - atlassian-rovo
+        - datadog
+        - custom-oauth
+        - miro
+      x-speakeasy-unknown-values: allow
+    ReplaceVaultProviderBody:
+      type: object
+      properties:
+        template_name:
+          $ref: '#/components/schemas/ProviderTemplateName'
+        name:
+          type: string
+          pattern: '^[a-zA-Z0-9_-]+$'
+        client_id:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        client_secret:
+          description: OAuth client secret. Write-only; never returned in read APIs.
+          type: string
+          default: null
+          nullable: true
+          x-sensitive: true
+          x-speakeasy-param-computed: false
+        enabled:
+          $ref: '#/components/schemas/VaultProviderEnabled'
+        token_endpoint:
+          description: Overrides the template token endpoint.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        authorization_endpoint:
+          description: Overrides the template authorization endpoint.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        scopes:
+          description: Requested OAuth scopes. Defaults to the full set of template default scopes when omitted. Each scope must be a valid RFC 6749 §3.3 scope-token.
+          type: array
+          items:
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        credential_type:
+          type: string
+          default: user
+        pkce_enabled:
+          description: |
+            Use PKCE (S256) on the authorization-code flow. Templates whose authorization server mandates PKCE (pkce_required, e.g. datadog) imply true when this field is omitted; setting it explicitly to false is rejected with 400.
+          type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        refresh_buffer_seconds:
+          type: integer
+          default: 0
+          minimum: 0
+      required:
+        - template_name
+        - name
+    CreateTrustedIdpPayload:
+      description: Fields required to create a trusted IdP for a vault.
+      type: object
+      properties:
+        issuer_url:
+          $ref: '#/components/schemas/TrustedIdpIssuerUrl'
+        display_name:
+          $ref: '#/components/schemas/TrustedIdpDisplayName'
+        jwks_uri:
+          $ref: '#/components/schemas/TrustedIdpJwksUri'
+        jit_provisioning_enabled:
+          $ref: '#/components/schemas/TrustedIdpJitProvisioningEnabled'
+        vault_access_enabled:
+          $ref: '#/components/schemas/TrustedIdpVaultAccessEnabled'
+        jit:
+          $ref: '#/components/schemas/TrustedIdpJit'
+      required:
+        - issuer_url
+    ReplaceTrustedIdpBody:
+      description: |
+        Replacement representation of a trusted IdP. This operation replaces the stored configuration: `display_name`, `jwks_uri` and the `jit` mapping are cleared when omitted, and `jit_provisioning_enabled` and `vault_access_enabled` reset to their defaults (`true` and `false`) when omitted. To change only some fields, use the patch operation instead.
+      type: object
+      properties:
+        issuer_url:
+          $ref: '#/components/schemas/TrustedIdpIssuerUrl'
+        display_name:
+          $ref: '#/components/schemas/TrustedIdpDisplayName'
+        jwks_uri:
+          $ref: '#/components/schemas/TrustedIdpJwksUri'
+        jit_provisioning_enabled:
+          $ref: '#/components/schemas/TrustedIdpJitProvisioningEnabled'
+        vault_access_enabled:
+          $ref: '#/components/schemas/TrustedIdpVaultAccessEnabled'
+        jit:
+          $ref: '#/components/schemas/TrustedIdpJit'
+      required:
+        - issuer_url
+    TrustedIdpIssuerUrl:
+      description: The issuer URL of the trusted IdP. Unique per vault.
+      type: string
+      format: uri
+      example: 'https://acme.okta.com/oauth2/default'
+    TrustedIdpJwksUri:
+      description: JWKS URI of the trusted IdP. Overrides OIDC discovery when set.
+      type: string
+      format: uri
+      example: 'https://acme.okta.com/oauth2/default/v1/keys'
+      default: null
+      nullable: true
+      x-speakeasy-param-computed: false
+    TrustedIdpJitProvisioningEnabled:
+      description: |
+        Whether a principal is provisioned just-in-time on first exchange when no principal matches the subject_token's issuer and sub claim.
+      type: boolean
+      default: true
+    TrustedIdpVaultAccessEnabled:
+      description: |
+        Whether vault token exchange is enabled for principals provisioned by this trusted IdP. Defaults to false; it can be set on create, is reset to false when omitted in the replace operation, and can be changed via the patch operation.
+      type: boolean
+      default: false
+    TrustedIdpDisplayName:
+      description: 'A human-friendly display name for the trusted IdP, distinct from its unique `issuer_url`.'
+      type: string
+      default: null
+      maxLength: 255
+      nullable: true
+      x-speakeasy-param-computed: false
+    TrustedIdpJit:
+      description: |
+        Just-in-time provisioning configuration for this trusted IdP. The `mapping` decides how the OIDC claims a client presents to fetch-principal shape a principal provisioned just in time.
+      type: object
+      properties:
+        mapping:
+          $ref: '#/components/schemas/TrustedIdpJitMapping'
+    TrustedIdpJitMapping:
+      description: |
+        How the OIDC claims a client presents to fetch-principal map onto a principal provisioned just in time for this trusted IdP. Every field names one of those claims and is optional; a claim the mapping names but the lookup does not carry contributes nothing. An absent `mapping` — or an absent `jit` — means no claim mapping: provisioned principals get empty metadata and the lookup's claim value as display name.
+      type: object
+      properties:
+        metadata:
+          description: |
+            Maps a principal metadata key to the name of the claim whose value populates it: `metadata[key] = claims[claim]`, values narrowed to the shapes the metadata render paths accept. At most 64 entries.
+          type: object
+          example:
+            department: department
+          default: null
+          additionalProperties:
+            type: string
+          nullable: true
+          x-speakeasy-param-computed: false
+        email:
+          description: |
+            Name of the claim whose string value is attached to the provisioned principal as a custom identity keyed `email`. When a principal already carries it, that principal adopts the looked-up identity instead of a new one being provisioned.
+          type: string
+          example: email
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        groups:
+          description: |
+            Name of the claim carrying the names of the groups the provisioned principal joins — a string is one group, an array is many. Groups that do not exist yet are created. At most 100 groups per token.
+          type: string
+          example: groups
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        display_name:
+          description: |
+            Name of the claim whose string value becomes the provisioned principal's display name. When absent from the token, the lookup's claim value is used instead.
+          type: string
+          example: name
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+    TrustedIdp:
+      description: |
+        A trusted external IdP for a token-vault enabled directory.
+      type: object
+      properties:
+        id:
+          description: The ID of the trusted IdP.
+          type: string
+          format: uuid
+        issuer_url:
+          $ref: '#/components/schemas/TrustedIdpIssuerUrl'
+        display_name:
+          $ref: '#/components/schemas/TrustedIdpDisplayName'
+        jwks_uri:
+          $ref: '#/components/schemas/TrustedIdpJwksUri'
+        jit_provisioning_enabled:
+          $ref: '#/components/schemas/TrustedIdpJitProvisioningEnabled'
+        vault_access_enabled:
+          $ref: '#/components/schemas/TrustedIdpVaultAccessEnabled'
+        jit:
+          $ref: '#/components/schemas/TrustedIdpJit'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - issuer_url
+        - jwks_uri
+        - jit_provisioning_enabled
+        - vault_access_enabled
+        - created_at
+        - updated_at
+    KongIdentityMetadata:
+      description: 'A map of metadata key-value pairs associated with this entity. This metadata is passed to the data plane to enrich the execution context. During authentication, metadata is inherited and overridden in a hierarchical manner: Directory metadata is inherited by Principals, which is then inherited and overridden by Credentials.'
+      type: object
+      default: null
+      additionalProperties:
+        oneOf:
+          - type: boolean
+          - type: string
+          - type: integer
+          - type: array
+            items:
+              type: string
+            minItems: 0
+            maxItems: 255
+            uniqueItems: true
+          - type: array
+            items:
+              type: integer
+            minItems: 0
+            maxItems: 255
+            uniqueItems: true
+      maxProperties: 50
+      minProperties: 0
+      nullable: true
+      x-speakeasy-param-computed: false
+      x-speakeasy-type-override: any
+    ProvisionedBy:
+      description: 'Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user''s behalf (for example, `developer_portal` or `trusted_idp`).'
+      type: string
+      default: konnect_user
+      enum:
+        - konnect_user
+        - developer_portal
+        - trusted_idp
+      readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
+      x-speakeasy-unknown-values: allow
+    KongGroupType:
+      description: |-
+        Classifies the kind of group. `group` is the default policy-attachment
+        point for access across principals. `team` is a node of the
+        organization chart: its members are principals of type `user` and other
+        `team` groups, and it may carry an `owner` custom identity
+        referencing a principal of type `user`. When omitted or null, the
+        group is a `group`.
+      type: string
+      enum:
+        - group
+        - team
+      nullable: true
+      x-speakeasy-unknown-values: allow
+    ManagedByUpdate:
+      description: |
+        Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+        Set a key's value to `null` to remove it.
+
+        Keys must be 1–63 characters long and start with an alphanumeric character.
+      type: object
+      example:
+        owner: terraform
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+        nullable: true
+      maxProperties: 5
+      title: ManagedByUpdate
+      writeOnly: true
+    ExpiresAtNullable:
+      description: An ISO-8601 timestamp representation of entity expiration date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      default: null
+      nullable: true
+      x-speakeasy-param-computed: false
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -109086,6 +112200,167 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateCostManagementTags'
+    CreateDirectoryRequest:
+      description: Directory to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateDirectoryBody'
+    ReplaceDirectoryRequest:
+      description: Directory to be replaced
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplaceDirectoryBody'
+    CreatePrincipalRequest:
+      description: Principal to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePrincipalBody'
+    ReplacePrincipalRequest:
+      description: Principal to be replaced
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplacePrincipalBody'
+    CreateGroupRequest:
+      description: Group to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateGroupBody'
+    ReplaceGroupRequest:
+      description: Group to be replaced
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplaceGroupBody'
+    CreateGroupMembershipEntryRequest:
+      description: Member to add to a group's membership
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateGroupMembershipEntryBody'
+    CreateKeyRequest:
+      description: Key to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePrincipalKeyBody'
+    UpdateKeyRequest:
+      description: Key to be updated
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePrincipalKeyBody'
+    CreateBasicAuthRequest:
+      description: Basic auth credential to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateBasicAuthBody'
+    ReplaceBasicAuthRequest:
+      description: Basic auth credential to be replaced
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplaceBasicAuthBody'
+    CreatePasswordRequest:
+      description: Password to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePasswordBody'
+    ReplacePasswordRequest:
+      description: Password to be replaced
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplacePasswordBody'
+    CreatePrincipalIdentityRequest:
+      description: Identity to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KongPrincipalIdentityBody'
+    ReplacePrincipalIdentityRequest:
+      description: Identity to be replaced
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KongPrincipalIdentityBody'
+    CreateVaultProviderRequest:
+      description: Vault provider to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateVaultProviderBody'
+    ReplaceVaultProviderRequest:
+      description: Vault provider configuration to replace the existing one
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplaceVaultProviderBody'
+    CreateVaultProviderCredentialRequest:
+      description: Shared credential to be created for a vault provider
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SetVaultProviderCredentialBody'
+    UpdateVaultProviderCredentialRequest:
+      description: Shared credential value to replace the existing one
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SetVaultProviderCredentialBody'
+    CreateVaultKeyRequest:
+      description: Vault key to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateVaultKeyBody'
+    PatchVaultKeyRequest:
+      description: Fields to update on a vault key
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PatchVaultKeyBody'
+    CreateTrustedIdpRequest:
+      description: Trusted IdP to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateTrustedIdpPayload'
+    ReplaceTrustedIdpRequest:
+      description: Trusted IdP to be replaced
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplaceTrustedIdpBody'
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -111249,6 +114524,90 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/TooManyRequestsError'
+    KongDirectoryResponse:
+      description: A Directory
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KongDirectory'
+    KongPrincipalResponse:
+      description: Response containing a single principal object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KongPrincipal'
+    KongGroupResponse:
+      description: Response containing a single group object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KongGroup'
+    KongGroupMembershipEntryResponse:
+      description: Response containing a single group membership entry
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KongGroupMembershipEntry'
+    KongPrincipalCreateKeyResponse:
+      description: A Kong Principal Key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KongPrincipalKeyWithSecret'
+    KongPrincipalKeyResponse:
+      description: A Kong Principal Key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KongPrincipalKey'
+    KongBasicAuthResponse:
+      description: A basic auth credential
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KongBasicAuth'
+    KongPasswordCreateResponse:
+      description: 'A password with its secret value, returned only on creation'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KongPasswordWithSecret'
+    KongPasswordResponse:
+      description: A password
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KongPassword'
+    KongPrincipalIdentityResponse:
+      description: A principal identity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KongPrincipalIdentity'
+    VaultProviderResponse:
+      description: A vault provider
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VaultProvider'
+    VaultKeyResponse:
+      description: A vault key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VaultKey'
+    VaultProviderCredentialResponse:
+      description: Shared credential metadata (never includes the value)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VaultProviderCredential'
+    TrustedIdpResponse:
+      description: A trusted IdP
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TrustedIdp'
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -111641,6 +115000,38 @@ tags:
     description: Model providers that define the backend AI service connections for the AI Gateway.
   - name: AI Gateway Cost Management Tags
     description: Configure which request headers are captured as cost tags on AI usage events. The configuration applies to the organization in the region the request is sent to.
+  - name: Kong Identity Directories
+    description: |
+      Use a directory to group consumers around an identity, defined by organizational boundaries,
+      such as a production directory or a development directory. Directories are connected to a
+      [geographic region](https://docs.konghq.com/konnect/geo/) in Konnect. Centrally managed consumers defined in
+      directories can be used across multiple control planes.
+  - name: KongPrincipal
+    description: |
+      Principals represent identities within a directory that can be authenticated and authorized.
+      Each principal can have associated metadata and API keys for authentication purposes.
+  - name: KongPrincipalCredential
+    description: |
+      Credentials are authentication secrets associated with principals. Supported credential types are
+      API keys (system-generated or imported) and basic auth username/password pairs.
+  - name: KongPrincipalIdentity
+    description: |
+      Identities represent external authentication associations for a principal. Each identity links a principal
+      to an external system such as an OIDC provider, an auth server client, a control plane consumer, or a custom identifier.
+  - name: TokenVaultProviders
+    description: |
+      Vault providers configure credential providers for token-vault enabled directories.
+  - name: TokenVaultKeys
+    description: |
+      Vault keys are the public encryption keys used to protect token vault data for
+      a token-vault enabled directory.
+  - name: PrincipalGroup
+    description: |
+      Groups organize principals, or other groups, within a directory for authorization purposes.
+  - name: Trusted IdPs
+    description: |
+      Trusted IdPs configure the external identity providers a token-vault enabled directory trusts when
+      validating tokens. A directory can trust several IdPs, each with a distinct issuer.
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
