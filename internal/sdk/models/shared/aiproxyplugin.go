@@ -1059,34 +1059,34 @@ func (o *OptionsObj) GetUpstreamURL() *string {
 	return o.UpstreamURL
 }
 
-// Provider - AI provider request format - Kong translates requests to and from the specified backend compatible formats.
-type Provider string
+// AiProxyPluginProvider - AI provider request format - Kong translates requests to and from the specified backend compatible formats.
+type AiProxyPluginProvider string
 
 const (
-	ProviderAnthropic   Provider = "anthropic"
-	ProviderAzure       Provider = "azure"
-	ProviderBedrock     Provider = "bedrock"
-	ProviderCerebras    Provider = "cerebras"
-	ProviderCohere      Provider = "cohere"
-	ProviderDashscope   Provider = "dashscope"
-	ProviderDatabricks  Provider = "databricks"
-	ProviderDeepseek    Provider = "deepseek"
-	ProviderGemini      Provider = "gemini"
-	ProviderHuggingface Provider = "huggingface"
-	ProviderLlama2      Provider = "llama2"
-	ProviderMistral     Provider = "mistral"
-	ProviderOllama      Provider = "ollama"
-	ProviderOpenai      Provider = "openai"
-	ProviderVllm        Provider = "vllm"
-	ProviderXai         Provider = "xai"
+	AiProxyPluginProviderAnthropic   AiProxyPluginProvider = "anthropic"
+	AiProxyPluginProviderAzure       AiProxyPluginProvider = "azure"
+	AiProxyPluginProviderBedrock     AiProxyPluginProvider = "bedrock"
+	AiProxyPluginProviderCerebras    AiProxyPluginProvider = "cerebras"
+	AiProxyPluginProviderCohere      AiProxyPluginProvider = "cohere"
+	AiProxyPluginProviderDashscope   AiProxyPluginProvider = "dashscope"
+	AiProxyPluginProviderDatabricks  AiProxyPluginProvider = "databricks"
+	AiProxyPluginProviderDeepseek    AiProxyPluginProvider = "deepseek"
+	AiProxyPluginProviderGemini      AiProxyPluginProvider = "gemini"
+	AiProxyPluginProviderHuggingface AiProxyPluginProvider = "huggingface"
+	AiProxyPluginProviderLlama2      AiProxyPluginProvider = "llama2"
+	AiProxyPluginProviderMistral     AiProxyPluginProvider = "mistral"
+	AiProxyPluginProviderOllama      AiProxyPluginProvider = "ollama"
+	AiProxyPluginProviderOpenai      AiProxyPluginProvider = "openai"
+	AiProxyPluginProviderVllm        AiProxyPluginProvider = "vllm"
+	AiProxyPluginProviderXai         AiProxyPluginProvider = "xai"
 )
 
-func (e Provider) ToPointer() *Provider {
+func (e AiProxyPluginProvider) ToPointer() *AiProxyPluginProvider {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Provider) IsExact() bool {
+func (e *AiProxyPluginProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai":
@@ -1104,7 +1104,7 @@ type AiProxyPluginModel struct {
 	// Key/value settings for the model
 	Options *OptionsObj `json:"options"`
 	// AI provider request format - Kong translates requests to and from the specified backend compatible formats.
-	Provider Provider `json:"provider"`
+	Provider AiProxyPluginProvider `json:"provider"`
 }
 
 func (a AiProxyPluginModel) MarshalJSON() ([]byte, error) {
@@ -1139,9 +1139,9 @@ func (a *AiProxyPluginModel) GetOptions() *OptionsObj {
 	return a.Options
 }
 
-func (a *AiProxyPluginModel) GetProvider() Provider {
+func (a *AiProxyPluginModel) GetProvider() AiProxyPluginProvider {
 	if a == nil {
-		return Provider("")
+		return AiProxyPluginProvider("")
 	}
 	return a.Provider
 }

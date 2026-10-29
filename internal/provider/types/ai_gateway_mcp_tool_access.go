@@ -3,5 +3,5 @@
 package types
 
 type AIGatewayMCPToolAccess struct {
-	Acls *AIGatewayMCPACLs `tfsdk:"acls"`
+	Acls *AIGatewayACLS `tfsdk:"acls"`
 }

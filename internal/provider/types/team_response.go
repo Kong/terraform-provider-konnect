@@ -7,11 +7,12 @@ import (
 )
 
 type TeamResponse struct {
-	CreatedAt   types.String            `tfsdk:"created_at"`
-	Description types.String            `tfsdk:"description"`
-	ID          types.String            `tfsdk:"id"`
-	Labels      map[string]types.String `tfsdk:"labels"`
-	Name        types.String            `tfsdk:"name"`
-	SystemTeam  types.Bool              `tfsdk:"system_team"`
-	UpdatedAt   types.String            `tfsdk:"updated_at"`
+	CreatedAt      types.String            `tfsdk:"created_at"`
+	Description    types.String            `tfsdk:"description"`
+	ID             types.String            `tfsdk:"id"`
+	KonnectManaged types.Bool              `tfsdk:"konnect_managed"`
+	Labels         map[string]types.String `tfsdk:"labels"`
+	Name           types.String            `tfsdk:"name"`
+	SystemTeam     types.Bool              `tfsdk:"system_team"`
+	UpdatedAt      types.String            `tfsdk:"updated_at"`
 }

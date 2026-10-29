@@ -9,7 +9,7 @@ import (
 type KafkaUpstreamPluginConfig struct {
 	AllowedTopics                                []types.String                 `tfsdk:"allowed_topics"`
 	Authentication                               *Authentication                `tfsdk:"authentication"`
-	BootstrapServers                             []BootstrapServers             `tfsdk:"bootstrap_servers"`
+	BootstrapServers                             []SentinelNodes                `tfsdk:"bootstrap_servers"`
 	ClusterName                                  types.String                   `tfsdk:"cluster_name"`
 	CompressionType                              types.String                   `tfsdk:"compression_type"`
 	ErrorHandling                                *ErrorHandling                 `tfsdk:"error_handling"`

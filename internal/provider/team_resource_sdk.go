@@ -18,6 +18,7 @@ func (r *TeamResourceModel) RefreshFromSharedTeamResponse(ctx context.Context, r
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
+		r.KonnectManaged = types.BoolPointerValue(resp.KonnectManaged)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
@@ -101,10 +102,17 @@ func (r *TeamResourceModel) ToSharedCreateTeam(ctx context.Context) (*shared.Cre
 		}
 		labels[labelsKey] = labelsInst
 	}
+	konnectManaged := new(bool)
+	if !r.KonnectManaged.IsUnknown() && !r.KonnectManaged.IsNull() {
+		*konnectManaged = r.KonnectManaged.ValueBool()
+	} else {
+		konnectManaged = nil
+	}
 	out := shared.CreateTeam{
-		Name:        name,
-		Description: description,
-		Labels:      labels,
+		Name:           name,
+		Description:    description,
+		Labels:         labels,
+		KonnectManaged: konnectManaged,
 	}
 
 	return &out, diags
@@ -138,10 +146,17 @@ func (r *TeamResourceModel) ToSharedUpdateTeam(ctx context.Context) (*shared.Upd
 			labels[labelsKey] = labelsInst
 		}
 	}
+	konnectManaged := new(bool)
+	if !r.KonnectManaged.IsUnknown() && !r.KonnectManaged.IsNull() {
+		*konnectManaged = r.KonnectManaged.ValueBool()
+	} else {
+		konnectManaged = nil
+	}
 	out := shared.UpdateTeam{
-		Name:        name,
-		Description: description,
-		Labels:      labels,
+		Name:           name,
+		Description:    description,
+		Labels:         labels,
+		KonnectManaged: konnectManaged,
 	}
 
 	return &out, diags

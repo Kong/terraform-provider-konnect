@@ -6,17 +6,52 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
+// FailoverCriteria - **`http_400` requires a minimum runtime version of `2.3`**.
+//
+// **`http_401` requires a minimum runtime version of `2.3`**.
+//
+// **`http_402` requires a minimum runtime version of `2.3`**.
+//
+// **`http_405` requires a minimum runtime version of `2.3`**.
+//
+// **`http_408` requires a minimum runtime version of `2.3`**.
+//
+// **`http_409` requires a minimum runtime version of `2.3`**.
+//
+// **`http_413` requires a minimum runtime version of `2.3`**.
+//
+// **`http_415` requires a minimum runtime version of `2.3`**.
+//
+// **`http_422` requires a minimum runtime version of `2.3`**.
+//
+// **`http_522` requires a minimum runtime version of `2.3`**.
+//
+// **`http_529` requires a minimum runtime version of `2.3`**.
+//
+// **`http_5xx` requires a minimum runtime version of `2.3`**.
 type FailoverCriteria string
 
 const (
 	FailoverCriteriaError         FailoverCriteria = "error"
+	FailoverCriteriaHttp400       FailoverCriteria = "http_400"
+	FailoverCriteriaHttp401       FailoverCriteria = "http_401"
+	FailoverCriteriaHttp402       FailoverCriteria = "http_402"
 	FailoverCriteriaHttp403       FailoverCriteria = "http_403"
 	FailoverCriteriaHttp404       FailoverCriteria = "http_404"
+	FailoverCriteriaHttp405       FailoverCriteria = "http_405"
+	FailoverCriteriaHttp408       FailoverCriteria = "http_408"
+	FailoverCriteriaHttp409       FailoverCriteria = "http_409"
+	FailoverCriteriaHttp413       FailoverCriteria = "http_413"
+	FailoverCriteriaHttp415       FailoverCriteria = "http_415"
+	FailoverCriteriaHttp422       FailoverCriteria = "http_422"
 	FailoverCriteriaHttp429       FailoverCriteria = "http_429"
 	FailoverCriteriaHttp500       FailoverCriteria = "http_500"
 	FailoverCriteriaHttp502       FailoverCriteria = "http_502"
 	FailoverCriteriaHttp503       FailoverCriteria = "http_503"
 	FailoverCriteriaHttp504       FailoverCriteria = "http_504"
+	FailoverCriteriaHttp522       FailoverCriteria = "http_522"
+	FailoverCriteriaHttp529       FailoverCriteria = "http_529"
+	FailoverCriteriaHttp5xx       FailoverCriteria = "http_5xx"
 	FailoverCriteriaInvalidHeader FailoverCriteria = "invalid_header"
 	FailoverCriteriaNonIdempotent FailoverCriteria = "non_idempotent"
 	FailoverCriteriaTimeout       FailoverCriteria = "timeout"
@@ -30,7 +65,7 @@ func (e FailoverCriteria) ToPointer() *FailoverCriteria {
 func (e *FailoverCriteria) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "error", "http_403", "http_404", "http_429", "http_500", "http_502", "http_503", "http_504", "invalid_header", "non_idempotent", "timeout":
+		case "error", "http_400", "http_401", "http_402", "http_403", "http_404", "http_405", "http_408", "http_409", "http_413", "http_415", "http_422", "http_429", "http_500", "http_502", "http_503", "http_504", "http_522", "http_529", "http_5xx", "invalid_header", "non_idempotent", "timeout":
 			return true
 		}
 	}

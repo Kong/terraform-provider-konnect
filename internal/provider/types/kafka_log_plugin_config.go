@@ -8,7 +8,7 @@ import (
 
 type KafkaLogPluginConfig struct {
 	Authentication                               *Authentication                `tfsdk:"authentication"`
-	BootstrapServers                             []BootstrapServers             `tfsdk:"bootstrap_servers"`
+	BootstrapServers                             []SentinelNodes                `tfsdk:"bootstrap_servers"`
 	ClusterName                                  types.String                   `tfsdk:"cluster_name"`
 	CompressionType                              types.String                   `tfsdk:"compression_type"`
 	CustomFieldsByLua                            map[string]types.String        `tfsdk:"custom_fields_by_lua"`

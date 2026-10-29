@@ -15,6 +15,7 @@ type AIGatewayTargetBedrockConfig struct {
 	ContextWindowFactor      []AIGatewayContextWindowFactor `tfsdk:"context_window_factor"`
 	EmbeddingsDimensions     types.Int64                    `tfsdk:"embeddings_dimensions"`
 	EmbeddingsNormalize      types.Bool                     `tfsdk:"embeddings_normalize"`
+	EndpointType             types.String                   `tfsdk:"endpoint_type"`
 	InputCost                types.Float64                  `tfsdk:"input_cost"`
 	InputCostList            []AIGatewayModalCostList       `tfsdk:"input_cost_list"`
 	MaxTokens                types.Int64                    `tfsdk:"max_tokens"`
@@ -28,4 +29,5 @@ type AIGatewayTargetBedrockConfig struct {
 	TopP                     types.Float64                  `tfsdk:"top_p"`
 	UpstreamURL              types.String                   `tfsdk:"upstream_url"`
 	VideoOutputS3URI         types.String                   `tfsdk:"video_output_s3_uri"`
+	VpcEndpoint              types.String                   `tfsdk:"vpc_endpoint"`
 }

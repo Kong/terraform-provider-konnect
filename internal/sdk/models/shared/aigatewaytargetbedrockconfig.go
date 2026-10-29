@@ -6,6 +6,39 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
+// EndpointType - The AWS Bedrock inference endpoint that requests to this target are sent to.
+// `runtime` sends requests to the Bedrock Runtime endpoint
+// (`bedrock-runtime.{region}.amazonaws.com`). `mantle` sends requests to the
+// Bedrock Mantle endpoint (`bedrock-mantle.{region}.api.aws`), which accepts
+// OpenAI and Anthropic request formats natively.
+//
+// A target with `endpoint_type` set to `mantle` is rejected if its model
+// includes a format with `type` set to `bedrock`, because the Mantle endpoint
+// does not support the Bedrock Converse or InvokeModel APIs.
+//
+// **Requires a minimum runtime version of `2.3`**.
+type EndpointType string
+
+const (
+	EndpointTypeRuntime EndpointType = "runtime"
+	EndpointTypeMantle  EndpointType = "mantle"
+)
+
+func (e EndpointType) ToPointer() *EndpointType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *EndpointType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "runtime", "mantle":
+			return true
+		}
+	}
+	return false
+}
+
 // AIGatewayTargetBedrockConfig - AWS Bedrock-specific configuration for a model.
 type AIGatewayTargetBedrockConfig struct {
 	// The number of dimensions for embedding outputs.
@@ -60,6 +93,23 @@ type AIGatewayTargetBedrockConfig struct {
 	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 	// S3 URI for storing video generation outputs.
 	VideoOutputS3URI *string `json:"video_output_s3_uri,omitempty"`
+	// Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.
+	// Ignored if `upstream_url` is set.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	VpcEndpoint *string `json:"vpc_endpoint,omitempty"`
+	// The AWS Bedrock inference endpoint that requests to this target are sent to.
+	// `runtime` sends requests to the Bedrock Runtime endpoint
+	// (`bedrock-runtime.{region}.amazonaws.com`). `mantle` sends requests to the
+	// Bedrock Mantle endpoint (`bedrock-mantle.{region}.api.aws`), which accepts
+	// OpenAI and Anthropic request formats natively.
+	//
+	// A target with `endpoint_type` set to `mantle` is rejected if its model
+	// includes a format with `type` set to `bedrock`, because the Mantle endpoint
+	// does not support the Bedrock Converse or InvokeModel APIs.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	EndpointType *EndpointType `json:"endpoint_type,omitempty"`
 }
 
 func (a AIGatewayTargetBedrockConfig) MarshalJSON() ([]byte, error) {
@@ -222,4 +272,18 @@ func (a *AIGatewayTargetBedrockConfig) GetVideoOutputS3URI() *string {
 		return nil
 	}
 	return a.VideoOutputS3URI
+}
+
+func (a *AIGatewayTargetBedrockConfig) GetVpcEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.VpcEndpoint
+}
+
+func (a *AIGatewayTargetBedrockConfig) GetEndpointType() *EndpointType {
+	if a == nil {
+		return nil
+	}
+	return a.EndpointType
 }

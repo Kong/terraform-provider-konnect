@@ -15,6 +15,7 @@ TeamList DataSource
 ```terraform
 data "konnect_team_list" "my_teamlist" {
   filter = {
+    konnect_managed = false
     labels = {
       key = {
         contains = "...my_contains..."
@@ -48,6 +49,7 @@ dot-notation, e.g. `filter[labels.<key>][<op>]=<value>`, where `<op>` is one of
 
 Optional:
 
+- `konnect_managed` (Boolean) Filter by a boolean value (true/false).
 - `labels` (Attributes Map) (see [below for nested schema](#nestedatt--filter--labels))
 - `name` (Attributes) Filter using **one** of the following operators: `eq`, `contains` (see [below for nested schema](#nestedatt--filter--name))
 
@@ -79,6 +81,7 @@ Read-Only:
 - `created_at` (String) A Unix timestamp representation of team creation.
 - `description` (String) The description of the team.
 - `id` (String) The team ID.
+- `konnect_managed` (Boolean) Whether the team's membership is managed by Konnect instead of being synced from an identity provider's team mappings. Set to `false` (default) to let identity provider team mappings keep syncing members into this team. Set to `true` to manage membership directly in Konnect and prevent identity provider team mappings from syncing to this team.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".

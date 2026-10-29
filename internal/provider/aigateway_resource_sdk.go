@@ -29,6 +29,7 @@ func (r *AIGatewayResourceModel) RefreshFromSharedAIGateway(ctx context.Context,
 		r.Endpoints.Configuration = types.StringValue(resp.Endpoints.Configuration)
 		r.Endpoints.Telemetry = types.StringValue(resp.Endpoints.Telemetry)
 		r.ID = types.StringValue(resp.ID)
+		r.KonnectManaged = types.BoolPointerValue(resp.KonnectManaged)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {

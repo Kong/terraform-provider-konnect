@@ -23,10 +23,10 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 			r.Config.AutoOffsetReset = types.StringNull()
 		}
 		if resp.Config.BootstrapServers != nil {
-			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
+			r.Config.BootstrapServers = []tfTypes.SentinelNodes{}
 
 			for _, bootstrapServersItem := range resp.Config.BootstrapServers {
-				var bootstrapServers tfTypes.BootstrapServers
+				var bootstrapServers tfTypes.SentinelNodes
 
 				bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
 				bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)

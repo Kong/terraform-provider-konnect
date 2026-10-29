@@ -43,16 +43,17 @@ type AIGatewayDataPlaneCertificateResource struct {
 
 // AIGatewayDataPlaneCertificateResourceModel describes the resource data model.
 type AIGatewayDataPlaneCertificateResourceModel struct {
-	Cert        types.String            `tfsdk:"cert"`
-	CreatedAt   types.String            `tfsdk:"created_at"`
-	Description types.String            `tfsdk:"description"`
-	GatewayID   types.String            `tfsdk:"gateway_id"`
-	ID          types.String            `tfsdk:"id"`
-	Labels      map[string]types.String `tfsdk:"labels"`
-	ManagedBy   map[string]types.String `tfsdk:"managed_by"`
-	Metadata    *tfTypes.Metadata       `tfsdk:"metadata"`
-	Title       types.String            `tfsdk:"title"`
-	UpdatedAt   types.String            `tfsdk:"updated_at"`
+	Cert           types.String            `tfsdk:"cert"`
+	CreatedAt      types.String            `tfsdk:"created_at"`
+	Description    types.String            `tfsdk:"description"`
+	GatewayID      types.String            `tfsdk:"gateway_id"`
+	ID             types.String            `tfsdk:"id"`
+	KonnectManaged types.Bool              `tfsdk:"konnect_managed"`
+	Labels         map[string]types.String `tfsdk:"labels"`
+	ManagedBy      map[string]types.String `tfsdk:"managed_by"`
+	Metadata       *tfTypes.Metadata       `tfsdk:"metadata"`
+	Title          types.String            `tfsdk:"title"`
+	UpdatedAt      types.String            `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayDataPlaneCertificateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -103,6 +104,13 @@ func (r *AIGatewayDataPlaneCertificateResource) Schema(ctx context.Context, req 
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Contains a unique identifier used for this resource.`,
+			},
+			"konnect_managed": schema.BoolAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+				},
+				Description: `An immutable read-only flag to identify resource managed by Konnect services.`,
 			},
 			"labels": schema.MapAttribute{
 				Computed: true,

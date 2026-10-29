@@ -62,6 +62,14 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 		}
 		configPriorData := r.Config
 		r.Config = &tfTypes.Config{}
+		r.Config.CaCertificates = make([]types.String, 0, len(resp.Config.CaCertificates))
+		for _, v := range resp.Config.CaCertificates {
+			r.Config.CaCertificates = append(r.Config.CaCertificates, types.StringValue(v))
+		}
+		r.Config.Certificates = make([]types.String, 0, len(resp.Config.Certificates))
+		for _, v := range resp.Config.Certificates {
+			r.Config.Certificates = append(r.Config.Certificates, types.StringValue(v))
+		}
 		if resp.Config.Logging == nil {
 			r.Config.Logging = nil
 		} else {
@@ -609,6 +617,14 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 			MaxPayloadSize: maxPayloadSize,
 		}
 	}
+	certificates := make([]string, 0, len(r.Config.Certificates))
+	for certificatesIndex := range r.Config.Certificates {
+		certificates = append(certificates, r.Config.Certificates[certificatesIndex].ValueString())
+	}
+	caCertificates := make([]string, 0, len(r.Config.CaCertificates))
+	for caCertificatesIndex := range r.Config.CaCertificates {
+		caCertificates = append(caCertificates, r.Config.CaCertificates[caCertificatesIndex].ValueString())
+	}
 	config := shared.Config{
 		URL:                url,
 		Upstream:           upstream,
@@ -616,6 +632,8 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 		Proxy:              proxy,
 		MaxRequestBodySize: maxRequestBodySize,
 		Logging:            logging,
+		Certificates:       certificates,
+		CaCertificates:     caCertificates,
 	}
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {
@@ -967,6 +985,14 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 			MaxPayloadSize: maxPayloadSize,
 		}
 	}
+	certificates := make([]string, 0, len(r.Config.Certificates))
+	for certificatesIndex := range r.Config.Certificates {
+		certificates = append(certificates, r.Config.Certificates[certificatesIndex].ValueString())
+	}
+	caCertificates := make([]string, 0, len(r.Config.CaCertificates))
+	for caCertificatesIndex := range r.Config.CaCertificates {
+		caCertificates = append(caCertificates, r.Config.CaCertificates[caCertificatesIndex].ValueString())
+	}
 	config := shared.UpdateAIGatewayAgentRequestConfig{
 		URL:                url,
 		Upstream:           upstream,
@@ -974,6 +1000,8 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 		Proxy:              proxy,
 		MaxRequestBodySize: maxRequestBodySize,
 		Logging:            logging,
+		Certificates:       certificates,
+		CaCertificates:     caCertificates,
 	}
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {

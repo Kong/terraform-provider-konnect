@@ -112,6 +112,13 @@ func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderAzure() *sh
 	return nil
 }
 
+func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderBaseten() *shared.AIGatewayModelProviderAIGatewayModelProviderBaseten {
+	if v := g.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderBaseten
+	}
+	return nil
+}
+
 func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderBedrock() *shared.AIGatewayModelProviderAIGatewayModelProviderBedrock {
 	if v := g.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderBedrock

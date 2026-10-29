@@ -54,6 +54,7 @@ type AIGWOpenIDConnectGeneratedConfig struct {
 	ConsumerGroupsOptional                       types.Bool                                  `tfsdk:"consumer_groups_optional"`
 	ConsumerOptional                             types.Bool                                  `tfsdk:"consumer_optional"`
 	CredentialClaim                              []types.String                              `tfsdk:"credential_claim"`
+	CredentialClaims                             [][]types.String                            `tfsdk:"credential_claims"`
 	DisableSession                               []types.String                              `tfsdk:"disable_session"`
 	DiscoveryHeadersNames                        []types.String                              `tfsdk:"discovery_headers_names"`
 	DiscoveryHeadersValues                       []types.String                              `tfsdk:"discovery_headers_values"`
@@ -137,6 +138,7 @@ type AIGWOpenIDConnectGeneratedConfig struct {
 	ProofOfPossessionAuthMethodsValidation       types.Bool                                  `tfsdk:"proof_of_possession_auth_methods_validation"`
 	ProofOfPossessionDpop                        types.String                                `tfsdk:"proof_of_possession_dpop"`
 	ProofOfPossessionMtls                        types.String                                `tfsdk:"proof_of_possession_mtls"`
+	ProtectedResourceMetadata                    *ProtectedResourceMetadata                  `tfsdk:"protected_resource_metadata"`
 	PushedAuthorizationRequestEndpoint           types.String                                `tfsdk:"pushed_authorization_request_endpoint"`
 	PushedAuthorizationRequestEndpointAuthMethod types.String                                `tfsdk:"pushed_authorization_request_endpoint_auth_method"`
 	RedirectURI                                  []types.String                              `tfsdk:"redirect_uri"`

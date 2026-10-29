@@ -46,7 +46,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           connect_timeout = 60000
           fail_timeout    = 10000
           failover_criteria = [
-            "http_429"
+            "http_408"
           ]
           latency_strategy = "tpot"
           max_fails        = 0
@@ -112,6 +112,11 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         ]
       }
     }
+    datastores = [
+      {
+        name = "shared-redis"
+      }
+    ]
     display_name = "My GPT 5 model"
     enabled      = true
     formats = [
@@ -133,55 +138,55 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          anthropic = {
-            cache_read_cost = 8.86
+          databricks = {
+            cache_read_cost = 9.25
             cache_read_cost_list = [
               {
-                cost  = 6.84
-                modal = "video"
+                cost  = 7.56
+                modal = "text"
               }
             ]
-            cache_write_cost = 7.72
+            cache_write_cost = 8.79
             cache_write_cost_list = [
               {
-                cost = 1.85
+                cost = 8.23
                 ttl  = "...my_ttl..."
               }
             ]
             context_window_factor = [
               {
                 above         = "...my_above..."
-                input_factor  = 7.89
-                output_factor = 6.2
+                input_factor  = 6.86
+                output_factor = 3.98
               }
             ]
-            embeddings_dimensions = 712324909
-            input_cost            = 9.85
+            embeddings_dimensions = 2017878719
+            input_cost            = 3.88
             input_cost_list = [
               {
-                cost  = 7.29
-                modal = "text"
+                cost  = 9.74
+                modal = "video"
               }
             ]
-            max_tokens  = 257642563
-            output_cost = 1.7
+            max_tokens  = 184807158
+            output_cost = 3.66
             output_cost_list = [
               {
-                cost  = 1.71
-                modal = "text"
+                cost  = 5.89
+                modal = "audio"
               }
             ]
             service_tier_factor = [
               {
-                factor = 7.15
+                factor = 4.06
                 tier   = "...my_tier..."
               }
             ]
-            temperature  = 3.29
-            top_k        = 140
-            top_p        = 0.48
-            upstream_url = "https://ajar-summer.biz"
-            version      = "2023-06-01"
+            temperature           = 4.92
+            top_k                 = 299
+            top_p                 = 0.68
+            upstream_url          = "https://determined-skyscraper.name"
+            workspace_instance_id = "...my_workspace_instance_id..."
           }
         }
         name                 = "gpt-5-model"
@@ -216,7 +221,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       ]
     }
     capabilities = [
-      "audio/transcription"
+      "audio/speech"
     ]
     config = {
       balancer = {
@@ -234,7 +239,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           }
           fail_timeout = 10000
           failover_criteria = [
-            "http_502"
+            "http_429"
           ]
           max_fails    = 0
           read_timeout = 60000
@@ -323,6 +328,11 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         ]
       }
     }
+    datastores = [
+      {
+        name = "shared-redis"
+      }
+    ]
     display_name = "My GPT 5 model"
     enabled      = true
     formats = [
@@ -344,55 +354,54 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          mistral = {
-            cache_read_cost = 9.91
+          xai = {
+            cache_read_cost = 2.26
             cache_read_cost_list = [
               {
-                cost  = 1.6
-                modal = "text"
+                cost  = 1.04
+                modal = "image"
               }
             ]
-            cache_write_cost = 1.14
+            cache_write_cost = 0.32
             cache_write_cost_list = [
               {
-                cost = 5.09
+                cost = 3.9
                 ttl  = "...my_ttl..."
               }
             ]
             context_window_factor = [
               {
                 above         = "...my_above..."
-                input_factor  = 1.3
-                output_factor = 9.49
+                input_factor  = 2.92
+                output_factor = 4.58
               }
             ]
-            embeddings_dimensions = 2009004787
-            format                = "ollama"
-            input_cost            = 1.29
+            embeddings_dimensions = 748376912
+            input_cost            = 3.63
             input_cost_list = [
               {
-                cost  = 4.51
-                modal = "video"
+                cost  = 6.31
+                modal = "audio"
               }
             ]
-            max_tokens  = 1053851950
-            output_cost = 5.4
+            max_tokens  = 1493087753
+            output_cost = 1.58
             output_cost_list = [
               {
-                cost  = 8.29
-                modal = "video"
+                cost  = 3.36
+                modal = "audio"
               }
             ]
             service_tier_factor = [
               {
-                factor = 5.81
+                factor = 2.95
                 tier   = "...my_tier..."
               }
             ]
-            temperature  = 2.45
-            top_k        = 302
-            top_p        = 0.53
-            upstream_url = "https://sad-thigh.net"
+            temperature  = 0.46
+            top_k        = 328
+            top_p        = 0.12
+            upstream_url = "https://carefree-hundred.org"
           }
         }
         name                 = "gpt-5-model"
@@ -432,11 +441,17 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
 Optional:
 
 - `access` (Attributes) Access control configuration for a model. (see [below for nested schema](#nestedatt--api--access))
-- `capabilities` (List of String) List of AI capabilities enabled for this API model. Not Null
+- `capabilities` (List of String) The capabilities this model supports. Set to a specific capability to
+restrict the model to that capability only, or to `*` to allow all
+capabilities that the targets support at the gateway's
+min_runtime_version. A capability that needs a newer
+min_runtime_version is left out of `*`.
+Default: ["*"]
 - `config` (Attributes) Routing, logging, and load balancing configuration for the model. Not Null (see [below for nested schema](#nestedatt--api--config))
+- `datastores` (Attributes List) Names of the Datastores this model references. (see [below for nested schema](#nestedatt--api--datastores))
 - `display_name` (String) The display name for this model instance. Not Null
 - `enabled` (Boolean) Whether the model is enabled. Default: true
-- `formats` (Attributes List) List of request/response formats supported by this model. Not Null (see [below for nested schema](#nestedatt--api--formats))
+- `formats` (Attributes List) List of request/response formats supported by this model. (see [below for nested schema](#nestedatt--api--formats))
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
 Public labels are intended to store **PUBLIC** metadata. 
@@ -661,6 +676,10 @@ Optional:
 Setting this option overrides the AWS_REGION environment variable.
 - `upstream_url` (String) The URL of the embeddings model.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
+- `vpc_endpoint` (String) Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.
+Ignored if `upstream_url` is set.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--api--config--balancer--semantic--embeddings--config--gemini"></a>
@@ -982,17 +1001,25 @@ When no selector location is configured, the format default selector is used.
 
 
 
+<a id="nestedatt--api--datastores"></a>
+### Nested Schema for `api.datastores`
+
+Optional:
+
+- `name` (String) An immutable user-defined identifier for this resource. Not Null
+
+
 <a id="nestedatt--api--formats"></a>
 ### Nested Schema for `api.formats`
 
 Optional:
 
-- `type` (String) The format type.
+- `type` (String) The request and response format this model supports. Set to a specific format to restrict the model to that format only, or to `*` to allow all formats that the targets support at the gateway's min_runtime_version. A format that needs a newer min_runtime_version is left out of `*`. The `*` format never includes passthrough.
 
 **`passthrough` requires a minimum runtime version of `2.2`**.
 
 **`typesafe` requires a minimum runtime version of `2.2`**.
-possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]
+possible known values include one of ["*", "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]
 
 
 <a id="nestedatt--api--targets"></a>
@@ -1015,6 +1042,13 @@ Optional:
 
 - `anthropic` (Attributes) Anthropic-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--anthropic))
 - `azure` (Attributes) Azure-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--azure))
+- `baseten` (Attributes) Baseten-specific configuration for a model. Requests are sent to Baseten Model APIs at
+`https://inference.baseten.co/v1` by default, and the target `name` is the Baseten model
+slug (for example, `deepseek-ai/DeepSeek-V4-Pro-0813`). To route to a dedicated Baseten
+deployment, set `upstream_url` to the deployment's full OpenAI-compatible endpoint (for
+example, `https://model-{model_id}.api.baseten.co/environments/{environment}/sync/v1/chat/completions`) or use passthrough format.
+
+**Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--api--targets--config--baseten))
 - `bedrock` (Attributes) AWS Bedrock-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--bedrock))
 - `cerebras` (Attributes) Cerebras-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--cerebras))
 - `cohere` (Attributes) Cohere-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--cohere))
@@ -1213,6 +1247,90 @@ Optional:
 
 
 
+<a id="nestedatt--api--targets--config--baseten"></a>
+### Nested Schema for `api.targets.config.baseten`
+
+Optional:
+
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--baseten--cache_read_cost_list))
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--baseten--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--baseten--context_window_factor))
+- `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--baseten--input_cost_list))
+- `max_tokens` (Number) The maximum number of tokens to generate in the response.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--baseten--output_cost_list))
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--baseten--service_tier_factor))
+- `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
+- `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
+- `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--baseten--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.baseten.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--baseten--cache_write_cost_list"></a>
+### Nested Schema for `api.targets.config.baseten.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--api--targets--config--baseten--context_window_factor"></a>
+### Nested Schema for `api.targets.config.baseten.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--baseten--input_cost_list"></a>
+### Nested Schema for `api.targets.config.baseten.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--baseten--output_cost_list"></a>
+### Nested Schema for `api.targets.config.baseten.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--baseten--service_tier_factor"></a>
+### Nested Schema for `api.targets.config.baseten.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
+
 <a id="nestedatt--api--targets--config--bedrock"></a>
 ### Nested Schema for `api.targets.config.bedrock`
 
@@ -1228,6 +1346,18 @@ Optional:
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--bedrock--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `embeddings_normalize` (Boolean) Whether to normalize embedding vectors in the response. Default: false
+- `endpoint_type` (String) The AWS Bedrock inference endpoint that requests to this target are sent to.
+`runtime` sends requests to the Bedrock Runtime endpoint
+(`bedrock-runtime.{region}.amazonaws.com`). `mantle` sends requests to the
+Bedrock Mantle endpoint (`bedrock-mantle.{region}.api.aws`), which accepts
+OpenAI and Anthropic request formats natively.
+
+A target with `endpoint_type` set to `mantle` is rejected if its model
+includes a format with `type` set to `bedrock`, because the Mantle endpoint
+does not support the Bedrock Converse or InvokeModel APIs.
+
+**Requires a minimum runtime version of `2.3`**.
+possible known values include one of ["runtime", "mantle"]
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
 
@@ -1246,6 +1376,10 @@ Setting this option overrides the AWS_REGION environment variable.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
+- `vpc_endpoint` (String) Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.
+Ignored if `upstream_url` is set.
+
+**Requires a minimum runtime version of `2.3`**.
 
 <a id="nestedatt--api--targets--config--bedrock--cache_read_cost_list"></a>
 ### Nested Schema for `api.targets.config.bedrock.cache_read_cost_list`
@@ -2714,11 +2848,17 @@ Optional:
 Optional:
 
 - `access` (Attributes) Access control configuration for a model. (see [below for nested schema](#nestedatt--model--access))
-- `capabilities` (List of String) List of AI capabilities enabled for this model. Not Null
+- `capabilities` (List of String) The capabilities this model supports. Set to a specific capability to
+restrict the model to that capability only, or to `*` to allow all
+capabilities that the targets support at the gateway's
+min_runtime_version. A capability that needs a newer
+min_runtime_version is left out of `*`.
+Default: ["*"]
 - `config` (Attributes) Routing, logging, and load balancing configuration for the model. Not Null (see [below for nested schema](#nestedatt--model--config))
+- `datastores` (Attributes List) Names of the Datastores this model references. (see [below for nested schema](#nestedatt--model--datastores))
 - `display_name` (String) The display name for this model instance. Not Null
 - `enabled` (Boolean) Whether the model is enabled. Default: true
-- `formats` (Attributes List) List of request/response formats supported by this model. Not Null (see [below for nested schema](#nestedatt--model--formats))
+- `formats` (Attributes List) List of request/response formats supported by this model. (see [below for nested schema](#nestedatt--model--formats))
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
 Public labels are intended to store **PUBLIC** metadata. 
@@ -2944,6 +3084,10 @@ Optional:
 Setting this option overrides the AWS_REGION environment variable.
 - `upstream_url` (String) The URL of the embeddings model.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
+- `vpc_endpoint` (String) Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.
+Ignored if `upstream_url` is set.
+
+**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--model--config--balancer--semantic--embeddings--config--gemini"></a>
@@ -3273,17 +3417,25 @@ When no selector location is configured, the format default selector is used.
 
 
 
+<a id="nestedatt--model--datastores"></a>
+### Nested Schema for `model.datastores`
+
+Optional:
+
+- `name` (String) An immutable user-defined identifier for this resource. Not Null
+
+
 <a id="nestedatt--model--formats"></a>
 ### Nested Schema for `model.formats`
 
 Optional:
 
-- `type` (String) The format type.
+- `type` (String) The request and response format this model supports. Set to a specific format to restrict the model to that format only, or to `*` to allow all formats that the targets support at the gateway's min_runtime_version. A format that needs a newer min_runtime_version is left out of `*`. The `*` format never includes passthrough.
 
 **`passthrough` requires a minimum runtime version of `2.2`**.
 
 **`typesafe` requires a minimum runtime version of `2.2`**.
-possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]
+possible known values include one of ["*", "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]
 
 
 <a id="nestedatt--model--targets"></a>
@@ -3306,6 +3458,13 @@ Optional:
 
 - `anthropic` (Attributes) Anthropic-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--anthropic))
 - `azure` (Attributes) Azure-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--azure))
+- `baseten` (Attributes) Baseten-specific configuration for a model. Requests are sent to Baseten Model APIs at
+`https://inference.baseten.co/v1` by default, and the target `name` is the Baseten model
+slug (for example, `deepseek-ai/DeepSeek-V4-Pro-0813`). To route to a dedicated Baseten
+deployment, set `upstream_url` to the deployment's full OpenAI-compatible endpoint (for
+example, `https://model-{model_id}.api.baseten.co/environments/{environment}/sync/v1/chat/completions`) or use passthrough format.
+
+**Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--model--targets--config--baseten))
 - `bedrock` (Attributes) AWS Bedrock-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--bedrock))
 - `cerebras` (Attributes) Cerebras-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--cerebras))
 - `cohere` (Attributes) Cohere-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--cohere))
@@ -3504,6 +3663,90 @@ Optional:
 
 
 
+<a id="nestedatt--model--targets--config--baseten"></a>
+### Nested Schema for `model.targets.config.baseten`
+
+Optional:
+
+- `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--baseten--cache_read_cost_list))
+- `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--baseten--cache_write_cost_list))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--baseten--context_window_factor))
+- `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--baseten--input_cost_list))
+- `max_tokens` (Number) The maximum number of tokens to generate in the response.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--baseten--output_cost_list))
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--baseten--service_tier_factor))
+- `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
+- `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
+- `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+- `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--baseten--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.baseten.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--baseten--cache_write_cost_list"></a>
+### Nested Schema for `model.targets.config.baseten.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M cache-write prompt tokens for this TTL. Not Null
+- `ttl` (String) Cache TTL this price applies to, e.g. "5m" or "1h". Not Null
+
+
+<a id="nestedatt--model--targets--config--baseten--context_window_factor"></a>
+### Nested Schema for `model.targets.config.baseten.context_window_factor`
+
+Optional:
+
+- `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
+- `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
+- `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--baseten--input_cost_list"></a>
+### Nested Schema for `model.targets.config.baseten.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--baseten--output_cost_list"></a>
+### Nested Schema for `model.targets.config.baseten.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--baseten--service_tier_factor"></a>
+### Nested Schema for `model.targets.config.baseten.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Multiplier applied to the whole request for this service tier. Not Null
+- `tier` (String) Matched case-insensitively as a substring of the vendor's reported service tier (e.g. "priority", "flex", "throughput"). When more than one entry matches, the longest (most specific) tier wins; array order does not matter. Not Null
+
+
+
 <a id="nestedatt--model--targets--config--bedrock"></a>
 ### Nested Schema for `model.targets.config.bedrock`
 
@@ -3519,6 +3762,18 @@ Optional:
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--bedrock--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `embeddings_normalize` (Boolean) Whether to normalize embedding vectors in the response. Default: false
+- `endpoint_type` (String) The AWS Bedrock inference endpoint that requests to this target are sent to.
+`runtime` sends requests to the Bedrock Runtime endpoint
+(`bedrock-runtime.{region}.amazonaws.com`). `mantle` sends requests to the
+Bedrock Mantle endpoint (`bedrock-mantle.{region}.api.aws`), which accepts
+OpenAI and Anthropic request formats natively.
+
+A target with `endpoint_type` set to `mantle` is rejected if its model
+includes a format with `type` set to `bedrock`, because the Mantle endpoint
+does not support the Bedrock Converse or InvokeModel APIs.
+
+**Requires a minimum runtime version of `2.3`**.
+possible known values include one of ["runtime", "mantle"]
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
 - `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
 
@@ -3537,6 +3792,10 @@ Setting this option overrides the AWS_REGION environment variable.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
+- `vpc_endpoint` (String) Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.
+Ignored if `upstream_url` is set.
+
+**Requires a minimum runtime version of `2.3`**.
 
 <a id="nestedatt--model--targets--config--bedrock--cache_read_cost_list"></a>
 ### Nested Schema for `model.targets.config.bedrock.cache_read_cost_list`

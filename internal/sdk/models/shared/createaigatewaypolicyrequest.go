@@ -40,6 +40,8 @@ type CreateAIGatewayPolicyRequest struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Names of the Datastores this policy references.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
 }
 
 func (c CreateAIGatewayPolicyRequest) MarshalJSON() ([]byte, error) {
@@ -114,4 +116,11 @@ func (c *CreateAIGatewayPolicyRequest) GetManagedBy() map[string]string {
 		return nil
 	}
 	return c.ManagedBy
+}
+
+func (c *CreateAIGatewayPolicyRequest) GetDatastores() []AIGatewayDatastoreRef {
+	if c == nil {
+		return nil
+	}
+	return c.Datastores
 }

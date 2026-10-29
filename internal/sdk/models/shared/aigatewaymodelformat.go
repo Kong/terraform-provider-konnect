@@ -6,7 +6,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// AIGatewayModelFormatType - The format type.
+// AIGatewayModelFormatType - The request and response format this model supports. Set to a specific format to restrict the model to that format only, or to `*` to allow all formats that the targets support at the gateway's min_runtime_version. A format that needs a newer min_runtime_version is left out of `*`. The `*` format never includes passthrough.
 //
 // **`passthrough` requires a minimum runtime version of `2.2`**.
 //
@@ -14,6 +14,7 @@ import (
 type AIGatewayModelFormatType string
 
 const (
+	AIGatewayModelFormatTypeWildcard    AIGatewayModelFormatType = "*"
 	AIGatewayModelFormatTypeAnthropic   AIGatewayModelFormatType = "anthropic"
 	AIGatewayModelFormatTypeBedrock     AIGatewayModelFormatType = "bedrock"
 	AIGatewayModelFormatTypeCohere      AIGatewayModelFormatType = "cohere"
@@ -32,7 +33,7 @@ func (e AIGatewayModelFormatType) ToPointer() *AIGatewayModelFormatType {
 func (e *AIGatewayModelFormatType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe":
+		case "*", "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe":
 			return true
 		}
 	}
@@ -41,7 +42,7 @@ func (e *AIGatewayModelFormatType) IsExact() bool {
 
 // AIGatewayModelFormat - Request and response format supported by this model.
 type AIGatewayModelFormat struct {
-	// The format type.
+	// The request and response format this model supports. Set to a specific format to restrict the model to that format only, or to `*` to allow all formats that the targets support at the gateway's min_runtime_version. A format that needs a newer min_runtime_version is left out of `*`. The `*` format never includes passthrough.
 	//
 	// **`passthrough` requires a minimum runtime version of `2.2`**.
 	//

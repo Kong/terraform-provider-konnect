@@ -45,21 +45,21 @@ type GatewayPluginBotDetectionResource struct {
 
 // GatewayPluginBotDetectionResourceModel describes the resource data model.
 type GatewayPluginBotDetectionResourceModel struct {
-	Condition      types.String                `tfsdk:"condition"`
-	Config         *tfTypes.AIGatewayMCPACLs   `tfsdk:"config"`
-	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                 `tfsdk:"created_at"`
-	Enabled        types.Bool                  `tfsdk:"enabled"`
-	ID             types.String                `tfsdk:"id"`
-	InstanceName   types.String                `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering  `tfsdk:"ordering"`
-	Partials       []tfTypes.ACLPluginPartials `tfsdk:"partials"`
-	Protocols      []types.String              `tfsdk:"protocols"`
-	Route          *tfTypes.Set                `tfsdk:"route"`
-	Service        *tfTypes.Set                `tfsdk:"service"`
-	Tags           []types.String              `tfsdk:"tags"`
-	UpdatedAt      types.Int64                 `tfsdk:"updated_at"`
-	Workspace      types.String                `tfsdk:"workspace"`
+	Condition      types.String                 `tfsdk:"condition"`
+	Config         *tfTypes.CollectionACLConfig `tfsdk:"config"`
+	ControlPlaneID types.String                 `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                  `tfsdk:"created_at"`
+	Enabled        types.Bool                   `tfsdk:"enabled"`
+	ID             types.String                 `tfsdk:"id"`
+	InstanceName   types.String                 `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering   `tfsdk:"ordering"`
+	Partials       []tfTypes.ACLPluginPartials  `tfsdk:"partials"`
+	Protocols      []types.String               `tfsdk:"protocols"`
+	Route          *tfTypes.Set                 `tfsdk:"route"`
+	Service        *tfTypes.Set                 `tfsdk:"service"`
+	Tags           []types.String               `tfsdk:"tags"`
+	UpdatedAt      types.Int64                  `tfsdk:"updated_at"`
+	Workspace      types.String                 `tfsdk:"workspace"`
 }
 
 func (r *GatewayPluginBotDetectionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

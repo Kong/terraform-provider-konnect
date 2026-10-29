@@ -69,6 +69,7 @@ an AI Gateway node configuration is up to date.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `endpoints` (Attributes) Object containing AI Gateway access endpoints. (see [below for nested schema](#nestedatt--endpoints))
 - `id` (String) Contains a unique identifier used for this resource.
+- `konnect_managed` (Boolean) An immutable read-only flag to identify resource managed by Konnect services.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--proxy_urls"></a>
