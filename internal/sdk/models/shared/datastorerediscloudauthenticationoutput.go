@@ -130,14 +130,14 @@ func (u AuthProvider) MarshalJSON() ([]byte, error) {
 // DatastoreRedisCloudAuthenticationOutput - Cloud-managed Redis authentication. Only the fields relevant to the chosen `auth_provider` need to be set.
 type DatastoreRedisCloudAuthenticationOutput struct {
 	AuthProvider       *AuthProvider `json:"auth_provider,omitempty"`
-	AwsCacheName       *string       `default:"null" json:"aws_cache_name"`
-	AwsRegion          *string       `default:"null" json:"aws_region"`
-	AwsIsServerless    *bool         `default:"null" json:"aws_is_serverless"`
-	AwsAccessKeyID     *string       `default:"null" json:"aws_access_key_id"`
-	AwsAssumeRoleArn   *string       `default:"null" json:"aws_assume_role_arn"`
-	AwsRoleSessionName *string       `default:"null" json:"aws_role_session_name"`
-	AzureClientID      *string       `default:"null" json:"azure_client_id"`
-	AzureTenantID      *string       `default:"null" json:"azure_tenant_id"`
+	AwsCacheName       *string       `json:"aws_cache_name,omitempty"`
+	AwsRegion          *string       `json:"aws_region,omitempty"`
+	AwsIsServerless    *bool         `json:"aws_is_serverless,omitempty"`
+	AwsAccessKeyID     *string       `json:"aws_access_key_id,omitempty"`
+	AwsAssumeRoleArn   *string       `json:"aws_assume_role_arn,omitempty"`
+	AwsRoleSessionName *string       `json:"aws_role_session_name,omitempty"`
+	AzureClientID      *string       `json:"azure_client_id,omitempty"`
+	AzureTenantID      *string       `json:"azure_tenant_id,omitempty"`
 }
 
 func (d DatastoreRedisCloudAuthenticationOutput) MarshalJSON() ([]byte, error) {
@@ -217,17 +217,17 @@ func (d *DatastoreRedisCloudAuthenticationOutput) GetAzureTenantID() *string {
 // DatastoreRedisCloudAuthentication - Cloud-managed Redis authentication. Only the fields relevant to the chosen `auth_provider` need to be set.
 type DatastoreRedisCloudAuthentication struct {
 	AuthProvider          *AuthProvider `json:"auth_provider,omitempty"`
-	AwsCacheName          *string       `default:"null" json:"aws_cache_name"`
-	AwsRegion             *string       `default:"null" json:"aws_region"`
-	AwsIsServerless       *bool         `default:"null" json:"aws_is_serverless"`
-	AwsAccessKeyID        *string       `default:"null" json:"aws_access_key_id"`
-	AwsSecretAccessKey    *string       `default:"null" json:"aws_secret_access_key"`
-	AwsAssumeRoleArn      *string       `default:"null" json:"aws_assume_role_arn"`
-	AwsRoleSessionName    *string       `default:"null" json:"aws_role_session_name"`
-	GcpServiceAccountJSON *string       `default:"null" json:"gcp_service_account_json"`
-	AzureClientID         *string       `default:"null" json:"azure_client_id"`
-	AzureClientSecret     *string       `default:"null" json:"azure_client_secret"`
-	AzureTenantID         *string       `default:"null" json:"azure_tenant_id"`
+	AwsCacheName          *string       `json:"aws_cache_name,omitempty"`
+	AwsRegion             *string       `json:"aws_region,omitempty"`
+	AwsIsServerless       *bool         `json:"aws_is_serverless,omitempty"`
+	AwsAccessKeyID        *string       `json:"aws_access_key_id,omitempty"`
+	AwsSecretAccessKey    *string       `json:"aws_secret_access_key,omitempty"`
+	AwsAssumeRoleArn      *string       `json:"aws_assume_role_arn,omitempty"`
+	AwsRoleSessionName    *string       `json:"aws_role_session_name,omitempty"`
+	GcpServiceAccountJSON *string       `json:"gcp_service_account_json,omitempty"`
+	AzureClientID         *string       `json:"azure_client_id,omitempty"`
+	AzureClientSecret     *string       `json:"azure_client_secret,omitempty"`
+	AzureTenantID         *string       `json:"azure_tenant_id,omitempty"`
 }
 
 func (d DatastoreRedisCloudAuthentication) MarshalJSON() ([]byte, error) {

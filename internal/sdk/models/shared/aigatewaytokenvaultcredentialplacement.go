@@ -36,12 +36,12 @@ type AIGatewayTokenVaultCredentialPlacement struct {
 	// Name of the header, query parameter, or body field carrying the credential. Defaults to
 	// `Authorization` for a header, `access_token` otherwise.
 	//
-	Name *string `default:"null" json:"name"`
+	Name *string `json:"name,omitempty"`
 	// String prepended verbatim to the credential value. Defaults to `Bearer ` (with its trailing
 	// space) for a header, and to no prefix otherwise. Set it to an empty string when the provider
 	// expects the raw credential.
 	//
-	Prefix *string `default:"null" json:"prefix"`
+	Prefix *string `json:"prefix,omitempty"`
 }
 
 func (a AIGatewayTokenVaultCredentialPlacement) MarshalJSON() ([]byte, error) {

@@ -34,9 +34,9 @@ func (e *WindowSize) IsExact() bool {
 // AIGatewayMCPServerRateLimit - A rate limit on an MCP method or tool. Exactly one of `method` or `tool` must be set.
 type AIGatewayMCPServerRateLimit struct {
 	// The MCP method this limit applies to.
-	Method *string `default:"null" json:"method"`
+	Method *string `json:"method,omitempty"`
 	// The name of the tool this limit applies to.
-	Tool *string `default:"null" json:"tool"`
+	Tool *string `json:"tool,omitempty"`
 	// The number of requests allowed per window.
 	Limit int64 `json:"limit"`
 	// The window size in seconds, one of a second, a minute, an hour, or a day.

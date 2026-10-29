@@ -8,16 +8,16 @@ import (
 
 type RedisCEDatastoreConfigOutput struct {
 	Host     string  `json:"host"`
-	Port     *int64  `default:"null" json:"port"`
-	Username *string `default:"null" json:"username"`
+	Port     *int64  `json:"port,omitempty"`
+	Username *string `json:"username,omitempty"`
 	// The Redis database index to use.
-	Database *int64 `default:"null" json:"database"`
+	Database *int64 `json:"database,omitempty"`
 	// Timeout in milliseconds for connecting, reading, and writing to the Redis server.
-	Timeout   *int64 `default:"null" json:"timeout"`
-	Ssl       *bool  `default:"null" json:"ssl"`
-	SslVerify *bool  `default:"null" json:"ssl_verify"`
+	Timeout   *int64 `json:"timeout,omitempty"`
+	Ssl       *bool  `json:"ssl,omitempty"`
+	SslVerify *bool  `json:"ssl_verify,omitempty"`
 	// SNI to use when connecting over SSL.
-	ServerName *string `default:"null" json:"server_name"`
+	ServerName *string `json:"server_name,omitempty"`
 	// Cloud-managed Redis authentication. Only the fields relevant to the chosen `auth_provider` need to be set.
 	CloudAuthentication *DatastoreRedisCloudAuthenticationOutput `json:"cloud_authentication,omitempty"`
 }

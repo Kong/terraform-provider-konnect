@@ -195,25 +195,25 @@ type RedisEEDatastoreConfigOutput struct {
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
 	Port     *Port   `json:"port,omitempty"`
-	Username *string `default:"null" json:"username"`
+	Username *string `json:"username,omitempty"`
 	// The Redis database index to use.
-	Database          *int64 `default:"null" json:"database"`
-	ConnectTimeout    *int64 `default:"null" json:"connect_timeout"`
-	SendTimeout       *int64 `default:"null" json:"send_timeout"`
-	ReadTimeout       *int64 `default:"null" json:"read_timeout"`
-	KeepalivePoolSize *int64 `default:"null" json:"keepalive_pool_size"`
-	KeepaliveBacklog  *int64 `default:"null" json:"keepalive_backlog"`
-	Ssl               *bool  `default:"null" json:"ssl"`
-	SslVerify         *bool  `default:"null" json:"ssl_verify"`
+	Database          *int64 `json:"database,omitempty"`
+	ConnectTimeout    *int64 `json:"connect_timeout,omitempty"`
+	SendTimeout       *int64 `json:"send_timeout,omitempty"`
+	ReadTimeout       *int64 `json:"read_timeout,omitempty"`
+	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	KeepaliveBacklog  *int64 `json:"keepalive_backlog,omitempty"`
+	Ssl               *bool  `json:"ssl,omitempty"`
+	SslVerify         *bool  `json:"ssl_verify,omitempty"`
 	// SNI to use when connecting over SSL.
-	ServerName             *string         `default:"null" json:"server_name"`
-	ConnectionIsProxied    *bool           `default:"null" json:"connection_is_proxied"`
-	SentinelMaster         *string         `default:"null" json:"sentinel_master"`
+	ServerName             *string         `json:"server_name,omitempty"`
+	ConnectionIsProxied    *bool           `json:"connection_is_proxied,omitempty"`
+	SentinelMaster         *string         `json:"sentinel_master,omitempty"`
 	SentinelRole           *SentinelRole   `json:"sentinel_role,omitempty"`
-	SentinelUsername       *string         `default:"null" json:"sentinel_username"`
-	SentinelNodes          []SentinelNodes `json:"sentinel_nodes"`
-	ClusterNodes           []ClusterNodes  `json:"cluster_nodes"`
-	ClusterMaxRedirections *int64          `default:"null" json:"cluster_max_redirections"`
+	SentinelUsername       *string         `json:"sentinel_username,omitempty"`
+	SentinelNodes          []SentinelNodes `json:"sentinel_nodes,omitempty"`
+	ClusterNodes           []ClusterNodes  `json:"cluster_nodes,omitempty"`
+	ClusterMaxRedirections *int64          `json:"cluster_max_redirections,omitempty"`
 	// Cloud-managed Redis authentication. Only the fields relevant to the chosen `auth_provider` need to be set.
 	CloudAuthentication *DatastoreRedisCloudAuthenticationOutput `json:"cloud_authentication,omitempty"`
 }
@@ -375,27 +375,27 @@ type RedisEEDatastoreConfig struct {
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
 	Port     *Port   `json:"port,omitempty"`
-	Username *string `default:"null" json:"username"`
-	Password *string `default:"null" json:"password"`
+	Username *string `json:"username,omitempty"`
+	Password *string `json:"password,omitempty"`
 	// The Redis database index to use.
-	Database          *int64 `default:"null" json:"database"`
-	ConnectTimeout    *int64 `default:"null" json:"connect_timeout"`
-	SendTimeout       *int64 `default:"null" json:"send_timeout"`
-	ReadTimeout       *int64 `default:"null" json:"read_timeout"`
-	KeepalivePoolSize *int64 `default:"null" json:"keepalive_pool_size"`
-	KeepaliveBacklog  *int64 `default:"null" json:"keepalive_backlog"`
-	Ssl               *bool  `default:"null" json:"ssl"`
-	SslVerify         *bool  `default:"null" json:"ssl_verify"`
+	Database          *int64 `json:"database,omitempty"`
+	ConnectTimeout    *int64 `json:"connect_timeout,omitempty"`
+	SendTimeout       *int64 `json:"send_timeout,omitempty"`
+	ReadTimeout       *int64 `json:"read_timeout,omitempty"`
+	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	KeepaliveBacklog  *int64 `json:"keepalive_backlog,omitempty"`
+	Ssl               *bool  `json:"ssl,omitempty"`
+	SslVerify         *bool  `json:"ssl_verify,omitempty"`
 	// SNI to use when connecting over SSL.
-	ServerName             *string         `default:"null" json:"server_name"`
-	ConnectionIsProxied    *bool           `default:"null" json:"connection_is_proxied"`
-	SentinelMaster         *string         `default:"null" json:"sentinel_master"`
+	ServerName             *string         `json:"server_name,omitempty"`
+	ConnectionIsProxied    *bool           `json:"connection_is_proxied,omitempty"`
+	SentinelMaster         *string         `json:"sentinel_master,omitempty"`
 	SentinelRole           *SentinelRole   `json:"sentinel_role,omitempty"`
-	SentinelUsername       *string         `default:"null" json:"sentinel_username"`
-	SentinelPassword       *string         `default:"null" json:"sentinel_password"`
-	SentinelNodes          []SentinelNodes `json:"sentinel_nodes"`
-	ClusterNodes           []ClusterNodes  `json:"cluster_nodes"`
-	ClusterMaxRedirections *int64          `default:"null" json:"cluster_max_redirections"`
+	SentinelUsername       *string         `json:"sentinel_username,omitempty"`
+	SentinelPassword       *string         `json:"sentinel_password,omitempty"`
+	SentinelNodes          []SentinelNodes `json:"sentinel_nodes,omitempty"`
+	ClusterNodes           []ClusterNodes  `json:"cluster_nodes,omitempty"`
+	ClusterMaxRedirections *int64          `json:"cluster_max_redirections,omitempty"`
 	// Cloud-managed Redis authentication. Only the fields relevant to the chosen `auth_provider` need to be set.
 	CloudAuthentication *DatastoreRedisCloudAuthentication `json:"cloud_authentication,omitempty"`
 }

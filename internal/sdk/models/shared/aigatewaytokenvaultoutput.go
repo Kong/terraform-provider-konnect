@@ -133,7 +133,7 @@ type AIGatewayTokenVaultOutput struct {
 	// only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault
 	// Datastore before being cached.
 	//
-	Cache *AIGatewayTokenVaultCache `json:"cache"`
+	Cache *AIGatewayTokenVaultCache `json:"cache,omitempty"`
 	// Read-only. The directory and encryption key versions this entity's credentials are stored
 	// with, resolved from the `token-vault` Datastore referenced in `datastores`; change them on
 	// the Datastore.
@@ -244,7 +244,7 @@ type AIGatewayTokenVault struct {
 	// only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault
 	// Datastore before being cached.
 	//
-	Cache *Cache `json:"cache"`
+	Cache *Cache `json:"cache,omitempty"`
 }
 
 func (a AIGatewayTokenVault) MarshalJSON() ([]byte, error) {
