@@ -8787,6 +8787,7 @@ paths:
                   nullable: true
                   x-speakeasy-name-override: consumer_id
                   x-speakeasy-param-computed: false
+                  x-speakeasy-entity-version: 1
       responses:
         '201':
           description: Consumer added to group
