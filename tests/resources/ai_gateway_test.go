@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/config"
@@ -647,6 +648,118 @@ func TestAIGateway(t *testing.T) {
 					),
 				},
 			},
+		})
+	})
+
+	t.Run("datastore", func(t *testing.T) {
+		t.Run("token-vault", func(t *testing.T) {
+			resource.Test(t, resource.TestCase{
+				ProtoV6ProviderFactories: providerFactory,
+				Steps: []resource.TestStep{
+					{
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestNameDirectory(),
+						Check: resource.ComposeAggregateTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_datastore.my_aigatewaydatastore_token_vault", "token_vault.name", "tf-test-token-vault"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_datastore.my_aigatewaydatastore_token_vault", "token_vault.config.current_version", "v1"),
+						),
+					},
+					{
+						// Rotate the encryption key (keep v1 so existing tokens stay decryptable)
+						// and update the in-place mutable fields.
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestStepDirectory(),
+						Check: resource.ComposeAggregateTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_datastore.my_aigatewaydatastore_token_vault", "token_vault.config.current_version", "v2"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_datastore.my_aigatewaydatastore_token_vault", "token_vault.config.keys.#", "2"),
+						),
+					},
+				},
+			})
+		})
+
+		t.Run("token-vault-literal-key-rejected", func(t *testing.T) {
+			resource.Test(t, resource.TestCase{
+				ProtoV6ProviderFactories: providerFactory,
+				Steps: []resource.TestStep{
+					{
+						// A literal key (not a {vault://...} reference) must fail validation
+						// at plan time, before anything is created.
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestNameDirectory(),
+						ExpectError:     regexp.MustCompile(`Invalid Attribute Value Match`),
+					},
+				},
+			})
+		})
+
+		t.Run("redis-ce", func(t *testing.T) {
+			resource.Test(t, resource.TestCase{
+				ProtoV6ProviderFactories: providerFactory,
+				Steps: []resource.TestStep{
+					{
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestNameDirectory(),
+						Check: resource.ComposeAggregateTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_datastore.my_aigatewaydatastore_redis_ce", "redis_ce.name", "tf-test-redis-ce"),
+						),
+					},
+					{
+						// Update redis_ce.display_name
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestStepDirectory(),
+						Check: resource.ComposeTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_datastore.my_aigatewaydatastore_redis_ce", "redis_ce.display_name", "TF Test Redis CE Updated"),
+						),
+					},
+				},
+			})
+		})
+
+		t.Run("redis-ee", func(t *testing.T) {
+			resource.Test(t, resource.TestCase{
+				ProtoV6ProviderFactories: providerFactory,
+				Steps: []resource.TestStep{
+					{
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestNameDirectory(),
+						Check: resource.ComposeAggregateTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_datastore.my_aigatewaydatastore_redis_ee", "redis_ee.name", "tf-test-redis-ee"),
+						),
+					},
+					{
+						// Update redis_ee.display_name
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestStepDirectory(),
+						Check: resource.ComposeTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_datastore.my_aigatewaydatastore_redis_ee", "redis_ee.display_name", "TF Test Redis EE Updated"),
+						),
+					},
+				},
+			})
+		})
+
+		t.Run("vectordb", func(t *testing.T) {
+			resource.Test(t, resource.TestCase{
+				ProtoV6ProviderFactories: providerFactory,
+				Steps: []resource.TestStep{
+					{
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestNameDirectory(),
+						Check: resource.ComposeAggregateTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_datastore.my_aigatewaydatastore_vectordb", "vectordb.name", "tf-test-vectordb"),
+						),
+					},
+					{
+						// Update vectordb.display_name
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestStepDirectory(),
+						Check: resource.ComposeTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_datastore.my_aigatewaydatastore_vectordb", "vectordb.display_name", "TF Test VectorDB Updated"),
+						),
+					},
+				},
+			})
 		})
 	})
 }
