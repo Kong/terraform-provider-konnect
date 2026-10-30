@@ -7,6 +7,6 @@ import (
 )
 
 type VirtualClusterAuthenticationValidate struct {
-	Audiences []EventGatewayACLOperation `tfsdk:"audiences"`
-	Issuer    types.String               `tfsdk:"issuer"`
+	Audiences []AIGatewayDatastoreRef `tfsdk:"audiences"`
+	Issuer    types.String            `tfsdk:"issuer"`
 }

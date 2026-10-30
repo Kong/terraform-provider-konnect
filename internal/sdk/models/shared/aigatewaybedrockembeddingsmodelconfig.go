@@ -24,6 +24,11 @@ type AIGatewayBedrockEmbeddingsModelConfig struct {
 	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 	// S3 URI for storing video generation outputs.
 	VideoOutputS3URI *string `json:"video_output_s3_uri,omitempty"`
+	// Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.
+	// Ignored if `upstream_url` is set.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	VpcEndpoint *string `json:"vpc_endpoint,omitempty"`
 }
 
 func (a AIGatewayBedrockEmbeddingsModelConfig) MarshalJSON() ([]byte, error) {
@@ -81,4 +86,11 @@ func (a *AIGatewayBedrockEmbeddingsModelConfig) GetVideoOutputS3URI() *string {
 		return nil
 	}
 	return a.VideoOutputS3URI
+}
+
+func (a *AIGatewayBedrockEmbeddingsModelConfig) GetVpcEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.VpcEndpoint
 }

@@ -40,6 +40,11 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       realm            = "...my_realm..."
       run_on_preflight = true
     }
+    datastores = [
+      {
+        name = "shared-redis"
+      }
+    ]
     display_name = "Okta AI SE"
     labels = {
       key = "value"
@@ -216,6 +221,11 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       credential_claim = [
         "..."
       ]
+      credential_claims = [
+        [
+          # ...
+        ]
+      ]
       disable_session = [
         "bearer"
       ]
@@ -355,9 +365,15 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       ]
       preserve_query_args = false
       principals = {
-        directory             = "default"
-        enabled               = false
-        error_on_miss         = true
+        directory     = "default"
+        enabled       = false
+        error_on_miss = true
+        jit = {
+          all_claims = false
+          claims = [
+            "..."
+          ]
+        }
         match_consumer        = true
         match_consumer_groups = true
         principal_by          = "...my_principal_by..."
@@ -365,9 +381,19 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
           "..."
         ]
       }
-      proof_of_possession_auth_methods_validation       = true
-      proof_of_possession_dpop                          = "off"
-      proof_of_possession_mtls                          = "off"
+      proof_of_possession_auth_methods_validation = true
+      proof_of_possession_dpop                    = "off"
+      proof_of_possession_mtls                    = "off"
+      protected_resource_metadata = {
+        authorization_servers = [
+          "..."
+        ]
+        metadata_endpoint = "...my_metadata_endpoint..."
+        resource          = "...my_resource..."
+        scopes_supported = [
+          "..."
+        ]
+      }
       pushed_authorization_request_endpoint             = "...my_pushed_authorization_request_endpoint..."
       pushed_authorization_request_endpoint_auth_method = "self_signed_tls_client_auth"
       redirect_uri = [
@@ -504,12 +530,35 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
           enabled = true
           ttl     = 7
         }
+        grant_type          = "token_exchange"
+        map_identities_from = "exchanged_tokens"
+        provider            = "standard"
         request = {
+          actor_token = {
+            header_name  = "...my_header_name..."
+            source       = "none"
+            static_token = "...my_static_token..."
+            type         = "urn:ietf:params:oauth:token-type:access_token"
+          }
           audience = [
             "..."
           ]
-          empty_audience = false
-          empty_scopes   = false
+          empty_audience  = false
+          empty_headers   = false
+          empty_post_args = false
+          empty_scopes    = false
+          headers_names = [
+            "..."
+          ]
+          headers_values = [
+            "..."
+          ]
+          post_args_names = [
+            "..."
+          ]
+          post_args_values = [
+            "..."
+          ]
           scopes = [
             "..."
           ]
@@ -530,7 +579,10 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
                 "..."
               ]
             }
-            issuer = "...my_issuer..."
+            deny_on_mismatch = false
+            issuer           = "...my_issuer..."
+            jwks_uri         = "...my_jwks_uri..."
+            verify_signature = false
           }
         ]
       }
@@ -618,6 +670,11 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       verify_parameters   = false
       verify_signature    = true
     }
+    datastores = [
+      {
+        name = "shared-redis"
+      }
+    ]
     display_name = "Okta AI SE"
     labels = {
       key = "value"
@@ -626,6 +683,9 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       key = "value"
     }
     name = "okta-ai-se"
+    token_vault = {
+      enable_credential_manager = false
+    }
   }
 }
 ```
@@ -656,6 +716,12 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
 Optional:
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--key_auth--config))
+- `datastores` (Attributes List) The Token Vault Datastore holding this entity's credential storage: the directory credentials
+are written to, and the encryption keys that seal them. Required when `token_vault` is set
+(on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+must have type `token-vault`. Only one Datastore can be referenced.
+
+**Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--key_auth--datastores))
 - `display_name` (String) The display name for this auth strategy instance. Not Null
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
@@ -710,6 +776,14 @@ Optional:
 
 
 
+<a id="nestedatt--key_auth--datastores"></a>
+### Nested Schema for `key_auth.datastores`
+
+Optional:
+
+- `name` (String) An immutable user-defined identifier for this resource. Not Null
+
+
 
 <a id="nestedatt--openid_connect"></a>
 ### Nested Schema for `openid_connect`
@@ -717,6 +791,12 @@ Optional:
 Optional:
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--openid_connect--config))
+- `datastores` (Attributes List) The Token Vault Datastore holding this entity's credential storage: the directory credentials
+are written to, and the encryption keys that seal them. Required when `token_vault` is set
+(on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+must have type `token-vault`. Only one Datastore can be referenced.
+
+**Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--openid_connect--datastores))
 - `display_name` (String) The display name for this auth strategy instance. Not Null
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
@@ -727,6 +807,13 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
 - `name` (String) A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
+- `token_vault` (Attributes) Serves the self-service enrollment UI through which end users authorize the upstream providers
+this auth strategy authenticates against. Omit `token_vault` entirely to serve no such UI.
+
+Requires a `token-vault` Datastore reference in `datastores`; enabling the credential manager
+without one is rejected.
+
+**Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--openid_connect--token_vault))
 
 Read-Only:
 
@@ -757,7 +844,10 @@ Optional:
 - `authorization_query_args_values` (List of String) Extra query argument values passed to the authorization endpoint.
 - `authorization_rolling_timeout` (Number) Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling. Default: 600
 - `bearer_token_cookie_name` (String) The name of the cookie in which the bearer token is passed.
-- `bearer_token_header_name` (String) The name of the HTTP header from which the bearer token is retrieved. The default value is `authorization:bearer`, which reads the token from the `Authorization: Bearer <token>` header. Accepts plain header names such as `x-my-token` as well as Kong's special `authorization:bearer` notation. The `access-token` and `x-access-token` headers are also checked as a fallback for backward compatibility regardless of this setting. Default: "authorization:bearer"
+- `bearer_token_header_name` (String) The name of the HTTP header from which the bearer token is retrieved. The default value is `authorization:bearer`, which reads the token from the `Authorization: Bearer <token>` header. Accepts plain header names such as `x-my-token` as well as Kong's special `authorization:bearer` notation. The `access-token` and `x-access-token` headers are also checked as a fallback for backward compatibility regardless of this setting.
+
+**Requires a minimum runtime version of `2.1`**.
+Default: "authorization:bearer"
 - `bearer_token_param_type` (List of String) Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`. Default: ["body","header","query"]
 - `by_username_ignore_case` (Boolean) If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively. Default: false
 - `cache_introspection` (Boolean) Cache the introspection endpoint requests. Default: true
@@ -785,7 +875,10 @@ Optional:
 - `consumer_groups_claim` (List of String) The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
 - `consumer_groups_optional` (Boolean) Do not terminate the request if consumer groups mapping fails. Default: false
 - `consumer_optional` (Boolean) Do not terminate the request if consumer mapping fails. Default: false
-- `credential_claim` (List of String) The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["sub"]
+- `credential_claim` (List of String) Claim path used to derive virtual credentials when consumer mapping is not used.
+- `credential_claims` (List of List of String) The claims used to derive a virtual credential, for example to be consumed by the rate-limiting plugin, when consumer mapping is not used. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.
+
+**Requires a minimum runtime version of `2.3`**.
 - `disable_session` (List of String) Disable issuing the session cookie with the specified grants.
 - `discovery_headers_names` (List of String) Extra header names passed to the discovery endpoint.
 - `discovery_headers_values` (List of String) Extra header values passed to the discovery endpoint.
@@ -872,6 +965,9 @@ Default: false
 - `proof_of_possession_auth_methods_validation` (Boolean) If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP. Default: true
 - `proof_of_possession_dpop` (String) Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof. possible known values include one of ["off", "optional", "strict"]; Default: "off"
 - `proof_of_possession_mtls` (String) Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. possible known values include one of ["off", "optional", "strict"]; Default: "off"
+- `protected_resource_metadata` (Attributes) When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.
+
+**Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--openid_connect--config--protected_resource_metadata))
 - `pushed_authorization_request_endpoint` (String) The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
 - `pushed_authorization_request_endpoint_auth_method` (String) The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
 - `redirect_uri` (List of String) The redirect URI passed to the authorization and token endpoints.
@@ -1090,10 +1186,33 @@ Optional:
 - `directory` (String) The Kong Identity directory instance to look up against. Default: "default"
 - `enabled` (Boolean) When true, query Kong Identity to map a Principal after token verification. Default: false
 - `error_on_miss` (Boolean) When true (default), return 401 if fail to match a Principal in Kong Identity after token verification. When false, the request continues without authenticated_principal set. Default: true
+- `jit` (Attributes) Token claims to share with the Kong Identity principal lookup. Kong Identity, not this plugin, decides whether the claims are used: a trusted IdP with JIT provisioning enabled in Konnect maps them onto a principal provisioned just in time. By default the lookup only carries the principal claim (e.g. 'sub') and no additional claims are shared.
+
+**Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--openid_connect--config--principals--jit))
 - `match_consumer` (Boolean) If a Consumer is attached to the matched Principal in Kong Identity, load it and set it in the request context, overriding consumer_by. Default: true
 - `match_consumer_groups` (Boolean) If Consumer Groups are attached to the matched Principal in Kong Identity, load them, overriding consumer_groups_claim. Default: true
 - `principal_by` (String) Custom identity name for a type=custom Kong Identity lookup. When absent and principal_claim is set, an OIDC lookup is performed using principal_claim as the claim name instead of 'sub'.
 - `principal_claim` (List of String) Token claim to use for the Kong Identity lookup. If multiple values are set, it means the claim is inside a nested object of the token payload. When principal_by is also set, performs a custom identity lookup (type=custom). When set alone, performs an OIDC lookup using this claim name instead of the default 'sub'.
+
+<a id="nestedatt--openid_connect--config--principals--jit"></a>
+### Nested Schema for `openid_connect.config.principals.jit`
+
+Optional:
+
+- `all_claims` (Boolean) Send the full set of verified token claims with the Kong Identity principal lookup. Default: false
+- `claims` (List of String) Send only the named token claims with the Kong Identity principal lookup. The claims are picked from the same source the principal claim is read from. Set all_claims to send every verified claim instead.
+
+
+
+<a id="nestedatt--openid_connect--config--protected_resource_metadata"></a>
+### Nested Schema for `openid_connect.config.protected_resource_metadata`
+
+Optional:
+
+- `authorization_servers` (List of String) List of authorization server issuer URIs to advertise in the RFC 9728 metadata document. Not Null
+- `metadata_endpoint` (String) Override the well-known metadata endpoint path. Defaults to the path component of resource with /.well-known/oauth-protected-resource appended.
+- `resource` (String) The URI of the protected resource. Used as the resource field in the RFC 9728 metadata document and to derive the well-known endpoint path. Not Null
+- `scopes_supported` (List of String) Scopes supported by this protected resource. Included in the RFC 9728 metadata document and in the scope attribute of WWW-Authenticate challenge headers on 401 responses.
 
 
 <a id="nestedatt--openid_connect--config--redis"></a>
@@ -1170,6 +1289,18 @@ Optional:
 Optional:
 
 - `cache` (Attributes) Cache support for token exchange (see [below for nested schema](#nestedatt--openid_connect--config--token_exchange--cache))
+- `grant_type` (String) The token exchange grant. `token_exchange` (default) uses the OAuth 2.0 Token Exchange grant (RFC 8693). `jwt_bearer` uses the JWT Bearer authorization-grant flow (RFC 7523); see `token_exchange.provider` for provider-specific defaults in this mode.
+
+**Requires a minimum runtime version of `2.3`**.
+possible known values include one of ["jwt_bearer", "token_exchange"]; Default: "token_exchange"
+- `map_identities_from` (String) Which token's claims to use for consumer, consumer group, and principal mapping. Only takes effect when token exchange is configured. `exchanged_tokens` (default) uses the token(s) returned by the exchange or tokens derived from it, as today. `subject_token` uses the original, pre-exchange bearer token's claims instead.
+
+**Requires a minimum runtime version of `2.3`**.
+possible known values include one of ["exchanged_tokens", "subject_token"]; Default: "exchanged_tokens"
+- `provider` (String) Identity provider used with `grant_type = jwt_bearer`; not allowed with `grant_type = token_exchange`. `standard` (default) adds no provider-specific parameter. `microsoft` adds the required `requested_token_use=on_behalf_of`, which is fixed and cannot be overridden via `post_args_names/values`.
+
+**Requires a minimum runtime version of `2.3`**.
+possible known values include one of ["microsoft", "standard"]; Default: "standard"
 - `request` (Attributes) Parameters used in the token exchange request. (see [below for nested schema](#nestedatt--openid_connect--config--token_exchange--request))
 - `subject_token_issuers` (Attributes List) Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged. Not Null (see [below for nested schema](#nestedatt--openid_connect--config--token_exchange--subject_token_issuers))
 
@@ -1187,10 +1318,44 @@ Optional:
 
 Optional:
 
+- `actor_token` (Attributes) How to obtain the actor token to include in the token exchange request. Represents the identity of the party acting on behalf of the subject.
+
+**Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--openid_connect--config--token_exchange--request--actor_token))
 - `audience` (List of String) Audiences used in the token exchange request. Values defined here override those defined in `config.audience`.
-- `empty_audience` (Boolean) Use empty audiences. Use this field to override audiences defined in `config.audience`. Default: false
-- `empty_scopes` (Boolean) Use empty scopes. Use this field to override scopes defined in `config.scopes`. Default: false
+- `empty_audience` (Boolean) Use empty audiences. Use this field to remove audiences defined in `config.audience`. Default: false
+- `empty_headers` (Boolean) Use no extra headers on the token exchange request. Use this field to remove extra headers defined in `config.token_headers_names`.
+
+**Requires a minimum runtime version of `2.3`**.
+Default: false
+- `empty_post_args` (Boolean) Use no extra POST arguments on the token exchange request. Use this field to remove extra POST arguments defined in `config.token_post_args_names`.
+
+**Requires a minimum runtime version of `2.3`**.
+Default: false
+- `empty_scopes` (Boolean) Use empty scopes. Use this field to remove scopes defined in `config.scopes`. Default: false
+- `headers_names` (List of String) Extra header names sent only on the token exchange request. Overrides `config.token_headers_names` for this request.
+
+**Requires a minimum runtime version of `2.3`**.
+- `headers_values` (List of String) Values paired by index with `headers_names`.
+
+**Requires a minimum runtime version of `2.3`**.
+- `post_args_names` (List of String) Extra POST argument names sent only on the token exchange request. Overrides `config.token_post_args_names` for this request. Use this, not the top-level field, for parameters that must not be attached to the plugin's other token endpoint calls, for example `requested_token_use` for Entra ID's On-Behalf-Of flow.
+
+**Requires a minimum runtime version of `2.3`**.
+- `post_args_values` (List of String) Values paired by index with `post_args_names`.
+
+**Requires a minimum runtime version of `2.3`**.
 - `scopes` (List of String) Scopes used in the token exchange request. Values defined here override those defined in `config.scopes`.
+
+<a id="nestedatt--openid_connect--config--token_exchange--request--actor_token"></a>
+### Nested Schema for `openid_connect.config.token_exchange.request.actor_token`
+
+Optional:
+
+- `header_name` (String) Header name containing the actor token. Required when `source` is `header`.
+- `source` (String) Where to obtain the actor token. `header` reads it from a request header. `config` uses a fixed value. `none` disables actor token support. possible known values include one of ["config", "header", "none"]; Default: "none"
+- `static_token` (String) Static actor token value. Required when `source` is `config`.
+- `type` (String) The RFC 8693 token type identifier of the actor token (the `actor_token_type` request parameter). Default: "urn:ietf:params:oauth:token-type:access_token"
+
 
 
 <a id="nestedatt--openid_connect--config--token_exchange--subject_token_issuers"></a>
@@ -1198,18 +1363,29 @@ Optional:
 
 Optional:
 
-- `conditions` (Attributes) A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined. (see [below for nested schema](#nestedatt--openid_connect--config--token_exchange--subject_token_issuers--conditions))
+- `conditions` (Attributes) A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined -- every token from that issuer is exchanged unconditionally, since a foreign-issued token that isn't exchanged can never pass normal verification against the target issuer anyway. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined. (see [below for nested schema](#nestedatt--openid_connect--config--token_exchange--subject_token_issuers--conditions))
+- `deny_on_mismatch` (Boolean) When true, a token issued by `issuer` that fails to match `conditions` is denied instead of being passed through unexchanged. Evaluated independently for this item only, with no effect on other `subject_token_issuers` items. Only allowed when this issuer is the target issuer, since `conditions` is required there and foreign-issuer items always match.
+
+**Requires a minimum runtime version of `2.3`**.
+Default: false
 - `issuer` (String) Tokens of whose iss claim matches this value will be exchanged. Not Null
+- `jwks_uri` (String) An explicit JWKS endpoint for this issuer. This field should be left empty when this issuer is the same as the target issuer. It is only used when `verify_signature` is `true`. When set, Kong fetches the signing keys from this URI directly instead of using OIDC Discovery.
+
+**Requires a minimum runtime version of `2.3`**.
+- `verify_signature` (Boolean) When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. This field should be left empty or set to `false` when this issuer is the same as the target issuer. Defaults to `false` for backward compatibility.
+
+**Requires a minimum runtime version of `2.3`**.
+Default: false
 
 <a id="nestedatt--openid_connect--config--token_exchange--subject_token_issuers--conditions"></a>
 ### Nested Schema for `openid_connect.config.token_exchange.subject_token_issuers.conditions`
 
 Optional:
 
-- `has_audience` (List of String)
-- `has_scopes` (List of String)
-- `missing_audience` (List of String)
-- `missing_scopes` (List of String)
+- `has_audience` (List of String) Audience values that must all be present in the token, matched against `audience_claim`.
+- `has_scopes` (List of String) Scope values that must all be present in the token, matched against `scopes_claim`.
+- `missing_audience` (List of String) Audience values that must all be absent from the token, matched against `audience_claim`.
+- `missing_scopes` (List of String) Scope values that must all be absent from the token, matched against `scopes_claim`.
 
 
 
@@ -1221,6 +1397,46 @@ Optional:
 
 - `header` (String) The name of the header. Not Null
 - `path` (List of String) The path of the header value. Not Null
+
+
+
+<a id="nestedatt--openid_connect--datastores"></a>
+### Nested Schema for `openid_connect.datastores`
+
+Optional:
+
+- `name` (String) An immutable user-defined identifier for this resource. Not Null
+
+
+<a id="nestedatt--openid_connect--token_vault"></a>
+### Nested Schema for `openid_connect.token_vault`
+
+Optional:
+
+- `enable_credential_manager` (Boolean) Whether the self-service enrollment UI is served for this auth strategy. Default: false
+
+Read-Only:
+
+- `storage` (Attributes) Read-only. The directory and encryption key versions this entity's credentials are stored
+with, resolved from the `token-vault` Datastore referenced in `datastores`; change them on
+the Datastore. (see [below for nested schema](#nestedatt--openid_connect--token_vault--storage))
+
+<a id="nestedatt--openid_connect--token_vault--storage"></a>
+### Nested Schema for `openid_connect.token_vault.storage`
+
+Read-Only:
+
+- `current_version` (String) The version of the encryption key used to encrypt new tokens.
+- `directory` (String) The name of the directory in which tokens are stored.
+- `keys` (Attributes List) The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted. (see [below for nested schema](#nestedatt--openid_connect--token_vault--storage--keys))
+
+<a id="nestedatt--openid_connect--token_vault--storage--keys"></a>
+### Nested Schema for `openid_connect.token_vault.storage.keys`
+
+Read-Only:
+
+- `key` (String) A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.
+- `version` (String) The identifier of this key version.
 
 ## Import
 

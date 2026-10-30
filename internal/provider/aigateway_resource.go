@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
@@ -48,6 +49,7 @@ type AIGatewayResourceModel struct {
 	DisplayName        types.String                `tfsdk:"display_name"`
 	Endpoints          *tfTypes.Endpoints          `tfsdk:"endpoints"`
 	ID                 types.String                `tfsdk:"id"`
+	KonnectManaged     types.Bool                  `tfsdk:"konnect_managed"`
 	Labels             map[string]types.String     `tfsdk:"labels"`
 	MinRuntimeVersion  types.String                `tfsdk:"min_runtime_version"`
 	Name               types.String                `tfsdk:"name"`
@@ -131,6 +133,13 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Contains a unique identifier used for this resource.`,
+			},
+			"konnect_managed": schema.BoolAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+				},
+				Description: `An immutable read-only flag to identify resource managed by Konnect services.`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,

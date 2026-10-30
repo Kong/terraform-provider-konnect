@@ -8,7 +8,7 @@ import (
 
 type EventGatewayACLRule struct {
 	Action        types.String                  `tfsdk:"action"`
-	Operations    []EventGatewayACLOperation    `tfsdk:"operations"`
+	Operations    []AIGatewayDatastoreRef       `tfsdk:"operations"`
 	ResourceNames []EventGatewayACLResourceName `tfsdk:"resource_names"`
 	ResourceType  types.String                  `tfsdk:"resource_type"`
 }

@@ -28,14 +28,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls == nil {
 						r.ConversionListener.Access.Consumer.Acls = nil
 					} else {
-						r.ConversionListener.Access.Consumer.Acls = &tfTypes.AIGatewayMCPACLs{}
+						r.ConversionListener.Access.Consumer.Acls = &tfTypes.AIGatewayACLS{}
 						r.ConversionListener.Access.Consumer.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow {
 							r.ConversionListener.Access.Consumer.Acls.Allow = append(r.ConversionListener.Access.Consumer.Acls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen != nil {
+							r.ConversionListener.Access.Consumer.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen {
+								r.ConversionListener.Access.Consumer.Acls.AllowWhen = append(r.ConversionListener.Access.Consumer.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.Consumer.Acls.AllowWhen = nil
+						}
 						r.ConversionListener.Access.Consumer.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Deny))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Deny {
 							r.ConversionListener.Access.Consumer.Acls.Deny = append(r.ConversionListener.Access.Consumer.Acls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen != nil {
+							r.ConversionListener.Access.Consumer.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen {
+								r.ConversionListener.Access.Consumer.Acls.DenyWhen = append(r.ConversionListener.Access.Consumer.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.Consumer.Acls.DenyWhen = nil
 						}
 					}
 					r.ConversionListener.Access.Consumer.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.AuthStrategies))
@@ -45,14 +61,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls == nil {
 						r.ConversionListener.Access.Consumer.DefaultToolAcls = nil
 					} else {
-						r.ConversionListener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
+						r.ConversionListener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
 						r.ConversionListener.Access.Consumer.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow {
 							r.ConversionListener.Access.Consumer.DefaultToolAcls.Allow = append(r.ConversionListener.Access.Consumer.DefaultToolAcls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen != nil {
+							r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen {
+								r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen = append(r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen = nil
+						}
 						r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Deny))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Deny {
 							r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny = append(r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen != nil {
+							r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen {
+								r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen = append(r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen = nil
 						}
 					}
 					r.ConversionListener.Access.Consumer.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders))
@@ -82,14 +114,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls == nil {
 						r.ConversionListener.Access.OauthAccessToken.Acls = nil
 					} else {
-						r.ConversionListener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayMCPACLs{}
+						r.ConversionListener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayACLS{}
 						r.ConversionListener.Access.OauthAccessToken.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow {
 							r.ConversionListener.Access.OauthAccessToken.Acls.Allow = append(r.ConversionListener.Access.OauthAccessToken.Acls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen != nil {
+							r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen {
+								r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen = append(r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen = nil
+						}
 						r.ConversionListener.Access.OauthAccessToken.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Deny))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Deny {
 							r.ConversionListener.Access.OauthAccessToken.Acls.Deny = append(r.ConversionListener.Access.OauthAccessToken.Acls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen != nil {
+							r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen {
+								r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen = append(r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen = nil
 						}
 					}
 					r.ConversionListener.Access.OauthAccessToken.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.AuthStrategies))
@@ -99,14 +147,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls == nil {
 						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls = nil
 					} else {
-						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
+						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
 						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow {
 							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow = append(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen != nil {
+							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen {
+								r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = append(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = nil
+						}
 						r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Deny))
 						for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Deny {
 							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny = append(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen != nil {
+							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen {
+								r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = append(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = nil
 						}
 					}
 					r.ConversionListener.Access.OauthAccessToken.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Access.AIGatewayMCPServerListenerOauth.IdentityProviders))
@@ -144,6 +208,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			} else {
 				r.ConversionListener.Config.AllowedVersions = nil
 			}
+			r.ConversionListener.Config.CaCertificates = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.CaCertificates))
+			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.CaCertificates {
+				r.ConversionListener.Config.CaCertificates = append(r.ConversionListener.Config.CaCertificates, types.StringValue(v))
+			}
 			if resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache == nil {
 				r.ConversionListener.Config.Cache = nil
 			} else {
@@ -170,6 +238,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 					r.ConversionListener.Config.Cache.ToolsList.TTLMs = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.ToolsList.TTLMs)
 				}
+			}
+			r.ConversionListener.Config.Certificates = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Certificates))
+			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Certificates {
+				r.ConversionListener.Config.Certificates = append(r.ConversionListener.Config.Certificates, types.StringValue(v))
 			}
 			if resp.AIGatewayMCPServerConversionListenerResponse.Config.Logging == nil {
 				r.ConversionListener.Config.Logging = nil
@@ -304,10 +376,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.ConversionListener.Config.Server.Session.Redis.Cluster = &tfTypes.Cluster{}
 							r.ConversionListener.Config.Server.Session.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Cluster.Nodes != nil {
-								r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
+								r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 								for _, nodesItem := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Cluster.Nodes {
-									var nodes tfTypes.ClusterNodes
+									var nodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 									nodes.IP = types.StringPointerValue(nodesItem.IP)
 									nodes.Port = types.Int64PointerValue(nodesItem.Port)
@@ -339,10 +411,10 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.ConversionListener.Config.Server.Session.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.ConversionListener.Config.Server.Session.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-								r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
+								r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 								for _, nodesItem1 := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
-									var nodes1 tfTypes.SentinelNodes
+									var nodes1 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 									nodes1.Host = types.StringPointerValue(nodesItem1.Host)
 									nodes1.Port = types.Int64PointerValue(nodesItem1.Port)
@@ -406,6 +478,19 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			r.ConversionListener.Config.URL = types.StringValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.URL)
 			r.ConversionListener.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerConversionListenerResponse.CreatedAt))
 			r.CreatedAt = r.ConversionListener.CreatedAt
+			if resp.AIGatewayMCPServerConversionListenerResponse.Datastores != nil {
+				r.ConversionListener.Datastores = []tfTypes.AIGatewayDatastoreRef{}
+
+				for _, datastoresItem := range resp.AIGatewayMCPServerConversionListenerResponse.Datastores {
+					var datastores tfTypes.AIGatewayDatastoreRef
+
+					datastores.Name = types.StringValue(datastoresItem.Name)
+
+					r.ConversionListener.Datastores = append(r.ConversionListener.Datastores, datastores)
+				}
+			} else {
+				r.ConversionListener.Datastores = nil
+			}
 			r.ConversionListener.DisplayName = types.StringValue(resp.AIGatewayMCPServerConversionListenerResponse.DisplayName)
 			r.DisplayName = r.ConversionListener.DisplayName
 			r.ConversionListener.Enabled = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Enabled)
@@ -430,6 +515,210 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Policies {
 				r.ConversionListener.Policies = append(r.ConversionListener.Policies, types.StringValue(v))
 			}
+			if resp.AIGatewayMCPServerConversionListenerResponse.RateLimiting == nil {
+				r.ConversionListener.RateLimiting = nil
+			} else {
+				r.ConversionListener.RateLimiting = &tfTypes.AIGatewayMCPServerRateLimiting{}
+				r.ConversionListener.RateLimiting.Limits = []tfTypes.AIGatewayMCPServerRateLimit{}
+
+				for _, limitsItem := range resp.AIGatewayMCPServerConversionListenerResponse.RateLimiting.Limits {
+					var limits tfTypes.AIGatewayMCPServerRateLimit
+
+					limits.Limit = types.Int64Value(limitsItem.Limit)
+					limits.Method = types.StringPointerValue(limitsItem.Method)
+					limits.Tool = types.StringPointerValue(limitsItem.Tool)
+					limits.WindowSize = types.Int64Value(int64(limitsItem.WindowSize))
+
+					r.ConversionListener.RateLimiting.Limits = append(r.ConversionListener.RateLimiting.Limits, limits)
+				}
+			}
+			if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault == nil {
+				r.ConversionListener.TokenVault = nil
+			} else {
+				var tokenVaultPriorData *tfTypes.AIGatewayTokenVault
+				if conversionListenerPriorData != nil {
+					tokenVaultPriorData = conversionListenerPriorData.TokenVault
+				}
+				r.ConversionListener.TokenVault = &tfTypes.AIGatewayTokenVault{}
+				if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache == nil {
+					r.ConversionListener.TokenVault.Cache = nil
+				} else {
+					var cachePriorData *tfTypes.Cache
+					if tokenVaultPriorData != nil {
+						cachePriorData = tokenVaultPriorData.Cache
+					}
+					r.ConversionListener.TokenVault.Cache = &tfTypes.Cache{}
+					if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis == nil {
+						r.ConversionListener.TokenVault.Cache.Redis = nil
+					} else {
+						var redisPriorData1 *tfTypes.AIGatewayRedisCloudConfiguration
+						if cachePriorData != nil {
+							redisPriorData1 = cachePriorData.Redis
+						}
+						r.ConversionListener.TokenVault.Cache.Redis = &tfTypes.AIGatewayRedisCloudConfiguration{}
+						if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.CloudAuthentication != nil {
+							cloudAuthenticationPriorData1 := redisPriorData1.CloudAuthentication
+							r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication = &tfTypes.CloudAuthentication{}
+							if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
+								var awsPriorData2 *tfTypes.AIGatewayRedisAWSAuthentication
+								if cloudAuthenticationPriorData1 != nil {
+									awsPriorData2 = cloudAuthenticationPriorData1.Aws
+								}
+								r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws = &tfTypes.AIGatewayRedisAWSAuthentication{}
+								r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
+								r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AssumeRoleArn)
+								r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.CacheName)
+								r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
+								r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
+								r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
+								if awsPriorData2 != nil {
+									r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData2.SecretAccessKey
+								}
+							}
+							if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
+								var azurePriorData1 *tfTypes.AIGatewayRedisAzureAuthentication
+								if cloudAuthenticationPriorData1 != nil {
+									azurePriorData1 = cloudAuthenticationPriorData1.Azure
+								}
+								r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure = &tfTypes.AIGatewayRedisAzureAuthentication{}
+								r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.ClientID)
+								r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.TenantID)
+								if azurePriorData1 != nil {
+									r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret = azurePriorData1.ClientSecret
+								}
+							}
+							if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput != nil {
+								var gcpPriorData1 *tfTypes.AIGatewayRedisGCPAuthentication
+								if cloudAuthenticationPriorData1 != nil {
+									gcpPriorData1 = cloudAuthenticationPriorData1.Gcp
+								}
+								r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp = &tfTypes.AIGatewayRedisGCPAuthentication{}
+								if gcpPriorData1 != nil {
+									r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON = gcpPriorData1.ServiceAccountJSON
+								}
+							}
+						}
+						if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Cluster == nil {
+							r.ConversionListener.TokenVault.Cache.Redis.Cluster = nil
+						} else {
+							r.ConversionListener.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
+							r.ConversionListener.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Cluster.MaxRedirections)
+							if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+								r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+
+								for _, nodesItem2 := range resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Cluster.Nodes {
+									var nodes2 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+
+									nodes2.IP = types.StringPointerValue(nodesItem2.IP)
+									nodes2.Port = types.Int64PointerValue(nodesItem2.Port)
+
+									r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes = append(r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes, nodes2)
+								}
+							} else {
+								r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes = nil
+							}
+						}
+						r.ConversionListener.TokenVault.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.ConnectTimeout)
+						r.ConversionListener.TokenVault.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.ConnectionIsProxied)
+						r.ConversionListener.TokenVault.Cache.Redis.Database = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Database)
+						r.ConversionListener.TokenVault.Cache.Redis.Host = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Host)
+						if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Keepalive == nil {
+							r.ConversionListener.TokenVault.Cache.Redis.Keepalive = nil
+						} else {
+							r.ConversionListener.TokenVault.Cache.Redis.Keepalive = &tfTypes.Keepalive{}
+							r.ConversionListener.TokenVault.Cache.Redis.Keepalive.Backlog = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Keepalive.Backlog)
+							r.ConversionListener.TokenVault.Cache.Redis.Keepalive.PoolSize = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Keepalive.PoolSize)
+						}
+						r.ConversionListener.TokenVault.Cache.Redis.Password = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Password)
+						r.ConversionListener.TokenVault.Cache.Redis.Port = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Port)
+						r.ConversionListener.TokenVault.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.ReadTimeout)
+						r.ConversionListener.TokenVault.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.SendTimeout)
+						if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Sentinel == nil {
+							r.ConversionListener.TokenVault.Cache.Redis.Sentinel = nil
+						} else {
+							r.ConversionListener.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
+							r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Sentinel.Master)
+							if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+								r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+
+								for _, nodesItem3 := range resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Sentinel.Nodes {
+									var nodes3 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+
+									nodes3.Host = types.StringPointerValue(nodesItem3.Host)
+									nodes3.Port = types.Int64PointerValue(nodesItem3.Port)
+
+									r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes = append(r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes, nodes3)
+								}
+							} else {
+								r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes = nil
+							}
+							r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Password = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Sentinel.Password)
+							if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Sentinel.Role != nil {
+								r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Role = types.StringValue(string(*resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Sentinel.Role))
+							} else {
+								r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Role = types.StringNull()
+							}
+							r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Username = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Sentinel.Username)
+						}
+						r.ConversionListener.TokenVault.Cache.Redis.ServerName = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.ServerName)
+						r.ConversionListener.TokenVault.Cache.Redis.Ssl = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Ssl)
+						r.ConversionListener.TokenVault.Cache.Redis.SslVerify = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.SslVerify)
+						r.ConversionListener.TokenVault.Cache.Redis.Username = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Cache.Redis.Username)
+					}
+				}
+				if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Credential == nil {
+					r.ConversionListener.TokenVault.Credential = nil
+				} else {
+					r.ConversionListener.TokenVault.Credential = &tfTypes.AIGatewayTokenVaultCredential{}
+					if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Credential.Inbound == nil {
+						r.ConversionListener.TokenVault.Credential.Inbound = nil
+					} else {
+						r.ConversionListener.TokenVault.Credential.Inbound = &tfTypes.AIGatewayTokenVaultCredentialPlacement{}
+						if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Credential.Inbound.Location != nil {
+							r.ConversionListener.TokenVault.Credential.Inbound.Location = types.StringValue(string(*resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Credential.Inbound.Location))
+						} else {
+							r.ConversionListener.TokenVault.Credential.Inbound.Location = types.StringNull()
+						}
+						r.ConversionListener.TokenVault.Credential.Inbound.Name = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Credential.Inbound.Name)
+						r.ConversionListener.TokenVault.Credential.Inbound.Prefix = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Credential.Inbound.Prefix)
+					}
+					if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Credential.Outbound == nil {
+						r.ConversionListener.TokenVault.Credential.Outbound = nil
+					} else {
+						r.ConversionListener.TokenVault.Credential.Outbound = &tfTypes.AIGatewayTokenVaultCredentialPlacement{}
+						if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Credential.Outbound.Location != nil {
+							r.ConversionListener.TokenVault.Credential.Outbound.Location = types.StringValue(string(*resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Credential.Outbound.Location))
+						} else {
+							r.ConversionListener.TokenVault.Credential.Outbound.Location = types.StringNull()
+						}
+						r.ConversionListener.TokenVault.Credential.Outbound.Name = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Credential.Outbound.Name)
+						r.ConversionListener.TokenVault.Credential.Outbound.Prefix = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Credential.Outbound.Prefix)
+					}
+				}
+				r.ConversionListener.TokenVault.Provider = types.StringValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Provider)
+				if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Storage == nil {
+					r.ConversionListener.TokenVault.Storage = nil
+				} else {
+					r.ConversionListener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.ConversionListener.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Storage.CurrentVersion)
+					r.ConversionListener.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Storage.Directory)
+					r.ConversionListener.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
+
+					for _, keysItem := range resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Storage.Keys {
+						var keys tfTypes.TokenVaultDatastoreKey
+
+						keys.Key = types.StringPointerValue(keysItem.Key)
+						keys.Version = types.StringValue(keysItem.Version)
+
+						r.ConversionListener.TokenVault.Storage.Keys = append(r.ConversionListener.TokenVault.Storage.Keys, keys)
+					}
+				}
+				if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.SubjectTokenType != nil {
+					r.ConversionListener.TokenVault.SubjectTokenType = types.StringValue(string(*resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.SubjectTokenType))
+				} else {
+					r.ConversionListener.TokenVault.SubjectTokenType = types.StringNull()
+				}
+			}
 			r.ConversionListener.Tools = []tfTypes.AIGatewayMCPConversionTool{}
 
 			for _, toolsItem := range resp.AIGatewayMCPServerConversionListenerResponse.Tools {
@@ -442,14 +731,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if toolsItem.Access.Acls == nil {
 						tools.Access.Acls = nil
 					} else {
-						tools.Access.Acls = &tfTypes.AIGatewayMCPACLs{}
+						tools.Access.Acls = &tfTypes.AIGatewayACLS{}
 						tools.Access.Acls.Allow = make([]types.String, 0, len(toolsItem.Access.Acls.Allow))
 						for _, v := range toolsItem.Access.Acls.Allow {
 							tools.Access.Acls.Allow = append(tools.Access.Acls.Allow, types.StringValue(v))
 						}
+						if toolsItem.Access.Acls.AllowWhen != nil {
+							tools.Access.Acls.AllowWhen = make([]types.String, 0, len(toolsItem.Access.Acls.AllowWhen))
+							for _, v := range toolsItem.Access.Acls.AllowWhen {
+								tools.Access.Acls.AllowWhen = append(tools.Access.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							tools.Access.Acls.AllowWhen = nil
+						}
 						tools.Access.Acls.Deny = make([]types.String, 0, len(toolsItem.Access.Acls.Deny))
 						for _, v := range toolsItem.Access.Acls.Deny {
 							tools.Access.Acls.Deny = append(tools.Access.Acls.Deny, types.StringValue(v))
+						}
+						if toolsItem.Access.Acls.DenyWhen != nil {
+							tools.Access.Acls.DenyWhen = make([]types.String, 0, len(toolsItem.Access.Acls.DenyWhen))
+							for _, v := range toolsItem.Access.Acls.DenyWhen {
+								tools.Access.Acls.DenyWhen = append(tools.Access.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							tools.Access.Acls.DenyWhen = nil
 						}
 					}
 				}
@@ -530,6 +835,14 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				configPriorData1 = conversionOnlyPriorData.Config
 			}
 			r.ConversionOnly.Config = &tfTypes.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig{}
+			r.ConversionOnly.Config.CaCertificates = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionOnlyResponse.Config.CaCertificates))
+			for _, v := range resp.AIGatewayMCPServerConversionOnlyResponse.Config.CaCertificates {
+				r.ConversionOnly.Config.CaCertificates = append(r.ConversionOnly.Config.CaCertificates, types.StringValue(v))
+			}
+			r.ConversionOnly.Config.Certificates = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionOnlyResponse.Config.Certificates))
+			for _, v := range resp.AIGatewayMCPServerConversionOnlyResponse.Config.Certificates {
+				r.ConversionOnly.Config.Certificates = append(r.ConversionOnly.Config.Certificates, types.StringValue(v))
+			}
 			if resp.AIGatewayMCPServerConversionOnlyResponse.Config.Logging == nil {
 				r.ConversionOnly.Config.Logging = nil
 			} else {
@@ -588,9 +901,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					authPriorData1 := upstreamPriorData1.Auth
 					r.ConversionOnly.Config.Upstream.Auth = &tfTypes.Auth{}
 					if resp.AIGatewayMCPServerConversionOnlyResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput != nil {
-						var awsPriorData2 *tfTypes.AIGatewayUpstreamAuthAWS
+						var awsPriorData3 *tfTypes.AIGatewayUpstreamAuthAWS
 						if authPriorData1 != nil {
-							awsPriorData2 = authPriorData1.Aws
+							awsPriorData3 = authPriorData1.Aws
 						}
 						r.ConversionOnly.Config.Upstream.Auth.Aws = &tfTypes.AIGatewayUpstreamAuthAWS{}
 						r.ConversionOnly.Config.Upstream.Auth.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.AccessKeyID)
@@ -598,9 +911,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 						r.ConversionOnly.Config.Upstream.Auth.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.Region)
 						r.ConversionOnly.Config.Upstream.Auth.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.RoleSessionName)
 						r.ConversionOnly.Config.Upstream.Auth.Aws.StsEndpointURL = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.StsEndpointURL)
-						if awsPriorData2 != nil {
-							r.ConversionOnly.Config.Upstream.Auth.Aws.SecretAccessKey = awsPriorData2.SecretAccessKey
-							r.ConversionOnly.Config.Upstream.Auth.Aws.SessionToken = awsPriorData2.SessionToken
+						if awsPriorData3 != nil {
+							r.ConversionOnly.Config.Upstream.Auth.Aws.SecretAccessKey = awsPriorData3.SecretAccessKey
+							r.ConversionOnly.Config.Upstream.Auth.Aws.SessionToken = awsPriorData3.SessionToken
 						}
 					}
 				}
@@ -608,6 +921,19 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			r.ConversionOnly.Config.URL = types.StringValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.URL)
 			r.ConversionOnly.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerConversionOnlyResponse.CreatedAt))
 			r.CreatedAt = r.ConversionOnly.CreatedAt
+			if resp.AIGatewayMCPServerConversionOnlyResponse.Datastores != nil {
+				r.ConversionOnly.Datastores = []tfTypes.AIGatewayDatastoreRef{}
+
+				for _, datastoresItem1 := range resp.AIGatewayMCPServerConversionOnlyResponse.Datastores {
+					var datastores1 tfTypes.AIGatewayDatastoreRef
+
+					datastores1.Name = types.StringValue(datastoresItem1.Name)
+
+					r.ConversionOnly.Datastores = append(r.ConversionOnly.Datastores, datastores1)
+				}
+			} else {
+				r.ConversionOnly.Datastores = nil
+			}
 			r.ConversionOnly.DisplayName = types.StringValue(resp.AIGatewayMCPServerConversionOnlyResponse.DisplayName)
 			r.DisplayName = r.ConversionOnly.DisplayName
 			r.ConversionOnly.Enabled = types.BoolPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.Enabled)
@@ -632,6 +958,193 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			for _, v := range resp.AIGatewayMCPServerConversionOnlyResponse.Policies {
 				r.ConversionOnly.Policies = append(r.ConversionOnly.Policies, types.StringValue(v))
 			}
+			if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault == nil {
+				r.ConversionOnly.TokenVault = nil
+			} else {
+				var tokenVaultPriorData1 *tfTypes.AIGatewayTokenVault
+				if conversionOnlyPriorData != nil {
+					tokenVaultPriorData1 = conversionOnlyPriorData.TokenVault
+				}
+				r.ConversionOnly.TokenVault = &tfTypes.AIGatewayTokenVault{}
+				if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache == nil {
+					r.ConversionOnly.TokenVault.Cache = nil
+				} else {
+					var cachePriorData1 *tfTypes.Cache
+					if tokenVaultPriorData1 != nil {
+						cachePriorData1 = tokenVaultPriorData1.Cache
+					}
+					r.ConversionOnly.TokenVault.Cache = &tfTypes.Cache{}
+					if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis == nil {
+						r.ConversionOnly.TokenVault.Cache.Redis = nil
+					} else {
+						var redisPriorData2 *tfTypes.AIGatewayRedisCloudConfiguration
+						if cachePriorData1 != nil {
+							redisPriorData2 = cachePriorData1.Redis
+						}
+						r.ConversionOnly.TokenVault.Cache.Redis = &tfTypes.AIGatewayRedisCloudConfiguration{}
+						if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.CloudAuthentication != nil {
+							cloudAuthenticationPriorData2 := redisPriorData2.CloudAuthentication
+							r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication = &tfTypes.CloudAuthentication{}
+							if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
+								var awsPriorData4 *tfTypes.AIGatewayRedisAWSAuthentication
+								if cloudAuthenticationPriorData2 != nil {
+									awsPriorData4 = cloudAuthenticationPriorData2.Aws
+								}
+								r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws = &tfTypes.AIGatewayRedisAWSAuthentication{}
+								r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
+								r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AssumeRoleArn)
+								r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.CacheName)
+								r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
+								r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
+								r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
+								if awsPriorData4 != nil {
+									r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData4.SecretAccessKey
+								}
+							}
+							if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
+								var azurePriorData2 *tfTypes.AIGatewayRedisAzureAuthentication
+								if cloudAuthenticationPriorData2 != nil {
+									azurePriorData2 = cloudAuthenticationPriorData2.Azure
+								}
+								r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure = &tfTypes.AIGatewayRedisAzureAuthentication{}
+								r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.ClientID)
+								r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.TenantID)
+								if azurePriorData2 != nil {
+									r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret = azurePriorData2.ClientSecret
+								}
+							}
+							if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput != nil {
+								var gcpPriorData2 *tfTypes.AIGatewayRedisGCPAuthentication
+								if cloudAuthenticationPriorData2 != nil {
+									gcpPriorData2 = cloudAuthenticationPriorData2.Gcp
+								}
+								r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Gcp = &tfTypes.AIGatewayRedisGCPAuthentication{}
+								if gcpPriorData2 != nil {
+									r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON = gcpPriorData2.ServiceAccountJSON
+								}
+							}
+						}
+						if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Cluster == nil {
+							r.ConversionOnly.TokenVault.Cache.Redis.Cluster = nil
+						} else {
+							r.ConversionOnly.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
+							r.ConversionOnly.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Cluster.MaxRedirections)
+							if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+								r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+
+								for _, nodesItem4 := range resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Cluster.Nodes {
+									var nodes4 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+
+									nodes4.IP = types.StringPointerValue(nodesItem4.IP)
+									nodes4.Port = types.Int64PointerValue(nodesItem4.Port)
+
+									r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes = append(r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes, nodes4)
+								}
+							} else {
+								r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes = nil
+							}
+						}
+						r.ConversionOnly.TokenVault.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.ConnectTimeout)
+						r.ConversionOnly.TokenVault.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.ConnectionIsProxied)
+						r.ConversionOnly.TokenVault.Cache.Redis.Database = types.Int64PointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Database)
+						r.ConversionOnly.TokenVault.Cache.Redis.Host = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Host)
+						if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Keepalive == nil {
+							r.ConversionOnly.TokenVault.Cache.Redis.Keepalive = nil
+						} else {
+							r.ConversionOnly.TokenVault.Cache.Redis.Keepalive = &tfTypes.Keepalive{}
+							r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.Backlog = types.Int64PointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Keepalive.Backlog)
+							r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.PoolSize = types.Int64PointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Keepalive.PoolSize)
+						}
+						r.ConversionOnly.TokenVault.Cache.Redis.Password = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Password)
+						r.ConversionOnly.TokenVault.Cache.Redis.Port = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Port)
+						r.ConversionOnly.TokenVault.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.ReadTimeout)
+						r.ConversionOnly.TokenVault.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.SendTimeout)
+						if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Sentinel == nil {
+							r.ConversionOnly.TokenVault.Cache.Redis.Sentinel = nil
+						} else {
+							r.ConversionOnly.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
+							r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Sentinel.Master)
+							if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+								r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+
+								for _, nodesItem5 := range resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Sentinel.Nodes {
+									var nodes5 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+
+									nodes5.Host = types.StringPointerValue(nodesItem5.Host)
+									nodes5.Port = types.Int64PointerValue(nodesItem5.Port)
+
+									r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes = append(r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes, nodes5)
+								}
+							} else {
+								r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes = nil
+							}
+							r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Password = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Sentinel.Password)
+							if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Sentinel.Role != nil {
+								r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Role = types.StringValue(string(*resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Sentinel.Role))
+							} else {
+								r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Role = types.StringNull()
+							}
+							r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Username = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Sentinel.Username)
+						}
+						r.ConversionOnly.TokenVault.Cache.Redis.ServerName = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.ServerName)
+						r.ConversionOnly.TokenVault.Cache.Redis.Ssl = types.BoolPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Ssl)
+						r.ConversionOnly.TokenVault.Cache.Redis.SslVerify = types.BoolPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.SslVerify)
+						r.ConversionOnly.TokenVault.Cache.Redis.Username = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Cache.Redis.Username)
+					}
+				}
+				if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Credential == nil {
+					r.ConversionOnly.TokenVault.Credential = nil
+				} else {
+					r.ConversionOnly.TokenVault.Credential = &tfTypes.AIGatewayTokenVaultCredential{}
+					if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Credential.Inbound == nil {
+						r.ConversionOnly.TokenVault.Credential.Inbound = nil
+					} else {
+						r.ConversionOnly.TokenVault.Credential.Inbound = &tfTypes.AIGatewayTokenVaultCredentialPlacement{}
+						if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Credential.Inbound.Location != nil {
+							r.ConversionOnly.TokenVault.Credential.Inbound.Location = types.StringValue(string(*resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Credential.Inbound.Location))
+						} else {
+							r.ConversionOnly.TokenVault.Credential.Inbound.Location = types.StringNull()
+						}
+						r.ConversionOnly.TokenVault.Credential.Inbound.Name = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Credential.Inbound.Name)
+						r.ConversionOnly.TokenVault.Credential.Inbound.Prefix = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Credential.Inbound.Prefix)
+					}
+					if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Credential.Outbound == nil {
+						r.ConversionOnly.TokenVault.Credential.Outbound = nil
+					} else {
+						r.ConversionOnly.TokenVault.Credential.Outbound = &tfTypes.AIGatewayTokenVaultCredentialPlacement{}
+						if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Credential.Outbound.Location != nil {
+							r.ConversionOnly.TokenVault.Credential.Outbound.Location = types.StringValue(string(*resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Credential.Outbound.Location))
+						} else {
+							r.ConversionOnly.TokenVault.Credential.Outbound.Location = types.StringNull()
+						}
+						r.ConversionOnly.TokenVault.Credential.Outbound.Name = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Credential.Outbound.Name)
+						r.ConversionOnly.TokenVault.Credential.Outbound.Prefix = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Credential.Outbound.Prefix)
+					}
+				}
+				r.ConversionOnly.TokenVault.Provider = types.StringValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Provider)
+				if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Storage == nil {
+					r.ConversionOnly.TokenVault.Storage = nil
+				} else {
+					r.ConversionOnly.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.ConversionOnly.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Storage.CurrentVersion)
+					r.ConversionOnly.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Storage.Directory)
+					r.ConversionOnly.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
+
+					for _, keysItem1 := range resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Storage.Keys {
+						var keys1 tfTypes.TokenVaultDatastoreKey
+
+						keys1.Key = types.StringPointerValue(keysItem1.Key)
+						keys1.Version = types.StringValue(keysItem1.Version)
+
+						r.ConversionOnly.TokenVault.Storage.Keys = append(r.ConversionOnly.TokenVault.Storage.Keys, keys1)
+					}
+				}
+				if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.SubjectTokenType != nil {
+					r.ConversionOnly.TokenVault.SubjectTokenType = types.StringValue(string(*resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.SubjectTokenType))
+				} else {
+					r.ConversionOnly.TokenVault.SubjectTokenType = types.StringNull()
+				}
+			}
 			r.ConversionOnly.Tools = []tfTypes.AIGatewayMCPConversionTool{}
 
 			for _, toolsItem1 := range resp.AIGatewayMCPServerConversionOnlyResponse.Tools {
@@ -644,14 +1157,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if toolsItem1.Access.Acls == nil {
 						tools1.Access.Acls = nil
 					} else {
-						tools1.Access.Acls = &tfTypes.AIGatewayMCPACLs{}
+						tools1.Access.Acls = &tfTypes.AIGatewayACLS{}
 						tools1.Access.Acls.Allow = make([]types.String, 0, len(toolsItem1.Access.Acls.Allow))
 						for _, v := range toolsItem1.Access.Acls.Allow {
 							tools1.Access.Acls.Allow = append(tools1.Access.Acls.Allow, types.StringValue(v))
 						}
+						if toolsItem1.Access.Acls.AllowWhen != nil {
+							tools1.Access.Acls.AllowWhen = make([]types.String, 0, len(toolsItem1.Access.Acls.AllowWhen))
+							for _, v := range toolsItem1.Access.Acls.AllowWhen {
+								tools1.Access.Acls.AllowWhen = append(tools1.Access.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							tools1.Access.Acls.AllowWhen = nil
+						}
 						tools1.Access.Acls.Deny = make([]types.String, 0, len(toolsItem1.Access.Acls.Deny))
 						for _, v := range toolsItem1.Access.Acls.Deny {
 							tools1.Access.Acls.Deny = append(tools1.Access.Acls.Deny, types.StringValue(v))
+						}
+						if toolsItem1.Access.Acls.DenyWhen != nil {
+							tools1.Access.Acls.DenyWhen = make([]types.String, 0, len(toolsItem1.Access.Acls.DenyWhen))
+							for _, v := range toolsItem1.Access.Acls.DenyWhen {
+								tools1.Access.Acls.DenyWhen = append(tools1.Access.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							tools1.Access.Acls.DenyWhen = nil
 						}
 					}
 				}
@@ -734,14 +1263,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls == nil {
 						r.Listener.Access.Consumer.Acls = nil
 					} else {
-						r.Listener.Access.Consumer.Acls = &tfTypes.AIGatewayMCPACLs{}
+						r.Listener.Access.Consumer.Acls = &tfTypes.AIGatewayACLS{}
 						r.Listener.Access.Consumer.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow {
 							r.Listener.Access.Consumer.Acls.Allow = append(r.Listener.Access.Consumer.Acls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen != nil {
+							r.Listener.Access.Consumer.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen {
+								r.Listener.Access.Consumer.Acls.AllowWhen = append(r.Listener.Access.Consumer.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.Consumer.Acls.AllowWhen = nil
+						}
 						r.Listener.Access.Consumer.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Deny))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Deny {
 							r.Listener.Access.Consumer.Acls.Deny = append(r.Listener.Access.Consumer.Acls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen != nil {
+							r.Listener.Access.Consumer.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen {
+								r.Listener.Access.Consumer.Acls.DenyWhen = append(r.Listener.Access.Consumer.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.Consumer.Acls.DenyWhen = nil
 						}
 					}
 					r.Listener.Access.Consumer.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.AuthStrategies))
@@ -751,14 +1296,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls == nil {
 						r.Listener.Access.Consumer.DefaultToolAcls = nil
 					} else {
-						r.Listener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
+						r.Listener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
 						r.Listener.Access.Consumer.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow {
 							r.Listener.Access.Consumer.DefaultToolAcls.Allow = append(r.Listener.Access.Consumer.DefaultToolAcls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen != nil {
+							r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen {
+								r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen = append(r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen = nil
+						}
 						r.Listener.Access.Consumer.DefaultToolAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Deny))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Deny {
 							r.Listener.Access.Consumer.DefaultToolAcls.Deny = append(r.Listener.Access.Consumer.DefaultToolAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen != nil {
+							r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen {
+								r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen = append(r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen = nil
 						}
 					}
 					r.Listener.Access.Consumer.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders))
@@ -788,14 +1349,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls == nil {
 						r.Listener.Access.OauthAccessToken.Acls = nil
 					} else {
-						r.Listener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayMCPACLs{}
+						r.Listener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayACLS{}
 						r.Listener.Access.OauthAccessToken.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow {
 							r.Listener.Access.OauthAccessToken.Acls.Allow = append(r.Listener.Access.OauthAccessToken.Acls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen != nil {
+							r.Listener.Access.OauthAccessToken.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen {
+								r.Listener.Access.OauthAccessToken.Acls.AllowWhen = append(r.Listener.Access.OauthAccessToken.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.OauthAccessToken.Acls.AllowWhen = nil
+						}
 						r.Listener.Access.OauthAccessToken.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Deny))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Deny {
 							r.Listener.Access.OauthAccessToken.Acls.Deny = append(r.Listener.Access.OauthAccessToken.Acls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen != nil {
+							r.Listener.Access.OauthAccessToken.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen {
+								r.Listener.Access.OauthAccessToken.Acls.DenyWhen = append(r.Listener.Access.OauthAccessToken.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.OauthAccessToken.Acls.DenyWhen = nil
 						}
 					}
 					r.Listener.Access.OauthAccessToken.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.AuthStrategies))
@@ -805,14 +1382,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls == nil {
 						r.Listener.Access.OauthAccessToken.DefaultToolAcls = nil
 					} else {
-						r.Listener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
+						r.Listener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
 						r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow {
 							r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow = append(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen != nil {
+							r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen {
+								r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = append(r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = nil
+						}
 						r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Deny))
 						for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Deny {
 							r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny = append(r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen != nil {
+							r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen {
+								r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = append(r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = nil
 						}
 					}
 					r.Listener.Access.OauthAccessToken.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Access.AIGatewayMCPServerListenerOauth.IdentityProviders))
@@ -957,18 +1550,18 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis == nil {
 						r.Listener.Config.Server.Session.Redis = nil
 					} else {
-						var redisPriorData1 *tfTypes.AIGatewayRedisCloudConfiguration
+						var redisPriorData3 *tfTypes.AIGatewayRedisCloudConfiguration
 						if sessionPriorData1 != nil {
-							redisPriorData1 = sessionPriorData1.Redis
+							redisPriorData3 = sessionPriorData1.Redis
 						}
 						r.Listener.Config.Server.Session.Redis = &tfTypes.AIGatewayRedisCloudConfiguration{}
 						if resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.CloudAuthentication != nil {
-							cloudAuthenticationPriorData1 := redisPriorData1.CloudAuthentication
+							cloudAuthenticationPriorData3 := redisPriorData3.CloudAuthentication
 							r.Listener.Config.Server.Session.Redis.CloudAuthentication = &tfTypes.CloudAuthentication{}
 							if resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
-								var awsPriorData3 *tfTypes.AIGatewayRedisAWSAuthentication
-								if cloudAuthenticationPriorData1 != nil {
-									awsPriorData3 = cloudAuthenticationPriorData1.Aws
+								var awsPriorData5 *tfTypes.AIGatewayRedisAWSAuthentication
+								if cloudAuthenticationPriorData3 != nil {
+									awsPriorData5 = cloudAuthenticationPriorData3.Aws
 								}
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws = &tfTypes.AIGatewayRedisAWSAuthentication{}
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
@@ -977,30 +1570,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
-								if awsPriorData3 != nil {
-									r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData3.SecretAccessKey
+								if awsPriorData5 != nil {
+									r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData5.SecretAccessKey
 								}
 							}
 							if resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
-								var azurePriorData1 *tfTypes.AIGatewayRedisAzureAuthentication
-								if cloudAuthenticationPriorData1 != nil {
-									azurePriorData1 = cloudAuthenticationPriorData1.Azure
+								var azurePriorData3 *tfTypes.AIGatewayRedisAzureAuthentication
+								if cloudAuthenticationPriorData3 != nil {
+									azurePriorData3 = cloudAuthenticationPriorData3.Azure
 								}
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure = &tfTypes.AIGatewayRedisAzureAuthentication{}
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.ClientID)
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.TenantID)
-								if azurePriorData1 != nil {
-									r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret = azurePriorData1.ClientSecret
+								if azurePriorData3 != nil {
+									r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret = azurePriorData3.ClientSecret
 								}
 							}
 							if resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput != nil {
-								var gcpPriorData1 *tfTypes.AIGatewayRedisGCPAuthentication
-								if cloudAuthenticationPriorData1 != nil {
-									gcpPriorData1 = cloudAuthenticationPriorData1.Gcp
+								var gcpPriorData3 *tfTypes.AIGatewayRedisGCPAuthentication
+								if cloudAuthenticationPriorData3 != nil {
+									gcpPriorData3 = cloudAuthenticationPriorData3.Gcp
 								}
 								r.Listener.Config.Server.Session.Redis.CloudAuthentication.Gcp = &tfTypes.AIGatewayRedisGCPAuthentication{}
-								if gcpPriorData1 != nil {
-									r.Listener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON = gcpPriorData1.ServiceAccountJSON
+								if gcpPriorData3 != nil {
+									r.Listener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON = gcpPriorData3.ServiceAccountJSON
 								}
 							}
 						}
@@ -1010,15 +1603,15 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.Listener.Config.Server.Session.Redis.Cluster = &tfTypes.Cluster{}
 							r.Listener.Config.Server.Session.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Cluster.Nodes != nil {
-								r.Listener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
+								r.Listener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
-								for _, nodesItem2 := range resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Cluster.Nodes {
-									var nodes2 tfTypes.ClusterNodes
+								for _, nodesItem6 := range resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Cluster.Nodes {
+									var nodes6 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
-									nodes2.IP = types.StringPointerValue(nodesItem2.IP)
-									nodes2.Port = types.Int64PointerValue(nodesItem2.Port)
+									nodes6.IP = types.StringPointerValue(nodesItem6.IP)
+									nodes6.Port = types.Int64PointerValue(nodesItem6.Port)
 
-									r.Listener.Config.Server.Session.Redis.Cluster.Nodes = append(r.Listener.Config.Server.Session.Redis.Cluster.Nodes, nodes2)
+									r.Listener.Config.Server.Session.Redis.Cluster.Nodes = append(r.Listener.Config.Server.Session.Redis.Cluster.Nodes, nodes6)
 								}
 							} else {
 								r.Listener.Config.Server.Session.Redis.Cluster.Nodes = nil
@@ -1045,15 +1638,15 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.Listener.Config.Server.Session.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Listener.Config.Server.Session.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-								r.Listener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
+								r.Listener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
-								for _, nodesItem3 := range resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
-									var nodes3 tfTypes.SentinelNodes
+								for _, nodesItem7 := range resp.AIGatewayMCPServerListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
+									var nodes7 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
-									nodes3.Host = types.StringPointerValue(nodesItem3.Host)
-									nodes3.Port = types.Int64PointerValue(nodesItem3.Port)
+									nodes7.Host = types.StringPointerValue(nodesItem7.Host)
+									nodes7.Port = types.Int64PointerValue(nodesItem7.Port)
 
-									r.Listener.Config.Server.Session.Redis.Sentinel.Nodes = append(r.Listener.Config.Server.Session.Redis.Sentinel.Nodes, nodes3)
+									r.Listener.Config.Server.Session.Redis.Sentinel.Nodes = append(r.Listener.Config.Server.Session.Redis.Sentinel.Nodes, nodes7)
 								}
 							} else {
 								r.Listener.Config.Server.Session.Redis.Sentinel.Nodes = nil
@@ -1082,6 +1675,19 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			}
 			r.Listener.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerListenerResponse.CreatedAt))
 			r.CreatedAt = r.Listener.CreatedAt
+			if resp.AIGatewayMCPServerListenerResponse.Datastores != nil {
+				r.Listener.Datastores = []tfTypes.AIGatewayDatastoreRef{}
+
+				for _, datastoresItem2 := range resp.AIGatewayMCPServerListenerResponse.Datastores {
+					var datastores2 tfTypes.AIGatewayDatastoreRef
+
+					datastores2.Name = types.StringValue(datastoresItem2.Name)
+
+					r.Listener.Datastores = append(r.Listener.Datastores, datastores2)
+				}
+			} else {
+				r.Listener.Datastores = nil
+			}
 			r.Listener.DisplayName = types.StringValue(resp.AIGatewayMCPServerListenerResponse.DisplayName)
 			r.DisplayName = r.Listener.DisplayName
 			r.Listener.Enabled = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Enabled)
@@ -1110,6 +1716,193 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			for _, v := range resp.AIGatewayMCPServerListenerResponse.Sources {
 				r.Listener.Sources = append(r.Listener.Sources, types.StringValue(v))
 			}
+			if resp.AIGatewayMCPServerListenerResponse.TokenVault == nil {
+				r.Listener.TokenVault = nil
+			} else {
+				var tokenVaultPriorData2 *tfTypes.AIGatewayTokenVault
+				if listenerPriorData != nil {
+					tokenVaultPriorData2 = listenerPriorData.TokenVault
+				}
+				r.Listener.TokenVault = &tfTypes.AIGatewayTokenVault{}
+				if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache == nil {
+					r.Listener.TokenVault.Cache = nil
+				} else {
+					var cachePriorData2 *tfTypes.Cache
+					if tokenVaultPriorData2 != nil {
+						cachePriorData2 = tokenVaultPriorData2.Cache
+					}
+					r.Listener.TokenVault.Cache = &tfTypes.Cache{}
+					if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis == nil {
+						r.Listener.TokenVault.Cache.Redis = nil
+					} else {
+						var redisPriorData4 *tfTypes.AIGatewayRedisCloudConfiguration
+						if cachePriorData2 != nil {
+							redisPriorData4 = cachePriorData2.Redis
+						}
+						r.Listener.TokenVault.Cache.Redis = &tfTypes.AIGatewayRedisCloudConfiguration{}
+						if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.CloudAuthentication != nil {
+							cloudAuthenticationPriorData4 := redisPriorData4.CloudAuthentication
+							r.Listener.TokenVault.Cache.Redis.CloudAuthentication = &tfTypes.CloudAuthentication{}
+							if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
+								var awsPriorData6 *tfTypes.AIGatewayRedisAWSAuthentication
+								if cloudAuthenticationPriorData4 != nil {
+									awsPriorData6 = cloudAuthenticationPriorData4.Aws
+								}
+								r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws = &tfTypes.AIGatewayRedisAWSAuthentication{}
+								r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
+								r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AssumeRoleArn)
+								r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.CacheName)
+								r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
+								r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
+								r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
+								if awsPriorData6 != nil {
+									r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData6.SecretAccessKey
+								}
+							}
+							if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
+								var azurePriorData4 *tfTypes.AIGatewayRedisAzureAuthentication
+								if cloudAuthenticationPriorData4 != nil {
+									azurePriorData4 = cloudAuthenticationPriorData4.Azure
+								}
+								r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure = &tfTypes.AIGatewayRedisAzureAuthentication{}
+								r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.ClientID)
+								r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.TenantID)
+								if azurePriorData4 != nil {
+									r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret = azurePriorData4.ClientSecret
+								}
+							}
+							if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput != nil {
+								var gcpPriorData4 *tfTypes.AIGatewayRedisGCPAuthentication
+								if cloudAuthenticationPriorData4 != nil {
+									gcpPriorData4 = cloudAuthenticationPriorData4.Gcp
+								}
+								r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Gcp = &tfTypes.AIGatewayRedisGCPAuthentication{}
+								if gcpPriorData4 != nil {
+									r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON = gcpPriorData4.ServiceAccountJSON
+								}
+							}
+						}
+						if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Cluster == nil {
+							r.Listener.TokenVault.Cache.Redis.Cluster = nil
+						} else {
+							r.Listener.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
+							r.Listener.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Cluster.MaxRedirections)
+							if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+								r.Listener.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+
+								for _, nodesItem8 := range resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Cluster.Nodes {
+									var nodes8 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+
+									nodes8.IP = types.StringPointerValue(nodesItem8.IP)
+									nodes8.Port = types.Int64PointerValue(nodesItem8.Port)
+
+									r.Listener.TokenVault.Cache.Redis.Cluster.Nodes = append(r.Listener.TokenVault.Cache.Redis.Cluster.Nodes, nodes8)
+								}
+							} else {
+								r.Listener.TokenVault.Cache.Redis.Cluster.Nodes = nil
+							}
+						}
+						r.Listener.TokenVault.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.ConnectTimeout)
+						r.Listener.TokenVault.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.ConnectionIsProxied)
+						r.Listener.TokenVault.Cache.Redis.Database = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Database)
+						r.Listener.TokenVault.Cache.Redis.Host = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Host)
+						if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Keepalive == nil {
+							r.Listener.TokenVault.Cache.Redis.Keepalive = nil
+						} else {
+							r.Listener.TokenVault.Cache.Redis.Keepalive = &tfTypes.Keepalive{}
+							r.Listener.TokenVault.Cache.Redis.Keepalive.Backlog = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Keepalive.Backlog)
+							r.Listener.TokenVault.Cache.Redis.Keepalive.PoolSize = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Keepalive.PoolSize)
+						}
+						r.Listener.TokenVault.Cache.Redis.Password = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Password)
+						r.Listener.TokenVault.Cache.Redis.Port = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Port)
+						r.Listener.TokenVault.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.ReadTimeout)
+						r.Listener.TokenVault.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.SendTimeout)
+						if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Sentinel == nil {
+							r.Listener.TokenVault.Cache.Redis.Sentinel = nil
+						} else {
+							r.Listener.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
+							r.Listener.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Sentinel.Master)
+							if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+								r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+
+								for _, nodesItem9 := range resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Sentinel.Nodes {
+									var nodes9 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+
+									nodes9.Host = types.StringPointerValue(nodesItem9.Host)
+									nodes9.Port = types.Int64PointerValue(nodesItem9.Port)
+
+									r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes = append(r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes, nodes9)
+								}
+							} else {
+								r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes = nil
+							}
+							r.Listener.TokenVault.Cache.Redis.Sentinel.Password = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Sentinel.Password)
+							if resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Sentinel.Role != nil {
+								r.Listener.TokenVault.Cache.Redis.Sentinel.Role = types.StringValue(string(*resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Sentinel.Role))
+							} else {
+								r.Listener.TokenVault.Cache.Redis.Sentinel.Role = types.StringNull()
+							}
+							r.Listener.TokenVault.Cache.Redis.Sentinel.Username = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Sentinel.Username)
+						}
+						r.Listener.TokenVault.Cache.Redis.ServerName = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.ServerName)
+						r.Listener.TokenVault.Cache.Redis.Ssl = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Ssl)
+						r.Listener.TokenVault.Cache.Redis.SslVerify = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.SslVerify)
+						r.Listener.TokenVault.Cache.Redis.Username = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Cache.Redis.Username)
+					}
+				}
+				if resp.AIGatewayMCPServerListenerResponse.TokenVault.Credential == nil {
+					r.Listener.TokenVault.Credential = nil
+				} else {
+					r.Listener.TokenVault.Credential = &tfTypes.AIGatewayTokenVaultCredential{}
+					if resp.AIGatewayMCPServerListenerResponse.TokenVault.Credential.Inbound == nil {
+						r.Listener.TokenVault.Credential.Inbound = nil
+					} else {
+						r.Listener.TokenVault.Credential.Inbound = &tfTypes.AIGatewayTokenVaultCredentialPlacement{}
+						if resp.AIGatewayMCPServerListenerResponse.TokenVault.Credential.Inbound.Location != nil {
+							r.Listener.TokenVault.Credential.Inbound.Location = types.StringValue(string(*resp.AIGatewayMCPServerListenerResponse.TokenVault.Credential.Inbound.Location))
+						} else {
+							r.Listener.TokenVault.Credential.Inbound.Location = types.StringNull()
+						}
+						r.Listener.TokenVault.Credential.Inbound.Name = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Credential.Inbound.Name)
+						r.Listener.TokenVault.Credential.Inbound.Prefix = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Credential.Inbound.Prefix)
+					}
+					if resp.AIGatewayMCPServerListenerResponse.TokenVault.Credential.Outbound == nil {
+						r.Listener.TokenVault.Credential.Outbound = nil
+					} else {
+						r.Listener.TokenVault.Credential.Outbound = &tfTypes.AIGatewayTokenVaultCredentialPlacement{}
+						if resp.AIGatewayMCPServerListenerResponse.TokenVault.Credential.Outbound.Location != nil {
+							r.Listener.TokenVault.Credential.Outbound.Location = types.StringValue(string(*resp.AIGatewayMCPServerListenerResponse.TokenVault.Credential.Outbound.Location))
+						} else {
+							r.Listener.TokenVault.Credential.Outbound.Location = types.StringNull()
+						}
+						r.Listener.TokenVault.Credential.Outbound.Name = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Credential.Outbound.Name)
+						r.Listener.TokenVault.Credential.Outbound.Prefix = types.StringPointerValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Credential.Outbound.Prefix)
+					}
+				}
+				r.Listener.TokenVault.Provider = types.StringValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Provider)
+				if resp.AIGatewayMCPServerListenerResponse.TokenVault.Storage == nil {
+					r.Listener.TokenVault.Storage = nil
+				} else {
+					r.Listener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Listener.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Storage.CurrentVersion)
+					r.Listener.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Storage.Directory)
+					r.Listener.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
+
+					for _, keysItem2 := range resp.AIGatewayMCPServerListenerResponse.TokenVault.Storage.Keys {
+						var keys2 tfTypes.TokenVaultDatastoreKey
+
+						keys2.Key = types.StringPointerValue(keysItem2.Key)
+						keys2.Version = types.StringValue(keysItem2.Version)
+
+						r.Listener.TokenVault.Storage.Keys = append(r.Listener.TokenVault.Storage.Keys, keys2)
+					}
+				}
+				if resp.AIGatewayMCPServerListenerResponse.TokenVault.SubjectTokenType != nil {
+					r.Listener.TokenVault.SubjectTokenType = types.StringValue(string(*resp.AIGatewayMCPServerListenerResponse.TokenVault.SubjectTokenType))
+				} else {
+					r.Listener.TokenVault.SubjectTokenType = types.StringNull()
+				}
+			}
 			r.Listener.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerListenerResponse.UpdatedAt))
 			r.UpdatedAt = r.Listener.UpdatedAt
 		}
@@ -1123,14 +1916,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls == nil {
 						r.PassthroughListener.Access.Consumer.Acls = nil
 					} else {
-						r.PassthroughListener.Access.Consumer.Acls = &tfTypes.AIGatewayMCPACLs{}
+						r.PassthroughListener.Access.Consumer.Acls = &tfTypes.AIGatewayACLS{}
 						r.PassthroughListener.Access.Consumer.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Allow {
 							r.PassthroughListener.Access.Consumer.Acls.Allow = append(r.PassthroughListener.Access.Consumer.Acls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen != nil {
+							r.PassthroughListener.Access.Consumer.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.AllowWhen {
+								r.PassthroughListener.Access.Consumer.Acls.AllowWhen = append(r.PassthroughListener.Access.Consumer.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.Consumer.Acls.AllowWhen = nil
+						}
 						r.PassthroughListener.Access.Consumer.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Deny))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.Deny {
 							r.PassthroughListener.Access.Consumer.Acls.Deny = append(r.PassthroughListener.Access.Consumer.Acls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen != nil {
+							r.PassthroughListener.Access.Consumer.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.Acls.DenyWhen {
+								r.PassthroughListener.Access.Consumer.Acls.DenyWhen = append(r.PassthroughListener.Access.Consumer.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.Consumer.Acls.DenyWhen = nil
 						}
 					}
 					r.PassthroughListener.Access.Consumer.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.AuthStrategies))
@@ -1140,14 +1949,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls == nil {
 						r.PassthroughListener.Access.Consumer.DefaultToolAcls = nil
 					} else {
-						r.PassthroughListener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
+						r.PassthroughListener.Access.Consumer.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
 						r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Allow {
 							r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow = append(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen != nil {
+							r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.AllowWhen {
+								r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen = append(r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen = nil
+						}
 						r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Deny))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.Deny {
 							r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny = append(r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen != nil {
+							r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.DefaultToolAcls.DenyWhen {
+								r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen = append(r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen = nil
 						}
 					}
 					r.PassthroughListener.Access.Consumer.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerConsumer.IdentityProviders))
@@ -1177,14 +2002,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls == nil {
 						r.PassthroughListener.Access.OauthAccessToken.Acls = nil
 					} else {
-						r.PassthroughListener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayMCPACLs{}
+						r.PassthroughListener.Access.OauthAccessToken.Acls = &tfTypes.AIGatewayACLS{}
 						r.PassthroughListener.Access.OauthAccessToken.Acls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Allow {
 							r.PassthroughListener.Access.OauthAccessToken.Acls.Allow = append(r.PassthroughListener.Access.OauthAccessToken.Acls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen != nil {
+							r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.AllowWhen {
+								r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen = append(r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen = nil
+						}
 						r.PassthroughListener.Access.OauthAccessToken.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Deny))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.Deny {
 							r.PassthroughListener.Access.OauthAccessToken.Acls.Deny = append(r.PassthroughListener.Access.OauthAccessToken.Acls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen != nil {
+							r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.Acls.DenyWhen {
+								r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen = append(r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen = nil
 						}
 					}
 					r.PassthroughListener.Access.OauthAccessToken.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.AuthStrategies))
@@ -1194,14 +2035,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls == nil {
 						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls = nil
 					} else {
-						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayMCPACLs{}
+						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls = &tfTypes.AIGatewayACLS{}
 						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Allow {
 							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow = append(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Allow, types.StringValue(v))
 						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen != nil {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.AllowWhen {
+								r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = append(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen = nil
+						}
 						r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Deny))
 						for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.Deny {
 							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny = append(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny, types.StringValue(v))
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen != nil {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen))
+							for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.DefaultToolAcls.DenyWhen {
+								r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = append(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen = nil
 						}
 					}
 					r.PassthroughListener.Access.OauthAccessToken.IdentityProviders = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Access.AIGatewayMCPServerListenerOauth.IdentityProviders))
@@ -1231,6 +2088,14 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				configPriorData3 = passthroughListenerPriorData.Config
 			}
 			r.PassthroughListener.Config = &tfTypes.AIGatewayMCPServerWithUpstreamConfig{}
+			r.PassthroughListener.Config.CaCertificates = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.CaCertificates))
+			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.CaCertificates {
+				r.PassthroughListener.Config.CaCertificates = append(r.PassthroughListener.Config.CaCertificates, types.StringValue(v))
+			}
+			r.PassthroughListener.Config.Certificates = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Certificates))
+			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Certificates {
+				r.PassthroughListener.Config.Certificates = append(r.PassthroughListener.Config.Certificates, types.StringValue(v))
+			}
 			if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Logging == nil {
 				r.PassthroughListener.Config.Logging = nil
 			} else {
@@ -1353,18 +2218,18 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis == nil {
 						r.PassthroughListener.Config.Server.Session.Redis = nil
 					} else {
-						var redisPriorData2 *tfTypes.AIGatewayRedisCloudConfiguration
+						var redisPriorData5 *tfTypes.AIGatewayRedisCloudConfiguration
 						if sessionPriorData2 != nil {
-							redisPriorData2 = sessionPriorData2.Redis
+							redisPriorData5 = sessionPriorData2.Redis
 						}
 						r.PassthroughListener.Config.Server.Session.Redis = &tfTypes.AIGatewayRedisCloudConfiguration{}
 						if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.CloudAuthentication != nil {
-							cloudAuthenticationPriorData2 := redisPriorData2.CloudAuthentication
+							cloudAuthenticationPriorData5 := redisPriorData5.CloudAuthentication
 							r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication = &tfTypes.CloudAuthentication{}
 							if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
-								var awsPriorData4 *tfTypes.AIGatewayRedisAWSAuthentication
-								if cloudAuthenticationPriorData2 != nil {
-									awsPriorData4 = cloudAuthenticationPriorData2.Aws
+								var awsPriorData7 *tfTypes.AIGatewayRedisAWSAuthentication
+								if cloudAuthenticationPriorData5 != nil {
+									awsPriorData7 = cloudAuthenticationPriorData5.Aws
 								}
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws = &tfTypes.AIGatewayRedisAWSAuthentication{}
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
@@ -1373,30 +2238,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
-								if awsPriorData4 != nil {
-									r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData4.SecretAccessKey
+								if awsPriorData7 != nil {
+									r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData7.SecretAccessKey
 								}
 							}
 							if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
-								var azurePriorData2 *tfTypes.AIGatewayRedisAzureAuthentication
-								if cloudAuthenticationPriorData2 != nil {
-									azurePriorData2 = cloudAuthenticationPriorData2.Azure
+								var azurePriorData5 *tfTypes.AIGatewayRedisAzureAuthentication
+								if cloudAuthenticationPriorData5 != nil {
+									azurePriorData5 = cloudAuthenticationPriorData5.Azure
 								}
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure = &tfTypes.AIGatewayRedisAzureAuthentication{}
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.ClientID)
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.TenantID)
-								if azurePriorData2 != nil {
-									r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret = azurePriorData2.ClientSecret
+								if azurePriorData5 != nil {
+									r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret = azurePriorData5.ClientSecret
 								}
 							}
 							if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput != nil {
-								var gcpPriorData2 *tfTypes.AIGatewayRedisGCPAuthentication
-								if cloudAuthenticationPriorData2 != nil {
-									gcpPriorData2 = cloudAuthenticationPriorData2.Gcp
+								var gcpPriorData5 *tfTypes.AIGatewayRedisGCPAuthentication
+								if cloudAuthenticationPriorData5 != nil {
+									gcpPriorData5 = cloudAuthenticationPriorData5.Gcp
 								}
 								r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Gcp = &tfTypes.AIGatewayRedisGCPAuthentication{}
-								if gcpPriorData2 != nil {
-									r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON = gcpPriorData2.ServiceAccountJSON
+								if gcpPriorData5 != nil {
+									r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON = gcpPriorData5.ServiceAccountJSON
 								}
 							}
 						}
@@ -1406,15 +2271,15 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.PassthroughListener.Config.Server.Session.Redis.Cluster = &tfTypes.Cluster{}
 							r.PassthroughListener.Config.Server.Session.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Cluster.Nodes != nil {
-								r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
+								r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
-								for _, nodesItem4 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Cluster.Nodes {
-									var nodes4 tfTypes.ClusterNodes
+								for _, nodesItem10 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Cluster.Nodes {
+									var nodes10 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
-									nodes4.IP = types.StringPointerValue(nodesItem4.IP)
-									nodes4.Port = types.Int64PointerValue(nodesItem4.Port)
+									nodes10.IP = types.StringPointerValue(nodesItem10.IP)
+									nodes10.Port = types.Int64PointerValue(nodesItem10.Port)
 
-									r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes = append(r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes, nodes4)
+									r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes = append(r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes, nodes10)
 								}
 							} else {
 								r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes = nil
@@ -1441,15 +2306,15 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.PassthroughListener.Config.Server.Session.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-								r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
+								r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
-								for _, nodesItem5 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
-									var nodes5 tfTypes.SentinelNodes
+								for _, nodesItem11 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
+									var nodes11 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
-									nodes5.Host = types.StringPointerValue(nodesItem5.Host)
-									nodes5.Port = types.Int64PointerValue(nodesItem5.Port)
+									nodes11.Host = types.StringPointerValue(nodesItem11.Host)
+									nodes11.Port = types.Int64PointerValue(nodesItem11.Port)
 
-									r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes = append(r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes, nodes5)
+									r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes = append(r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes, nodes11)
 								}
 							} else {
 								r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes = nil
@@ -1488,9 +2353,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					authPriorData3 := upstreamPriorData2.Auth
 					r.PassthroughListener.Config.Upstream.Auth = &tfTypes.Auth{}
 					if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput != nil {
-						var awsPriorData5 *tfTypes.AIGatewayUpstreamAuthAWS
+						var awsPriorData8 *tfTypes.AIGatewayUpstreamAuthAWS
 						if authPriorData3 != nil {
-							awsPriorData5 = authPriorData3.Aws
+							awsPriorData8 = authPriorData3.Aws
 						}
 						r.PassthroughListener.Config.Upstream.Auth.Aws = &tfTypes.AIGatewayUpstreamAuthAWS{}
 						r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.AccessKeyID)
@@ -1498,9 +2363,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 						r.PassthroughListener.Config.Upstream.Auth.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.Region)
 						r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.RoleSessionName)
 						r.PassthroughListener.Config.Upstream.Auth.Aws.StsEndpointURL = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.StsEndpointURL)
-						if awsPriorData5 != nil {
-							r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey = awsPriorData5.SecretAccessKey
-							r.PassthroughListener.Config.Upstream.Auth.Aws.SessionToken = awsPriorData5.SessionToken
+						if awsPriorData8 != nil {
+							r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey = awsPriorData8.SecretAccessKey
+							r.PassthroughListener.Config.Upstream.Auth.Aws.SessionToken = awsPriorData8.SessionToken
 						}
 					}
 				}
@@ -1508,6 +2373,19 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			r.PassthroughListener.Config.URL = types.StringValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.URL)
 			r.PassthroughListener.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerPassthroughListenerResponse.CreatedAt))
 			r.CreatedAt = r.PassthroughListener.CreatedAt
+			if resp.AIGatewayMCPServerPassthroughListenerResponse.Datastores != nil {
+				r.PassthroughListener.Datastores = []tfTypes.AIGatewayDatastoreRef{}
+
+				for _, datastoresItem3 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Datastores {
+					var datastores3 tfTypes.AIGatewayDatastoreRef
+
+					datastores3.Name = types.StringValue(datastoresItem3.Name)
+
+					r.PassthroughListener.Datastores = append(r.PassthroughListener.Datastores, datastores3)
+				}
+			} else {
+				r.PassthroughListener.Datastores = nil
+			}
 			r.PassthroughListener.DisplayName = types.StringValue(resp.AIGatewayMCPServerPassthroughListenerResponse.DisplayName)
 			r.DisplayName = r.PassthroughListener.DisplayName
 			r.PassthroughListener.Enabled = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Enabled)
@@ -1532,6 +2410,210 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Policies {
 				r.PassthroughListener.Policies = append(r.PassthroughListener.Policies, types.StringValue(v))
 			}
+			if resp.AIGatewayMCPServerPassthroughListenerResponse.RateLimiting == nil {
+				r.PassthroughListener.RateLimiting = nil
+			} else {
+				r.PassthroughListener.RateLimiting = &tfTypes.AIGatewayMCPServerRateLimiting{}
+				r.PassthroughListener.RateLimiting.Limits = []tfTypes.AIGatewayMCPServerRateLimit{}
+
+				for _, limitsItem1 := range resp.AIGatewayMCPServerPassthroughListenerResponse.RateLimiting.Limits {
+					var limits1 tfTypes.AIGatewayMCPServerRateLimit
+
+					limits1.Limit = types.Int64Value(limitsItem1.Limit)
+					limits1.Method = types.StringPointerValue(limitsItem1.Method)
+					limits1.Tool = types.StringPointerValue(limitsItem1.Tool)
+					limits1.WindowSize = types.Int64Value(int64(limitsItem1.WindowSize))
+
+					r.PassthroughListener.RateLimiting.Limits = append(r.PassthroughListener.RateLimiting.Limits, limits1)
+				}
+			}
+			if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault == nil {
+				r.PassthroughListener.TokenVault = nil
+			} else {
+				var tokenVaultPriorData3 *tfTypes.AIGatewayTokenVault
+				if passthroughListenerPriorData != nil {
+					tokenVaultPriorData3 = passthroughListenerPriorData.TokenVault
+				}
+				r.PassthroughListener.TokenVault = &tfTypes.AIGatewayTokenVault{}
+				if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache == nil {
+					r.PassthroughListener.TokenVault.Cache = nil
+				} else {
+					var cachePriorData3 *tfTypes.Cache
+					if tokenVaultPriorData3 != nil {
+						cachePriorData3 = tokenVaultPriorData3.Cache
+					}
+					r.PassthroughListener.TokenVault.Cache = &tfTypes.Cache{}
+					if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis == nil {
+						r.PassthroughListener.TokenVault.Cache.Redis = nil
+					} else {
+						var redisPriorData6 *tfTypes.AIGatewayRedisCloudConfiguration
+						if cachePriorData3 != nil {
+							redisPriorData6 = cachePriorData3.Redis
+						}
+						r.PassthroughListener.TokenVault.Cache.Redis = &tfTypes.AIGatewayRedisCloudConfiguration{}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.CloudAuthentication != nil {
+							cloudAuthenticationPriorData6 := redisPriorData6.CloudAuthentication
+							r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication = &tfTypes.CloudAuthentication{}
+							if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
+								var awsPriorData9 *tfTypes.AIGatewayRedisAWSAuthentication
+								if cloudAuthenticationPriorData6 != nil {
+									awsPriorData9 = cloudAuthenticationPriorData6.Aws
+								}
+								r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws = &tfTypes.AIGatewayRedisAWSAuthentication{}
+								r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
+								r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AssumeRoleArn)
+								r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.CacheName)
+								r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
+								r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
+								r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
+								if awsPriorData9 != nil {
+									r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData9.SecretAccessKey
+								}
+							}
+							if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
+								var azurePriorData6 *tfTypes.AIGatewayRedisAzureAuthentication
+								if cloudAuthenticationPriorData6 != nil {
+									azurePriorData6 = cloudAuthenticationPriorData6.Azure
+								}
+								r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure = &tfTypes.AIGatewayRedisAzureAuthentication{}
+								r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.ClientID)
+								r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.TenantID)
+								if azurePriorData6 != nil {
+									r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret = azurePriorData6.ClientSecret
+								}
+							}
+							if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput != nil {
+								var gcpPriorData6 *tfTypes.AIGatewayRedisGCPAuthentication
+								if cloudAuthenticationPriorData6 != nil {
+									gcpPriorData6 = cloudAuthenticationPriorData6.Gcp
+								}
+								r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp = &tfTypes.AIGatewayRedisGCPAuthentication{}
+								if gcpPriorData6 != nil {
+									r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON = gcpPriorData6.ServiceAccountJSON
+								}
+							}
+						}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Cluster == nil {
+							r.PassthroughListener.TokenVault.Cache.Redis.Cluster = nil
+						} else {
+							r.PassthroughListener.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
+							r.PassthroughListener.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Cluster.MaxRedirections)
+							if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+								r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+
+								for _, nodesItem12 := range resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Cluster.Nodes {
+									var nodes12 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+
+									nodes12.IP = types.StringPointerValue(nodesItem12.IP)
+									nodes12.Port = types.Int64PointerValue(nodesItem12.Port)
+
+									r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes = append(r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes, nodes12)
+								}
+							} else {
+								r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes = nil
+							}
+						}
+						r.PassthroughListener.TokenVault.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.ConnectTimeout)
+						r.PassthroughListener.TokenVault.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.ConnectionIsProxied)
+						r.PassthroughListener.TokenVault.Cache.Redis.Database = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Database)
+						r.PassthroughListener.TokenVault.Cache.Redis.Host = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Host)
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Keepalive == nil {
+							r.PassthroughListener.TokenVault.Cache.Redis.Keepalive = nil
+						} else {
+							r.PassthroughListener.TokenVault.Cache.Redis.Keepalive = &tfTypes.Keepalive{}
+							r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.Backlog = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Keepalive.Backlog)
+							r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.PoolSize = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Keepalive.PoolSize)
+						}
+						r.PassthroughListener.TokenVault.Cache.Redis.Password = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Password)
+						r.PassthroughListener.TokenVault.Cache.Redis.Port = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Port)
+						r.PassthroughListener.TokenVault.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.ReadTimeout)
+						r.PassthroughListener.TokenVault.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.SendTimeout)
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Sentinel == nil {
+							r.PassthroughListener.TokenVault.Cache.Redis.Sentinel = nil
+						} else {
+							r.PassthroughListener.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
+							r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Sentinel.Master)
+							if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+								r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+
+								for _, nodesItem13 := range resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Sentinel.Nodes {
+									var nodes13 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+
+									nodes13.Host = types.StringPointerValue(nodesItem13.Host)
+									nodes13.Port = types.Int64PointerValue(nodesItem13.Port)
+
+									r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes = append(r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes, nodes13)
+								}
+							} else {
+								r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes = nil
+							}
+							r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Password = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Sentinel.Password)
+							if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Sentinel.Role != nil {
+								r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Role = types.StringValue(string(*resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Sentinel.Role))
+							} else {
+								r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Role = types.StringNull()
+							}
+							r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Username = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Sentinel.Username)
+						}
+						r.PassthroughListener.TokenVault.Cache.Redis.ServerName = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.ServerName)
+						r.PassthroughListener.TokenVault.Cache.Redis.Ssl = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Ssl)
+						r.PassthroughListener.TokenVault.Cache.Redis.SslVerify = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.SslVerify)
+						r.PassthroughListener.TokenVault.Cache.Redis.Username = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Cache.Redis.Username)
+					}
+				}
+				if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Credential == nil {
+					r.PassthroughListener.TokenVault.Credential = nil
+				} else {
+					r.PassthroughListener.TokenVault.Credential = &tfTypes.AIGatewayTokenVaultCredential{}
+					if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Credential.Inbound == nil {
+						r.PassthroughListener.TokenVault.Credential.Inbound = nil
+					} else {
+						r.PassthroughListener.TokenVault.Credential.Inbound = &tfTypes.AIGatewayTokenVaultCredentialPlacement{}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Credential.Inbound.Location != nil {
+							r.PassthroughListener.TokenVault.Credential.Inbound.Location = types.StringValue(string(*resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Credential.Inbound.Location))
+						} else {
+							r.PassthroughListener.TokenVault.Credential.Inbound.Location = types.StringNull()
+						}
+						r.PassthroughListener.TokenVault.Credential.Inbound.Name = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Credential.Inbound.Name)
+						r.PassthroughListener.TokenVault.Credential.Inbound.Prefix = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Credential.Inbound.Prefix)
+					}
+					if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Credential.Outbound == nil {
+						r.PassthroughListener.TokenVault.Credential.Outbound = nil
+					} else {
+						r.PassthroughListener.TokenVault.Credential.Outbound = &tfTypes.AIGatewayTokenVaultCredentialPlacement{}
+						if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Credential.Outbound.Location != nil {
+							r.PassthroughListener.TokenVault.Credential.Outbound.Location = types.StringValue(string(*resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Credential.Outbound.Location))
+						} else {
+							r.PassthroughListener.TokenVault.Credential.Outbound.Location = types.StringNull()
+						}
+						r.PassthroughListener.TokenVault.Credential.Outbound.Name = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Credential.Outbound.Name)
+						r.PassthroughListener.TokenVault.Credential.Outbound.Prefix = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Credential.Outbound.Prefix)
+					}
+				}
+				r.PassthroughListener.TokenVault.Provider = types.StringValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Provider)
+				if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Storage == nil {
+					r.PassthroughListener.TokenVault.Storage = nil
+				} else {
+					r.PassthroughListener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.PassthroughListener.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Storage.CurrentVersion)
+					r.PassthroughListener.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Storage.Directory)
+					r.PassthroughListener.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
+
+					for _, keysItem3 := range resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Storage.Keys {
+						var keys3 tfTypes.TokenVaultDatastoreKey
+
+						keys3.Key = types.StringPointerValue(keysItem3.Key)
+						keys3.Version = types.StringValue(keysItem3.Version)
+
+						r.PassthroughListener.TokenVault.Storage.Keys = append(r.PassthroughListener.TokenVault.Storage.Keys, keys3)
+					}
+				}
+				if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.SubjectTokenType != nil {
+					r.PassthroughListener.TokenVault.SubjectTokenType = types.StringValue(string(*resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.SubjectTokenType))
+				} else {
+					r.PassthroughListener.TokenVault.SubjectTokenType = types.StringNull()
+				}
+			}
 			r.PassthroughListener.Tools = []tfTypes.AIGatewayMCPPassthroughTool{}
 
 			for _, toolsItem2 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Tools {
@@ -1541,14 +2623,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				if toolsItem2.Access.Acls == nil {
 					tools2.Access.Acls = nil
 				} else {
-					tools2.Access.Acls = &tfTypes.AIGatewayMCPACLs{}
+					tools2.Access.Acls = &tfTypes.AIGatewayACLS{}
 					tools2.Access.Acls.Allow = make([]types.String, 0, len(toolsItem2.Access.Acls.Allow))
 					for _, v := range toolsItem2.Access.Acls.Allow {
 						tools2.Access.Acls.Allow = append(tools2.Access.Acls.Allow, types.StringValue(v))
 					}
+					if toolsItem2.Access.Acls.AllowWhen != nil {
+						tools2.Access.Acls.AllowWhen = make([]types.String, 0, len(toolsItem2.Access.Acls.AllowWhen))
+						for _, v := range toolsItem2.Access.Acls.AllowWhen {
+							tools2.Access.Acls.AllowWhen = append(tools2.Access.Acls.AllowWhen, types.StringValue(v))
+						}
+					} else {
+						tools2.Access.Acls.AllowWhen = nil
+					}
 					tools2.Access.Acls.Deny = make([]types.String, 0, len(toolsItem2.Access.Acls.Deny))
 					for _, v := range toolsItem2.Access.Acls.Deny {
 						tools2.Access.Acls.Deny = append(tools2.Access.Acls.Deny, types.StringValue(v))
+					}
+					if toolsItem2.Access.Acls.DenyWhen != nil {
+						tools2.Access.Acls.DenyWhen = make([]types.String, 0, len(toolsItem2.Access.Acls.DenyWhen))
+						for _, v := range toolsItem2.Access.Acls.DenyWhen {
+							tools2.Access.Acls.DenyWhen = append(tools2.Access.Acls.DenyWhen, types.StringValue(v))
+						}
+					} else {
+						tools2.Access.Acls.DenyWhen = nil
 					}
 				}
 				tools2.Name = types.StringValue(toolsItem2.Name)
@@ -1566,6 +2664,14 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				configPriorData4 = upstreamServerPriorData.Config
 			}
 			r.UpstreamServer.Config = &tfTypes.AIGatewayMCPServerUpstreamServerConfig{}
+			r.UpstreamServer.Config.CaCertificates = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.CaCertificates))
+			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.CaCertificates {
+				r.UpstreamServer.Config.CaCertificates = append(r.UpstreamServer.Config.CaCertificates, types.StringValue(v))
+			}
+			r.UpstreamServer.Config.Certificates = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Certificates))
+			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Certificates {
+				r.UpstreamServer.Config.Certificates = append(r.UpstreamServer.Config.Certificates, types.StringValue(v))
+			}
 			if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Logging == nil {
 				r.UpstreamServer.Config.Logging = nil
 			} else {
@@ -1647,18 +2753,18 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis == nil {
 						r.UpstreamServer.Config.Server.Session.Redis = nil
 					} else {
-						var redisPriorData3 *tfTypes.AIGatewayRedisCloudConfiguration
+						var redisPriorData7 *tfTypes.AIGatewayRedisCloudConfiguration
 						if sessionPriorData3 != nil {
-							redisPriorData3 = sessionPriorData3.Redis
+							redisPriorData7 = sessionPriorData3.Redis
 						}
 						r.UpstreamServer.Config.Server.Session.Redis = &tfTypes.AIGatewayRedisCloudConfiguration{}
 						if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.CloudAuthentication != nil {
-							cloudAuthenticationPriorData3 := redisPriorData3.CloudAuthentication
+							cloudAuthenticationPriorData7 := redisPriorData7.CloudAuthentication
 							r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication = &tfTypes.CloudAuthentication{}
 							if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
-								var awsPriorData6 *tfTypes.AIGatewayRedisAWSAuthentication
-								if cloudAuthenticationPriorData3 != nil {
-									awsPriorData6 = cloudAuthenticationPriorData3.Aws
+								var awsPriorData10 *tfTypes.AIGatewayRedisAWSAuthentication
+								if cloudAuthenticationPriorData7 != nil {
+									awsPriorData10 = cloudAuthenticationPriorData7.Aws
 								}
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws = &tfTypes.AIGatewayRedisAWSAuthentication{}
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
@@ -1667,30 +2773,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
-								if awsPriorData6 != nil {
-									r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData6.SecretAccessKey
+								if awsPriorData10 != nil {
+									r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData10.SecretAccessKey
 								}
 							}
 							if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
-								var azurePriorData3 *tfTypes.AIGatewayRedisAzureAuthentication
-								if cloudAuthenticationPriorData3 != nil {
-									azurePriorData3 = cloudAuthenticationPriorData3.Azure
+								var azurePriorData7 *tfTypes.AIGatewayRedisAzureAuthentication
+								if cloudAuthenticationPriorData7 != nil {
+									azurePriorData7 = cloudAuthenticationPriorData7.Azure
 								}
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure = &tfTypes.AIGatewayRedisAzureAuthentication{}
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.ClientID)
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.TenantID)
-								if azurePriorData3 != nil {
-									r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret = azurePriorData3.ClientSecret
+								if azurePriorData7 != nil {
+									r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret = azurePriorData7.ClientSecret
 								}
 							}
 							if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput != nil {
-								var gcpPriorData3 *tfTypes.AIGatewayRedisGCPAuthentication
-								if cloudAuthenticationPriorData3 != nil {
-									gcpPriorData3 = cloudAuthenticationPriorData3.Gcp
+								var gcpPriorData7 *tfTypes.AIGatewayRedisGCPAuthentication
+								if cloudAuthenticationPriorData7 != nil {
+									gcpPriorData7 = cloudAuthenticationPriorData7.Gcp
 								}
 								r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Gcp = &tfTypes.AIGatewayRedisGCPAuthentication{}
-								if gcpPriorData3 != nil {
-									r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON = gcpPriorData3.ServiceAccountJSON
+								if gcpPriorData7 != nil {
+									r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON = gcpPriorData7.ServiceAccountJSON
 								}
 							}
 						}
@@ -1700,15 +2806,15 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.UpstreamServer.Config.Server.Session.Redis.Cluster = &tfTypes.Cluster{}
 							r.UpstreamServer.Config.Server.Session.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Cluster.Nodes != nil {
-								r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.ClusterNodes{}
+								r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
-								for _, nodesItem6 := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Cluster.Nodes {
-									var nodes6 tfTypes.ClusterNodes
+								for _, nodesItem14 := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Cluster.Nodes {
+									var nodes14 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
-									nodes6.IP = types.StringPointerValue(nodesItem6.IP)
-									nodes6.Port = types.Int64PointerValue(nodesItem6.Port)
+									nodes14.IP = types.StringPointerValue(nodesItem14.IP)
+									nodes14.Port = types.Int64PointerValue(nodesItem14.Port)
 
-									r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes = append(r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes, nodes6)
+									r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes = append(r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes, nodes14)
 								}
 							} else {
 								r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes = nil
@@ -1735,15 +2841,15 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 							r.UpstreamServer.Config.Server.Session.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Sentinel.Master)
 							if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-								r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.SentinelNodes{}
+								r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
-								for _, nodesItem7 := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
-									var nodes7 tfTypes.SentinelNodes
+								for _, nodesItem15 := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.Session.Redis.Sentinel.Nodes {
+									var nodes15 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
-									nodes7.Host = types.StringPointerValue(nodesItem7.Host)
-									nodes7.Port = types.Int64PointerValue(nodesItem7.Port)
+									nodes15.Host = types.StringPointerValue(nodesItem15.Host)
+									nodes15.Port = types.Int64PointerValue(nodesItem15.Port)
 
-									r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes = append(r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes, nodes7)
+									r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes = append(r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes, nodes15)
 								}
 							} else {
 								r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes = nil
@@ -1813,9 +2919,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					authPriorData4 := upstreamPriorData3.Auth
 					r.UpstreamServer.Config.Upstream.Auth = &tfTypes.Auth{}
 					if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput != nil {
-						var awsPriorData7 *tfTypes.AIGatewayUpstreamAuthAWS
+						var awsPriorData11 *tfTypes.AIGatewayUpstreamAuthAWS
 						if authPriorData4 != nil {
-							awsPriorData7 = authPriorData4.Aws
+							awsPriorData11 = authPriorData4.Aws
 						}
 						r.UpstreamServer.Config.Upstream.Auth.Aws = &tfTypes.AIGatewayUpstreamAuthAWS{}
 						r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.AccessKeyID)
@@ -1823,9 +2929,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 						r.UpstreamServer.Config.Upstream.Auth.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.Region)
 						r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.RoleSessionName)
 						r.UpstreamServer.Config.Upstream.Auth.Aws.StsEndpointURL = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Upstream.Auth.AIGatewayUpstreamAuthAWSOutput.StsEndpointURL)
-						if awsPriorData7 != nil {
-							r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey = awsPriorData7.SecretAccessKey
-							r.UpstreamServer.Config.Upstream.Auth.Aws.SessionToken = awsPriorData7.SessionToken
+						if awsPriorData11 != nil {
+							r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey = awsPriorData11.SecretAccessKey
+							r.UpstreamServer.Config.Upstream.Auth.Aws.SessionToken = awsPriorData11.SessionToken
 						}
 					}
 				}
@@ -1833,6 +2939,19 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			r.UpstreamServer.Config.URL = types.StringValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.URL)
 			r.UpstreamServer.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerUpstreamServerResponse.CreatedAt))
 			r.CreatedAt = r.UpstreamServer.CreatedAt
+			if resp.AIGatewayMCPServerUpstreamServerResponse.Datastores != nil {
+				r.UpstreamServer.Datastores = []tfTypes.AIGatewayDatastoreRef{}
+
+				for _, datastoresItem4 := range resp.AIGatewayMCPServerUpstreamServerResponse.Datastores {
+					var datastores4 tfTypes.AIGatewayDatastoreRef
+
+					datastores4.Name = types.StringValue(datastoresItem4.Name)
+
+					r.UpstreamServer.Datastores = append(r.UpstreamServer.Datastores, datastores4)
+				}
+			} else {
+				r.UpstreamServer.Datastores = nil
+			}
 			r.UpstreamServer.DisplayName = types.StringValue(resp.AIGatewayMCPServerUpstreamServerResponse.DisplayName)
 			r.DisplayName = r.UpstreamServer.DisplayName
 			r.UpstreamServer.Enabled = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Enabled)
@@ -1857,6 +2976,193 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Policies {
 				r.UpstreamServer.Policies = append(r.UpstreamServer.Policies, types.StringValue(v))
 			}
+			if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault == nil {
+				r.UpstreamServer.TokenVault = nil
+			} else {
+				var tokenVaultPriorData4 *tfTypes.AIGatewayTokenVault
+				if upstreamServerPriorData != nil {
+					tokenVaultPriorData4 = upstreamServerPriorData.TokenVault
+				}
+				r.UpstreamServer.TokenVault = &tfTypes.AIGatewayTokenVault{}
+				if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache == nil {
+					r.UpstreamServer.TokenVault.Cache = nil
+				} else {
+					var cachePriorData4 *tfTypes.Cache
+					if tokenVaultPriorData4 != nil {
+						cachePriorData4 = tokenVaultPriorData4.Cache
+					}
+					r.UpstreamServer.TokenVault.Cache = &tfTypes.Cache{}
+					if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis == nil {
+						r.UpstreamServer.TokenVault.Cache.Redis = nil
+					} else {
+						var redisPriorData8 *tfTypes.AIGatewayRedisCloudConfiguration
+						if cachePriorData4 != nil {
+							redisPriorData8 = cachePriorData4.Redis
+						}
+						r.UpstreamServer.TokenVault.Cache.Redis = &tfTypes.AIGatewayRedisCloudConfiguration{}
+						if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.CloudAuthentication != nil {
+							cloudAuthenticationPriorData8 := redisPriorData8.CloudAuthentication
+							r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication = &tfTypes.CloudAuthentication{}
+							if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput != nil {
+								var awsPriorData12 *tfTypes.AIGatewayRedisAWSAuthentication
+								if cloudAuthenticationPriorData8 != nil {
+									awsPriorData12 = cloudAuthenticationPriorData8.Aws
+								}
+								r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws = &tfTypes.AIGatewayRedisAWSAuthentication{}
+								r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AccessKeyID)
+								r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.AssumeRoleArn)
+								r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.CacheName)
+								r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.IsServerless)
+								r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.Region)
+								r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAWSAuthenticationOutput.RoleSessionName)
+								if awsPriorData12 != nil {
+									r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey = awsPriorData12.SecretAccessKey
+								}
+							}
+							if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput != nil {
+								var azurePriorData8 *tfTypes.AIGatewayRedisAzureAuthentication
+								if cloudAuthenticationPriorData8 != nil {
+									azurePriorData8 = cloudAuthenticationPriorData8.Azure
+								}
+								r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure = &tfTypes.AIGatewayRedisAzureAuthentication{}
+								r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.ClientID)
+								r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisAzureAuthenticationOutput.TenantID)
+								if azurePriorData8 != nil {
+									r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret = azurePriorData8.ClientSecret
+								}
+							}
+							if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.CloudAuthentication.AIGatewayRedisGCPAuthenticationOutput != nil {
+								var gcpPriorData8 *tfTypes.AIGatewayRedisGCPAuthentication
+								if cloudAuthenticationPriorData8 != nil {
+									gcpPriorData8 = cloudAuthenticationPriorData8.Gcp
+								}
+								r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Gcp = &tfTypes.AIGatewayRedisGCPAuthentication{}
+								if gcpPriorData8 != nil {
+									r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON = gcpPriorData8.ServiceAccountJSON
+								}
+							}
+						}
+						if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Cluster == nil {
+							r.UpstreamServer.TokenVault.Cache.Redis.Cluster = nil
+						} else {
+							r.UpstreamServer.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
+							r.UpstreamServer.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Cluster.MaxRedirections)
+							if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+								r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+
+								for _, nodesItem16 := range resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Cluster.Nodes {
+									var nodes16 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+
+									nodes16.IP = types.StringPointerValue(nodesItem16.IP)
+									nodes16.Port = types.Int64PointerValue(nodesItem16.Port)
+
+									r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes = append(r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes, nodes16)
+								}
+							} else {
+								r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes = nil
+							}
+						}
+						r.UpstreamServer.TokenVault.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.ConnectTimeout)
+						r.UpstreamServer.TokenVault.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.ConnectionIsProxied)
+						r.UpstreamServer.TokenVault.Cache.Redis.Database = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Database)
+						r.UpstreamServer.TokenVault.Cache.Redis.Host = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Host)
+						if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Keepalive == nil {
+							r.UpstreamServer.TokenVault.Cache.Redis.Keepalive = nil
+						} else {
+							r.UpstreamServer.TokenVault.Cache.Redis.Keepalive = &tfTypes.Keepalive{}
+							r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.Backlog = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Keepalive.Backlog)
+							r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.PoolSize = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Keepalive.PoolSize)
+						}
+						r.UpstreamServer.TokenVault.Cache.Redis.Password = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Password)
+						r.UpstreamServer.TokenVault.Cache.Redis.Port = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Port)
+						r.UpstreamServer.TokenVault.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.ReadTimeout)
+						r.UpstreamServer.TokenVault.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.SendTimeout)
+						if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Sentinel == nil {
+							r.UpstreamServer.TokenVault.Cache.Redis.Sentinel = nil
+						} else {
+							r.UpstreamServer.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
+							r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Sentinel.Master)
+							if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+								r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+
+								for _, nodesItem17 := range resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Sentinel.Nodes {
+									var nodes17 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+
+									nodes17.Host = types.StringPointerValue(nodesItem17.Host)
+									nodes17.Port = types.Int64PointerValue(nodesItem17.Port)
+
+									r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes = append(r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes, nodes17)
+								}
+							} else {
+								r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes = nil
+							}
+							r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Password = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Sentinel.Password)
+							if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Sentinel.Role != nil {
+								r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Role = types.StringValue(string(*resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Sentinel.Role))
+							} else {
+								r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Role = types.StringNull()
+							}
+							r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Username = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Sentinel.Username)
+						}
+						r.UpstreamServer.TokenVault.Cache.Redis.ServerName = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.ServerName)
+						r.UpstreamServer.TokenVault.Cache.Redis.Ssl = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Ssl)
+						r.UpstreamServer.TokenVault.Cache.Redis.SslVerify = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.SslVerify)
+						r.UpstreamServer.TokenVault.Cache.Redis.Username = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Cache.Redis.Username)
+					}
+				}
+				if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Credential == nil {
+					r.UpstreamServer.TokenVault.Credential = nil
+				} else {
+					r.UpstreamServer.TokenVault.Credential = &tfTypes.AIGatewayTokenVaultCredential{}
+					if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Credential.Inbound == nil {
+						r.UpstreamServer.TokenVault.Credential.Inbound = nil
+					} else {
+						r.UpstreamServer.TokenVault.Credential.Inbound = &tfTypes.AIGatewayTokenVaultCredentialPlacement{}
+						if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Credential.Inbound.Location != nil {
+							r.UpstreamServer.TokenVault.Credential.Inbound.Location = types.StringValue(string(*resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Credential.Inbound.Location))
+						} else {
+							r.UpstreamServer.TokenVault.Credential.Inbound.Location = types.StringNull()
+						}
+						r.UpstreamServer.TokenVault.Credential.Inbound.Name = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Credential.Inbound.Name)
+						r.UpstreamServer.TokenVault.Credential.Inbound.Prefix = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Credential.Inbound.Prefix)
+					}
+					if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Credential.Outbound == nil {
+						r.UpstreamServer.TokenVault.Credential.Outbound = nil
+					} else {
+						r.UpstreamServer.TokenVault.Credential.Outbound = &tfTypes.AIGatewayTokenVaultCredentialPlacement{}
+						if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Credential.Outbound.Location != nil {
+							r.UpstreamServer.TokenVault.Credential.Outbound.Location = types.StringValue(string(*resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Credential.Outbound.Location))
+						} else {
+							r.UpstreamServer.TokenVault.Credential.Outbound.Location = types.StringNull()
+						}
+						r.UpstreamServer.TokenVault.Credential.Outbound.Name = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Credential.Outbound.Name)
+						r.UpstreamServer.TokenVault.Credential.Outbound.Prefix = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Credential.Outbound.Prefix)
+					}
+				}
+				r.UpstreamServer.TokenVault.Provider = types.StringValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Provider)
+				if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Storage == nil {
+					r.UpstreamServer.TokenVault.Storage = nil
+				} else {
+					r.UpstreamServer.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.UpstreamServer.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Storage.CurrentVersion)
+					r.UpstreamServer.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Storage.Directory)
+					r.UpstreamServer.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
+
+					for _, keysItem4 := range resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Storage.Keys {
+						var keys4 tfTypes.TokenVaultDatastoreKey
+
+						keys4.Key = types.StringPointerValue(keysItem4.Key)
+						keys4.Version = types.StringValue(keysItem4.Version)
+
+						r.UpstreamServer.TokenVault.Storage.Keys = append(r.UpstreamServer.TokenVault.Storage.Keys, keys4)
+					}
+				}
+				if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.SubjectTokenType != nil {
+					r.UpstreamServer.TokenVault.SubjectTokenType = types.StringValue(string(*resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.SubjectTokenType))
+				} else {
+					r.UpstreamServer.TokenVault.SubjectTokenType = types.StringNull()
+				}
+			}
 			r.UpstreamServer.Tools = []tfTypes.AIGatewayMCPUpstreamTool{}
 
 			for _, toolsItem3 := range resp.AIGatewayMCPServerUpstreamServerResponse.Tools {
@@ -1869,14 +3175,30 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					if toolsItem3.Access.Acls == nil {
 						tools3.Access.Acls = nil
 					} else {
-						tools3.Access.Acls = &tfTypes.AIGatewayMCPACLs{}
+						tools3.Access.Acls = &tfTypes.AIGatewayACLS{}
 						tools3.Access.Acls.Allow = make([]types.String, 0, len(toolsItem3.Access.Acls.Allow))
 						for _, v := range toolsItem3.Access.Acls.Allow {
 							tools3.Access.Acls.Allow = append(tools3.Access.Acls.Allow, types.StringValue(v))
 						}
+						if toolsItem3.Access.Acls.AllowWhen != nil {
+							tools3.Access.Acls.AllowWhen = make([]types.String, 0, len(toolsItem3.Access.Acls.AllowWhen))
+							for _, v := range toolsItem3.Access.Acls.AllowWhen {
+								tools3.Access.Acls.AllowWhen = append(tools3.Access.Acls.AllowWhen, types.StringValue(v))
+							}
+						} else {
+							tools3.Access.Acls.AllowWhen = nil
+						}
 						tools3.Access.Acls.Deny = make([]types.String, 0, len(toolsItem3.Access.Acls.Deny))
 						for _, v := range toolsItem3.Access.Acls.Deny {
 							tools3.Access.Acls.Deny = append(tools3.Access.Acls.Deny, types.StringValue(v))
+						}
+						if toolsItem3.Access.Acls.DenyWhen != nil {
+							tools3.Access.Acls.DenyWhen = make([]types.String, 0, len(toolsItem3.Access.Acls.DenyWhen))
+							for _, v := range toolsItem3.Access.Acls.DenyWhen {
+								tools3.Access.Acls.DenyWhen = append(tools3.Access.Acls.DenyWhen, types.StringValue(v))
+							}
+						} else {
+							tools3.Access.Acls.DenyWhen = nil
 						}
 					}
 				}
@@ -2176,12 +3498,22 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Auth: auth,
 			}
 		}
+		certificates := make([]string, 0, len(r.ConversionOnly.Config.Certificates))
+		for certificatesIndex := range r.ConversionOnly.Config.Certificates {
+			certificates = append(certificates, r.ConversionOnly.Config.Certificates[certificatesIndex].ValueString())
+		}
+		caCertificates := make([]string, 0, len(r.ConversionOnly.Config.CaCertificates))
+		for caCertificatesIndex := range r.ConversionOnly.Config.CaCertificates {
+			caCertificates = append(caCertificates, r.ConversionOnly.Config.CaCertificates[caCertificatesIndex].ValueString())
+		}
 		config := shared.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig{
 			Route:              route,
 			Logging:            logging,
 			MaxRequestBodySize: maxRequestBodySize,
 			URL:                url,
 			Upstream:           upstream,
+			Certificates:       certificates,
+			CaCertificates:     caCertificates,
 		}
 		tools := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionOnly.Tools))
 		for toolsIndex := range r.ConversionOnly.Tools {
@@ -2197,9 +3529,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex := range r.ConversionOnly.Tools[toolsIndex].Access.Acls.Deny {
 						deny = append(deny, r.ConversionOnly.Tools[toolsIndex].Access.Acls.Deny[denyIndex].ValueString())
 					}
+					var allowWhen []string
+					if r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen != nil {
+						allowWhen = make([]string, 0, len(r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen))
+						for allowWhenIndex := range r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen {
+							allowWhen = append(allowWhen, r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen[allowWhenIndex].ValueString())
+						}
+					}
+					var denyWhen []string
+					if r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen != nil {
+						denyWhen = make([]string, 0, len(r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen))
+						for denyWhenIndex := range r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen {
+							denyWhen = append(denyWhen, r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen[denyWhenIndex].ValueString())
+						}
+					}
 					acls = &shared.AIGatewayMCPACLs{
-						Allow: allow,
-						Deny:  deny,
+						Allow:     allow,
+						Deny:      deny,
+						AllowWhen: allowWhen,
+						DenyWhen:  denyWhen,
 					}
 				}
 				access = &shared.AIGatewayMCPToolAccess{
@@ -2365,6 +3713,414 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 
 			managedBy[managedByKey] = managedByInst
 		}
+		var datastores []shared.AIGatewayDatastoreRef
+		if r.ConversionOnly.Datastores != nil {
+			datastores = make([]shared.AIGatewayDatastoreRef, 0, len(r.ConversionOnly.Datastores))
+			for datastoresIndex := range r.ConversionOnly.Datastores {
+				var name3 string
+				name3 = r.ConversionOnly.Datastores[datastoresIndex].Name.ValueString()
+
+				datastores = append(datastores, shared.AIGatewayDatastoreRef{
+					Name: name3,
+				})
+			}
+		}
+		var tokenVault *shared.AIGatewayTokenVault
+		if r.ConversionOnly.TokenVault != nil {
+			var provider string
+			provider = r.ConversionOnly.TokenVault.Provider.ValueString()
+
+			subjectTokenType := new(shared.SubjectTokenType)
+			if !r.ConversionOnly.TokenVault.SubjectTokenType.IsUnknown() && !r.ConversionOnly.TokenVault.SubjectTokenType.IsNull() {
+				*subjectTokenType = shared.SubjectTokenType(r.ConversionOnly.TokenVault.SubjectTokenType.ValueString())
+			} else {
+				subjectTokenType = nil
+			}
+			var credential *shared.AIGatewayTokenVaultCredential
+			if r.ConversionOnly.TokenVault.Credential != nil {
+				var inbound *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.ConversionOnly.TokenVault.Credential.Inbound != nil {
+					location := new(shared.Location)
+					if !r.ConversionOnly.TokenVault.Credential.Inbound.Location.IsUnknown() && !r.ConversionOnly.TokenVault.Credential.Inbound.Location.IsNull() {
+						*location = shared.Location(r.ConversionOnly.TokenVault.Credential.Inbound.Location.ValueString())
+					} else {
+						location = nil
+					}
+					name4 := new(string)
+					if !r.ConversionOnly.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.ConversionOnly.TokenVault.Credential.Inbound.Name.IsNull() {
+						*name4 = r.ConversionOnly.TokenVault.Credential.Inbound.Name.ValueString()
+					} else {
+						name4 = nil
+					}
+					prefix := new(string)
+					if !r.ConversionOnly.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.ConversionOnly.TokenVault.Credential.Inbound.Prefix.IsNull() {
+						*prefix = r.ConversionOnly.TokenVault.Credential.Inbound.Prefix.ValueString()
+					} else {
+						prefix = nil
+					}
+					inbound = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location,
+						Name:     name4,
+						Prefix:   prefix,
+					}
+				}
+				var outbound *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.ConversionOnly.TokenVault.Credential.Outbound != nil {
+					location1 := new(shared.Location)
+					if !r.ConversionOnly.TokenVault.Credential.Outbound.Location.IsUnknown() && !r.ConversionOnly.TokenVault.Credential.Outbound.Location.IsNull() {
+						*location1 = shared.Location(r.ConversionOnly.TokenVault.Credential.Outbound.Location.ValueString())
+					} else {
+						location1 = nil
+					}
+					name5 := new(string)
+					if !r.ConversionOnly.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.ConversionOnly.TokenVault.Credential.Outbound.Name.IsNull() {
+						*name5 = r.ConversionOnly.TokenVault.Credential.Outbound.Name.ValueString()
+					} else {
+						name5 = nil
+					}
+					prefix1 := new(string)
+					if !r.ConversionOnly.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.ConversionOnly.TokenVault.Credential.Outbound.Prefix.IsNull() {
+						*prefix1 = r.ConversionOnly.TokenVault.Credential.Outbound.Prefix.ValueString()
+					} else {
+						prefix1 = nil
+					}
+					outbound = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location1,
+						Name:     name5,
+						Prefix:   prefix1,
+					}
+				}
+				credential = &shared.AIGatewayTokenVaultCredential{
+					Inbound:  inbound,
+					Outbound: outbound,
+				}
+			}
+			var cache *shared.Cache
+			if r.ConversionOnly.TokenVault.Cache != nil {
+				var redis *shared.AIGatewayRedisCloudConfiguration
+				if r.ConversionOnly.TokenVault.Cache.Redis != nil {
+					var cloudAuthentication *shared.CloudAuthentication
+					if r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication != nil {
+						var aiGatewayRedisAWSAuthentication *shared.AIGatewayRedisAWSAuthentication
+						if r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws != nil {
+							accessKeyId1 := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
+								*accessKeyId1 = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+							} else {
+								accessKeyId1 = nil
+							}
+							assumeRoleArn1 := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
+								*assumeRoleArn1 = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+							} else {
+								assumeRoleArn1 = nil
+							}
+							cacheName := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
+								*cacheName = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+							} else {
+								cacheName = nil
+							}
+							isServerless := new(bool)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
+								*isServerless = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+							} else {
+								isServerless = nil
+							}
+							region1 := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsNull() {
+								*region1 = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.ValueString()
+							} else {
+								region1 = nil
+							}
+							roleSessionName1 := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
+								*roleSessionName1 = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+							} else {
+								roleSessionName1 = nil
+							}
+							secretAccessKey1 := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
+								*secretAccessKey1 = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+							} else {
+								secretAccessKey1 = nil
+							}
+							aiGatewayRedisAWSAuthentication = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId1,
+								AssumeRoleArn:   assumeRoleArn1,
+								CacheName:       cacheName,
+								IsServerless:    isServerless,
+								Region:          region1,
+								RoleSessionName: roleSessionName1,
+								SecretAccessKey: secretAccessKey1,
+							}
+						}
+						if aiGatewayRedisAWSAuthentication != nil {
+							cloudAuthentication = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication *shared.AIGatewayRedisAzureAuthentication
+						if r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure != nil {
+							clientID := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
+								*clientID = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+							} else {
+								clientID = nil
+							}
+							clientSecret := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
+								*clientSecret = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+							} else {
+								clientSecret = nil
+							}
+							tenantID := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
+								*tenantID = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+							} else {
+								tenantID = nil
+							}
+							aiGatewayRedisAzureAuthentication = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientID,
+								ClientSecret: clientSecret,
+								TenantID:     tenantID,
+							}
+						}
+						if aiGatewayRedisAzureAuthentication != nil {
+							cloudAuthentication = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication *shared.AIGatewayRedisGCPAuthentication
+						if r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Gcp != nil {
+							serviceAccountJSON := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
+								*serviceAccountJSON = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+							} else {
+								serviceAccountJSON = nil
+							}
+							aiGatewayRedisGCPAuthentication = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJSON,
+							}
+						}
+						if aiGatewayRedisGCPAuthentication != nil {
+							cloudAuthentication = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication,
+							}
+						}
+					}
+					var cluster *shared.Cluster
+					if r.ConversionOnly.TokenVault.Cache.Redis.Cluster != nil {
+						maxRedirections := new(int64)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsNull() {
+							*maxRedirections = r.ConversionOnly.TokenVault.Cache.Redis.Cluster.MaxRedirections.ValueInt64()
+						} else {
+							maxRedirections = nil
+						}
+						var nodes []shared.Nodes
+						if r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+							nodes = make([]shared.Nodes, 0, len(r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes))
+							for nodesIndex := range r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes {
+								ip := new(string)
+								if !r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex].IP.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex].IP.IsNull() {
+									*ip = r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex].IP.ValueString()
+								} else {
+									ip = nil
+								}
+								port := new(int64)
+								if !r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex].Port.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex].Port.IsNull() {
+									*port = r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex].Port.ValueInt64()
+								} else {
+									port = nil
+								}
+								nodes = append(nodes, shared.Nodes{
+									IP:   ip,
+									Port: port,
+								})
+							}
+						}
+						cluster = &shared.Cluster{
+							MaxRedirections: maxRedirections,
+							Nodes:           nodes,
+						}
+					}
+					connectTimeout := new(int64)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.ConnectTimeout.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.ConnectTimeout.IsNull() {
+						*connectTimeout = r.ConversionOnly.TokenVault.Cache.Redis.ConnectTimeout.ValueInt64()
+					} else {
+						connectTimeout = nil
+					}
+					connectionIsProxied := new(bool)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.ConnectionIsProxied.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.ConnectionIsProxied.IsNull() {
+						*connectionIsProxied = r.ConversionOnly.TokenVault.Cache.Redis.ConnectionIsProxied.ValueBool()
+					} else {
+						connectionIsProxied = nil
+					}
+					database := new(int64)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.Database.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Database.IsNull() {
+						*database = r.ConversionOnly.TokenVault.Cache.Redis.Database.ValueInt64()
+					} else {
+						database = nil
+					}
+					host1 := new(string)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.Host.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Host.IsNull() {
+						*host1 = r.ConversionOnly.TokenVault.Cache.Redis.Host.ValueString()
+					} else {
+						host1 = nil
+					}
+					var keepalive *shared.Keepalive
+					if r.ConversionOnly.TokenVault.Cache.Redis.Keepalive != nil {
+						backlog := new(int64)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.Backlog.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.Backlog.IsNull() {
+							*backlog = r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.Backlog.ValueInt64()
+						} else {
+							backlog = nil
+						}
+						poolSize := new(int64)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.PoolSize.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.PoolSize.IsNull() {
+							*poolSize = r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.PoolSize.ValueInt64()
+						} else {
+							poolSize = nil
+						}
+						keepalive = &shared.Keepalive{
+							Backlog:  backlog,
+							PoolSize: poolSize,
+						}
+					}
+					password := new(string)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.Password.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Password.IsNull() {
+						*password = r.ConversionOnly.TokenVault.Cache.Redis.Password.ValueString()
+					} else {
+						password = nil
+					}
+					port1 := new(string)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.Port.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Port.IsNull() {
+						*port1 = r.ConversionOnly.TokenVault.Cache.Redis.Port.ValueString()
+					} else {
+						port1 = nil
+					}
+					readTimeout := new(int64)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.ReadTimeout.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.ReadTimeout.IsNull() {
+						*readTimeout = r.ConversionOnly.TokenVault.Cache.Redis.ReadTimeout.ValueInt64()
+					} else {
+						readTimeout = nil
+					}
+					sendTimeout := new(int64)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.SendTimeout.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.SendTimeout.IsNull() {
+						*sendTimeout = r.ConversionOnly.TokenVault.Cache.Redis.SendTimeout.ValueInt64()
+					} else {
+						sendTimeout = nil
+					}
+					var sentinel *shared.Sentinel
+					if r.ConversionOnly.TokenVault.Cache.Redis.Sentinel != nil {
+						master := new(string)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Master.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Master.IsNull() {
+							*master = r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Master.ValueString()
+						} else {
+							master = nil
+						}
+						var nodes1 []shared.AIGatewayRedisCloudConfigurationNodes
+						if r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+							nodes1 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes))
+							for nodesIndex1 := range r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes {
+								host2 := new(string)
+								if !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex1].Host.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex1].Host.IsNull() {
+									*host2 = r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex1].Host.ValueString()
+								} else {
+									host2 = nil
+								}
+								port2 := new(int64)
+								if !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex1].Port.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex1].Port.IsNull() {
+									*port2 = r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex1].Port.ValueInt64()
+								} else {
+									port2 = nil
+								}
+								nodes1 = append(nodes1, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host2,
+									Port: port2,
+								})
+							}
+						}
+						password1 := new(string)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Password.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Password.IsNull() {
+							*password1 = r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Password.ValueString()
+						} else {
+							password1 = nil
+						}
+						role := new(shared.Role)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Role.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Role.IsNull() {
+							*role = shared.Role(r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Role.ValueString())
+						} else {
+							role = nil
+						}
+						username := new(string)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Username.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Username.IsNull() {
+							*username = r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Username.ValueString()
+						} else {
+							username = nil
+						}
+						sentinel = &shared.Sentinel{
+							Master:   master,
+							Nodes:    nodes1,
+							Password: password1,
+							Role:     role,
+							Username: username,
+						}
+					}
+					serverName := new(string)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.ServerName.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.ServerName.IsNull() {
+						*serverName = r.ConversionOnly.TokenVault.Cache.Redis.ServerName.ValueString()
+					} else {
+						serverName = nil
+					}
+					ssl := new(bool)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.Ssl.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Ssl.IsNull() {
+						*ssl = r.ConversionOnly.TokenVault.Cache.Redis.Ssl.ValueBool()
+					} else {
+						ssl = nil
+					}
+					sslVerify := new(bool)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.SslVerify.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.SslVerify.IsNull() {
+						*sslVerify = r.ConversionOnly.TokenVault.Cache.Redis.SslVerify.ValueBool()
+					} else {
+						sslVerify = nil
+					}
+					username1 := new(string)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.Username.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Username.IsNull() {
+						*username1 = r.ConversionOnly.TokenVault.Cache.Redis.Username.ValueString()
+					} else {
+						username1 = nil
+					}
+					redis = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication,
+						Cluster:             cluster,
+						ConnectTimeout:      connectTimeout,
+						ConnectionIsProxied: connectionIsProxied,
+						Database:            database,
+						Host:                host1,
+						Keepalive:           keepalive,
+						Password:            password,
+						Port:                port1,
+						ReadTimeout:         readTimeout,
+						SendTimeout:         sendTimeout,
+						Sentinel:            sentinel,
+						ServerName:          serverName,
+						Ssl:                 ssl,
+						SslVerify:           sslVerify,
+						Username:            username1,
+					}
+				}
+				cache = &shared.Cache{
+					Redis: redis,
+				}
+			}
+			tokenVault = &shared.AIGatewayTokenVault{
+				Provider:         provider,
+				SubjectTokenType: subjectTokenType,
+				Credential:       credential,
+				Cache:            cache,
+			}
+		}
 		aiGatewayMCPServerConversionOnly = &shared.AIGatewayMCPServerConversionOnly{
 			Config:      config,
 			Tools:       tools,
@@ -2374,6 +4130,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			Policies:    policies,
 			Labels:      labels,
 			ManagedBy:   managedBy,
+			Datastores:  datastores,
+			TokenVault:  tokenVault,
 		}
 	}
 	if aiGatewayMCPServerConversionOnly != nil {
@@ -2516,317 +4274,317 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				} else {
 					managed = nil
 				}
-				var redis *shared.AIGatewayRedisCloudConfiguration
+				var redis1 *shared.AIGatewayRedisCloudConfiguration
 				if r.ConversionListener.Config.Server.Session.Redis != nil {
-					var cloudAuthentication *shared.CloudAuthentication
+					var cloudAuthentication1 *shared.CloudAuthentication
 					if r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication != nil {
-						var aiGatewayRedisAWSAuthentication *shared.AIGatewayRedisAWSAuthentication
+						var aiGatewayRedisAWSAuthentication1 *shared.AIGatewayRedisAWSAuthentication
 						if r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId1 := new(string)
+							accessKeyId2 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId2 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId1 = nil
+								accessKeyId2 = nil
 							}
-							assumeRoleArn1 := new(string)
+							assumeRoleArn2 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn2 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn1 = nil
+								assumeRoleArn2 = nil
 							}
-							cacheName := new(string)
+							cacheName1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
-								*cacheName = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+								*cacheName1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
 							} else {
-								cacheName = nil
+								cacheName1 = nil
 							}
-							isServerless := new(bool)
+							isServerless1 := new(bool)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
-								*isServerless = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+								*isServerless1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
 							} else {
-								isServerless = nil
+								isServerless1 = nil
 							}
-							region1 := new(string)
+							region2 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region2 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region1 = nil
+								region2 = nil
 							}
-							roleSessionName1 := new(string)
+							roleSessionName2 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName2 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName1 = nil
+								roleSessionName2 = nil
 							}
-							secretAccessKey1 := new(string)
+							secretAccessKey2 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey2 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey1 = nil
+								secretAccessKey2 = nil
 							}
-							aiGatewayRedisAWSAuthentication = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId1,
-								AssumeRoleArn:   assumeRoleArn1,
-								CacheName:       cacheName,
-								IsServerless:    isServerless,
-								Region:          region1,
-								RoleSessionName: roleSessionName1,
-								SecretAccessKey: secretAccessKey1,
-							}
-						}
-						if aiGatewayRedisAWSAuthentication != nil {
-							cloudAuthentication = &shared.CloudAuthentication{
-								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication,
+							aiGatewayRedisAWSAuthentication1 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId2,
+								AssumeRoleArn:   assumeRoleArn2,
+								CacheName:       cacheName1,
+								IsServerless:    isServerless1,
+								Region:          region2,
+								RoleSessionName: roleSessionName2,
+								SecretAccessKey: secretAccessKey2,
 							}
 						}
-						var aiGatewayRedisAzureAuthentication *shared.AIGatewayRedisAzureAuthentication
+						if aiGatewayRedisAWSAuthentication1 != nil {
+							cloudAuthentication1 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication1,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication1 *shared.AIGatewayRedisAzureAuthentication
 						if r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure != nil {
-							clientID := new(string)
+							clientId1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
-								*clientID = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+								*clientId1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
 							} else {
-								clientID = nil
+								clientId1 = nil
 							}
-							clientSecret := new(string)
+							clientSecret1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
-								*clientSecret = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+								*clientSecret1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
 							} else {
-								clientSecret = nil
+								clientSecret1 = nil
 							}
-							tenantID := new(string)
+							tenantId1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
-								*tenantID = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+								*tenantId1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
 							} else {
-								tenantID = nil
+								tenantId1 = nil
 							}
-							aiGatewayRedisAzureAuthentication = &shared.AIGatewayRedisAzureAuthentication{
-								ClientID:     clientID,
-								ClientSecret: clientSecret,
-								TenantID:     tenantID,
-							}
-						}
-						if aiGatewayRedisAzureAuthentication != nil {
-							cloudAuthentication = &shared.CloudAuthentication{
-								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication,
+							aiGatewayRedisAzureAuthentication1 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId1,
+								ClientSecret: clientSecret1,
+								TenantID:     tenantId1,
 							}
 						}
-						var aiGatewayRedisGCPAuthentication *shared.AIGatewayRedisGCPAuthentication
+						if aiGatewayRedisAzureAuthentication1 != nil {
+							cloudAuthentication1 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication1,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication1 *shared.AIGatewayRedisGCPAuthentication
 						if r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Gcp != nil {
-							serviceAccountJSON := new(string)
+							serviceAccountJson1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
-								*serviceAccountJSON = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+								*serviceAccountJson1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
 							} else {
-								serviceAccountJSON = nil
+								serviceAccountJson1 = nil
 							}
-							aiGatewayRedisGCPAuthentication = &shared.AIGatewayRedisGCPAuthentication{
-								ServiceAccountJSON: serviceAccountJSON,
+							aiGatewayRedisGCPAuthentication1 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson1,
 							}
 						}
-						if aiGatewayRedisGCPAuthentication != nil {
-							cloudAuthentication = &shared.CloudAuthentication{
-								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication,
+						if aiGatewayRedisGCPAuthentication1 != nil {
+							cloudAuthentication1 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication1,
 							}
 						}
 					}
-					var cluster *shared.Cluster
+					var cluster1 *shared.Cluster
 					if r.ConversionListener.Config.Server.Session.Redis.Cluster != nil {
-						maxRedirections := new(int64)
+						maxRedirections1 := new(int64)
 						if !r.ConversionListener.Config.Server.Session.Redis.Cluster.MaxRedirections.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Cluster.MaxRedirections.IsNull() {
-							*maxRedirections = r.ConversionListener.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
+							*maxRedirections1 = r.ConversionListener.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
 						} else {
-							maxRedirections = nil
+							maxRedirections1 = nil
 						}
-						var nodes []shared.Nodes
+						var nodes2 []shared.Nodes
 						if r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes != nil {
-							nodes = make([]shared.Nodes, 0, len(r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes))
-							for nodesIndex := range r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes {
-								ip := new(string)
-								if !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex].IP.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex].IP.IsNull() {
-									*ip = r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex].IP.ValueString()
+							nodes2 = make([]shared.Nodes, 0, len(r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes))
+							for nodesIndex2 := range r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes {
+								ip1 := new(string)
+								if !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].IP.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].IP.IsNull() {
+									*ip1 = r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].IP.ValueString()
 								} else {
-									ip = nil
+									ip1 = nil
 								}
-								port := new(int64)
-								if !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex].Port.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex].Port.IsNull() {
-									*port = r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex].Port.ValueInt64()
+								port3 := new(int64)
+								if !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].Port.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].Port.IsNull() {
+									*port3 = r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].Port.ValueInt64()
 								} else {
-									port = nil
+									port3 = nil
 								}
-								nodes = append(nodes, shared.Nodes{
-									IP:   ip,
-									Port: port,
+								nodes2 = append(nodes2, shared.Nodes{
+									IP:   ip1,
+									Port: port3,
 								})
 							}
 						}
-						cluster = &shared.Cluster{
-							MaxRedirections: maxRedirections,
-							Nodes:           nodes,
+						cluster1 = &shared.Cluster{
+							MaxRedirections: maxRedirections1,
+							Nodes:           nodes2,
 						}
 					}
-					connectTimeout := new(int64)
+					connectTimeout1 := new(int64)
 					if !r.ConversionListener.Config.Server.Session.Redis.ConnectTimeout.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.ConnectTimeout.IsNull() {
-						*connectTimeout = r.ConversionListener.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
+						*connectTimeout1 = r.ConversionListener.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
 					} else {
-						connectTimeout = nil
+						connectTimeout1 = nil
 					}
-					connectionIsProxied := new(bool)
+					connectionIsProxied1 := new(bool)
 					if !r.ConversionListener.Config.Server.Session.Redis.ConnectionIsProxied.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.ConnectionIsProxied.IsNull() {
-						*connectionIsProxied = r.ConversionListener.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
+						*connectionIsProxied1 = r.ConversionListener.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
 					} else {
-						connectionIsProxied = nil
+						connectionIsProxied1 = nil
 					}
-					database := new(int64)
+					database1 := new(int64)
 					if !r.ConversionListener.Config.Server.Session.Redis.Database.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Database.IsNull() {
-						*database = r.ConversionListener.Config.Server.Session.Redis.Database.ValueInt64()
+						*database1 = r.ConversionListener.Config.Server.Session.Redis.Database.ValueInt64()
 					} else {
-						database = nil
+						database1 = nil
 					}
-					host1 := new(string)
+					host3 := new(string)
 					if !r.ConversionListener.Config.Server.Session.Redis.Host.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Host.IsNull() {
-						*host1 = r.ConversionListener.Config.Server.Session.Redis.Host.ValueString()
+						*host3 = r.ConversionListener.Config.Server.Session.Redis.Host.ValueString()
 					} else {
-						host1 = nil
+						host3 = nil
 					}
-					var keepalive *shared.Keepalive
+					var keepalive1 *shared.Keepalive
 					if r.ConversionListener.Config.Server.Session.Redis.Keepalive != nil {
-						backlog := new(int64)
+						backlog1 := new(int64)
 						if !r.ConversionListener.Config.Server.Session.Redis.Keepalive.Backlog.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Keepalive.Backlog.IsNull() {
-							*backlog = r.ConversionListener.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
+							*backlog1 = r.ConversionListener.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
 						} else {
-							backlog = nil
+							backlog1 = nil
 						}
-						poolSize := new(int64)
+						poolSize1 := new(int64)
 						if !r.ConversionListener.Config.Server.Session.Redis.Keepalive.PoolSize.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Keepalive.PoolSize.IsNull() {
-							*poolSize = r.ConversionListener.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
+							*poolSize1 = r.ConversionListener.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
 						} else {
-							poolSize = nil
+							poolSize1 = nil
 						}
-						keepalive = &shared.Keepalive{
-							Backlog:  backlog,
-							PoolSize: poolSize,
+						keepalive1 = &shared.Keepalive{
+							Backlog:  backlog1,
+							PoolSize: poolSize1,
 						}
 					}
-					password := new(string)
+					password2 := new(string)
 					if !r.ConversionListener.Config.Server.Session.Redis.Password.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Password.IsNull() {
-						*password = r.ConversionListener.Config.Server.Session.Redis.Password.ValueString()
+						*password2 = r.ConversionListener.Config.Server.Session.Redis.Password.ValueString()
 					} else {
-						password = nil
+						password2 = nil
 					}
-					port1 := new(string)
+					port4 := new(string)
 					if !r.ConversionListener.Config.Server.Session.Redis.Port.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Port.IsNull() {
-						*port1 = r.ConversionListener.Config.Server.Session.Redis.Port.ValueString()
+						*port4 = r.ConversionListener.Config.Server.Session.Redis.Port.ValueString()
 					} else {
-						port1 = nil
+						port4 = nil
 					}
-					readTimeout := new(int64)
+					readTimeout1 := new(int64)
 					if !r.ConversionListener.Config.Server.Session.Redis.ReadTimeout.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.ReadTimeout.IsNull() {
-						*readTimeout = r.ConversionListener.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
+						*readTimeout1 = r.ConversionListener.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
 					} else {
-						readTimeout = nil
+						readTimeout1 = nil
 					}
-					sendTimeout := new(int64)
+					sendTimeout1 := new(int64)
 					if !r.ConversionListener.Config.Server.Session.Redis.SendTimeout.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.SendTimeout.IsNull() {
-						*sendTimeout = r.ConversionListener.Config.Server.Session.Redis.SendTimeout.ValueInt64()
+						*sendTimeout1 = r.ConversionListener.Config.Server.Session.Redis.SendTimeout.ValueInt64()
 					} else {
-						sendTimeout = nil
+						sendTimeout1 = nil
 					}
-					var sentinel *shared.Sentinel
+					var sentinel1 *shared.Sentinel
 					if r.ConversionListener.Config.Server.Session.Redis.Sentinel != nil {
-						master := new(string)
+						master1 := new(string)
 						if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Master.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Master.IsNull() {
-							*master = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Master.ValueString()
+							*master1 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Master.ValueString()
 						} else {
-							master = nil
+							master1 = nil
 						}
-						var nodes1 []shared.AIGatewayRedisCloudConfigurationNodes
+						var nodes3 []shared.AIGatewayRedisCloudConfigurationNodes
 						if r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-							nodes1 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes))
-							for nodesIndex1 := range r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes {
-								host2 := new(string)
-								if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex1].Host.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex1].Host.IsNull() {
-									*host2 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex1].Host.ValueString()
+							nodes3 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes))
+							for nodesIndex3 := range r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes {
+								host4 := new(string)
+								if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Host.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Host.IsNull() {
+									*host4 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Host.ValueString()
 								} else {
-									host2 = nil
+									host4 = nil
 								}
-								port2 := new(int64)
-								if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex1].Port.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex1].Port.IsNull() {
-									*port2 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex1].Port.ValueInt64()
+								port5 := new(int64)
+								if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Port.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Port.IsNull() {
+									*port5 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Port.ValueInt64()
 								} else {
-									port2 = nil
+									port5 = nil
 								}
-								nodes1 = append(nodes1, shared.AIGatewayRedisCloudConfigurationNodes{
-									Host: host2,
-									Port: port2,
+								nodes3 = append(nodes3, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host4,
+									Port: port5,
 								})
 							}
 						}
-						password1 := new(string)
+						password3 := new(string)
 						if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Password.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Password.IsNull() {
-							*password1 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Password.ValueString()
+							*password3 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Password.ValueString()
 						} else {
-							password1 = nil
+							password3 = nil
 						}
-						role := new(shared.Role)
+						role1 := new(shared.Role)
 						if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Role.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Role.IsNull() {
-							*role = shared.Role(r.ConversionListener.Config.Server.Session.Redis.Sentinel.Role.ValueString())
+							*role1 = shared.Role(r.ConversionListener.Config.Server.Session.Redis.Sentinel.Role.ValueString())
 						} else {
-							role = nil
+							role1 = nil
 						}
-						username := new(string)
+						username2 := new(string)
 						if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Username.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Username.IsNull() {
-							*username = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Username.ValueString()
+							*username2 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Username.ValueString()
 						} else {
-							username = nil
+							username2 = nil
 						}
-						sentinel = &shared.Sentinel{
-							Master:   master,
-							Nodes:    nodes1,
-							Password: password1,
-							Role:     role,
-							Username: username,
+						sentinel1 = &shared.Sentinel{
+							Master:   master1,
+							Nodes:    nodes3,
+							Password: password3,
+							Role:     role1,
+							Username: username2,
 						}
 					}
-					serverName := new(string)
+					serverName1 := new(string)
 					if !r.ConversionListener.Config.Server.Session.Redis.ServerName.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.ServerName.IsNull() {
-						*serverName = r.ConversionListener.Config.Server.Session.Redis.ServerName.ValueString()
+						*serverName1 = r.ConversionListener.Config.Server.Session.Redis.ServerName.ValueString()
 					} else {
-						serverName = nil
+						serverName1 = nil
 					}
-					ssl := new(bool)
+					ssl1 := new(bool)
 					if !r.ConversionListener.Config.Server.Session.Redis.Ssl.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Ssl.IsNull() {
-						*ssl = r.ConversionListener.Config.Server.Session.Redis.Ssl.ValueBool()
+						*ssl1 = r.ConversionListener.Config.Server.Session.Redis.Ssl.ValueBool()
 					} else {
-						ssl = nil
+						ssl1 = nil
 					}
-					sslVerify := new(bool)
+					sslVerify1 := new(bool)
 					if !r.ConversionListener.Config.Server.Session.Redis.SslVerify.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.SslVerify.IsNull() {
-						*sslVerify = r.ConversionListener.Config.Server.Session.Redis.SslVerify.ValueBool()
+						*sslVerify1 = r.ConversionListener.Config.Server.Session.Redis.SslVerify.ValueBool()
 					} else {
-						sslVerify = nil
+						sslVerify1 = nil
 					}
-					username1 := new(string)
+					username3 := new(string)
 					if !r.ConversionListener.Config.Server.Session.Redis.Username.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Username.IsNull() {
-						*username1 = r.ConversionListener.Config.Server.Session.Redis.Username.ValueString()
+						*username3 = r.ConversionListener.Config.Server.Session.Redis.Username.ValueString()
 					} else {
-						username1 = nil
+						username3 = nil
 					}
-					redis = &shared.AIGatewayRedisCloudConfiguration{
-						CloudAuthentication: cloudAuthentication,
-						Cluster:             cluster,
-						ConnectTimeout:      connectTimeout,
-						ConnectionIsProxied: connectionIsProxied,
-						Database:            database,
-						Host:                host1,
-						Keepalive:           keepalive,
-						Password:            password,
-						Port:                port1,
-						ReadTimeout:         readTimeout,
-						SendTimeout:         sendTimeout,
-						Sentinel:            sentinel,
-						ServerName:          serverName,
-						Ssl:                 ssl,
-						SslVerify:           sslVerify,
-						Username:            username1,
+					redis1 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication1,
+						Cluster:             cluster1,
+						ConnectTimeout:      connectTimeout1,
+						ConnectionIsProxied: connectionIsProxied1,
+						Database:            database1,
+						Host:                host3,
+						Keepalive:           keepalive1,
+						Password:            password2,
+						Port:                port4,
+						ReadTimeout:         readTimeout1,
+						SendTimeout:         sendTimeout1,
+						Sentinel:            sentinel1,
+						ServerName:          serverName1,
+						Ssl:                 ssl1,
+						SslVerify:           sslVerify1,
+						Username:            username3,
 					}
 				}
 				sessionTTL := new(int64)
@@ -2844,7 +4602,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				session = &shared.Session{
 					Client:     client,
 					Managed:    managed,
-					Redis:      redis,
+					Redis:      redis1,
 					SessionTTL: sessionTTL,
 					Strategy:   strategy,
 				}
@@ -2870,17 +4628,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			if r.ConversionListener.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws1 *shared.AIGatewayUpstreamAuthAWS
 				if r.ConversionListener.Config.Upstream.Auth.Aws != nil {
-					accessKeyId2 := new(string)
+					accessKeyId3 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
-						*accessKeyId2 = r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+						*accessKeyId3 = r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
 					} else {
-						accessKeyId2 = nil
+						accessKeyId3 = nil
 					}
-					secretAccessKey2 := new(string)
+					secretAccessKey3 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
-						*secretAccessKey2 = r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+						*secretAccessKey3 = r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
 					} else {
-						secretAccessKey2 = nil
+						secretAccessKey3 = nil
 					}
 					sessionToken1 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
@@ -2888,23 +4646,23 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						sessionToken1 = nil
 					}
-					region2 := new(string)
+					region3 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsNull() {
-						*region2 = r.ConversionListener.Config.Upstream.Auth.Aws.Region.ValueString()
+						*region3 = r.ConversionListener.Config.Upstream.Auth.Aws.Region.ValueString()
 					} else {
-						region2 = nil
+						region3 = nil
 					}
-					assumeRoleArn2 := new(string)
+					assumeRoleArn3 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
-						*assumeRoleArn2 = r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+						*assumeRoleArn3 = r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
 					} else {
-						assumeRoleArn2 = nil
+						assumeRoleArn3 = nil
 					}
-					roleSessionName2 := new(string)
+					roleSessionName3 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
-						*roleSessionName2 = r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+						*roleSessionName3 = r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
 					} else {
-						roleSessionName2 = nil
+						roleSessionName3 = nil
 					}
 					stsEndpointUrl1 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
@@ -2913,12 +4671,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 						stsEndpointUrl1 = nil
 					}
 					aiGatewayUpstreamAuthAws1 = &shared.AIGatewayUpstreamAuthAWS{
-						AccessKeyID:     accessKeyId2,
-						SecretAccessKey: secretAccessKey2,
+						AccessKeyID:     accessKeyId3,
+						SecretAccessKey: secretAccessKey3,
 						SessionToken:    sessionToken1,
-						Region:          region2,
-						AssumeRoleArn:   assumeRoleArn2,
-						RoleSessionName: roleSessionName2,
+						Region:          region3,
+						AssumeRoleArn:   assumeRoleArn3,
+						RoleSessionName: roleSessionName3,
 						StsEndpointURL:  stsEndpointUrl1,
 					}
 				}
@@ -2932,6 +4690,14 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Auth: auth1,
 			}
 		}
+		certificates1 := make([]string, 0, len(r.ConversionListener.Config.Certificates))
+		for certificatesIndex1 := range r.ConversionListener.Config.Certificates {
+			certificates1 = append(certificates1, r.ConversionListener.Config.Certificates[certificatesIndex1].ValueString())
+		}
+		caCertificates1 := make([]string, 0, len(r.ConversionListener.Config.CaCertificates))
+		for caCertificatesIndex1 := range r.ConversionListener.Config.CaCertificates {
+			caCertificates1 = append(caCertificates1, r.ConversionListener.Config.CaCertificates[caCertificatesIndex1].ValueString())
+		}
 		var allowedVersions []shared.AllowedVersions
 		if r.ConversionListener.Config.AllowedVersions != nil {
 			allowedVersions = make([]shared.AllowedVersions, 0, len(r.ConversionListener.Config.AllowedVersions))
@@ -2939,7 +4705,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				allowedVersions = append(allowedVersions, shared.AllowedVersions(allowedVersionsItem.ValueString()))
 			}
 		}
-		var cache *shared.AIGatewayMCPServerConversionListenerCache
+		var cache1 *shared.AIGatewayMCPServerConversionListenerCache
 		if r.ConversionListener.Config.Cache != nil {
 			var toolsList *shared.AIGatewayMCPServerCacheHint
 			if r.ConversionListener.Config.Cache.ToolsList != nil {
@@ -2979,7 +4745,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					CacheScope: cacheScope1,
 				}
 			}
-			cache = &shared.AIGatewayMCPServerConversionListenerCache{
+			cache1 = &shared.AIGatewayMCPServerConversionListenerCache{
 				ToolsList: toolsList,
 				Discover:  discover,
 			}
@@ -2991,8 +4757,10 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			Server:             server,
 			URL:                url1,
 			Upstream:           upstream1,
+			Certificates:       certificates1,
+			CaCertificates:     caCertificates1,
 			AllowedVersions:    allowedVersions,
-			Cache:              cache,
+			Cache:              cache1,
 		}
 		tools1 := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionListener.Tools))
 		for toolsIndex1 := range r.ConversionListener.Tools {
@@ -3008,9 +4776,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex1 := range r.ConversionListener.Tools[toolsIndex1].Access.Acls.Deny {
 						deny1 = append(deny1, r.ConversionListener.Tools[toolsIndex1].Access.Acls.Deny[denyIndex1].ValueString())
 					}
+					var allowWhen1 []string
+					if r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen != nil {
+						allowWhen1 = make([]string, 0, len(r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen))
+						for allowWhenIndex1 := range r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen {
+							allowWhen1 = append(allowWhen1, r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen[allowWhenIndex1].ValueString())
+						}
+					}
+					var denyWhen1 []string
+					if r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen != nil {
+						denyWhen1 = make([]string, 0, len(r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen))
+						for denyWhenIndex1 := range r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen {
+							denyWhen1 = append(denyWhen1, r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen[denyWhenIndex1].ValueString())
+						}
+					}
 					acls1 = &shared.AIGatewayMCPACLs{
-						Allow: allow1,
-						Deny:  deny1,
+						Allow:     allow1,
+						Deny:      deny1,
+						AllowWhen: allowWhen1,
+						DenyWhen:  denyWhen1,
 					}
 				}
 				access1 = &shared.AIGatewayMCPToolAccess{
@@ -3060,18 +4844,18 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			var description2 string
 			description2 = r.ConversionListener.Tools[toolsIndex1].Description.ValueString()
 
-			var name3 string
-			name3 = r.ConversionListener.Tools[toolsIndex1].Name.ValueString()
+			var name6 string
+			name6 = r.ConversionListener.Tools[toolsIndex1].Name.ValueString()
 
 			var headers3 interface{}
 			if !r.ConversionListener.Tools[toolsIndex1].Headers.IsUnknown() && !r.ConversionListener.Tools[toolsIndex1].Headers.IsNull() {
 				_ = json.Unmarshal([]byte(r.ConversionListener.Tools[toolsIndex1].Headers.ValueString()), &headers3)
 			}
-			host3 := new(string)
+			host5 := new(string)
 			if !r.ConversionListener.Tools[toolsIndex1].Host.IsUnknown() && !r.ConversionListener.Tools[toolsIndex1].Host.IsNull() {
-				*host3 = r.ConversionListener.Tools[toolsIndex1].Host.ValueString()
+				*host5 = r.ConversionListener.Tools[toolsIndex1].Host.ValueString()
 			} else {
-				host3 = nil
+				host5 = nil
 			}
 			method1 := shared.Method(r.ConversionListener.Tools[toolsIndex1].Method.ValueString())
 			path1 := new(string)
@@ -3100,8 +4884,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			}
 			parameters1 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.ConversionListener.Tools[toolsIndex1].Parameters))
 			for parametersIndex1 := range r.ConversionListener.Tools[toolsIndex1].Parameters {
-				var name4 string
-				name4 = r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Name.ValueString()
+				var name7 string
+				name7 = r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Name.ValueString()
 
 				in1 := shared.In(r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].In.ValueString())
 				description3 := new(string)
@@ -3123,7 +4907,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					schema1[schemaKey1] = schemaInst1
 				}
 				parameters1 = append(parameters1, shared.AIGatewayMCPToolParameter{
-					Name:        name4,
+					Name:        name7,
 					In:          in1,
 					Description: description3,
 					Required:    required1,
@@ -3134,9 +4918,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Access:      access1,
 				Annotations: annotations1,
 				Description: description2,
-				Name:        name3,
+				Name:        name6,
 				Headers:     headers3,
-				Host:        host3,
+				Host:        host5,
 				Method:      method1,
 				Path:        path1,
 				Query:       query1,
@@ -3160,9 +4944,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex2 := range r.ConversionListener.Access.Consumer.Acls.Deny {
 						deny2 = append(deny2, r.ConversionListener.Access.Consumer.Acls.Deny[denyIndex2].ValueString())
 					}
+					var allowWhen2 []string
+					if r.ConversionListener.Access.Consumer.Acls.AllowWhen != nil {
+						allowWhen2 = make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.AllowWhen))
+						for allowWhenIndex2 := range r.ConversionListener.Access.Consumer.Acls.AllowWhen {
+							allowWhen2 = append(allowWhen2, r.ConversionListener.Access.Consumer.Acls.AllowWhen[allowWhenIndex2].ValueString())
+						}
+					}
+					var denyWhen2 []string
+					if r.ConversionListener.Access.Consumer.Acls.DenyWhen != nil {
+						denyWhen2 = make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.DenyWhen))
+						for denyWhenIndex2 := range r.ConversionListener.Access.Consumer.Acls.DenyWhen {
+							denyWhen2 = append(denyWhen2, r.ConversionListener.Access.Consumer.Acls.DenyWhen[denyWhenIndex2].ValueString())
+						}
+					}
 					acls2 = &shared.AIGatewayMCPACLs{
-						Allow: allow2,
-						Deny:  deny2,
+						Allow:     allow2,
+						Deny:      deny2,
+						AllowWhen: allowWhen2,
+						DenyWhen:  denyWhen2,
 					}
 				}
 				var defaultToolAcls *shared.AIGatewayMCPACLs
@@ -3175,9 +4975,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex3 := range r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny {
 						deny3 = append(deny3, r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny[denyIndex3].ValueString())
 					}
+					var allowWhen3 []string
+					if r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen != nil {
+						allowWhen3 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex3 := range r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen {
+							allowWhen3 = append(allowWhen3, r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen[allowWhenIndex3].ValueString())
+						}
+					}
+					var denyWhen3 []string
+					if r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen != nil {
+						denyWhen3 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex3 := range r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen {
+							denyWhen3 = append(denyWhen3, r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen[denyWhenIndex3].ValueString())
+						}
+					}
 					defaultToolAcls = &shared.AIGatewayMCPACLs{
-						Allow: allow3,
-						Deny:  deny3,
+						Allow:     allow3,
+						Deny:      deny3,
+						AllowWhen: allowWhen3,
+						DenyWhen:  denyWhen3,
 					}
 				}
 				identityProviders := make([]string, 0, len(r.ConversionListener.Access.Consumer.IdentityProviders))
@@ -3252,9 +5068,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex4 := range r.ConversionListener.Access.OauthAccessToken.Acls.Deny {
 						deny4 = append(deny4, r.ConversionListener.Access.OauthAccessToken.Acls.Deny[denyIndex4].ValueString())
 					}
+					var allowWhen4 []string
+					if r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen != nil {
+						allowWhen4 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen))
+						for allowWhenIndex4 := range r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen {
+							allowWhen4 = append(allowWhen4, r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen[allowWhenIndex4].ValueString())
+						}
+					}
+					var denyWhen4 []string
+					if r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen != nil {
+						denyWhen4 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen))
+						for denyWhenIndex4 := range r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen {
+							denyWhen4 = append(denyWhen4, r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex4].ValueString())
+						}
+					}
 					acls3 = &shared.AIGatewayMCPACLs{
-						Allow: allow4,
-						Deny:  deny4,
+						Allow:     allow4,
+						Deny:      deny4,
+						AllowWhen: allowWhen4,
+						DenyWhen:  denyWhen4,
 					}
 				}
 				var defaultToolAcls1 *shared.AIGatewayMCPACLs
@@ -3267,9 +5099,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex5 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny {
 						deny5 = append(deny5, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex5].ValueString())
 					}
+					var allowWhen5 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen != nil {
+						allowWhen5 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex5 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen {
+							allowWhen5 = append(allowWhen5, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen[allowWhenIndex5].ValueString())
+						}
+					}
+					var denyWhen5 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen != nil {
+						denyWhen5 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex5 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen {
+							denyWhen5 = append(denyWhen5, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen[denyWhenIndex5].ValueString())
+						}
+					}
 					defaultToolAcls1 = &shared.AIGatewayMCPACLs{
-						Allow: allow5,
-						Deny:  deny5,
+						Allow:     allow5,
+						Deny:      deny5,
+						AllowWhen: allowWhen5,
+						DenyWhen:  denyWhen5,
 					}
 				}
 				identityProviders1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.IdentityProviders))
@@ -3331,11 +5179,42 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				}
 			}
 		}
+		var rateLimiting *shared.AIGatewayMCPServerRateLimiting
+		if r.ConversionListener.RateLimiting != nil {
+			limits := make([]shared.AIGatewayMCPServerRateLimit, 0, len(r.ConversionListener.RateLimiting.Limits))
+			for limitsIndex := range r.ConversionListener.RateLimiting.Limits {
+				method2 := new(string)
+				if !r.ConversionListener.RateLimiting.Limits[limitsIndex].Method.IsUnknown() && !r.ConversionListener.RateLimiting.Limits[limitsIndex].Method.IsNull() {
+					*method2 = r.ConversionListener.RateLimiting.Limits[limitsIndex].Method.ValueString()
+				} else {
+					method2 = nil
+				}
+				tool := new(string)
+				if !r.ConversionListener.RateLimiting.Limits[limitsIndex].Tool.IsUnknown() && !r.ConversionListener.RateLimiting.Limits[limitsIndex].Tool.IsNull() {
+					*tool = r.ConversionListener.RateLimiting.Limits[limitsIndex].Tool.ValueString()
+				} else {
+					tool = nil
+				}
+				var limit int64
+				limit = r.ConversionListener.RateLimiting.Limits[limitsIndex].Limit.ValueInt64()
+
+				windowSize := shared.WindowSize(r.ConversionListener.RateLimiting.Limits[limitsIndex].WindowSize.ValueInt64())
+				limits = append(limits, shared.AIGatewayMCPServerRateLimit{
+					Method:     method2,
+					Tool:       tool,
+					Limit:      limit,
+					WindowSize: windowSize,
+				})
+			}
+			rateLimiting = &shared.AIGatewayMCPServerRateLimiting{
+				Limits: limits,
+			}
+		}
 		var displayName1 string
 		displayName1 = r.ConversionListener.DisplayName.ValueString()
 
-		var name5 string
-		name5 = r.ConversionListener.Name.ValueString()
+		var name8 string
+		name8 = r.ConversionListener.Name.ValueString()
 
 		enabled1 := new(bool)
 		if !r.ConversionListener.Enabled.IsUnknown() && !r.ConversionListener.Enabled.IsNull() {
@@ -3361,16 +5240,427 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 
 			managedBy1[managedByKey1] = managedByInst1
 		}
+		var datastores1 []shared.AIGatewayDatastoreRef
+		if r.ConversionListener.Datastores != nil {
+			datastores1 = make([]shared.AIGatewayDatastoreRef, 0, len(r.ConversionListener.Datastores))
+			for datastoresIndex1 := range r.ConversionListener.Datastores {
+				var name9 string
+				name9 = r.ConversionListener.Datastores[datastoresIndex1].Name.ValueString()
+
+				datastores1 = append(datastores1, shared.AIGatewayDatastoreRef{
+					Name: name9,
+				})
+			}
+		}
+		var tokenVault1 *shared.AIGatewayTokenVault
+		if r.ConversionListener.TokenVault != nil {
+			var provider1 string
+			provider1 = r.ConversionListener.TokenVault.Provider.ValueString()
+
+			subjectTokenType1 := new(shared.SubjectTokenType)
+			if !r.ConversionListener.TokenVault.SubjectTokenType.IsUnknown() && !r.ConversionListener.TokenVault.SubjectTokenType.IsNull() {
+				*subjectTokenType1 = shared.SubjectTokenType(r.ConversionListener.TokenVault.SubjectTokenType.ValueString())
+			} else {
+				subjectTokenType1 = nil
+			}
+			var credential1 *shared.AIGatewayTokenVaultCredential
+			if r.ConversionListener.TokenVault.Credential != nil {
+				var inbound1 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.ConversionListener.TokenVault.Credential.Inbound != nil {
+					location2 := new(shared.Location)
+					if !r.ConversionListener.TokenVault.Credential.Inbound.Location.IsUnknown() && !r.ConversionListener.TokenVault.Credential.Inbound.Location.IsNull() {
+						*location2 = shared.Location(r.ConversionListener.TokenVault.Credential.Inbound.Location.ValueString())
+					} else {
+						location2 = nil
+					}
+					name10 := new(string)
+					if !r.ConversionListener.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.ConversionListener.TokenVault.Credential.Inbound.Name.IsNull() {
+						*name10 = r.ConversionListener.TokenVault.Credential.Inbound.Name.ValueString()
+					} else {
+						name10 = nil
+					}
+					prefix2 := new(string)
+					if !r.ConversionListener.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.ConversionListener.TokenVault.Credential.Inbound.Prefix.IsNull() {
+						*prefix2 = r.ConversionListener.TokenVault.Credential.Inbound.Prefix.ValueString()
+					} else {
+						prefix2 = nil
+					}
+					inbound1 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location2,
+						Name:     name10,
+						Prefix:   prefix2,
+					}
+				}
+				var outbound1 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.ConversionListener.TokenVault.Credential.Outbound != nil {
+					location3 := new(shared.Location)
+					if !r.ConversionListener.TokenVault.Credential.Outbound.Location.IsUnknown() && !r.ConversionListener.TokenVault.Credential.Outbound.Location.IsNull() {
+						*location3 = shared.Location(r.ConversionListener.TokenVault.Credential.Outbound.Location.ValueString())
+					} else {
+						location3 = nil
+					}
+					name11 := new(string)
+					if !r.ConversionListener.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.ConversionListener.TokenVault.Credential.Outbound.Name.IsNull() {
+						*name11 = r.ConversionListener.TokenVault.Credential.Outbound.Name.ValueString()
+					} else {
+						name11 = nil
+					}
+					prefix3 := new(string)
+					if !r.ConversionListener.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.ConversionListener.TokenVault.Credential.Outbound.Prefix.IsNull() {
+						*prefix3 = r.ConversionListener.TokenVault.Credential.Outbound.Prefix.ValueString()
+					} else {
+						prefix3 = nil
+					}
+					outbound1 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location3,
+						Name:     name11,
+						Prefix:   prefix3,
+					}
+				}
+				credential1 = &shared.AIGatewayTokenVaultCredential{
+					Inbound:  inbound1,
+					Outbound: outbound1,
+				}
+			}
+			var cache2 *shared.Cache
+			if r.ConversionListener.TokenVault.Cache != nil {
+				var redis2 *shared.AIGatewayRedisCloudConfiguration
+				if r.ConversionListener.TokenVault.Cache.Redis != nil {
+					var cloudAuthentication2 *shared.CloudAuthentication
+					if r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication != nil {
+						var aiGatewayRedisAWSAuthentication2 *shared.AIGatewayRedisAWSAuthentication
+						if r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws != nil {
+							accessKeyId4 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
+								*accessKeyId4 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+							} else {
+								accessKeyId4 = nil
+							}
+							assumeRoleArn4 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
+								*assumeRoleArn4 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+							} else {
+								assumeRoleArn4 = nil
+							}
+							cacheName2 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
+								*cacheName2 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+							} else {
+								cacheName2 = nil
+							}
+							isServerless2 := new(bool)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
+								*isServerless2 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+							} else {
+								isServerless2 = nil
+							}
+							region4 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsNull() {
+								*region4 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.ValueString()
+							} else {
+								region4 = nil
+							}
+							roleSessionName4 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
+								*roleSessionName4 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+							} else {
+								roleSessionName4 = nil
+							}
+							secretAccessKey4 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
+								*secretAccessKey4 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+							} else {
+								secretAccessKey4 = nil
+							}
+							aiGatewayRedisAWSAuthentication2 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId4,
+								AssumeRoleArn:   assumeRoleArn4,
+								CacheName:       cacheName2,
+								IsServerless:    isServerless2,
+								Region:          region4,
+								RoleSessionName: roleSessionName4,
+								SecretAccessKey: secretAccessKey4,
+							}
+						}
+						if aiGatewayRedisAWSAuthentication2 != nil {
+							cloudAuthentication2 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication2,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication2 *shared.AIGatewayRedisAzureAuthentication
+						if r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure != nil {
+							clientId2 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
+								*clientId2 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+							} else {
+								clientId2 = nil
+							}
+							clientSecret2 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
+								*clientSecret2 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+							} else {
+								clientSecret2 = nil
+							}
+							tenantId2 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
+								*tenantId2 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+							} else {
+								tenantId2 = nil
+							}
+							aiGatewayRedisAzureAuthentication2 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId2,
+								ClientSecret: clientSecret2,
+								TenantID:     tenantId2,
+							}
+						}
+						if aiGatewayRedisAzureAuthentication2 != nil {
+							cloudAuthentication2 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication2,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication2 *shared.AIGatewayRedisGCPAuthentication
+						if r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp != nil {
+							serviceAccountJson2 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
+								*serviceAccountJson2 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+							} else {
+								serviceAccountJson2 = nil
+							}
+							aiGatewayRedisGCPAuthentication2 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson2,
+							}
+						}
+						if aiGatewayRedisGCPAuthentication2 != nil {
+							cloudAuthentication2 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication2,
+							}
+						}
+					}
+					var cluster2 *shared.Cluster
+					if r.ConversionListener.TokenVault.Cache.Redis.Cluster != nil {
+						maxRedirections2 := new(int64)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsNull() {
+							*maxRedirections2 = r.ConversionListener.TokenVault.Cache.Redis.Cluster.MaxRedirections.ValueInt64()
+						} else {
+							maxRedirections2 = nil
+						}
+						var nodes4 []shared.Nodes
+						if r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+							nodes4 = make([]shared.Nodes, 0, len(r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes))
+							for nodesIndex4 := range r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes {
+								ip2 := new(string)
+								if !r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex4].IP.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex4].IP.IsNull() {
+									*ip2 = r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex4].IP.ValueString()
+								} else {
+									ip2 = nil
+								}
+								port6 := new(int64)
+								if !r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex4].Port.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex4].Port.IsNull() {
+									*port6 = r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex4].Port.ValueInt64()
+								} else {
+									port6 = nil
+								}
+								nodes4 = append(nodes4, shared.Nodes{
+									IP:   ip2,
+									Port: port6,
+								})
+							}
+						}
+						cluster2 = &shared.Cluster{
+							MaxRedirections: maxRedirections2,
+							Nodes:           nodes4,
+						}
+					}
+					connectTimeout2 := new(int64)
+					if !r.ConversionListener.TokenVault.Cache.Redis.ConnectTimeout.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.ConnectTimeout.IsNull() {
+						*connectTimeout2 = r.ConversionListener.TokenVault.Cache.Redis.ConnectTimeout.ValueInt64()
+					} else {
+						connectTimeout2 = nil
+					}
+					connectionIsProxied2 := new(bool)
+					if !r.ConversionListener.TokenVault.Cache.Redis.ConnectionIsProxied.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.ConnectionIsProxied.IsNull() {
+						*connectionIsProxied2 = r.ConversionListener.TokenVault.Cache.Redis.ConnectionIsProxied.ValueBool()
+					} else {
+						connectionIsProxied2 = nil
+					}
+					database2 := new(int64)
+					if !r.ConversionListener.TokenVault.Cache.Redis.Database.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Database.IsNull() {
+						*database2 = r.ConversionListener.TokenVault.Cache.Redis.Database.ValueInt64()
+					} else {
+						database2 = nil
+					}
+					host6 := new(string)
+					if !r.ConversionListener.TokenVault.Cache.Redis.Host.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Host.IsNull() {
+						*host6 = r.ConversionListener.TokenVault.Cache.Redis.Host.ValueString()
+					} else {
+						host6 = nil
+					}
+					var keepalive2 *shared.Keepalive
+					if r.ConversionListener.TokenVault.Cache.Redis.Keepalive != nil {
+						backlog2 := new(int64)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Keepalive.Backlog.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Keepalive.Backlog.IsNull() {
+							*backlog2 = r.ConversionListener.TokenVault.Cache.Redis.Keepalive.Backlog.ValueInt64()
+						} else {
+							backlog2 = nil
+						}
+						poolSize2 := new(int64)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Keepalive.PoolSize.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Keepalive.PoolSize.IsNull() {
+							*poolSize2 = r.ConversionListener.TokenVault.Cache.Redis.Keepalive.PoolSize.ValueInt64()
+						} else {
+							poolSize2 = nil
+						}
+						keepalive2 = &shared.Keepalive{
+							Backlog:  backlog2,
+							PoolSize: poolSize2,
+						}
+					}
+					password4 := new(string)
+					if !r.ConversionListener.TokenVault.Cache.Redis.Password.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Password.IsNull() {
+						*password4 = r.ConversionListener.TokenVault.Cache.Redis.Password.ValueString()
+					} else {
+						password4 = nil
+					}
+					port7 := new(string)
+					if !r.ConversionListener.TokenVault.Cache.Redis.Port.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Port.IsNull() {
+						*port7 = r.ConversionListener.TokenVault.Cache.Redis.Port.ValueString()
+					} else {
+						port7 = nil
+					}
+					readTimeout2 := new(int64)
+					if !r.ConversionListener.TokenVault.Cache.Redis.ReadTimeout.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.ReadTimeout.IsNull() {
+						*readTimeout2 = r.ConversionListener.TokenVault.Cache.Redis.ReadTimeout.ValueInt64()
+					} else {
+						readTimeout2 = nil
+					}
+					sendTimeout2 := new(int64)
+					if !r.ConversionListener.TokenVault.Cache.Redis.SendTimeout.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.SendTimeout.IsNull() {
+						*sendTimeout2 = r.ConversionListener.TokenVault.Cache.Redis.SendTimeout.ValueInt64()
+					} else {
+						sendTimeout2 = nil
+					}
+					var sentinel2 *shared.Sentinel
+					if r.ConversionListener.TokenVault.Cache.Redis.Sentinel != nil {
+						master2 := new(string)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Master.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Master.IsNull() {
+							*master2 = r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Master.ValueString()
+						} else {
+							master2 = nil
+						}
+						var nodes5 []shared.AIGatewayRedisCloudConfigurationNodes
+						if r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+							nodes5 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes))
+							for nodesIndex5 := range r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes {
+								host7 := new(string)
+								if !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex5].Host.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex5].Host.IsNull() {
+									*host7 = r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex5].Host.ValueString()
+								} else {
+									host7 = nil
+								}
+								port8 := new(int64)
+								if !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex5].Port.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex5].Port.IsNull() {
+									*port8 = r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex5].Port.ValueInt64()
+								} else {
+									port8 = nil
+								}
+								nodes5 = append(nodes5, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host7,
+									Port: port8,
+								})
+							}
+						}
+						password5 := new(string)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Password.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Password.IsNull() {
+							*password5 = r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Password.ValueString()
+						} else {
+							password5 = nil
+						}
+						role2 := new(shared.Role)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Role.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Role.IsNull() {
+							*role2 = shared.Role(r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Role.ValueString())
+						} else {
+							role2 = nil
+						}
+						username4 := new(string)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Username.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Username.IsNull() {
+							*username4 = r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Username.ValueString()
+						} else {
+							username4 = nil
+						}
+						sentinel2 = &shared.Sentinel{
+							Master:   master2,
+							Nodes:    nodes5,
+							Password: password5,
+							Role:     role2,
+							Username: username4,
+						}
+					}
+					serverName2 := new(string)
+					if !r.ConversionListener.TokenVault.Cache.Redis.ServerName.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.ServerName.IsNull() {
+						*serverName2 = r.ConversionListener.TokenVault.Cache.Redis.ServerName.ValueString()
+					} else {
+						serverName2 = nil
+					}
+					ssl2 := new(bool)
+					if !r.ConversionListener.TokenVault.Cache.Redis.Ssl.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Ssl.IsNull() {
+						*ssl2 = r.ConversionListener.TokenVault.Cache.Redis.Ssl.ValueBool()
+					} else {
+						ssl2 = nil
+					}
+					sslVerify2 := new(bool)
+					if !r.ConversionListener.TokenVault.Cache.Redis.SslVerify.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.SslVerify.IsNull() {
+						*sslVerify2 = r.ConversionListener.TokenVault.Cache.Redis.SslVerify.ValueBool()
+					} else {
+						sslVerify2 = nil
+					}
+					username5 := new(string)
+					if !r.ConversionListener.TokenVault.Cache.Redis.Username.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Username.IsNull() {
+						*username5 = r.ConversionListener.TokenVault.Cache.Redis.Username.ValueString()
+					} else {
+						username5 = nil
+					}
+					redis2 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication2,
+						Cluster:             cluster2,
+						ConnectTimeout:      connectTimeout2,
+						ConnectionIsProxied: connectionIsProxied2,
+						Database:            database2,
+						Host:                host6,
+						Keepalive:           keepalive2,
+						Password:            password4,
+						Port:                port7,
+						ReadTimeout:         readTimeout2,
+						SendTimeout:         sendTimeout2,
+						Sentinel:            sentinel2,
+						ServerName:          serverName2,
+						Ssl:                 ssl2,
+						SslVerify:           sslVerify2,
+						Username:            username5,
+					}
+				}
+				cache2 = &shared.Cache{
+					Redis: redis2,
+				}
+			}
+			tokenVault1 = &shared.AIGatewayTokenVault{
+				Provider:         provider1,
+				SubjectTokenType: subjectTokenType1,
+				Credential:       credential1,
+				Cache:            cache2,
+			}
+		}
 		aiGatewayMCPServerConversionListener = &shared.AIGatewayMCPServerConversionListener{
-			Config:      config1,
-			Tools:       tools1,
-			Access:      access2,
-			DisplayName: displayName1,
-			Name:        name5,
-			Enabled:     enabled1,
-			Policies:    policies1,
-			Labels:      labels1,
-			ManagedBy:   managedBy1,
+			Config:       config1,
+			Tools:        tools1,
+			Access:       access2,
+			RateLimiting: rateLimiting,
+			DisplayName:  displayName1,
+			Name:         name8,
+			Enabled:      enabled1,
+			Policies:     policies1,
+			Labels:       labels1,
+			ManagedBy:    managedBy1,
+			Datastores:   datastores1,
+			TokenVault:   tokenVault1,
 		}
 	}
 	if aiGatewayMCPServerConversionListener != nil {
@@ -3513,317 +5803,317 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				} else {
 					managed1 = nil
 				}
-				var redis1 *shared.AIGatewayRedisCloudConfiguration
+				var redis3 *shared.AIGatewayRedisCloudConfiguration
 				if r.Listener.Config.Server.Session.Redis != nil {
-					var cloudAuthentication1 *shared.CloudAuthentication
+					var cloudAuthentication3 *shared.CloudAuthentication
 					if r.Listener.Config.Server.Session.Redis.CloudAuthentication != nil {
-						var aiGatewayRedisAWSAuthentication1 *shared.AIGatewayRedisAWSAuthentication
+						var aiGatewayRedisAWSAuthentication3 *shared.AIGatewayRedisAWSAuthentication
 						if r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId3 := new(string)
+							accessKeyId5 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId5 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId3 = nil
+								accessKeyId5 = nil
 							}
-							assumeRoleArn3 := new(string)
+							assumeRoleArn5 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn5 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn3 = nil
+								assumeRoleArn5 = nil
 							}
-							cacheName1 := new(string)
+							cacheName3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
-								*cacheName1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+								*cacheName3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
 							} else {
-								cacheName1 = nil
+								cacheName3 = nil
 							}
-							isServerless1 := new(bool)
+							isServerless3 := new(bool)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
-								*isServerless1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+								*isServerless3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
 							} else {
-								isServerless1 = nil
+								isServerless3 = nil
 							}
-							region3 := new(string)
+							region5 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region5 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region3 = nil
+								region5 = nil
 							}
-							roleSessionName3 := new(string)
+							roleSessionName5 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName5 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName3 = nil
+								roleSessionName5 = nil
 							}
-							secretAccessKey3 := new(string)
+							secretAccessKey5 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey5 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey3 = nil
+								secretAccessKey5 = nil
 							}
-							aiGatewayRedisAWSAuthentication1 = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId3,
-								AssumeRoleArn:   assumeRoleArn3,
-								CacheName:       cacheName1,
-								IsServerless:    isServerless1,
-								Region:          region3,
-								RoleSessionName: roleSessionName3,
-								SecretAccessKey: secretAccessKey3,
-							}
-						}
-						if aiGatewayRedisAWSAuthentication1 != nil {
-							cloudAuthentication1 = &shared.CloudAuthentication{
-								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication1,
+							aiGatewayRedisAWSAuthentication3 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId5,
+								AssumeRoleArn:   assumeRoleArn5,
+								CacheName:       cacheName3,
+								IsServerless:    isServerless3,
+								Region:          region5,
+								RoleSessionName: roleSessionName5,
+								SecretAccessKey: secretAccessKey5,
 							}
 						}
-						var aiGatewayRedisAzureAuthentication1 *shared.AIGatewayRedisAzureAuthentication
+						if aiGatewayRedisAWSAuthentication3 != nil {
+							cloudAuthentication3 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication3,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication3 *shared.AIGatewayRedisAzureAuthentication
 						if r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure != nil {
-							clientId1 := new(string)
+							clientId3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
-								*clientId1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+								*clientId3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
 							} else {
-								clientId1 = nil
+								clientId3 = nil
 							}
-							clientSecret1 := new(string)
+							clientSecret3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
-								*clientSecret1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+								*clientSecret3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
 							} else {
-								clientSecret1 = nil
+								clientSecret3 = nil
 							}
-							tenantId1 := new(string)
+							tenantId3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
-								*tenantId1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+								*tenantId3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
 							} else {
-								tenantId1 = nil
+								tenantId3 = nil
 							}
-							aiGatewayRedisAzureAuthentication1 = &shared.AIGatewayRedisAzureAuthentication{
-								ClientID:     clientId1,
-								ClientSecret: clientSecret1,
-								TenantID:     tenantId1,
-							}
-						}
-						if aiGatewayRedisAzureAuthentication1 != nil {
-							cloudAuthentication1 = &shared.CloudAuthentication{
-								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication1,
+							aiGatewayRedisAzureAuthentication3 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId3,
+								ClientSecret: clientSecret3,
+								TenantID:     tenantId3,
 							}
 						}
-						var aiGatewayRedisGCPAuthentication1 *shared.AIGatewayRedisGCPAuthentication
+						if aiGatewayRedisAzureAuthentication3 != nil {
+							cloudAuthentication3 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication3,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication3 *shared.AIGatewayRedisGCPAuthentication
 						if r.Listener.Config.Server.Session.Redis.CloudAuthentication.Gcp != nil {
-							serviceAccountJson1 := new(string)
+							serviceAccountJson3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
-								*serviceAccountJson1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+								*serviceAccountJson3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
 							} else {
-								serviceAccountJson1 = nil
+								serviceAccountJson3 = nil
 							}
-							aiGatewayRedisGCPAuthentication1 = &shared.AIGatewayRedisGCPAuthentication{
-								ServiceAccountJSON: serviceAccountJson1,
+							aiGatewayRedisGCPAuthentication3 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson3,
 							}
 						}
-						if aiGatewayRedisGCPAuthentication1 != nil {
-							cloudAuthentication1 = &shared.CloudAuthentication{
-								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication1,
+						if aiGatewayRedisGCPAuthentication3 != nil {
+							cloudAuthentication3 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication3,
 							}
 						}
 					}
-					var cluster1 *shared.Cluster
+					var cluster3 *shared.Cluster
 					if r.Listener.Config.Server.Session.Redis.Cluster != nil {
-						maxRedirections1 := new(int64)
+						maxRedirections3 := new(int64)
 						if !r.Listener.Config.Server.Session.Redis.Cluster.MaxRedirections.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Cluster.MaxRedirections.IsNull() {
-							*maxRedirections1 = r.Listener.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
+							*maxRedirections3 = r.Listener.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
 						} else {
-							maxRedirections1 = nil
+							maxRedirections3 = nil
 						}
-						var nodes2 []shared.Nodes
+						var nodes6 []shared.Nodes
 						if r.Listener.Config.Server.Session.Redis.Cluster.Nodes != nil {
-							nodes2 = make([]shared.Nodes, 0, len(r.Listener.Config.Server.Session.Redis.Cluster.Nodes))
-							for nodesIndex2 := range r.Listener.Config.Server.Session.Redis.Cluster.Nodes {
-								ip1 := new(string)
-								if !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].IP.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].IP.IsNull() {
-									*ip1 = r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].IP.ValueString()
+							nodes6 = make([]shared.Nodes, 0, len(r.Listener.Config.Server.Session.Redis.Cluster.Nodes))
+							for nodesIndex6 := range r.Listener.Config.Server.Session.Redis.Cluster.Nodes {
+								ip3 := new(string)
+								if !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].IP.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].IP.IsNull() {
+									*ip3 = r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].IP.ValueString()
 								} else {
-									ip1 = nil
+									ip3 = nil
 								}
-								port3 := new(int64)
-								if !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].Port.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].Port.IsNull() {
-									*port3 = r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].Port.ValueInt64()
+								port9 := new(int64)
+								if !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].Port.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].Port.IsNull() {
+									*port9 = r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].Port.ValueInt64()
 								} else {
-									port3 = nil
+									port9 = nil
 								}
-								nodes2 = append(nodes2, shared.Nodes{
-									IP:   ip1,
-									Port: port3,
+								nodes6 = append(nodes6, shared.Nodes{
+									IP:   ip3,
+									Port: port9,
 								})
 							}
 						}
-						cluster1 = &shared.Cluster{
-							MaxRedirections: maxRedirections1,
-							Nodes:           nodes2,
+						cluster3 = &shared.Cluster{
+							MaxRedirections: maxRedirections3,
+							Nodes:           nodes6,
 						}
 					}
-					connectTimeout1 := new(int64)
+					connectTimeout3 := new(int64)
 					if !r.Listener.Config.Server.Session.Redis.ConnectTimeout.IsUnknown() && !r.Listener.Config.Server.Session.Redis.ConnectTimeout.IsNull() {
-						*connectTimeout1 = r.Listener.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
+						*connectTimeout3 = r.Listener.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
 					} else {
-						connectTimeout1 = nil
+						connectTimeout3 = nil
 					}
-					connectionIsProxied1 := new(bool)
+					connectionIsProxied3 := new(bool)
 					if !r.Listener.Config.Server.Session.Redis.ConnectionIsProxied.IsUnknown() && !r.Listener.Config.Server.Session.Redis.ConnectionIsProxied.IsNull() {
-						*connectionIsProxied1 = r.Listener.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
+						*connectionIsProxied3 = r.Listener.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
 					} else {
-						connectionIsProxied1 = nil
+						connectionIsProxied3 = nil
 					}
-					database1 := new(int64)
+					database3 := new(int64)
 					if !r.Listener.Config.Server.Session.Redis.Database.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Database.IsNull() {
-						*database1 = r.Listener.Config.Server.Session.Redis.Database.ValueInt64()
+						*database3 = r.Listener.Config.Server.Session.Redis.Database.ValueInt64()
 					} else {
-						database1 = nil
+						database3 = nil
 					}
-					host4 := new(string)
+					host8 := new(string)
 					if !r.Listener.Config.Server.Session.Redis.Host.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Host.IsNull() {
-						*host4 = r.Listener.Config.Server.Session.Redis.Host.ValueString()
+						*host8 = r.Listener.Config.Server.Session.Redis.Host.ValueString()
 					} else {
-						host4 = nil
+						host8 = nil
 					}
-					var keepalive1 *shared.Keepalive
+					var keepalive3 *shared.Keepalive
 					if r.Listener.Config.Server.Session.Redis.Keepalive != nil {
-						backlog1 := new(int64)
+						backlog3 := new(int64)
 						if !r.Listener.Config.Server.Session.Redis.Keepalive.Backlog.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Keepalive.Backlog.IsNull() {
-							*backlog1 = r.Listener.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
+							*backlog3 = r.Listener.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
 						} else {
-							backlog1 = nil
+							backlog3 = nil
 						}
-						poolSize1 := new(int64)
+						poolSize3 := new(int64)
 						if !r.Listener.Config.Server.Session.Redis.Keepalive.PoolSize.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Keepalive.PoolSize.IsNull() {
-							*poolSize1 = r.Listener.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
+							*poolSize3 = r.Listener.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
 						} else {
-							poolSize1 = nil
+							poolSize3 = nil
 						}
-						keepalive1 = &shared.Keepalive{
-							Backlog:  backlog1,
-							PoolSize: poolSize1,
+						keepalive3 = &shared.Keepalive{
+							Backlog:  backlog3,
+							PoolSize: poolSize3,
 						}
 					}
-					password2 := new(string)
+					password6 := new(string)
 					if !r.Listener.Config.Server.Session.Redis.Password.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Password.IsNull() {
-						*password2 = r.Listener.Config.Server.Session.Redis.Password.ValueString()
+						*password6 = r.Listener.Config.Server.Session.Redis.Password.ValueString()
 					} else {
-						password2 = nil
+						password6 = nil
 					}
-					port4 := new(string)
+					port10 := new(string)
 					if !r.Listener.Config.Server.Session.Redis.Port.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Port.IsNull() {
-						*port4 = r.Listener.Config.Server.Session.Redis.Port.ValueString()
+						*port10 = r.Listener.Config.Server.Session.Redis.Port.ValueString()
 					} else {
-						port4 = nil
+						port10 = nil
 					}
-					readTimeout1 := new(int64)
+					readTimeout3 := new(int64)
 					if !r.Listener.Config.Server.Session.Redis.ReadTimeout.IsUnknown() && !r.Listener.Config.Server.Session.Redis.ReadTimeout.IsNull() {
-						*readTimeout1 = r.Listener.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
+						*readTimeout3 = r.Listener.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
 					} else {
-						readTimeout1 = nil
+						readTimeout3 = nil
 					}
-					sendTimeout1 := new(int64)
+					sendTimeout3 := new(int64)
 					if !r.Listener.Config.Server.Session.Redis.SendTimeout.IsUnknown() && !r.Listener.Config.Server.Session.Redis.SendTimeout.IsNull() {
-						*sendTimeout1 = r.Listener.Config.Server.Session.Redis.SendTimeout.ValueInt64()
+						*sendTimeout3 = r.Listener.Config.Server.Session.Redis.SendTimeout.ValueInt64()
 					} else {
-						sendTimeout1 = nil
+						sendTimeout3 = nil
 					}
-					var sentinel1 *shared.Sentinel
+					var sentinel3 *shared.Sentinel
 					if r.Listener.Config.Server.Session.Redis.Sentinel != nil {
-						master1 := new(string)
+						master3 := new(string)
 						if !r.Listener.Config.Server.Session.Redis.Sentinel.Master.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Master.IsNull() {
-							*master1 = r.Listener.Config.Server.Session.Redis.Sentinel.Master.ValueString()
+							*master3 = r.Listener.Config.Server.Session.Redis.Sentinel.Master.ValueString()
 						} else {
-							master1 = nil
+							master3 = nil
 						}
-						var nodes3 []shared.AIGatewayRedisCloudConfigurationNodes
+						var nodes7 []shared.AIGatewayRedisCloudConfigurationNodes
 						if r.Listener.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-							nodes3 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.Listener.Config.Server.Session.Redis.Sentinel.Nodes))
-							for nodesIndex3 := range r.Listener.Config.Server.Session.Redis.Sentinel.Nodes {
-								host5 := new(string)
-								if !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Host.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Host.IsNull() {
-									*host5 = r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Host.ValueString()
+							nodes7 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.Listener.Config.Server.Session.Redis.Sentinel.Nodes))
+							for nodesIndex7 := range r.Listener.Config.Server.Session.Redis.Sentinel.Nodes {
+								host9 := new(string)
+								if !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Host.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Host.IsNull() {
+									*host9 = r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Host.ValueString()
 								} else {
-									host5 = nil
+									host9 = nil
 								}
-								port5 := new(int64)
-								if !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Port.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Port.IsNull() {
-									*port5 = r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Port.ValueInt64()
+								port11 := new(int64)
+								if !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Port.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Port.IsNull() {
+									*port11 = r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Port.ValueInt64()
 								} else {
-									port5 = nil
+									port11 = nil
 								}
-								nodes3 = append(nodes3, shared.AIGatewayRedisCloudConfigurationNodes{
-									Host: host5,
-									Port: port5,
+								nodes7 = append(nodes7, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host9,
+									Port: port11,
 								})
 							}
 						}
-						password3 := new(string)
+						password7 := new(string)
 						if !r.Listener.Config.Server.Session.Redis.Sentinel.Password.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Password.IsNull() {
-							*password3 = r.Listener.Config.Server.Session.Redis.Sentinel.Password.ValueString()
+							*password7 = r.Listener.Config.Server.Session.Redis.Sentinel.Password.ValueString()
 						} else {
-							password3 = nil
+							password7 = nil
 						}
-						role1 := new(shared.Role)
+						role3 := new(shared.Role)
 						if !r.Listener.Config.Server.Session.Redis.Sentinel.Role.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Role.IsNull() {
-							*role1 = shared.Role(r.Listener.Config.Server.Session.Redis.Sentinel.Role.ValueString())
+							*role3 = shared.Role(r.Listener.Config.Server.Session.Redis.Sentinel.Role.ValueString())
 						} else {
-							role1 = nil
+							role3 = nil
 						}
-						username2 := new(string)
+						username6 := new(string)
 						if !r.Listener.Config.Server.Session.Redis.Sentinel.Username.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Username.IsNull() {
-							*username2 = r.Listener.Config.Server.Session.Redis.Sentinel.Username.ValueString()
+							*username6 = r.Listener.Config.Server.Session.Redis.Sentinel.Username.ValueString()
 						} else {
-							username2 = nil
+							username6 = nil
 						}
-						sentinel1 = &shared.Sentinel{
-							Master:   master1,
-							Nodes:    nodes3,
-							Password: password3,
-							Role:     role1,
-							Username: username2,
+						sentinel3 = &shared.Sentinel{
+							Master:   master3,
+							Nodes:    nodes7,
+							Password: password7,
+							Role:     role3,
+							Username: username6,
 						}
 					}
-					serverName1 := new(string)
+					serverName3 := new(string)
 					if !r.Listener.Config.Server.Session.Redis.ServerName.IsUnknown() && !r.Listener.Config.Server.Session.Redis.ServerName.IsNull() {
-						*serverName1 = r.Listener.Config.Server.Session.Redis.ServerName.ValueString()
+						*serverName3 = r.Listener.Config.Server.Session.Redis.ServerName.ValueString()
 					} else {
-						serverName1 = nil
+						serverName3 = nil
 					}
-					ssl1 := new(bool)
+					ssl3 := new(bool)
 					if !r.Listener.Config.Server.Session.Redis.Ssl.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Ssl.IsNull() {
-						*ssl1 = r.Listener.Config.Server.Session.Redis.Ssl.ValueBool()
+						*ssl3 = r.Listener.Config.Server.Session.Redis.Ssl.ValueBool()
 					} else {
-						ssl1 = nil
+						ssl3 = nil
 					}
-					sslVerify1 := new(bool)
+					sslVerify3 := new(bool)
 					if !r.Listener.Config.Server.Session.Redis.SslVerify.IsUnknown() && !r.Listener.Config.Server.Session.Redis.SslVerify.IsNull() {
-						*sslVerify1 = r.Listener.Config.Server.Session.Redis.SslVerify.ValueBool()
+						*sslVerify3 = r.Listener.Config.Server.Session.Redis.SslVerify.ValueBool()
 					} else {
-						sslVerify1 = nil
+						sslVerify3 = nil
 					}
-					username3 := new(string)
+					username7 := new(string)
 					if !r.Listener.Config.Server.Session.Redis.Username.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Username.IsNull() {
-						*username3 = r.Listener.Config.Server.Session.Redis.Username.ValueString()
+						*username7 = r.Listener.Config.Server.Session.Redis.Username.ValueString()
 					} else {
-						username3 = nil
+						username7 = nil
 					}
-					redis1 = &shared.AIGatewayRedisCloudConfiguration{
-						CloudAuthentication: cloudAuthentication1,
-						Cluster:             cluster1,
-						ConnectTimeout:      connectTimeout1,
-						ConnectionIsProxied: connectionIsProxied1,
-						Database:            database1,
-						Host:                host4,
-						Keepalive:           keepalive1,
-						Password:            password2,
-						Port:                port4,
-						ReadTimeout:         readTimeout1,
-						SendTimeout:         sendTimeout1,
-						Sentinel:            sentinel1,
-						ServerName:          serverName1,
-						Ssl:                 ssl1,
-						SslVerify:           sslVerify1,
-						Username:            username3,
+					redis3 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication3,
+						Cluster:             cluster3,
+						ConnectTimeout:      connectTimeout3,
+						ConnectionIsProxied: connectionIsProxied3,
+						Database:            database3,
+						Host:                host8,
+						Keepalive:           keepalive3,
+						Password:            password6,
+						Port:                port10,
+						ReadTimeout:         readTimeout3,
+						SendTimeout:         sendTimeout3,
+						Sentinel:            sentinel3,
+						ServerName:          serverName3,
+						Ssl:                 ssl3,
+						SslVerify:           sslVerify3,
+						Username:            username7,
 					}
 				}
 				sessionTtl1 := new(int64)
@@ -3841,7 +6131,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				session1 = &shared.Session{
 					Client:     client1,
 					Managed:    managed1,
-					Redis:      redis1,
+					Redis:      redis3,
 					SessionTTL: sessionTtl1,
 					Strategy:   strategy1,
 				}
@@ -3865,7 +6155,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				allowedVersions1 = append(allowedVersions1, shared.AIGatewayMCPServerListenerAllowedVersions(allowedVersionsItem1.ValueString()))
 			}
 		}
-		var cache1 *shared.AIGatewayMCPServerListenerCache
+		var cache3 *shared.AIGatewayMCPServerListenerCache
 		if r.Listener.Config.Cache != nil {
 			var toolsList1 *shared.AIGatewayMCPServerCacheHint
 			if r.Listener.Config.Cache.ToolsList != nil {
@@ -3905,7 +6195,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					CacheScope: cacheScope3,
 				}
 			}
-			cache1 = &shared.AIGatewayMCPServerListenerCache{
+			cache3 = &shared.AIGatewayMCPServerListenerCache{
 				ToolsList: toolsList1,
 				Discover:  discover1,
 			}
@@ -3916,7 +6206,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			MaxRequestBodySize: maxRequestBodySize2,
 			Server:             server1,
 			AllowedVersions:    allowedVersions1,
-			Cache:              cache1,
+			Cache:              cache3,
 		}
 		sources := make([]string, 0, len(r.Listener.Sources))
 		for sourcesIndex := range r.Listener.Sources {
@@ -3936,9 +6226,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex6 := range r.Listener.Access.Consumer.Acls.Deny {
 						deny6 = append(deny6, r.Listener.Access.Consumer.Acls.Deny[denyIndex6].ValueString())
 					}
+					var allowWhen6 []string
+					if r.Listener.Access.Consumer.Acls.AllowWhen != nil {
+						allowWhen6 = make([]string, 0, len(r.Listener.Access.Consumer.Acls.AllowWhen))
+						for allowWhenIndex6 := range r.Listener.Access.Consumer.Acls.AllowWhen {
+							allowWhen6 = append(allowWhen6, r.Listener.Access.Consumer.Acls.AllowWhen[allowWhenIndex6].ValueString())
+						}
+					}
+					var denyWhen6 []string
+					if r.Listener.Access.Consumer.Acls.DenyWhen != nil {
+						denyWhen6 = make([]string, 0, len(r.Listener.Access.Consumer.Acls.DenyWhen))
+						for denyWhenIndex6 := range r.Listener.Access.Consumer.Acls.DenyWhen {
+							denyWhen6 = append(denyWhen6, r.Listener.Access.Consumer.Acls.DenyWhen[denyWhenIndex6].ValueString())
+						}
+					}
 					acls4 = &shared.AIGatewayMCPACLs{
-						Allow: allow6,
-						Deny:  deny6,
+						Allow:     allow6,
+						Deny:      deny6,
+						AllowWhen: allowWhen6,
+						DenyWhen:  denyWhen6,
 					}
 				}
 				var defaultToolAcls2 *shared.AIGatewayMCPACLs
@@ -3951,9 +6257,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex7 := range r.Listener.Access.Consumer.DefaultToolAcls.Deny {
 						deny7 = append(deny7, r.Listener.Access.Consumer.DefaultToolAcls.Deny[denyIndex7].ValueString())
 					}
+					var allowWhen7 []string
+					if r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen != nil {
+						allowWhen7 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex7 := range r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen {
+							allowWhen7 = append(allowWhen7, r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen[allowWhenIndex7].ValueString())
+						}
+					}
+					var denyWhen7 []string
+					if r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen != nil {
+						denyWhen7 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex7 := range r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen {
+							denyWhen7 = append(denyWhen7, r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen[denyWhenIndex7].ValueString())
+						}
+					}
 					defaultToolAcls2 = &shared.AIGatewayMCPACLs{
-						Allow: allow7,
-						Deny:  deny7,
+						Allow:     allow7,
+						Deny:      deny7,
+						AllowWhen: allowWhen7,
+						DenyWhen:  denyWhen7,
 					}
 				}
 				identityProviders2 := make([]string, 0, len(r.Listener.Access.Consumer.IdentityProviders))
@@ -4028,9 +6350,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex8 := range r.Listener.Access.OauthAccessToken.Acls.Deny {
 						deny8 = append(deny8, r.Listener.Access.OauthAccessToken.Acls.Deny[denyIndex8].ValueString())
 					}
+					var allowWhen8 []string
+					if r.Listener.Access.OauthAccessToken.Acls.AllowWhen != nil {
+						allowWhen8 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.AllowWhen))
+						for allowWhenIndex8 := range r.Listener.Access.OauthAccessToken.Acls.AllowWhen {
+							allowWhen8 = append(allowWhen8, r.Listener.Access.OauthAccessToken.Acls.AllowWhen[allowWhenIndex8].ValueString())
+						}
+					}
+					var denyWhen8 []string
+					if r.Listener.Access.OauthAccessToken.Acls.DenyWhen != nil {
+						denyWhen8 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.DenyWhen))
+						for denyWhenIndex8 := range r.Listener.Access.OauthAccessToken.Acls.DenyWhen {
+							denyWhen8 = append(denyWhen8, r.Listener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex8].ValueString())
+						}
+					}
 					acls5 = &shared.AIGatewayMCPACLs{
-						Allow: allow8,
-						Deny:  deny8,
+						Allow:     allow8,
+						Deny:      deny8,
+						AllowWhen: allowWhen8,
+						DenyWhen:  denyWhen8,
 					}
 				}
 				var defaultToolAcls3 *shared.AIGatewayMCPACLs
@@ -4043,9 +6381,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex9 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny {
 						deny9 = append(deny9, r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex9].ValueString())
 					}
+					var allowWhen9 []string
+					if r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen != nil {
+						allowWhen9 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex9 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen {
+							allowWhen9 = append(allowWhen9, r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen[allowWhenIndex9].ValueString())
+						}
+					}
+					var denyWhen9 []string
+					if r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen != nil {
+						denyWhen9 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex9 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen {
+							denyWhen9 = append(denyWhen9, r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen[denyWhenIndex9].ValueString())
+						}
+					}
 					defaultToolAcls3 = &shared.AIGatewayMCPACLs{
-						Allow: allow9,
-						Deny:  deny9,
+						Allow:     allow9,
+						Deny:      deny9,
+						AllowWhen: allowWhen9,
+						DenyWhen:  denyWhen9,
 					}
 				}
 				identityProviders3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.IdentityProviders))
@@ -4110,8 +6464,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		var displayName2 string
 		displayName2 = r.Listener.DisplayName.ValueString()
 
-		var name6 string
-		name6 = r.Listener.Name.ValueString()
+		var name12 string
+		name12 = r.Listener.Name.ValueString()
 
 		enabled2 := new(bool)
 		if !r.Listener.Enabled.IsUnknown() && !r.Listener.Enabled.IsNull() {
@@ -4137,16 +6491,426 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 
 			managedBy2[managedByKey2] = managedByInst2
 		}
+		var datastores2 []shared.AIGatewayDatastoreRef
+		if r.Listener.Datastores != nil {
+			datastores2 = make([]shared.AIGatewayDatastoreRef, 0, len(r.Listener.Datastores))
+			for datastoresIndex2 := range r.Listener.Datastores {
+				var name13 string
+				name13 = r.Listener.Datastores[datastoresIndex2].Name.ValueString()
+
+				datastores2 = append(datastores2, shared.AIGatewayDatastoreRef{
+					Name: name13,
+				})
+			}
+		}
+		var tokenVault2 *shared.AIGatewayTokenVault
+		if r.Listener.TokenVault != nil {
+			var provider2 string
+			provider2 = r.Listener.TokenVault.Provider.ValueString()
+
+			subjectTokenType2 := new(shared.SubjectTokenType)
+			if !r.Listener.TokenVault.SubjectTokenType.IsUnknown() && !r.Listener.TokenVault.SubjectTokenType.IsNull() {
+				*subjectTokenType2 = shared.SubjectTokenType(r.Listener.TokenVault.SubjectTokenType.ValueString())
+			} else {
+				subjectTokenType2 = nil
+			}
+			var credential2 *shared.AIGatewayTokenVaultCredential
+			if r.Listener.TokenVault.Credential != nil {
+				var inbound2 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.Listener.TokenVault.Credential.Inbound != nil {
+					location4 := new(shared.Location)
+					if !r.Listener.TokenVault.Credential.Inbound.Location.IsUnknown() && !r.Listener.TokenVault.Credential.Inbound.Location.IsNull() {
+						*location4 = shared.Location(r.Listener.TokenVault.Credential.Inbound.Location.ValueString())
+					} else {
+						location4 = nil
+					}
+					name14 := new(string)
+					if !r.Listener.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.Listener.TokenVault.Credential.Inbound.Name.IsNull() {
+						*name14 = r.Listener.TokenVault.Credential.Inbound.Name.ValueString()
+					} else {
+						name14 = nil
+					}
+					prefix4 := new(string)
+					if !r.Listener.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.Listener.TokenVault.Credential.Inbound.Prefix.IsNull() {
+						*prefix4 = r.Listener.TokenVault.Credential.Inbound.Prefix.ValueString()
+					} else {
+						prefix4 = nil
+					}
+					inbound2 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location4,
+						Name:     name14,
+						Prefix:   prefix4,
+					}
+				}
+				var outbound2 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.Listener.TokenVault.Credential.Outbound != nil {
+					location5 := new(shared.Location)
+					if !r.Listener.TokenVault.Credential.Outbound.Location.IsUnknown() && !r.Listener.TokenVault.Credential.Outbound.Location.IsNull() {
+						*location5 = shared.Location(r.Listener.TokenVault.Credential.Outbound.Location.ValueString())
+					} else {
+						location5 = nil
+					}
+					name15 := new(string)
+					if !r.Listener.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.Listener.TokenVault.Credential.Outbound.Name.IsNull() {
+						*name15 = r.Listener.TokenVault.Credential.Outbound.Name.ValueString()
+					} else {
+						name15 = nil
+					}
+					prefix5 := new(string)
+					if !r.Listener.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.Listener.TokenVault.Credential.Outbound.Prefix.IsNull() {
+						*prefix5 = r.Listener.TokenVault.Credential.Outbound.Prefix.ValueString()
+					} else {
+						prefix5 = nil
+					}
+					outbound2 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location5,
+						Name:     name15,
+						Prefix:   prefix5,
+					}
+				}
+				credential2 = &shared.AIGatewayTokenVaultCredential{
+					Inbound:  inbound2,
+					Outbound: outbound2,
+				}
+			}
+			var cache4 *shared.Cache
+			if r.Listener.TokenVault.Cache != nil {
+				var redis4 *shared.AIGatewayRedisCloudConfiguration
+				if r.Listener.TokenVault.Cache.Redis != nil {
+					var cloudAuthentication4 *shared.CloudAuthentication
+					if r.Listener.TokenVault.Cache.Redis.CloudAuthentication != nil {
+						var aiGatewayRedisAWSAuthentication4 *shared.AIGatewayRedisAWSAuthentication
+						if r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws != nil {
+							accessKeyId6 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
+								*accessKeyId6 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+							} else {
+								accessKeyId6 = nil
+							}
+							assumeRoleArn6 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
+								*assumeRoleArn6 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+							} else {
+								assumeRoleArn6 = nil
+							}
+							cacheName4 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
+								*cacheName4 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+							} else {
+								cacheName4 = nil
+							}
+							isServerless4 := new(bool)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
+								*isServerless4 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+							} else {
+								isServerless4 = nil
+							}
+							region6 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsNull() {
+								*region6 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.ValueString()
+							} else {
+								region6 = nil
+							}
+							roleSessionName6 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
+								*roleSessionName6 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+							} else {
+								roleSessionName6 = nil
+							}
+							secretAccessKey6 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
+								*secretAccessKey6 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+							} else {
+								secretAccessKey6 = nil
+							}
+							aiGatewayRedisAWSAuthentication4 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId6,
+								AssumeRoleArn:   assumeRoleArn6,
+								CacheName:       cacheName4,
+								IsServerless:    isServerless4,
+								Region:          region6,
+								RoleSessionName: roleSessionName6,
+								SecretAccessKey: secretAccessKey6,
+							}
+						}
+						if aiGatewayRedisAWSAuthentication4 != nil {
+							cloudAuthentication4 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication4,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication4 *shared.AIGatewayRedisAzureAuthentication
+						if r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure != nil {
+							clientId4 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
+								*clientId4 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+							} else {
+								clientId4 = nil
+							}
+							clientSecret4 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
+								*clientSecret4 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+							} else {
+								clientSecret4 = nil
+							}
+							tenantId4 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
+								*tenantId4 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+							} else {
+								tenantId4 = nil
+							}
+							aiGatewayRedisAzureAuthentication4 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId4,
+								ClientSecret: clientSecret4,
+								TenantID:     tenantId4,
+							}
+						}
+						if aiGatewayRedisAzureAuthentication4 != nil {
+							cloudAuthentication4 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication4,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication4 *shared.AIGatewayRedisGCPAuthentication
+						if r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Gcp != nil {
+							serviceAccountJson4 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
+								*serviceAccountJson4 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+							} else {
+								serviceAccountJson4 = nil
+							}
+							aiGatewayRedisGCPAuthentication4 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson4,
+							}
+						}
+						if aiGatewayRedisGCPAuthentication4 != nil {
+							cloudAuthentication4 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication4,
+							}
+						}
+					}
+					var cluster4 *shared.Cluster
+					if r.Listener.TokenVault.Cache.Redis.Cluster != nil {
+						maxRedirections4 := new(int64)
+						if !r.Listener.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsNull() {
+							*maxRedirections4 = r.Listener.TokenVault.Cache.Redis.Cluster.MaxRedirections.ValueInt64()
+						} else {
+							maxRedirections4 = nil
+						}
+						var nodes8 []shared.Nodes
+						if r.Listener.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+							nodes8 = make([]shared.Nodes, 0, len(r.Listener.TokenVault.Cache.Redis.Cluster.Nodes))
+							for nodesIndex8 := range r.Listener.TokenVault.Cache.Redis.Cluster.Nodes {
+								ip4 := new(string)
+								if !r.Listener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex8].IP.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex8].IP.IsNull() {
+									*ip4 = r.Listener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex8].IP.ValueString()
+								} else {
+									ip4 = nil
+								}
+								port12 := new(int64)
+								if !r.Listener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex8].Port.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex8].Port.IsNull() {
+									*port12 = r.Listener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex8].Port.ValueInt64()
+								} else {
+									port12 = nil
+								}
+								nodes8 = append(nodes8, shared.Nodes{
+									IP:   ip4,
+									Port: port12,
+								})
+							}
+						}
+						cluster4 = &shared.Cluster{
+							MaxRedirections: maxRedirections4,
+							Nodes:           nodes8,
+						}
+					}
+					connectTimeout4 := new(int64)
+					if !r.Listener.TokenVault.Cache.Redis.ConnectTimeout.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.ConnectTimeout.IsNull() {
+						*connectTimeout4 = r.Listener.TokenVault.Cache.Redis.ConnectTimeout.ValueInt64()
+					} else {
+						connectTimeout4 = nil
+					}
+					connectionIsProxied4 := new(bool)
+					if !r.Listener.TokenVault.Cache.Redis.ConnectionIsProxied.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.ConnectionIsProxied.IsNull() {
+						*connectionIsProxied4 = r.Listener.TokenVault.Cache.Redis.ConnectionIsProxied.ValueBool()
+					} else {
+						connectionIsProxied4 = nil
+					}
+					database4 := new(int64)
+					if !r.Listener.TokenVault.Cache.Redis.Database.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Database.IsNull() {
+						*database4 = r.Listener.TokenVault.Cache.Redis.Database.ValueInt64()
+					} else {
+						database4 = nil
+					}
+					host10 := new(string)
+					if !r.Listener.TokenVault.Cache.Redis.Host.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Host.IsNull() {
+						*host10 = r.Listener.TokenVault.Cache.Redis.Host.ValueString()
+					} else {
+						host10 = nil
+					}
+					var keepalive4 *shared.Keepalive
+					if r.Listener.TokenVault.Cache.Redis.Keepalive != nil {
+						backlog4 := new(int64)
+						if !r.Listener.TokenVault.Cache.Redis.Keepalive.Backlog.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Keepalive.Backlog.IsNull() {
+							*backlog4 = r.Listener.TokenVault.Cache.Redis.Keepalive.Backlog.ValueInt64()
+						} else {
+							backlog4 = nil
+						}
+						poolSize4 := new(int64)
+						if !r.Listener.TokenVault.Cache.Redis.Keepalive.PoolSize.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Keepalive.PoolSize.IsNull() {
+							*poolSize4 = r.Listener.TokenVault.Cache.Redis.Keepalive.PoolSize.ValueInt64()
+						} else {
+							poolSize4 = nil
+						}
+						keepalive4 = &shared.Keepalive{
+							Backlog:  backlog4,
+							PoolSize: poolSize4,
+						}
+					}
+					password8 := new(string)
+					if !r.Listener.TokenVault.Cache.Redis.Password.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Password.IsNull() {
+						*password8 = r.Listener.TokenVault.Cache.Redis.Password.ValueString()
+					} else {
+						password8 = nil
+					}
+					port13 := new(string)
+					if !r.Listener.TokenVault.Cache.Redis.Port.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Port.IsNull() {
+						*port13 = r.Listener.TokenVault.Cache.Redis.Port.ValueString()
+					} else {
+						port13 = nil
+					}
+					readTimeout4 := new(int64)
+					if !r.Listener.TokenVault.Cache.Redis.ReadTimeout.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.ReadTimeout.IsNull() {
+						*readTimeout4 = r.Listener.TokenVault.Cache.Redis.ReadTimeout.ValueInt64()
+					} else {
+						readTimeout4 = nil
+					}
+					sendTimeout4 := new(int64)
+					if !r.Listener.TokenVault.Cache.Redis.SendTimeout.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.SendTimeout.IsNull() {
+						*sendTimeout4 = r.Listener.TokenVault.Cache.Redis.SendTimeout.ValueInt64()
+					} else {
+						sendTimeout4 = nil
+					}
+					var sentinel4 *shared.Sentinel
+					if r.Listener.TokenVault.Cache.Redis.Sentinel != nil {
+						master4 := new(string)
+						if !r.Listener.TokenVault.Cache.Redis.Sentinel.Master.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Sentinel.Master.IsNull() {
+							*master4 = r.Listener.TokenVault.Cache.Redis.Sentinel.Master.ValueString()
+						} else {
+							master4 = nil
+						}
+						var nodes9 []shared.AIGatewayRedisCloudConfigurationNodes
+						if r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+							nodes9 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes))
+							for nodesIndex9 := range r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes {
+								host11 := new(string)
+								if !r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex9].Host.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex9].Host.IsNull() {
+									*host11 = r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex9].Host.ValueString()
+								} else {
+									host11 = nil
+								}
+								port14 := new(int64)
+								if !r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex9].Port.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex9].Port.IsNull() {
+									*port14 = r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex9].Port.ValueInt64()
+								} else {
+									port14 = nil
+								}
+								nodes9 = append(nodes9, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host11,
+									Port: port14,
+								})
+							}
+						}
+						password9 := new(string)
+						if !r.Listener.TokenVault.Cache.Redis.Sentinel.Password.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Sentinel.Password.IsNull() {
+							*password9 = r.Listener.TokenVault.Cache.Redis.Sentinel.Password.ValueString()
+						} else {
+							password9 = nil
+						}
+						role4 := new(shared.Role)
+						if !r.Listener.TokenVault.Cache.Redis.Sentinel.Role.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Sentinel.Role.IsNull() {
+							*role4 = shared.Role(r.Listener.TokenVault.Cache.Redis.Sentinel.Role.ValueString())
+						} else {
+							role4 = nil
+						}
+						username8 := new(string)
+						if !r.Listener.TokenVault.Cache.Redis.Sentinel.Username.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Sentinel.Username.IsNull() {
+							*username8 = r.Listener.TokenVault.Cache.Redis.Sentinel.Username.ValueString()
+						} else {
+							username8 = nil
+						}
+						sentinel4 = &shared.Sentinel{
+							Master:   master4,
+							Nodes:    nodes9,
+							Password: password9,
+							Role:     role4,
+							Username: username8,
+						}
+					}
+					serverName4 := new(string)
+					if !r.Listener.TokenVault.Cache.Redis.ServerName.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.ServerName.IsNull() {
+						*serverName4 = r.Listener.TokenVault.Cache.Redis.ServerName.ValueString()
+					} else {
+						serverName4 = nil
+					}
+					ssl4 := new(bool)
+					if !r.Listener.TokenVault.Cache.Redis.Ssl.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Ssl.IsNull() {
+						*ssl4 = r.Listener.TokenVault.Cache.Redis.Ssl.ValueBool()
+					} else {
+						ssl4 = nil
+					}
+					sslVerify4 := new(bool)
+					if !r.Listener.TokenVault.Cache.Redis.SslVerify.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.SslVerify.IsNull() {
+						*sslVerify4 = r.Listener.TokenVault.Cache.Redis.SslVerify.ValueBool()
+					} else {
+						sslVerify4 = nil
+					}
+					username9 := new(string)
+					if !r.Listener.TokenVault.Cache.Redis.Username.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Username.IsNull() {
+						*username9 = r.Listener.TokenVault.Cache.Redis.Username.ValueString()
+					} else {
+						username9 = nil
+					}
+					redis4 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication4,
+						Cluster:             cluster4,
+						ConnectTimeout:      connectTimeout4,
+						ConnectionIsProxied: connectionIsProxied4,
+						Database:            database4,
+						Host:                host10,
+						Keepalive:           keepalive4,
+						Password:            password8,
+						Port:                port13,
+						ReadTimeout:         readTimeout4,
+						SendTimeout:         sendTimeout4,
+						Sentinel:            sentinel4,
+						ServerName:          serverName4,
+						Ssl:                 ssl4,
+						SslVerify:           sslVerify4,
+						Username:            username9,
+					}
+				}
+				cache4 = &shared.Cache{
+					Redis: redis4,
+				}
+			}
+			tokenVault2 = &shared.AIGatewayTokenVault{
+				Provider:         provider2,
+				SubjectTokenType: subjectTokenType2,
+				Credential:       credential2,
+				Cache:            cache4,
+			}
+		}
 		aiGatewayMCPServerListener = &shared.AIGatewayMCPServerListener{
 			Config:      config2,
 			Sources:     sources,
 			Access:      access3,
 			DisplayName: displayName2,
-			Name:        name6,
+			Name:        name12,
 			Enabled:     enabled2,
 			Policies:    policies2,
 			Labels:      labels2,
 			ManagedBy:   managedBy2,
+			Datastores:  datastores2,
+			TokenVault:  tokenVault2,
 		}
 	}
 	if aiGatewayMCPServerListener != nil {
@@ -4289,317 +7053,317 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				} else {
 					managed2 = nil
 				}
-				var redis2 *shared.AIGatewayRedisCloudConfiguration
+				var redis5 *shared.AIGatewayRedisCloudConfiguration
 				if r.PassthroughListener.Config.Server.Session.Redis != nil {
-					var cloudAuthentication2 *shared.CloudAuthentication
+					var cloudAuthentication5 *shared.CloudAuthentication
 					if r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication != nil {
-						var aiGatewayRedisAWSAuthentication2 *shared.AIGatewayRedisAWSAuthentication
+						var aiGatewayRedisAWSAuthentication5 *shared.AIGatewayRedisAWSAuthentication
 						if r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId4 := new(string)
+							accessKeyId7 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId7 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId4 = nil
+								accessKeyId7 = nil
 							}
-							assumeRoleArn4 := new(string)
+							assumeRoleArn7 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn7 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn4 = nil
+								assumeRoleArn7 = nil
 							}
-							cacheName2 := new(string)
+							cacheName5 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
-								*cacheName2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+								*cacheName5 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
 							} else {
-								cacheName2 = nil
+								cacheName5 = nil
 							}
-							isServerless2 := new(bool)
+							isServerless5 := new(bool)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
-								*isServerless2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+								*isServerless5 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
 							} else {
-								isServerless2 = nil
+								isServerless5 = nil
 							}
-							region4 := new(string)
+							region7 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region7 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region4 = nil
+								region7 = nil
 							}
-							roleSessionName4 := new(string)
+							roleSessionName7 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName7 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName4 = nil
+								roleSessionName7 = nil
 							}
-							secretAccessKey4 := new(string)
+							secretAccessKey7 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey7 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey4 = nil
+								secretAccessKey7 = nil
 							}
-							aiGatewayRedisAWSAuthentication2 = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId4,
-								AssumeRoleArn:   assumeRoleArn4,
-								CacheName:       cacheName2,
-								IsServerless:    isServerless2,
-								Region:          region4,
-								RoleSessionName: roleSessionName4,
-								SecretAccessKey: secretAccessKey4,
-							}
-						}
-						if aiGatewayRedisAWSAuthentication2 != nil {
-							cloudAuthentication2 = &shared.CloudAuthentication{
-								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication2,
+							aiGatewayRedisAWSAuthentication5 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId7,
+								AssumeRoleArn:   assumeRoleArn7,
+								CacheName:       cacheName5,
+								IsServerless:    isServerless5,
+								Region:          region7,
+								RoleSessionName: roleSessionName7,
+								SecretAccessKey: secretAccessKey7,
 							}
 						}
-						var aiGatewayRedisAzureAuthentication2 *shared.AIGatewayRedisAzureAuthentication
+						if aiGatewayRedisAWSAuthentication5 != nil {
+							cloudAuthentication5 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication5,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication5 *shared.AIGatewayRedisAzureAuthentication
 						if r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure != nil {
-							clientId2 := new(string)
+							clientId5 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
-								*clientId2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+								*clientId5 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
 							} else {
-								clientId2 = nil
+								clientId5 = nil
 							}
-							clientSecret2 := new(string)
+							clientSecret5 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
-								*clientSecret2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+								*clientSecret5 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
 							} else {
-								clientSecret2 = nil
+								clientSecret5 = nil
 							}
-							tenantId2 := new(string)
+							tenantId5 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
-								*tenantId2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+								*tenantId5 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
 							} else {
-								tenantId2 = nil
+								tenantId5 = nil
 							}
-							aiGatewayRedisAzureAuthentication2 = &shared.AIGatewayRedisAzureAuthentication{
-								ClientID:     clientId2,
-								ClientSecret: clientSecret2,
-								TenantID:     tenantId2,
-							}
-						}
-						if aiGatewayRedisAzureAuthentication2 != nil {
-							cloudAuthentication2 = &shared.CloudAuthentication{
-								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication2,
+							aiGatewayRedisAzureAuthentication5 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId5,
+								ClientSecret: clientSecret5,
+								TenantID:     tenantId5,
 							}
 						}
-						var aiGatewayRedisGCPAuthentication2 *shared.AIGatewayRedisGCPAuthentication
+						if aiGatewayRedisAzureAuthentication5 != nil {
+							cloudAuthentication5 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication5,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication5 *shared.AIGatewayRedisGCPAuthentication
 						if r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Gcp != nil {
-							serviceAccountJson2 := new(string)
+							serviceAccountJson5 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
-								*serviceAccountJson2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+								*serviceAccountJson5 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
 							} else {
-								serviceAccountJson2 = nil
+								serviceAccountJson5 = nil
 							}
-							aiGatewayRedisGCPAuthentication2 = &shared.AIGatewayRedisGCPAuthentication{
-								ServiceAccountJSON: serviceAccountJson2,
+							aiGatewayRedisGCPAuthentication5 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson5,
 							}
 						}
-						if aiGatewayRedisGCPAuthentication2 != nil {
-							cloudAuthentication2 = &shared.CloudAuthentication{
-								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication2,
+						if aiGatewayRedisGCPAuthentication5 != nil {
+							cloudAuthentication5 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication5,
 							}
 						}
 					}
-					var cluster2 *shared.Cluster
+					var cluster5 *shared.Cluster
 					if r.PassthroughListener.Config.Server.Session.Redis.Cluster != nil {
-						maxRedirections2 := new(int64)
+						maxRedirections5 := new(int64)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Cluster.MaxRedirections.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Cluster.MaxRedirections.IsNull() {
-							*maxRedirections2 = r.PassthroughListener.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
+							*maxRedirections5 = r.PassthroughListener.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
 						} else {
-							maxRedirections2 = nil
+							maxRedirections5 = nil
 						}
-						var nodes4 []shared.Nodes
+						var nodes10 []shared.Nodes
 						if r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes != nil {
-							nodes4 = make([]shared.Nodes, 0, len(r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes))
-							for nodesIndex4 := range r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes {
-								ip2 := new(string)
-								if !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex4].IP.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex4].IP.IsNull() {
-									*ip2 = r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex4].IP.ValueString()
+							nodes10 = make([]shared.Nodes, 0, len(r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes))
+							for nodesIndex10 := range r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes {
+								ip5 := new(string)
+								if !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex10].IP.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex10].IP.IsNull() {
+									*ip5 = r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex10].IP.ValueString()
 								} else {
-									ip2 = nil
+									ip5 = nil
 								}
-								port6 := new(int64)
-								if !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex4].Port.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex4].Port.IsNull() {
-									*port6 = r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex4].Port.ValueInt64()
+								port15 := new(int64)
+								if !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex10].Port.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex10].Port.IsNull() {
+									*port15 = r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex10].Port.ValueInt64()
 								} else {
-									port6 = nil
+									port15 = nil
 								}
-								nodes4 = append(nodes4, shared.Nodes{
-									IP:   ip2,
-									Port: port6,
+								nodes10 = append(nodes10, shared.Nodes{
+									IP:   ip5,
+									Port: port15,
 								})
 							}
 						}
-						cluster2 = &shared.Cluster{
-							MaxRedirections: maxRedirections2,
-							Nodes:           nodes4,
+						cluster5 = &shared.Cluster{
+							MaxRedirections: maxRedirections5,
+							Nodes:           nodes10,
 						}
 					}
-					connectTimeout2 := new(int64)
+					connectTimeout5 := new(int64)
 					if !r.PassthroughListener.Config.Server.Session.Redis.ConnectTimeout.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.ConnectTimeout.IsNull() {
-						*connectTimeout2 = r.PassthroughListener.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
+						*connectTimeout5 = r.PassthroughListener.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
 					} else {
-						connectTimeout2 = nil
+						connectTimeout5 = nil
 					}
-					connectionIsProxied2 := new(bool)
+					connectionIsProxied5 := new(bool)
 					if !r.PassthroughListener.Config.Server.Session.Redis.ConnectionIsProxied.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.ConnectionIsProxied.IsNull() {
-						*connectionIsProxied2 = r.PassthroughListener.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
+						*connectionIsProxied5 = r.PassthroughListener.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
 					} else {
-						connectionIsProxied2 = nil
+						connectionIsProxied5 = nil
 					}
-					database2 := new(int64)
+					database5 := new(int64)
 					if !r.PassthroughListener.Config.Server.Session.Redis.Database.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Database.IsNull() {
-						*database2 = r.PassthroughListener.Config.Server.Session.Redis.Database.ValueInt64()
+						*database5 = r.PassthroughListener.Config.Server.Session.Redis.Database.ValueInt64()
 					} else {
-						database2 = nil
+						database5 = nil
 					}
-					host6 := new(string)
+					host12 := new(string)
 					if !r.PassthroughListener.Config.Server.Session.Redis.Host.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Host.IsNull() {
-						*host6 = r.PassthroughListener.Config.Server.Session.Redis.Host.ValueString()
+						*host12 = r.PassthroughListener.Config.Server.Session.Redis.Host.ValueString()
 					} else {
-						host6 = nil
+						host12 = nil
 					}
-					var keepalive2 *shared.Keepalive
+					var keepalive5 *shared.Keepalive
 					if r.PassthroughListener.Config.Server.Session.Redis.Keepalive != nil {
-						backlog2 := new(int64)
+						backlog5 := new(int64)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Keepalive.Backlog.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Keepalive.Backlog.IsNull() {
-							*backlog2 = r.PassthroughListener.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
+							*backlog5 = r.PassthroughListener.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
 						} else {
-							backlog2 = nil
+							backlog5 = nil
 						}
-						poolSize2 := new(int64)
+						poolSize5 := new(int64)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Keepalive.PoolSize.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Keepalive.PoolSize.IsNull() {
-							*poolSize2 = r.PassthroughListener.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
+							*poolSize5 = r.PassthroughListener.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
 						} else {
-							poolSize2 = nil
+							poolSize5 = nil
 						}
-						keepalive2 = &shared.Keepalive{
-							Backlog:  backlog2,
-							PoolSize: poolSize2,
+						keepalive5 = &shared.Keepalive{
+							Backlog:  backlog5,
+							PoolSize: poolSize5,
 						}
 					}
-					password4 := new(string)
+					password10 := new(string)
 					if !r.PassthroughListener.Config.Server.Session.Redis.Password.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Password.IsNull() {
-						*password4 = r.PassthroughListener.Config.Server.Session.Redis.Password.ValueString()
+						*password10 = r.PassthroughListener.Config.Server.Session.Redis.Password.ValueString()
 					} else {
-						password4 = nil
+						password10 = nil
 					}
-					port7 := new(string)
+					port16 := new(string)
 					if !r.PassthroughListener.Config.Server.Session.Redis.Port.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Port.IsNull() {
-						*port7 = r.PassthroughListener.Config.Server.Session.Redis.Port.ValueString()
+						*port16 = r.PassthroughListener.Config.Server.Session.Redis.Port.ValueString()
 					} else {
-						port7 = nil
+						port16 = nil
 					}
-					readTimeout2 := new(int64)
+					readTimeout5 := new(int64)
 					if !r.PassthroughListener.Config.Server.Session.Redis.ReadTimeout.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.ReadTimeout.IsNull() {
-						*readTimeout2 = r.PassthroughListener.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
+						*readTimeout5 = r.PassthroughListener.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
 					} else {
-						readTimeout2 = nil
+						readTimeout5 = nil
 					}
-					sendTimeout2 := new(int64)
+					sendTimeout5 := new(int64)
 					if !r.PassthroughListener.Config.Server.Session.Redis.SendTimeout.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.SendTimeout.IsNull() {
-						*sendTimeout2 = r.PassthroughListener.Config.Server.Session.Redis.SendTimeout.ValueInt64()
+						*sendTimeout5 = r.PassthroughListener.Config.Server.Session.Redis.SendTimeout.ValueInt64()
 					} else {
-						sendTimeout2 = nil
+						sendTimeout5 = nil
 					}
-					var sentinel2 *shared.Sentinel
+					var sentinel5 *shared.Sentinel
 					if r.PassthroughListener.Config.Server.Session.Redis.Sentinel != nil {
-						master2 := new(string)
+						master5 := new(string)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Master.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Master.IsNull() {
-							*master2 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Master.ValueString()
+							*master5 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Master.ValueString()
 						} else {
-							master2 = nil
+							master5 = nil
 						}
-						var nodes5 []shared.AIGatewayRedisCloudConfigurationNodes
+						var nodes11 []shared.AIGatewayRedisCloudConfigurationNodes
 						if r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-							nodes5 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes))
-							for nodesIndex5 := range r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes {
-								host7 := new(string)
-								if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex5].Host.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex5].Host.IsNull() {
-									*host7 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex5].Host.ValueString()
+							nodes11 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes))
+							for nodesIndex11 := range r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes {
+								host13 := new(string)
+								if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex11].Host.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex11].Host.IsNull() {
+									*host13 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex11].Host.ValueString()
 								} else {
-									host7 = nil
+									host13 = nil
 								}
-								port8 := new(int64)
-								if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex5].Port.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex5].Port.IsNull() {
-									*port8 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex5].Port.ValueInt64()
+								port17 := new(int64)
+								if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex11].Port.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex11].Port.IsNull() {
+									*port17 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex11].Port.ValueInt64()
 								} else {
-									port8 = nil
+									port17 = nil
 								}
-								nodes5 = append(nodes5, shared.AIGatewayRedisCloudConfigurationNodes{
-									Host: host7,
-									Port: port8,
+								nodes11 = append(nodes11, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host13,
+									Port: port17,
 								})
 							}
 						}
-						password5 := new(string)
+						password11 := new(string)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Password.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Password.IsNull() {
-							*password5 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Password.ValueString()
+							*password11 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Password.ValueString()
 						} else {
-							password5 = nil
+							password11 = nil
 						}
-						role2 := new(shared.Role)
+						role5 := new(shared.Role)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Role.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Role.IsNull() {
-							*role2 = shared.Role(r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Role.ValueString())
+							*role5 = shared.Role(r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Role.ValueString())
 						} else {
-							role2 = nil
+							role5 = nil
 						}
-						username4 := new(string)
+						username10 := new(string)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Username.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Username.IsNull() {
-							*username4 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Username.ValueString()
+							*username10 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Username.ValueString()
 						} else {
-							username4 = nil
+							username10 = nil
 						}
-						sentinel2 = &shared.Sentinel{
-							Master:   master2,
-							Nodes:    nodes5,
-							Password: password5,
-							Role:     role2,
-							Username: username4,
+						sentinel5 = &shared.Sentinel{
+							Master:   master5,
+							Nodes:    nodes11,
+							Password: password11,
+							Role:     role5,
+							Username: username10,
 						}
 					}
-					serverName2 := new(string)
+					serverName5 := new(string)
 					if !r.PassthroughListener.Config.Server.Session.Redis.ServerName.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.ServerName.IsNull() {
-						*serverName2 = r.PassthroughListener.Config.Server.Session.Redis.ServerName.ValueString()
+						*serverName5 = r.PassthroughListener.Config.Server.Session.Redis.ServerName.ValueString()
 					} else {
-						serverName2 = nil
+						serverName5 = nil
 					}
-					ssl2 := new(bool)
+					ssl5 := new(bool)
 					if !r.PassthroughListener.Config.Server.Session.Redis.Ssl.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Ssl.IsNull() {
-						*ssl2 = r.PassthroughListener.Config.Server.Session.Redis.Ssl.ValueBool()
+						*ssl5 = r.PassthroughListener.Config.Server.Session.Redis.Ssl.ValueBool()
 					} else {
-						ssl2 = nil
+						ssl5 = nil
 					}
-					sslVerify2 := new(bool)
+					sslVerify5 := new(bool)
 					if !r.PassthroughListener.Config.Server.Session.Redis.SslVerify.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.SslVerify.IsNull() {
-						*sslVerify2 = r.PassthroughListener.Config.Server.Session.Redis.SslVerify.ValueBool()
+						*sslVerify5 = r.PassthroughListener.Config.Server.Session.Redis.SslVerify.ValueBool()
 					} else {
-						sslVerify2 = nil
+						sslVerify5 = nil
 					}
-					username5 := new(string)
+					username11 := new(string)
 					if !r.PassthroughListener.Config.Server.Session.Redis.Username.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Username.IsNull() {
-						*username5 = r.PassthroughListener.Config.Server.Session.Redis.Username.ValueString()
+						*username11 = r.PassthroughListener.Config.Server.Session.Redis.Username.ValueString()
 					} else {
-						username5 = nil
+						username11 = nil
 					}
-					redis2 = &shared.AIGatewayRedisCloudConfiguration{
-						CloudAuthentication: cloudAuthentication2,
-						Cluster:             cluster2,
-						ConnectTimeout:      connectTimeout2,
-						ConnectionIsProxied: connectionIsProxied2,
-						Database:            database2,
-						Host:                host6,
-						Keepalive:           keepalive2,
-						Password:            password4,
-						Port:                port7,
-						ReadTimeout:         readTimeout2,
-						SendTimeout:         sendTimeout2,
-						Sentinel:            sentinel2,
-						ServerName:          serverName2,
-						Ssl:                 ssl2,
-						SslVerify:           sslVerify2,
-						Username:            username5,
+					redis5 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication5,
+						Cluster:             cluster5,
+						ConnectTimeout:      connectTimeout5,
+						ConnectionIsProxied: connectionIsProxied5,
+						Database:            database5,
+						Host:                host12,
+						Keepalive:           keepalive5,
+						Password:            password10,
+						Port:                port16,
+						ReadTimeout:         readTimeout5,
+						SendTimeout:         sendTimeout5,
+						Sentinel:            sentinel5,
+						ServerName:          serverName5,
+						Ssl:                 ssl5,
+						SslVerify:           sslVerify5,
+						Username:            username11,
 					}
 				}
 				sessionTtl2 := new(int64)
@@ -4617,7 +7381,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				session2 = &shared.AIGatewayMCPServerWithUpstreamConfigSession{
 					Client:     client2,
 					Managed:    managed2,
-					Redis:      redis2,
+					Redis:      redis5,
 					SessionTTL: sessionTtl2,
 					Strategy:   strategy2,
 				}
@@ -4643,17 +7407,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			if r.PassthroughListener.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws2 *shared.AIGatewayUpstreamAuthAWS
 				if r.PassthroughListener.Config.Upstream.Auth.Aws != nil {
-					accessKeyId5 := new(string)
+					accessKeyId8 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
-						*accessKeyId5 = r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+						*accessKeyId8 = r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
 					} else {
-						accessKeyId5 = nil
+						accessKeyId8 = nil
 					}
-					secretAccessKey5 := new(string)
+					secretAccessKey8 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
-						*secretAccessKey5 = r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+						*secretAccessKey8 = r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
 					} else {
-						secretAccessKey5 = nil
+						secretAccessKey8 = nil
 					}
 					sessionToken2 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
@@ -4661,23 +7425,23 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						sessionToken2 = nil
 					}
-					region5 := new(string)
+					region8 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.Region.IsNull() {
-						*region5 = r.PassthroughListener.Config.Upstream.Auth.Aws.Region.ValueString()
+						*region8 = r.PassthroughListener.Config.Upstream.Auth.Aws.Region.ValueString()
 					} else {
-						region5 = nil
+						region8 = nil
 					}
-					assumeRoleArn5 := new(string)
+					assumeRoleArn8 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
-						*assumeRoleArn5 = r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+						*assumeRoleArn8 = r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
 					} else {
-						assumeRoleArn5 = nil
+						assumeRoleArn8 = nil
 					}
-					roleSessionName5 := new(string)
+					roleSessionName8 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
-						*roleSessionName5 = r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+						*roleSessionName8 = r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
 					} else {
-						roleSessionName5 = nil
+						roleSessionName8 = nil
 					}
 					stsEndpointUrl2 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
@@ -4686,12 +7450,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 						stsEndpointUrl2 = nil
 					}
 					aiGatewayUpstreamAuthAws2 = &shared.AIGatewayUpstreamAuthAWS{
-						AccessKeyID:     accessKeyId5,
-						SecretAccessKey: secretAccessKey5,
+						AccessKeyID:     accessKeyId8,
+						SecretAccessKey: secretAccessKey8,
 						SessionToken:    sessionToken2,
-						Region:          region5,
-						AssumeRoleArn:   assumeRoleArn5,
-						RoleSessionName: roleSessionName5,
+						Region:          region8,
+						AssumeRoleArn:   assumeRoleArn8,
+						RoleSessionName: roleSessionName8,
 						StsEndpointURL:  stsEndpointUrl2,
 					}
 				}
@@ -4705,44 +7469,52 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Auth: auth2,
 			}
 		}
+		certificates2 := make([]string, 0, len(r.PassthroughListener.Config.Certificates))
+		for certificatesIndex2 := range r.PassthroughListener.Config.Certificates {
+			certificates2 = append(certificates2, r.PassthroughListener.Config.Certificates[certificatesIndex2].ValueString())
+		}
+		caCertificates2 := make([]string, 0, len(r.PassthroughListener.Config.CaCertificates))
+		for caCertificatesIndex2 := range r.PassthroughListener.Config.CaCertificates {
+			caCertificates2 = append(caCertificates2, r.PassthroughListener.Config.CaCertificates[caCertificatesIndex2].ValueString())
+		}
 		var proxy *shared.AIGatewayProxyConfig
 		if r.PassthroughListener.Config.Proxy != nil {
 			var httpProxy *shared.HTTPProxy
 			if r.PassthroughListener.Config.Proxy.HTTPProxy != nil {
-				host8 := new(string)
+				host14 := new(string)
 				if !r.PassthroughListener.Config.Proxy.HTTPProxy.Host.IsUnknown() && !r.PassthroughListener.Config.Proxy.HTTPProxy.Host.IsNull() {
-					*host8 = r.PassthroughListener.Config.Proxy.HTTPProxy.Host.ValueString()
+					*host14 = r.PassthroughListener.Config.Proxy.HTTPProxy.Host.ValueString()
 				} else {
-					host8 = nil
+					host14 = nil
 				}
-				port9 := new(int64)
+				port18 := new(int64)
 				if !r.PassthroughListener.Config.Proxy.HTTPProxy.Port.IsUnknown() && !r.PassthroughListener.Config.Proxy.HTTPProxy.Port.IsNull() {
-					*port9 = r.PassthroughListener.Config.Proxy.HTTPProxy.Port.ValueInt64()
+					*port18 = r.PassthroughListener.Config.Proxy.HTTPProxy.Port.ValueInt64()
 				} else {
-					port9 = nil
+					port18 = nil
 				}
 				httpProxy = &shared.HTTPProxy{
-					Host: host8,
-					Port: port9,
+					Host: host14,
+					Port: port18,
 				}
 			}
 			var httpsProxy *shared.HTTPSProxy
 			if r.PassthroughListener.Config.Proxy.HTTPSProxy != nil {
-				host9 := new(string)
+				host15 := new(string)
 				if !r.PassthroughListener.Config.Proxy.HTTPSProxy.Host.IsUnknown() && !r.PassthroughListener.Config.Proxy.HTTPSProxy.Host.IsNull() {
-					*host9 = r.PassthroughListener.Config.Proxy.HTTPSProxy.Host.ValueString()
+					*host15 = r.PassthroughListener.Config.Proxy.HTTPSProxy.Host.ValueString()
 				} else {
-					host9 = nil
+					host15 = nil
 				}
-				port10 := new(int64)
+				port19 := new(int64)
 				if !r.PassthroughListener.Config.Proxy.HTTPSProxy.Port.IsUnknown() && !r.PassthroughListener.Config.Proxy.HTTPSProxy.Port.IsNull() {
-					*port10 = r.PassthroughListener.Config.Proxy.HTTPSProxy.Port.ValueInt64()
+					*port19 = r.PassthroughListener.Config.Proxy.HTTPSProxy.Port.ValueInt64()
 				} else {
-					port10 = nil
+					port19 = nil
 				}
 				httpsProxy = &shared.HTTPSProxy{
-					Host: host9,
-					Port: port10,
+					Host: host15,
+					Port: port19,
 				}
 			}
 			proxyScheme := new(shared.ProxyScheme)
@@ -4753,21 +7525,21 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			}
 			var auth3 *shared.AIGatewayProxyConfigAuth
 			if r.PassthroughListener.Config.Proxy.Auth != nil {
-				username6 := new(string)
+				username12 := new(string)
 				if !r.PassthroughListener.Config.Proxy.Auth.Username.IsUnknown() && !r.PassthroughListener.Config.Proxy.Auth.Username.IsNull() {
-					*username6 = r.PassthroughListener.Config.Proxy.Auth.Username.ValueString()
+					*username12 = r.PassthroughListener.Config.Proxy.Auth.Username.ValueString()
 				} else {
-					username6 = nil
+					username12 = nil
 				}
-				password6 := new(string)
+				password12 := new(string)
 				if !r.PassthroughListener.Config.Proxy.Auth.Password.IsUnknown() && !r.PassthroughListener.Config.Proxy.Auth.Password.IsNull() {
-					*password6 = r.PassthroughListener.Config.Proxy.Auth.Password.ValueString()
+					*password12 = r.PassthroughListener.Config.Proxy.Auth.Password.ValueString()
 				} else {
-					password6 = nil
+					password12 = nil
 				}
 				auth3 = &shared.AIGatewayProxyConfigAuth{
-					Username: username6,
-					Password: password6,
+					Username: username12,
+					Password: password12,
 				}
 			}
 			noProxy := new(string)
@@ -4791,6 +7563,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			Server:             server2,
 			URL:                url2,
 			Upstream:           upstream2,
+			Certificates:       certificates2,
+			CaCertificates:     caCertificates2,
 			Proxy:              proxy,
 		}
 		tools2 := make([]shared.AIGatewayMCPPassthroughTool, 0, len(r.PassthroughListener.Tools))
@@ -4805,20 +7579,36 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				for denyIndex10 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny {
 					deny10 = append(deny10, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny[denyIndex10].ValueString())
 				}
+				var allowWhen10 []string
+				if r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen != nil {
+					allowWhen10 = make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen))
+					for allowWhenIndex10 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen {
+						allowWhen10 = append(allowWhen10, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen[allowWhenIndex10].ValueString())
+					}
+				}
+				var denyWhen10 []string
+				if r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen != nil {
+					denyWhen10 = make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen))
+					for denyWhenIndex10 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen {
+						denyWhen10 = append(denyWhen10, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen[denyWhenIndex10].ValueString())
+					}
+				}
 				acls6 = &shared.AIGatewayMCPACLs{
-					Allow: allow10,
-					Deny:  deny10,
+					Allow:     allow10,
+					Deny:      deny10,
+					AllowWhen: allowWhen10,
+					DenyWhen:  denyWhen10,
 				}
 			}
 			access4 := shared.AIGatewayMCPToolAccess{
 				Acls: acls6,
 			}
-			var name7 string
-			name7 = r.PassthroughListener.Tools[toolsIndex2].Name.ValueString()
+			var name16 string
+			name16 = r.PassthroughListener.Tools[toolsIndex2].Name.ValueString()
 
 			tools2 = append(tools2, shared.AIGatewayMCPPassthroughTool{
 				Access: access4,
-				Name:   name7,
+				Name:   name16,
 			})
 		}
 		var access5 *shared.AIGatewayMCPServerListenerAccess
@@ -4835,9 +7625,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex11 := range r.PassthroughListener.Access.Consumer.Acls.Deny {
 						deny11 = append(deny11, r.PassthroughListener.Access.Consumer.Acls.Deny[denyIndex11].ValueString())
 					}
+					var allowWhen11 []string
+					if r.PassthroughListener.Access.Consumer.Acls.AllowWhen != nil {
+						allowWhen11 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.AllowWhen))
+						for allowWhenIndex11 := range r.PassthroughListener.Access.Consumer.Acls.AllowWhen {
+							allowWhen11 = append(allowWhen11, r.PassthroughListener.Access.Consumer.Acls.AllowWhen[allowWhenIndex11].ValueString())
+						}
+					}
+					var denyWhen11 []string
+					if r.PassthroughListener.Access.Consumer.Acls.DenyWhen != nil {
+						denyWhen11 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.DenyWhen))
+						for denyWhenIndex11 := range r.PassthroughListener.Access.Consumer.Acls.DenyWhen {
+							denyWhen11 = append(denyWhen11, r.PassthroughListener.Access.Consumer.Acls.DenyWhen[denyWhenIndex11].ValueString())
+						}
+					}
 					acls7 = &shared.AIGatewayMCPACLs{
-						Allow: allow11,
-						Deny:  deny11,
+						Allow:     allow11,
+						Deny:      deny11,
+						AllowWhen: allowWhen11,
+						DenyWhen:  denyWhen11,
 					}
 				}
 				var defaultToolAcls4 *shared.AIGatewayMCPACLs
@@ -4850,9 +7656,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex12 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny {
 						deny12 = append(deny12, r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny[denyIndex12].ValueString())
 					}
+					var allowWhen12 []string
+					if r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen != nil {
+						allowWhen12 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex12 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen {
+							allowWhen12 = append(allowWhen12, r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen[allowWhenIndex12].ValueString())
+						}
+					}
+					var denyWhen12 []string
+					if r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen != nil {
+						denyWhen12 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex12 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen {
+							denyWhen12 = append(denyWhen12, r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen[denyWhenIndex12].ValueString())
+						}
+					}
 					defaultToolAcls4 = &shared.AIGatewayMCPACLs{
-						Allow: allow12,
-						Deny:  deny12,
+						Allow:     allow12,
+						Deny:      deny12,
+						AllowWhen: allowWhen12,
+						DenyWhen:  denyWhen12,
 					}
 				}
 				identityProviders4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.IdentityProviders))
@@ -4927,9 +7749,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex13 := range r.PassthroughListener.Access.OauthAccessToken.Acls.Deny {
 						deny13 = append(deny13, r.PassthroughListener.Access.OauthAccessToken.Acls.Deny[denyIndex13].ValueString())
 					}
+					var allowWhen13 []string
+					if r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen != nil {
+						allowWhen13 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen))
+						for allowWhenIndex13 := range r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen {
+							allowWhen13 = append(allowWhen13, r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen[allowWhenIndex13].ValueString())
+						}
+					}
+					var denyWhen13 []string
+					if r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen != nil {
+						denyWhen13 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen))
+						for denyWhenIndex13 := range r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen {
+							denyWhen13 = append(denyWhen13, r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex13].ValueString())
+						}
+					}
 					acls8 = &shared.AIGatewayMCPACLs{
-						Allow: allow13,
-						Deny:  deny13,
+						Allow:     allow13,
+						Deny:      deny13,
+						AllowWhen: allowWhen13,
+						DenyWhen:  denyWhen13,
 					}
 				}
 				var defaultToolAcls5 *shared.AIGatewayMCPACLs
@@ -4942,9 +7780,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex14 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny {
 						deny14 = append(deny14, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex14].ValueString())
 					}
+					var allowWhen14 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen != nil {
+						allowWhen14 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex14 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen {
+							allowWhen14 = append(allowWhen14, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen[allowWhenIndex14].ValueString())
+						}
+					}
+					var denyWhen14 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen != nil {
+						denyWhen14 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex14 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen {
+							denyWhen14 = append(denyWhen14, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen[denyWhenIndex14].ValueString())
+						}
+					}
 					defaultToolAcls5 = &shared.AIGatewayMCPACLs{
-						Allow: allow14,
-						Deny:  deny14,
+						Allow:     allow14,
+						Deny:      deny14,
+						AllowWhen: allowWhen14,
+						DenyWhen:  denyWhen14,
 					}
 				}
 				identityProviders5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.IdentityProviders))
@@ -5006,11 +7860,42 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				}
 			}
 		}
+		var rateLimiting1 *shared.AIGatewayMCPServerRateLimiting
+		if r.PassthroughListener.RateLimiting != nil {
+			limits1 := make([]shared.AIGatewayMCPServerRateLimit, 0, len(r.PassthroughListener.RateLimiting.Limits))
+			for limitsIndex1 := range r.PassthroughListener.RateLimiting.Limits {
+				method3 := new(string)
+				if !r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Method.IsUnknown() && !r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Method.IsNull() {
+					*method3 = r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Method.ValueString()
+				} else {
+					method3 = nil
+				}
+				tool1 := new(string)
+				if !r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Tool.IsUnknown() && !r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Tool.IsNull() {
+					*tool1 = r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Tool.ValueString()
+				} else {
+					tool1 = nil
+				}
+				var limit1 int64
+				limit1 = r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Limit.ValueInt64()
+
+				windowSize1 := shared.WindowSize(r.PassthroughListener.RateLimiting.Limits[limitsIndex1].WindowSize.ValueInt64())
+				limits1 = append(limits1, shared.AIGatewayMCPServerRateLimit{
+					Method:     method3,
+					Tool:       tool1,
+					Limit:      limit1,
+					WindowSize: windowSize1,
+				})
+			}
+			rateLimiting1 = &shared.AIGatewayMCPServerRateLimiting{
+				Limits: limits1,
+			}
+		}
 		var displayName3 string
 		displayName3 = r.PassthroughListener.DisplayName.ValueString()
 
-		var name8 string
-		name8 = r.PassthroughListener.Name.ValueString()
+		var name17 string
+		name17 = r.PassthroughListener.Name.ValueString()
 
 		enabled3 := new(bool)
 		if !r.PassthroughListener.Enabled.IsUnknown() && !r.PassthroughListener.Enabled.IsNull() {
@@ -5036,16 +7921,427 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 
 			managedBy3[managedByKey3] = managedByInst3
 		}
+		var datastores3 []shared.AIGatewayDatastoreRef
+		if r.PassthroughListener.Datastores != nil {
+			datastores3 = make([]shared.AIGatewayDatastoreRef, 0, len(r.PassthroughListener.Datastores))
+			for datastoresIndex3 := range r.PassthroughListener.Datastores {
+				var name18 string
+				name18 = r.PassthroughListener.Datastores[datastoresIndex3].Name.ValueString()
+
+				datastores3 = append(datastores3, shared.AIGatewayDatastoreRef{
+					Name: name18,
+				})
+			}
+		}
+		var tokenVault3 *shared.AIGatewayTokenVault
+		if r.PassthroughListener.TokenVault != nil {
+			var provider3 string
+			provider3 = r.PassthroughListener.TokenVault.Provider.ValueString()
+
+			subjectTokenType3 := new(shared.SubjectTokenType)
+			if !r.PassthroughListener.TokenVault.SubjectTokenType.IsUnknown() && !r.PassthroughListener.TokenVault.SubjectTokenType.IsNull() {
+				*subjectTokenType3 = shared.SubjectTokenType(r.PassthroughListener.TokenVault.SubjectTokenType.ValueString())
+			} else {
+				subjectTokenType3 = nil
+			}
+			var credential3 *shared.AIGatewayTokenVaultCredential
+			if r.PassthroughListener.TokenVault.Credential != nil {
+				var inbound3 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.PassthroughListener.TokenVault.Credential.Inbound != nil {
+					location6 := new(shared.Location)
+					if !r.PassthroughListener.TokenVault.Credential.Inbound.Location.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Inbound.Location.IsNull() {
+						*location6 = shared.Location(r.PassthroughListener.TokenVault.Credential.Inbound.Location.ValueString())
+					} else {
+						location6 = nil
+					}
+					name19 := new(string)
+					if !r.PassthroughListener.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Inbound.Name.IsNull() {
+						*name19 = r.PassthroughListener.TokenVault.Credential.Inbound.Name.ValueString()
+					} else {
+						name19 = nil
+					}
+					prefix6 := new(string)
+					if !r.PassthroughListener.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Inbound.Prefix.IsNull() {
+						*prefix6 = r.PassthroughListener.TokenVault.Credential.Inbound.Prefix.ValueString()
+					} else {
+						prefix6 = nil
+					}
+					inbound3 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location6,
+						Name:     name19,
+						Prefix:   prefix6,
+					}
+				}
+				var outbound3 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.PassthroughListener.TokenVault.Credential.Outbound != nil {
+					location7 := new(shared.Location)
+					if !r.PassthroughListener.TokenVault.Credential.Outbound.Location.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Outbound.Location.IsNull() {
+						*location7 = shared.Location(r.PassthroughListener.TokenVault.Credential.Outbound.Location.ValueString())
+					} else {
+						location7 = nil
+					}
+					name20 := new(string)
+					if !r.PassthroughListener.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Outbound.Name.IsNull() {
+						*name20 = r.PassthroughListener.TokenVault.Credential.Outbound.Name.ValueString()
+					} else {
+						name20 = nil
+					}
+					prefix7 := new(string)
+					if !r.PassthroughListener.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Outbound.Prefix.IsNull() {
+						*prefix7 = r.PassthroughListener.TokenVault.Credential.Outbound.Prefix.ValueString()
+					} else {
+						prefix7 = nil
+					}
+					outbound3 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location7,
+						Name:     name20,
+						Prefix:   prefix7,
+					}
+				}
+				credential3 = &shared.AIGatewayTokenVaultCredential{
+					Inbound:  inbound3,
+					Outbound: outbound3,
+				}
+			}
+			var cache5 *shared.Cache
+			if r.PassthroughListener.TokenVault.Cache != nil {
+				var redis6 *shared.AIGatewayRedisCloudConfiguration
+				if r.PassthroughListener.TokenVault.Cache.Redis != nil {
+					var cloudAuthentication6 *shared.CloudAuthentication
+					if r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication != nil {
+						var aiGatewayRedisAWSAuthentication6 *shared.AIGatewayRedisAWSAuthentication
+						if r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws != nil {
+							accessKeyId9 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
+								*accessKeyId9 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+							} else {
+								accessKeyId9 = nil
+							}
+							assumeRoleArn9 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
+								*assumeRoleArn9 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+							} else {
+								assumeRoleArn9 = nil
+							}
+							cacheName6 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
+								*cacheName6 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+							} else {
+								cacheName6 = nil
+							}
+							isServerless6 := new(bool)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
+								*isServerless6 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+							} else {
+								isServerless6 = nil
+							}
+							region9 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsNull() {
+								*region9 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.ValueString()
+							} else {
+								region9 = nil
+							}
+							roleSessionName9 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
+								*roleSessionName9 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+							} else {
+								roleSessionName9 = nil
+							}
+							secretAccessKey9 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
+								*secretAccessKey9 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+							} else {
+								secretAccessKey9 = nil
+							}
+							aiGatewayRedisAWSAuthentication6 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId9,
+								AssumeRoleArn:   assumeRoleArn9,
+								CacheName:       cacheName6,
+								IsServerless:    isServerless6,
+								Region:          region9,
+								RoleSessionName: roleSessionName9,
+								SecretAccessKey: secretAccessKey9,
+							}
+						}
+						if aiGatewayRedisAWSAuthentication6 != nil {
+							cloudAuthentication6 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication6,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication6 *shared.AIGatewayRedisAzureAuthentication
+						if r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure != nil {
+							clientId6 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
+								*clientId6 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+							} else {
+								clientId6 = nil
+							}
+							clientSecret6 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
+								*clientSecret6 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+							} else {
+								clientSecret6 = nil
+							}
+							tenantId6 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
+								*tenantId6 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+							} else {
+								tenantId6 = nil
+							}
+							aiGatewayRedisAzureAuthentication6 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId6,
+								ClientSecret: clientSecret6,
+								TenantID:     tenantId6,
+							}
+						}
+						if aiGatewayRedisAzureAuthentication6 != nil {
+							cloudAuthentication6 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication6,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication6 *shared.AIGatewayRedisGCPAuthentication
+						if r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp != nil {
+							serviceAccountJson6 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
+								*serviceAccountJson6 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+							} else {
+								serviceAccountJson6 = nil
+							}
+							aiGatewayRedisGCPAuthentication6 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson6,
+							}
+						}
+						if aiGatewayRedisGCPAuthentication6 != nil {
+							cloudAuthentication6 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication6,
+							}
+						}
+					}
+					var cluster6 *shared.Cluster
+					if r.PassthroughListener.TokenVault.Cache.Redis.Cluster != nil {
+						maxRedirections6 := new(int64)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsNull() {
+							*maxRedirections6 = r.PassthroughListener.TokenVault.Cache.Redis.Cluster.MaxRedirections.ValueInt64()
+						} else {
+							maxRedirections6 = nil
+						}
+						var nodes12 []shared.Nodes
+						if r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+							nodes12 = make([]shared.Nodes, 0, len(r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes))
+							for nodesIndex12 := range r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes {
+								ip6 := new(string)
+								if !r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex12].IP.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex12].IP.IsNull() {
+									*ip6 = r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex12].IP.ValueString()
+								} else {
+									ip6 = nil
+								}
+								port20 := new(int64)
+								if !r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex12].Port.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex12].Port.IsNull() {
+									*port20 = r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex12].Port.ValueInt64()
+								} else {
+									port20 = nil
+								}
+								nodes12 = append(nodes12, shared.Nodes{
+									IP:   ip6,
+									Port: port20,
+								})
+							}
+						}
+						cluster6 = &shared.Cluster{
+							MaxRedirections: maxRedirections6,
+							Nodes:           nodes12,
+						}
+					}
+					connectTimeout6 := new(int64)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.ConnectTimeout.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.ConnectTimeout.IsNull() {
+						*connectTimeout6 = r.PassthroughListener.TokenVault.Cache.Redis.ConnectTimeout.ValueInt64()
+					} else {
+						connectTimeout6 = nil
+					}
+					connectionIsProxied6 := new(bool)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.ConnectionIsProxied.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.ConnectionIsProxied.IsNull() {
+						*connectionIsProxied6 = r.PassthroughListener.TokenVault.Cache.Redis.ConnectionIsProxied.ValueBool()
+					} else {
+						connectionIsProxied6 = nil
+					}
+					database6 := new(int64)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.Database.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Database.IsNull() {
+						*database6 = r.PassthroughListener.TokenVault.Cache.Redis.Database.ValueInt64()
+					} else {
+						database6 = nil
+					}
+					host16 := new(string)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.Host.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Host.IsNull() {
+						*host16 = r.PassthroughListener.TokenVault.Cache.Redis.Host.ValueString()
+					} else {
+						host16 = nil
+					}
+					var keepalive6 *shared.Keepalive
+					if r.PassthroughListener.TokenVault.Cache.Redis.Keepalive != nil {
+						backlog6 := new(int64)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.Backlog.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.Backlog.IsNull() {
+							*backlog6 = r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.Backlog.ValueInt64()
+						} else {
+							backlog6 = nil
+						}
+						poolSize6 := new(int64)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.PoolSize.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.PoolSize.IsNull() {
+							*poolSize6 = r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.PoolSize.ValueInt64()
+						} else {
+							poolSize6 = nil
+						}
+						keepalive6 = &shared.Keepalive{
+							Backlog:  backlog6,
+							PoolSize: poolSize6,
+						}
+					}
+					password13 := new(string)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.Password.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Password.IsNull() {
+						*password13 = r.PassthroughListener.TokenVault.Cache.Redis.Password.ValueString()
+					} else {
+						password13 = nil
+					}
+					port21 := new(string)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.Port.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Port.IsNull() {
+						*port21 = r.PassthroughListener.TokenVault.Cache.Redis.Port.ValueString()
+					} else {
+						port21 = nil
+					}
+					readTimeout6 := new(int64)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.ReadTimeout.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.ReadTimeout.IsNull() {
+						*readTimeout6 = r.PassthroughListener.TokenVault.Cache.Redis.ReadTimeout.ValueInt64()
+					} else {
+						readTimeout6 = nil
+					}
+					sendTimeout6 := new(int64)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.SendTimeout.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.SendTimeout.IsNull() {
+						*sendTimeout6 = r.PassthroughListener.TokenVault.Cache.Redis.SendTimeout.ValueInt64()
+					} else {
+						sendTimeout6 = nil
+					}
+					var sentinel6 *shared.Sentinel
+					if r.PassthroughListener.TokenVault.Cache.Redis.Sentinel != nil {
+						master6 := new(string)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Master.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Master.IsNull() {
+							*master6 = r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Master.ValueString()
+						} else {
+							master6 = nil
+						}
+						var nodes13 []shared.AIGatewayRedisCloudConfigurationNodes
+						if r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+							nodes13 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes))
+							for nodesIndex13 := range r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes {
+								host17 := new(string)
+								if !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex13].Host.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex13].Host.IsNull() {
+									*host17 = r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex13].Host.ValueString()
+								} else {
+									host17 = nil
+								}
+								port22 := new(int64)
+								if !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex13].Port.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex13].Port.IsNull() {
+									*port22 = r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex13].Port.ValueInt64()
+								} else {
+									port22 = nil
+								}
+								nodes13 = append(nodes13, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host17,
+									Port: port22,
+								})
+							}
+						}
+						password14 := new(string)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Password.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Password.IsNull() {
+							*password14 = r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Password.ValueString()
+						} else {
+							password14 = nil
+						}
+						role6 := new(shared.Role)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Role.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Role.IsNull() {
+							*role6 = shared.Role(r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Role.ValueString())
+						} else {
+							role6 = nil
+						}
+						username13 := new(string)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Username.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Username.IsNull() {
+							*username13 = r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Username.ValueString()
+						} else {
+							username13 = nil
+						}
+						sentinel6 = &shared.Sentinel{
+							Master:   master6,
+							Nodes:    nodes13,
+							Password: password14,
+							Role:     role6,
+							Username: username13,
+						}
+					}
+					serverName6 := new(string)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.ServerName.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.ServerName.IsNull() {
+						*serverName6 = r.PassthroughListener.TokenVault.Cache.Redis.ServerName.ValueString()
+					} else {
+						serverName6 = nil
+					}
+					ssl6 := new(bool)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.Ssl.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Ssl.IsNull() {
+						*ssl6 = r.PassthroughListener.TokenVault.Cache.Redis.Ssl.ValueBool()
+					} else {
+						ssl6 = nil
+					}
+					sslVerify6 := new(bool)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.SslVerify.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.SslVerify.IsNull() {
+						*sslVerify6 = r.PassthroughListener.TokenVault.Cache.Redis.SslVerify.ValueBool()
+					} else {
+						sslVerify6 = nil
+					}
+					username14 := new(string)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.Username.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Username.IsNull() {
+						*username14 = r.PassthroughListener.TokenVault.Cache.Redis.Username.ValueString()
+					} else {
+						username14 = nil
+					}
+					redis6 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication6,
+						Cluster:             cluster6,
+						ConnectTimeout:      connectTimeout6,
+						ConnectionIsProxied: connectionIsProxied6,
+						Database:            database6,
+						Host:                host16,
+						Keepalive:           keepalive6,
+						Password:            password13,
+						Port:                port21,
+						ReadTimeout:         readTimeout6,
+						SendTimeout:         sendTimeout6,
+						Sentinel:            sentinel6,
+						ServerName:          serverName6,
+						Ssl:                 ssl6,
+						SslVerify:           sslVerify6,
+						Username:            username14,
+					}
+				}
+				cache5 = &shared.Cache{
+					Redis: redis6,
+				}
+			}
+			tokenVault3 = &shared.AIGatewayTokenVault{
+				Provider:         provider3,
+				SubjectTokenType: subjectTokenType3,
+				Credential:       credential3,
+				Cache:            cache5,
+			}
+		}
 		aiGatewayMCPServerPassthroughListener = &shared.AIGatewayMCPServerPassthroughListener{
-			Config:      config3,
-			Tools:       tools2,
-			Access:      access5,
-			DisplayName: displayName3,
-			Name:        name8,
-			Enabled:     enabled3,
-			Policies:    policies3,
-			Labels:      labels3,
-			ManagedBy:   managedBy3,
+			Config:       config3,
+			Tools:        tools2,
+			Access:       access5,
+			RateLimiting: rateLimiting1,
+			DisplayName:  displayName3,
+			Name:         name17,
+			Enabled:      enabled3,
+			Policies:     policies3,
+			Labels:       labels3,
+			ManagedBy:    managedBy3,
+			Datastores:   datastores3,
+			TokenVault:   tokenVault3,
 		}
 	}
 	if aiGatewayMCPServerPassthroughListener != nil {
@@ -5188,317 +8484,317 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				} else {
 					managed3 = nil
 				}
-				var redis3 *shared.AIGatewayRedisCloudConfiguration
+				var redis7 *shared.AIGatewayRedisCloudConfiguration
 				if r.UpstreamServer.Config.Server.Session.Redis != nil {
-					var cloudAuthentication3 *shared.CloudAuthentication
+					var cloudAuthentication7 *shared.CloudAuthentication
 					if r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication != nil {
-						var aiGatewayRedisAWSAuthentication3 *shared.AIGatewayRedisAWSAuthentication
+						var aiGatewayRedisAWSAuthentication7 *shared.AIGatewayRedisAWSAuthentication
 						if r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId6 := new(string)
+							accessKeyId10 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId10 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId6 = nil
+								accessKeyId10 = nil
 							}
-							assumeRoleArn6 := new(string)
+							assumeRoleArn10 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn10 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn6 = nil
+								assumeRoleArn10 = nil
 							}
-							cacheName3 := new(string)
+							cacheName7 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
-								*cacheName3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+								*cacheName7 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
 							} else {
-								cacheName3 = nil
+								cacheName7 = nil
 							}
-							isServerless3 := new(bool)
+							isServerless7 := new(bool)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
-								*isServerless3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+								*isServerless7 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
 							} else {
-								isServerless3 = nil
+								isServerless7 = nil
 							}
-							region6 := new(string)
+							region10 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region10 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region6 = nil
+								region10 = nil
 							}
-							roleSessionName6 := new(string)
+							roleSessionName10 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName10 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName6 = nil
+								roleSessionName10 = nil
 							}
-							secretAccessKey6 := new(string)
+							secretAccessKey10 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey10 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey6 = nil
+								secretAccessKey10 = nil
 							}
-							aiGatewayRedisAWSAuthentication3 = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId6,
-								AssumeRoleArn:   assumeRoleArn6,
-								CacheName:       cacheName3,
-								IsServerless:    isServerless3,
-								Region:          region6,
-								RoleSessionName: roleSessionName6,
-								SecretAccessKey: secretAccessKey6,
-							}
-						}
-						if aiGatewayRedisAWSAuthentication3 != nil {
-							cloudAuthentication3 = &shared.CloudAuthentication{
-								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication3,
+							aiGatewayRedisAWSAuthentication7 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId10,
+								AssumeRoleArn:   assumeRoleArn10,
+								CacheName:       cacheName7,
+								IsServerless:    isServerless7,
+								Region:          region10,
+								RoleSessionName: roleSessionName10,
+								SecretAccessKey: secretAccessKey10,
 							}
 						}
-						var aiGatewayRedisAzureAuthentication3 *shared.AIGatewayRedisAzureAuthentication
+						if aiGatewayRedisAWSAuthentication7 != nil {
+							cloudAuthentication7 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication7,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication7 *shared.AIGatewayRedisAzureAuthentication
 						if r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure != nil {
-							clientId3 := new(string)
+							clientId7 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
-								*clientId3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+								*clientId7 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
 							} else {
-								clientId3 = nil
+								clientId7 = nil
 							}
-							clientSecret3 := new(string)
+							clientSecret7 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
-								*clientSecret3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+								*clientSecret7 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
 							} else {
-								clientSecret3 = nil
+								clientSecret7 = nil
 							}
-							tenantId3 := new(string)
+							tenantId7 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
-								*tenantId3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+								*tenantId7 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
 							} else {
-								tenantId3 = nil
+								tenantId7 = nil
 							}
-							aiGatewayRedisAzureAuthentication3 = &shared.AIGatewayRedisAzureAuthentication{
-								ClientID:     clientId3,
-								ClientSecret: clientSecret3,
-								TenantID:     tenantId3,
-							}
-						}
-						if aiGatewayRedisAzureAuthentication3 != nil {
-							cloudAuthentication3 = &shared.CloudAuthentication{
-								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication3,
+							aiGatewayRedisAzureAuthentication7 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId7,
+								ClientSecret: clientSecret7,
+								TenantID:     tenantId7,
 							}
 						}
-						var aiGatewayRedisGCPAuthentication3 *shared.AIGatewayRedisGCPAuthentication
+						if aiGatewayRedisAzureAuthentication7 != nil {
+							cloudAuthentication7 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication7,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication7 *shared.AIGatewayRedisGCPAuthentication
 						if r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Gcp != nil {
-							serviceAccountJson3 := new(string)
+							serviceAccountJson7 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
-								*serviceAccountJson3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+								*serviceAccountJson7 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
 							} else {
-								serviceAccountJson3 = nil
+								serviceAccountJson7 = nil
 							}
-							aiGatewayRedisGCPAuthentication3 = &shared.AIGatewayRedisGCPAuthentication{
-								ServiceAccountJSON: serviceAccountJson3,
+							aiGatewayRedisGCPAuthentication7 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson7,
 							}
 						}
-						if aiGatewayRedisGCPAuthentication3 != nil {
-							cloudAuthentication3 = &shared.CloudAuthentication{
-								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication3,
+						if aiGatewayRedisGCPAuthentication7 != nil {
+							cloudAuthentication7 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication7,
 							}
 						}
 					}
-					var cluster3 *shared.Cluster
+					var cluster7 *shared.Cluster
 					if r.UpstreamServer.Config.Server.Session.Redis.Cluster != nil {
-						maxRedirections3 := new(int64)
+						maxRedirections7 := new(int64)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Cluster.MaxRedirections.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Cluster.MaxRedirections.IsNull() {
-							*maxRedirections3 = r.UpstreamServer.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
+							*maxRedirections7 = r.UpstreamServer.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
 						} else {
-							maxRedirections3 = nil
+							maxRedirections7 = nil
 						}
-						var nodes6 []shared.Nodes
+						var nodes14 []shared.Nodes
 						if r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes != nil {
-							nodes6 = make([]shared.Nodes, 0, len(r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes))
-							for nodesIndex6 := range r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes {
-								ip3 := new(string)
-								if !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].IP.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].IP.IsNull() {
-									*ip3 = r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].IP.ValueString()
+							nodes14 = make([]shared.Nodes, 0, len(r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes))
+							for nodesIndex14 := range r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes {
+								ip7 := new(string)
+								if !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex14].IP.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex14].IP.IsNull() {
+									*ip7 = r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex14].IP.ValueString()
 								} else {
-									ip3 = nil
+									ip7 = nil
 								}
-								port11 := new(int64)
-								if !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].Port.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].Port.IsNull() {
-									*port11 = r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].Port.ValueInt64()
+								port23 := new(int64)
+								if !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex14].Port.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex14].Port.IsNull() {
+									*port23 = r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex14].Port.ValueInt64()
 								} else {
-									port11 = nil
+									port23 = nil
 								}
-								nodes6 = append(nodes6, shared.Nodes{
-									IP:   ip3,
-									Port: port11,
+								nodes14 = append(nodes14, shared.Nodes{
+									IP:   ip7,
+									Port: port23,
 								})
 							}
 						}
-						cluster3 = &shared.Cluster{
-							MaxRedirections: maxRedirections3,
-							Nodes:           nodes6,
+						cluster7 = &shared.Cluster{
+							MaxRedirections: maxRedirections7,
+							Nodes:           nodes14,
 						}
 					}
-					connectTimeout3 := new(int64)
+					connectTimeout7 := new(int64)
 					if !r.UpstreamServer.Config.Server.Session.Redis.ConnectTimeout.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.ConnectTimeout.IsNull() {
-						*connectTimeout3 = r.UpstreamServer.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
+						*connectTimeout7 = r.UpstreamServer.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
 					} else {
-						connectTimeout3 = nil
+						connectTimeout7 = nil
 					}
-					connectionIsProxied3 := new(bool)
+					connectionIsProxied7 := new(bool)
 					if !r.UpstreamServer.Config.Server.Session.Redis.ConnectionIsProxied.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.ConnectionIsProxied.IsNull() {
-						*connectionIsProxied3 = r.UpstreamServer.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
+						*connectionIsProxied7 = r.UpstreamServer.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
 					} else {
-						connectionIsProxied3 = nil
+						connectionIsProxied7 = nil
 					}
-					database3 := new(int64)
+					database7 := new(int64)
 					if !r.UpstreamServer.Config.Server.Session.Redis.Database.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Database.IsNull() {
-						*database3 = r.UpstreamServer.Config.Server.Session.Redis.Database.ValueInt64()
+						*database7 = r.UpstreamServer.Config.Server.Session.Redis.Database.ValueInt64()
 					} else {
-						database3 = nil
+						database7 = nil
 					}
-					host10 := new(string)
+					host18 := new(string)
 					if !r.UpstreamServer.Config.Server.Session.Redis.Host.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Host.IsNull() {
-						*host10 = r.UpstreamServer.Config.Server.Session.Redis.Host.ValueString()
+						*host18 = r.UpstreamServer.Config.Server.Session.Redis.Host.ValueString()
 					} else {
-						host10 = nil
+						host18 = nil
 					}
-					var keepalive3 *shared.Keepalive
+					var keepalive7 *shared.Keepalive
 					if r.UpstreamServer.Config.Server.Session.Redis.Keepalive != nil {
-						backlog3 := new(int64)
+						backlog7 := new(int64)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Keepalive.Backlog.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Keepalive.Backlog.IsNull() {
-							*backlog3 = r.UpstreamServer.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
+							*backlog7 = r.UpstreamServer.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
 						} else {
-							backlog3 = nil
+							backlog7 = nil
 						}
-						poolSize3 := new(int64)
+						poolSize7 := new(int64)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Keepalive.PoolSize.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Keepalive.PoolSize.IsNull() {
-							*poolSize3 = r.UpstreamServer.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
+							*poolSize7 = r.UpstreamServer.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
 						} else {
-							poolSize3 = nil
+							poolSize7 = nil
 						}
-						keepalive3 = &shared.Keepalive{
-							Backlog:  backlog3,
-							PoolSize: poolSize3,
+						keepalive7 = &shared.Keepalive{
+							Backlog:  backlog7,
+							PoolSize: poolSize7,
 						}
 					}
-					password7 := new(string)
+					password15 := new(string)
 					if !r.UpstreamServer.Config.Server.Session.Redis.Password.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Password.IsNull() {
-						*password7 = r.UpstreamServer.Config.Server.Session.Redis.Password.ValueString()
+						*password15 = r.UpstreamServer.Config.Server.Session.Redis.Password.ValueString()
 					} else {
-						password7 = nil
+						password15 = nil
 					}
-					port12 := new(string)
+					port24 := new(string)
 					if !r.UpstreamServer.Config.Server.Session.Redis.Port.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Port.IsNull() {
-						*port12 = r.UpstreamServer.Config.Server.Session.Redis.Port.ValueString()
+						*port24 = r.UpstreamServer.Config.Server.Session.Redis.Port.ValueString()
 					} else {
-						port12 = nil
+						port24 = nil
 					}
-					readTimeout3 := new(int64)
+					readTimeout7 := new(int64)
 					if !r.UpstreamServer.Config.Server.Session.Redis.ReadTimeout.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.ReadTimeout.IsNull() {
-						*readTimeout3 = r.UpstreamServer.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
+						*readTimeout7 = r.UpstreamServer.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
 					} else {
-						readTimeout3 = nil
+						readTimeout7 = nil
 					}
-					sendTimeout3 := new(int64)
+					sendTimeout7 := new(int64)
 					if !r.UpstreamServer.Config.Server.Session.Redis.SendTimeout.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.SendTimeout.IsNull() {
-						*sendTimeout3 = r.UpstreamServer.Config.Server.Session.Redis.SendTimeout.ValueInt64()
+						*sendTimeout7 = r.UpstreamServer.Config.Server.Session.Redis.SendTimeout.ValueInt64()
 					} else {
-						sendTimeout3 = nil
+						sendTimeout7 = nil
 					}
-					var sentinel3 *shared.Sentinel
+					var sentinel7 *shared.Sentinel
 					if r.UpstreamServer.Config.Server.Session.Redis.Sentinel != nil {
-						master3 := new(string)
+						master7 := new(string)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Master.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Master.IsNull() {
-							*master3 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Master.ValueString()
+							*master7 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Master.ValueString()
 						} else {
-							master3 = nil
+							master7 = nil
 						}
-						var nodes7 []shared.AIGatewayRedisCloudConfigurationNodes
+						var nodes15 []shared.AIGatewayRedisCloudConfigurationNodes
 						if r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-							nodes7 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes))
-							for nodesIndex7 := range r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes {
-								host11 := new(string)
-								if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Host.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Host.IsNull() {
-									*host11 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Host.ValueString()
+							nodes15 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes))
+							for nodesIndex15 := range r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes {
+								host19 := new(string)
+								if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex15].Host.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex15].Host.IsNull() {
+									*host19 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex15].Host.ValueString()
 								} else {
-									host11 = nil
+									host19 = nil
 								}
-								port13 := new(int64)
-								if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Port.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Port.IsNull() {
-									*port13 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Port.ValueInt64()
+								port25 := new(int64)
+								if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex15].Port.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex15].Port.IsNull() {
+									*port25 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex15].Port.ValueInt64()
 								} else {
-									port13 = nil
+									port25 = nil
 								}
-								nodes7 = append(nodes7, shared.AIGatewayRedisCloudConfigurationNodes{
-									Host: host11,
-									Port: port13,
+								nodes15 = append(nodes15, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host19,
+									Port: port25,
 								})
 							}
 						}
-						password8 := new(string)
+						password16 := new(string)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Password.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Password.IsNull() {
-							*password8 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Password.ValueString()
+							*password16 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Password.ValueString()
 						} else {
-							password8 = nil
+							password16 = nil
 						}
-						role3 := new(shared.Role)
+						role7 := new(shared.Role)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Role.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Role.IsNull() {
-							*role3 = shared.Role(r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Role.ValueString())
+							*role7 = shared.Role(r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Role.ValueString())
 						} else {
-							role3 = nil
+							role7 = nil
 						}
-						username7 := new(string)
+						username15 := new(string)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Username.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Username.IsNull() {
-							*username7 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Username.ValueString()
+							*username15 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Username.ValueString()
 						} else {
-							username7 = nil
+							username15 = nil
 						}
-						sentinel3 = &shared.Sentinel{
-							Master:   master3,
-							Nodes:    nodes7,
-							Password: password8,
-							Role:     role3,
-							Username: username7,
+						sentinel7 = &shared.Sentinel{
+							Master:   master7,
+							Nodes:    nodes15,
+							Password: password16,
+							Role:     role7,
+							Username: username15,
 						}
 					}
-					serverName3 := new(string)
+					serverName7 := new(string)
 					if !r.UpstreamServer.Config.Server.Session.Redis.ServerName.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.ServerName.IsNull() {
-						*serverName3 = r.UpstreamServer.Config.Server.Session.Redis.ServerName.ValueString()
+						*serverName7 = r.UpstreamServer.Config.Server.Session.Redis.ServerName.ValueString()
 					} else {
-						serverName3 = nil
+						serverName7 = nil
 					}
-					ssl3 := new(bool)
+					ssl7 := new(bool)
 					if !r.UpstreamServer.Config.Server.Session.Redis.Ssl.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Ssl.IsNull() {
-						*ssl3 = r.UpstreamServer.Config.Server.Session.Redis.Ssl.ValueBool()
+						*ssl7 = r.UpstreamServer.Config.Server.Session.Redis.Ssl.ValueBool()
 					} else {
-						ssl3 = nil
+						ssl7 = nil
 					}
-					sslVerify3 := new(bool)
+					sslVerify7 := new(bool)
 					if !r.UpstreamServer.Config.Server.Session.Redis.SslVerify.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.SslVerify.IsNull() {
-						*sslVerify3 = r.UpstreamServer.Config.Server.Session.Redis.SslVerify.ValueBool()
+						*sslVerify7 = r.UpstreamServer.Config.Server.Session.Redis.SslVerify.ValueBool()
 					} else {
-						sslVerify3 = nil
+						sslVerify7 = nil
 					}
-					username8 := new(string)
+					username16 := new(string)
 					if !r.UpstreamServer.Config.Server.Session.Redis.Username.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Username.IsNull() {
-						*username8 = r.UpstreamServer.Config.Server.Session.Redis.Username.ValueString()
+						*username16 = r.UpstreamServer.Config.Server.Session.Redis.Username.ValueString()
 					} else {
-						username8 = nil
+						username16 = nil
 					}
-					redis3 = &shared.AIGatewayRedisCloudConfiguration{
-						CloudAuthentication: cloudAuthentication3,
-						Cluster:             cluster3,
-						ConnectTimeout:      connectTimeout3,
-						ConnectionIsProxied: connectionIsProxied3,
-						Database:            database3,
-						Host:                host10,
-						Keepalive:           keepalive3,
-						Password:            password7,
-						Port:                port12,
-						ReadTimeout:         readTimeout3,
-						SendTimeout:         sendTimeout3,
-						Sentinel:            sentinel3,
-						ServerName:          serverName3,
-						Ssl:                 ssl3,
-						SslVerify:           sslVerify3,
-						Username:            username8,
+					redis7 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication7,
+						Cluster:             cluster7,
+						ConnectTimeout:      connectTimeout7,
+						ConnectionIsProxied: connectionIsProxied7,
+						Database:            database7,
+						Host:                host18,
+						Keepalive:           keepalive7,
+						Password:            password15,
+						Port:                port24,
+						ReadTimeout:         readTimeout7,
+						SendTimeout:         sendTimeout7,
+						Sentinel:            sentinel7,
+						ServerName:          serverName7,
+						Ssl:                 ssl7,
+						SslVerify:           sslVerify7,
+						Username:            username16,
 					}
 				}
 				sessionTtl3 := new(int64)
@@ -5516,7 +8812,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				session3 = &shared.AIGatewayMCPServerUpstreamServerServerConfigSession{
 					Client:     client3,
 					Managed:    managed3,
-					Redis:      redis3,
+					Redis:      redis7,
 					SessionTTL: sessionTtl3,
 					Strategy:   strategy3,
 				}
@@ -5589,22 +8885,22 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					var tokenEndpoint string
 					tokenEndpoint = r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.TokenEndpoint.ValueString()
 
-					var clientId4 string
-					clientId4 = r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.ClientID.ValueString()
+					var clientId8 string
+					clientId8 = r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.ClientID.ValueString()
 
-					clientSecret4 := new(string)
+					clientSecret8 := new(string)
 					if !r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.ClientSecret.IsUnknown() && !r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.ClientSecret.IsNull() {
-						*clientSecret4 = r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.ClientSecret.ValueString()
+						*clientSecret8 = r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.ClientSecret.ValueString()
 					} else {
-						clientSecret4 = nil
+						clientSecret8 = nil
 					}
 					aiGatewayMCPServerUpstreamServerToolOauth2ConfigCredentials = &shared.AIGatewayMCPServerUpstreamServerToolOauth2ConfigCredentials{
 						Scope:             scope1,
 						AccessTokenHeader: accessTokenHeader1,
 						IDTokenHeader:     idTokenHeader1,
 						TokenEndpoint:     tokenEndpoint,
-						ClientID:          clientId4,
-						ClientSecret:      clientSecret4,
+						ClientID:          clientId8,
+						ClientSecret:      clientSecret8,
 					}
 				}
 				if aiGatewayMCPServerUpstreamServerToolOauth2ConfigCredentials != nil {
@@ -5637,17 +8933,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			if r.UpstreamServer.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws3 *shared.AIGatewayUpstreamAuthAWS
 				if r.UpstreamServer.Config.Upstream.Auth.Aws != nil {
-					accessKeyId7 := new(string)
+					accessKeyId11 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
-						*accessKeyId7 = r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+						*accessKeyId11 = r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
 					} else {
-						accessKeyId7 = nil
+						accessKeyId11 = nil
 					}
-					secretAccessKey7 := new(string)
+					secretAccessKey11 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
-						*secretAccessKey7 = r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+						*secretAccessKey11 = r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
 					} else {
-						secretAccessKey7 = nil
+						secretAccessKey11 = nil
 					}
 					sessionToken3 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
@@ -5655,23 +8951,23 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					} else {
 						sessionToken3 = nil
 					}
-					region7 := new(string)
+					region11 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.Region.IsNull() {
-						*region7 = r.UpstreamServer.Config.Upstream.Auth.Aws.Region.ValueString()
+						*region11 = r.UpstreamServer.Config.Upstream.Auth.Aws.Region.ValueString()
 					} else {
-						region7 = nil
+						region11 = nil
 					}
-					assumeRoleArn7 := new(string)
+					assumeRoleArn11 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
-						*assumeRoleArn7 = r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+						*assumeRoleArn11 = r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
 					} else {
-						assumeRoleArn7 = nil
+						assumeRoleArn11 = nil
 					}
-					roleSessionName7 := new(string)
+					roleSessionName11 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
-						*roleSessionName7 = r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+						*roleSessionName11 = r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
 					} else {
-						roleSessionName7 = nil
+						roleSessionName11 = nil
 					}
 					stsEndpointUrl3 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
@@ -5680,12 +8976,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 						stsEndpointUrl3 = nil
 					}
 					aiGatewayUpstreamAuthAws3 = &shared.AIGatewayUpstreamAuthAWS{
-						AccessKeyID:     accessKeyId7,
-						SecretAccessKey: secretAccessKey7,
+						AccessKeyID:     accessKeyId11,
+						SecretAccessKey: secretAccessKey11,
 						SessionToken:    sessionToken3,
-						Region:          region7,
-						AssumeRoleArn:   assumeRoleArn7,
-						RoleSessionName: roleSessionName7,
+						Region:          region11,
+						AssumeRoleArn:   assumeRoleArn11,
+						RoleSessionName: roleSessionName11,
 						StsEndpointURL:  stsEndpointUrl3,
 					}
 				}
@@ -5699,6 +8995,14 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Auth: auth4,
 			}
 		}
+		certificates3 := make([]string, 0, len(r.UpstreamServer.Config.Certificates))
+		for certificatesIndex3 := range r.UpstreamServer.Config.Certificates {
+			certificates3 = append(certificates3, r.UpstreamServer.Config.Certificates[certificatesIndex3].ValueString())
+		}
+		caCertificates3 := make([]string, 0, len(r.UpstreamServer.Config.CaCertificates))
+		for caCertificatesIndex3 := range r.UpstreamServer.Config.CaCertificates {
+			caCertificates3 = append(caCertificates3, r.UpstreamServer.Config.CaCertificates[caCertificatesIndex3].ValueString())
+		}
 		var toolsCacheTTLSeconds int64
 		toolsCacheTTLSeconds = r.UpstreamServer.Config.ToolsCacheTTLSeconds.ValueInt64()
 
@@ -5709,6 +9013,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			Server:               server3,
 			URL:                  url3,
 			Upstream:             upstream3,
+			Certificates:         certificates3,
+			CaCertificates:       caCertificates3,
 			ToolsCacheTTLSeconds: toolsCacheTTLSeconds,
 		}
 		tools3 := make([]shared.AIGatewayMCPUpstreamTool, 0, len(r.UpstreamServer.Tools))
@@ -5725,9 +9031,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					for denyIndex15 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny {
 						deny15 = append(deny15, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny[denyIndex15].ValueString())
 					}
+					var allowWhen15 []string
+					if r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen != nil {
+						allowWhen15 = make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen))
+						for allowWhenIndex15 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen {
+							allowWhen15 = append(allowWhen15, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen[allowWhenIndex15].ValueString())
+						}
+					}
+					var denyWhen15 []string
+					if r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen != nil {
+						denyWhen15 = make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen))
+						for denyWhenIndex15 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen {
+							denyWhen15 = append(denyWhen15, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen[denyWhenIndex15].ValueString())
+						}
+					}
 					acls9 = &shared.AIGatewayMCPACLs{
-						Allow: allow15,
-						Deny:  deny15,
+						Allow:     allow15,
+						Deny:      deny15,
+						AllowWhen: allowWhen15,
+						DenyWhen:  denyWhen15,
 					}
 				}
 				access6 = &shared.AIGatewayMCPToolAccess{
@@ -5780,8 +9102,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				description4 = nil
 			}
-			var name9 string
-			name9 = r.UpstreamServer.Tools[toolsIndex3].Name.ValueString()
+			var name21 string
+			name21 = r.UpstreamServer.Tools[toolsIndex3].Name.ValueString()
 
 			var inputSchema interface{}
 			if !r.UpstreamServer.Tools[toolsIndex3].InputSchema.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex3].InputSchema.IsNull() {
@@ -5795,7 +9117,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Access:       access6,
 				Annotations:  annotations2,
 				Description:  description4,
-				Name:         name9,
+				Name:         name21,
 				InputSchema:  inputSchema,
 				OutputSchema: outputSchema,
 			})
@@ -5803,8 +9125,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		var displayName4 string
 		displayName4 = r.UpstreamServer.DisplayName.ValueString()
 
-		var name10 string
-		name10 = r.UpstreamServer.Name.ValueString()
+		var name22 string
+		name22 = r.UpstreamServer.Name.ValueString()
 
 		enabled4 := new(bool)
 		if !r.UpstreamServer.Enabled.IsUnknown() && !r.UpstreamServer.Enabled.IsNull() {
@@ -5830,15 +9152,425 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 
 			managedBy4[managedByKey4] = managedByInst4
 		}
+		var datastores4 []shared.AIGatewayDatastoreRef
+		if r.UpstreamServer.Datastores != nil {
+			datastores4 = make([]shared.AIGatewayDatastoreRef, 0, len(r.UpstreamServer.Datastores))
+			for datastoresIndex4 := range r.UpstreamServer.Datastores {
+				var name23 string
+				name23 = r.UpstreamServer.Datastores[datastoresIndex4].Name.ValueString()
+
+				datastores4 = append(datastores4, shared.AIGatewayDatastoreRef{
+					Name: name23,
+				})
+			}
+		}
+		var tokenVault4 *shared.AIGatewayTokenVault
+		if r.UpstreamServer.TokenVault != nil {
+			var provider4 string
+			provider4 = r.UpstreamServer.TokenVault.Provider.ValueString()
+
+			subjectTokenType4 := new(shared.SubjectTokenType)
+			if !r.UpstreamServer.TokenVault.SubjectTokenType.IsUnknown() && !r.UpstreamServer.TokenVault.SubjectTokenType.IsNull() {
+				*subjectTokenType4 = shared.SubjectTokenType(r.UpstreamServer.TokenVault.SubjectTokenType.ValueString())
+			} else {
+				subjectTokenType4 = nil
+			}
+			var credential4 *shared.AIGatewayTokenVaultCredential
+			if r.UpstreamServer.TokenVault.Credential != nil {
+				var inbound4 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.UpstreamServer.TokenVault.Credential.Inbound != nil {
+					location8 := new(shared.Location)
+					if !r.UpstreamServer.TokenVault.Credential.Inbound.Location.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Inbound.Location.IsNull() {
+						*location8 = shared.Location(r.UpstreamServer.TokenVault.Credential.Inbound.Location.ValueString())
+					} else {
+						location8 = nil
+					}
+					name24 := new(string)
+					if !r.UpstreamServer.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Inbound.Name.IsNull() {
+						*name24 = r.UpstreamServer.TokenVault.Credential.Inbound.Name.ValueString()
+					} else {
+						name24 = nil
+					}
+					prefix8 := new(string)
+					if !r.UpstreamServer.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Inbound.Prefix.IsNull() {
+						*prefix8 = r.UpstreamServer.TokenVault.Credential.Inbound.Prefix.ValueString()
+					} else {
+						prefix8 = nil
+					}
+					inbound4 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location8,
+						Name:     name24,
+						Prefix:   prefix8,
+					}
+				}
+				var outbound4 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.UpstreamServer.TokenVault.Credential.Outbound != nil {
+					location9 := new(shared.Location)
+					if !r.UpstreamServer.TokenVault.Credential.Outbound.Location.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Outbound.Location.IsNull() {
+						*location9 = shared.Location(r.UpstreamServer.TokenVault.Credential.Outbound.Location.ValueString())
+					} else {
+						location9 = nil
+					}
+					name25 := new(string)
+					if !r.UpstreamServer.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Outbound.Name.IsNull() {
+						*name25 = r.UpstreamServer.TokenVault.Credential.Outbound.Name.ValueString()
+					} else {
+						name25 = nil
+					}
+					prefix9 := new(string)
+					if !r.UpstreamServer.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Outbound.Prefix.IsNull() {
+						*prefix9 = r.UpstreamServer.TokenVault.Credential.Outbound.Prefix.ValueString()
+					} else {
+						prefix9 = nil
+					}
+					outbound4 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location9,
+						Name:     name25,
+						Prefix:   prefix9,
+					}
+				}
+				credential4 = &shared.AIGatewayTokenVaultCredential{
+					Inbound:  inbound4,
+					Outbound: outbound4,
+				}
+			}
+			var cache6 *shared.Cache
+			if r.UpstreamServer.TokenVault.Cache != nil {
+				var redis8 *shared.AIGatewayRedisCloudConfiguration
+				if r.UpstreamServer.TokenVault.Cache.Redis != nil {
+					var cloudAuthentication8 *shared.CloudAuthentication
+					if r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication != nil {
+						var aiGatewayRedisAWSAuthentication8 *shared.AIGatewayRedisAWSAuthentication
+						if r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws != nil {
+							accessKeyId12 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
+								*accessKeyId12 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+							} else {
+								accessKeyId12 = nil
+							}
+							assumeRoleArn12 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
+								*assumeRoleArn12 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+							} else {
+								assumeRoleArn12 = nil
+							}
+							cacheName8 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
+								*cacheName8 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+							} else {
+								cacheName8 = nil
+							}
+							isServerless8 := new(bool)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
+								*isServerless8 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+							} else {
+								isServerless8 = nil
+							}
+							region12 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsNull() {
+								*region12 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.ValueString()
+							} else {
+								region12 = nil
+							}
+							roleSessionName12 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
+								*roleSessionName12 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+							} else {
+								roleSessionName12 = nil
+							}
+							secretAccessKey12 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
+								*secretAccessKey12 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+							} else {
+								secretAccessKey12 = nil
+							}
+							aiGatewayRedisAWSAuthentication8 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId12,
+								AssumeRoleArn:   assumeRoleArn12,
+								CacheName:       cacheName8,
+								IsServerless:    isServerless8,
+								Region:          region12,
+								RoleSessionName: roleSessionName12,
+								SecretAccessKey: secretAccessKey12,
+							}
+						}
+						if aiGatewayRedisAWSAuthentication8 != nil {
+							cloudAuthentication8 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication8,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication8 *shared.AIGatewayRedisAzureAuthentication
+						if r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure != nil {
+							clientId9 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
+								*clientId9 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+							} else {
+								clientId9 = nil
+							}
+							clientSecret9 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
+								*clientSecret9 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+							} else {
+								clientSecret9 = nil
+							}
+							tenantId8 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
+								*tenantId8 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+							} else {
+								tenantId8 = nil
+							}
+							aiGatewayRedisAzureAuthentication8 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId9,
+								ClientSecret: clientSecret9,
+								TenantID:     tenantId8,
+							}
+						}
+						if aiGatewayRedisAzureAuthentication8 != nil {
+							cloudAuthentication8 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication8,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication8 *shared.AIGatewayRedisGCPAuthentication
+						if r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Gcp != nil {
+							serviceAccountJson8 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
+								*serviceAccountJson8 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+							} else {
+								serviceAccountJson8 = nil
+							}
+							aiGatewayRedisGCPAuthentication8 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson8,
+							}
+						}
+						if aiGatewayRedisGCPAuthentication8 != nil {
+							cloudAuthentication8 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication8,
+							}
+						}
+					}
+					var cluster8 *shared.Cluster
+					if r.UpstreamServer.TokenVault.Cache.Redis.Cluster != nil {
+						maxRedirections8 := new(int64)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsNull() {
+							*maxRedirections8 = r.UpstreamServer.TokenVault.Cache.Redis.Cluster.MaxRedirections.ValueInt64()
+						} else {
+							maxRedirections8 = nil
+						}
+						var nodes16 []shared.Nodes
+						if r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+							nodes16 = make([]shared.Nodes, 0, len(r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes))
+							for nodesIndex16 := range r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes {
+								ip8 := new(string)
+								if !r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex16].IP.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex16].IP.IsNull() {
+									*ip8 = r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex16].IP.ValueString()
+								} else {
+									ip8 = nil
+								}
+								port26 := new(int64)
+								if !r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex16].Port.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex16].Port.IsNull() {
+									*port26 = r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex16].Port.ValueInt64()
+								} else {
+									port26 = nil
+								}
+								nodes16 = append(nodes16, shared.Nodes{
+									IP:   ip8,
+									Port: port26,
+								})
+							}
+						}
+						cluster8 = &shared.Cluster{
+							MaxRedirections: maxRedirections8,
+							Nodes:           nodes16,
+						}
+					}
+					connectTimeout8 := new(int64)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.ConnectTimeout.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.ConnectTimeout.IsNull() {
+						*connectTimeout8 = r.UpstreamServer.TokenVault.Cache.Redis.ConnectTimeout.ValueInt64()
+					} else {
+						connectTimeout8 = nil
+					}
+					connectionIsProxied8 := new(bool)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.ConnectionIsProxied.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.ConnectionIsProxied.IsNull() {
+						*connectionIsProxied8 = r.UpstreamServer.TokenVault.Cache.Redis.ConnectionIsProxied.ValueBool()
+					} else {
+						connectionIsProxied8 = nil
+					}
+					database8 := new(int64)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.Database.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Database.IsNull() {
+						*database8 = r.UpstreamServer.TokenVault.Cache.Redis.Database.ValueInt64()
+					} else {
+						database8 = nil
+					}
+					host20 := new(string)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.Host.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Host.IsNull() {
+						*host20 = r.UpstreamServer.TokenVault.Cache.Redis.Host.ValueString()
+					} else {
+						host20 = nil
+					}
+					var keepalive8 *shared.Keepalive
+					if r.UpstreamServer.TokenVault.Cache.Redis.Keepalive != nil {
+						backlog8 := new(int64)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.Backlog.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.Backlog.IsNull() {
+							*backlog8 = r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.Backlog.ValueInt64()
+						} else {
+							backlog8 = nil
+						}
+						poolSize8 := new(int64)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.PoolSize.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.PoolSize.IsNull() {
+							*poolSize8 = r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.PoolSize.ValueInt64()
+						} else {
+							poolSize8 = nil
+						}
+						keepalive8 = &shared.Keepalive{
+							Backlog:  backlog8,
+							PoolSize: poolSize8,
+						}
+					}
+					password17 := new(string)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.Password.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Password.IsNull() {
+						*password17 = r.UpstreamServer.TokenVault.Cache.Redis.Password.ValueString()
+					} else {
+						password17 = nil
+					}
+					port27 := new(string)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.Port.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Port.IsNull() {
+						*port27 = r.UpstreamServer.TokenVault.Cache.Redis.Port.ValueString()
+					} else {
+						port27 = nil
+					}
+					readTimeout8 := new(int64)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.ReadTimeout.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.ReadTimeout.IsNull() {
+						*readTimeout8 = r.UpstreamServer.TokenVault.Cache.Redis.ReadTimeout.ValueInt64()
+					} else {
+						readTimeout8 = nil
+					}
+					sendTimeout8 := new(int64)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.SendTimeout.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.SendTimeout.IsNull() {
+						*sendTimeout8 = r.UpstreamServer.TokenVault.Cache.Redis.SendTimeout.ValueInt64()
+					} else {
+						sendTimeout8 = nil
+					}
+					var sentinel8 *shared.Sentinel
+					if r.UpstreamServer.TokenVault.Cache.Redis.Sentinel != nil {
+						master8 := new(string)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Master.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Master.IsNull() {
+							*master8 = r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Master.ValueString()
+						} else {
+							master8 = nil
+						}
+						var nodes17 []shared.AIGatewayRedisCloudConfigurationNodes
+						if r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+							nodes17 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes))
+							for nodesIndex17 := range r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes {
+								host21 := new(string)
+								if !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex17].Host.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex17].Host.IsNull() {
+									*host21 = r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex17].Host.ValueString()
+								} else {
+									host21 = nil
+								}
+								port28 := new(int64)
+								if !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex17].Port.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex17].Port.IsNull() {
+									*port28 = r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex17].Port.ValueInt64()
+								} else {
+									port28 = nil
+								}
+								nodes17 = append(nodes17, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host21,
+									Port: port28,
+								})
+							}
+						}
+						password18 := new(string)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Password.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Password.IsNull() {
+							*password18 = r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Password.ValueString()
+						} else {
+							password18 = nil
+						}
+						role8 := new(shared.Role)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Role.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Role.IsNull() {
+							*role8 = shared.Role(r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Role.ValueString())
+						} else {
+							role8 = nil
+						}
+						username17 := new(string)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Username.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Username.IsNull() {
+							*username17 = r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Username.ValueString()
+						} else {
+							username17 = nil
+						}
+						sentinel8 = &shared.Sentinel{
+							Master:   master8,
+							Nodes:    nodes17,
+							Password: password18,
+							Role:     role8,
+							Username: username17,
+						}
+					}
+					serverName8 := new(string)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.ServerName.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.ServerName.IsNull() {
+						*serverName8 = r.UpstreamServer.TokenVault.Cache.Redis.ServerName.ValueString()
+					} else {
+						serverName8 = nil
+					}
+					ssl8 := new(bool)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.Ssl.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Ssl.IsNull() {
+						*ssl8 = r.UpstreamServer.TokenVault.Cache.Redis.Ssl.ValueBool()
+					} else {
+						ssl8 = nil
+					}
+					sslVerify8 := new(bool)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.SslVerify.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.SslVerify.IsNull() {
+						*sslVerify8 = r.UpstreamServer.TokenVault.Cache.Redis.SslVerify.ValueBool()
+					} else {
+						sslVerify8 = nil
+					}
+					username18 := new(string)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.Username.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Username.IsNull() {
+						*username18 = r.UpstreamServer.TokenVault.Cache.Redis.Username.ValueString()
+					} else {
+						username18 = nil
+					}
+					redis8 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication8,
+						Cluster:             cluster8,
+						ConnectTimeout:      connectTimeout8,
+						ConnectionIsProxied: connectionIsProxied8,
+						Database:            database8,
+						Host:                host20,
+						Keepalive:           keepalive8,
+						Password:            password17,
+						Port:                port27,
+						ReadTimeout:         readTimeout8,
+						SendTimeout:         sendTimeout8,
+						Sentinel:            sentinel8,
+						ServerName:          serverName8,
+						Ssl:                 ssl8,
+						SslVerify:           sslVerify8,
+						Username:            username18,
+					}
+				}
+				cache6 = &shared.Cache{
+					Redis: redis8,
+				}
+			}
+			tokenVault4 = &shared.AIGatewayTokenVault{
+				Provider:         provider4,
+				SubjectTokenType: subjectTokenType4,
+				Credential:       credential4,
+				Cache:            cache6,
+			}
+		}
 		aiGatewayMCPServerUpstreamServer = &shared.AIGatewayMCPServerUpstreamServer{
 			Config:      config4,
 			Tools:       tools3,
 			DisplayName: displayName4,
-			Name:        name10,
+			Name:        name22,
 			Enabled:     enabled4,
 			Policies:    policies4,
 			Labels:      labels4,
 			ManagedBy:   managedBy4,
+			Datastores:  datastores4,
+			TokenVault:  tokenVault4,
 		}
 	}
 	if aiGatewayMCPServerUpstreamServer != nil {
@@ -6031,12 +9763,22 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Auth: auth,
 			}
 		}
+		certificates := make([]string, 0, len(r.ConversionOnly.Config.Certificates))
+		for certificatesIndex := range r.ConversionOnly.Config.Certificates {
+			certificates = append(certificates, r.ConversionOnly.Config.Certificates[certificatesIndex].ValueString())
+		}
+		caCertificates := make([]string, 0, len(r.ConversionOnly.Config.CaCertificates))
+		for caCertificatesIndex := range r.ConversionOnly.Config.CaCertificates {
+			caCertificates = append(caCertificates, r.ConversionOnly.Config.CaCertificates[caCertificatesIndex].ValueString())
+		}
 		config := shared.AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig{
 			Route:              route,
 			Logging:            logging,
 			MaxRequestBodySize: maxRequestBodySize,
 			URL:                url,
 			Upstream:           upstream,
+			Certificates:       certificates,
+			CaCertificates:     caCertificates,
 		}
 		tools := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionOnly.Tools))
 		for toolsIndex := range r.ConversionOnly.Tools {
@@ -6052,9 +9794,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex := range r.ConversionOnly.Tools[toolsIndex].Access.Acls.Deny {
 						deny = append(deny, r.ConversionOnly.Tools[toolsIndex].Access.Acls.Deny[denyIndex].ValueString())
 					}
+					var allowWhen []string
+					if r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen != nil {
+						allowWhen = make([]string, 0, len(r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen))
+						for allowWhenIndex := range r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen {
+							allowWhen = append(allowWhen, r.ConversionOnly.Tools[toolsIndex].Access.Acls.AllowWhen[allowWhenIndex].ValueString())
+						}
+					}
+					var denyWhen []string
+					if r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen != nil {
+						denyWhen = make([]string, 0, len(r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen))
+						for denyWhenIndex := range r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen {
+							denyWhen = append(denyWhen, r.ConversionOnly.Tools[toolsIndex].Access.Acls.DenyWhen[denyWhenIndex].ValueString())
+						}
+					}
 					acls = &shared.AIGatewayMCPACLs{
-						Allow: allow,
-						Deny:  deny,
+						Allow:     allow,
+						Deny:      deny,
+						AllowWhen: allowWhen,
+						DenyWhen:  denyWhen,
 					}
 				}
 				access = &shared.AIGatewayMCPToolAccess{
@@ -6220,6 +9978,414 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 
 			managedBy[managedByKey] = managedByInst
 		}
+		var datastores []shared.AIGatewayDatastoreRef
+		if r.ConversionOnly.Datastores != nil {
+			datastores = make([]shared.AIGatewayDatastoreRef, 0, len(r.ConversionOnly.Datastores))
+			for datastoresIndex := range r.ConversionOnly.Datastores {
+				var name3 string
+				name3 = r.ConversionOnly.Datastores[datastoresIndex].Name.ValueString()
+
+				datastores = append(datastores, shared.AIGatewayDatastoreRef{
+					Name: name3,
+				})
+			}
+		}
+		var tokenVault *shared.AIGatewayTokenVault
+		if r.ConversionOnly.TokenVault != nil {
+			var provider string
+			provider = r.ConversionOnly.TokenVault.Provider.ValueString()
+
+			subjectTokenType := new(shared.SubjectTokenType)
+			if !r.ConversionOnly.TokenVault.SubjectTokenType.IsUnknown() && !r.ConversionOnly.TokenVault.SubjectTokenType.IsNull() {
+				*subjectTokenType = shared.SubjectTokenType(r.ConversionOnly.TokenVault.SubjectTokenType.ValueString())
+			} else {
+				subjectTokenType = nil
+			}
+			var credential *shared.AIGatewayTokenVaultCredential
+			if r.ConversionOnly.TokenVault.Credential != nil {
+				var inbound *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.ConversionOnly.TokenVault.Credential.Inbound != nil {
+					location := new(shared.Location)
+					if !r.ConversionOnly.TokenVault.Credential.Inbound.Location.IsUnknown() && !r.ConversionOnly.TokenVault.Credential.Inbound.Location.IsNull() {
+						*location = shared.Location(r.ConversionOnly.TokenVault.Credential.Inbound.Location.ValueString())
+					} else {
+						location = nil
+					}
+					name4 := new(string)
+					if !r.ConversionOnly.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.ConversionOnly.TokenVault.Credential.Inbound.Name.IsNull() {
+						*name4 = r.ConversionOnly.TokenVault.Credential.Inbound.Name.ValueString()
+					} else {
+						name4 = nil
+					}
+					prefix := new(string)
+					if !r.ConversionOnly.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.ConversionOnly.TokenVault.Credential.Inbound.Prefix.IsNull() {
+						*prefix = r.ConversionOnly.TokenVault.Credential.Inbound.Prefix.ValueString()
+					} else {
+						prefix = nil
+					}
+					inbound = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location,
+						Name:     name4,
+						Prefix:   prefix,
+					}
+				}
+				var outbound *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.ConversionOnly.TokenVault.Credential.Outbound != nil {
+					location1 := new(shared.Location)
+					if !r.ConversionOnly.TokenVault.Credential.Outbound.Location.IsUnknown() && !r.ConversionOnly.TokenVault.Credential.Outbound.Location.IsNull() {
+						*location1 = shared.Location(r.ConversionOnly.TokenVault.Credential.Outbound.Location.ValueString())
+					} else {
+						location1 = nil
+					}
+					name5 := new(string)
+					if !r.ConversionOnly.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.ConversionOnly.TokenVault.Credential.Outbound.Name.IsNull() {
+						*name5 = r.ConversionOnly.TokenVault.Credential.Outbound.Name.ValueString()
+					} else {
+						name5 = nil
+					}
+					prefix1 := new(string)
+					if !r.ConversionOnly.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.ConversionOnly.TokenVault.Credential.Outbound.Prefix.IsNull() {
+						*prefix1 = r.ConversionOnly.TokenVault.Credential.Outbound.Prefix.ValueString()
+					} else {
+						prefix1 = nil
+					}
+					outbound = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location1,
+						Name:     name5,
+						Prefix:   prefix1,
+					}
+				}
+				credential = &shared.AIGatewayTokenVaultCredential{
+					Inbound:  inbound,
+					Outbound: outbound,
+				}
+			}
+			var cache *shared.Cache
+			if r.ConversionOnly.TokenVault.Cache != nil {
+				var redis *shared.AIGatewayRedisCloudConfiguration
+				if r.ConversionOnly.TokenVault.Cache.Redis != nil {
+					var cloudAuthentication *shared.CloudAuthentication
+					if r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication != nil {
+						var aiGatewayRedisAWSAuthentication *shared.AIGatewayRedisAWSAuthentication
+						if r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws != nil {
+							accessKeyId1 := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
+								*accessKeyId1 = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+							} else {
+								accessKeyId1 = nil
+							}
+							assumeRoleArn1 := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
+								*assumeRoleArn1 = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+							} else {
+								assumeRoleArn1 = nil
+							}
+							cacheName := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
+								*cacheName = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+							} else {
+								cacheName = nil
+							}
+							isServerless := new(bool)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
+								*isServerless = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+							} else {
+								isServerless = nil
+							}
+							region1 := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsNull() {
+								*region1 = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.ValueString()
+							} else {
+								region1 = nil
+							}
+							roleSessionName1 := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
+								*roleSessionName1 = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+							} else {
+								roleSessionName1 = nil
+							}
+							secretAccessKey1 := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
+								*secretAccessKey1 = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+							} else {
+								secretAccessKey1 = nil
+							}
+							aiGatewayRedisAWSAuthentication = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId1,
+								AssumeRoleArn:   assumeRoleArn1,
+								CacheName:       cacheName,
+								IsServerless:    isServerless,
+								Region:          region1,
+								RoleSessionName: roleSessionName1,
+								SecretAccessKey: secretAccessKey1,
+							}
+						}
+						if aiGatewayRedisAWSAuthentication != nil {
+							cloudAuthentication = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication *shared.AIGatewayRedisAzureAuthentication
+						if r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure != nil {
+							clientID := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
+								*clientID = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+							} else {
+								clientID = nil
+							}
+							clientSecret := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
+								*clientSecret = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+							} else {
+								clientSecret = nil
+							}
+							tenantID := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
+								*tenantID = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+							} else {
+								tenantID = nil
+							}
+							aiGatewayRedisAzureAuthentication = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientID,
+								ClientSecret: clientSecret,
+								TenantID:     tenantID,
+							}
+						}
+						if aiGatewayRedisAzureAuthentication != nil {
+							cloudAuthentication = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication *shared.AIGatewayRedisGCPAuthentication
+						if r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Gcp != nil {
+							serviceAccountJSON := new(string)
+							if !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
+								*serviceAccountJSON = r.ConversionOnly.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+							} else {
+								serviceAccountJSON = nil
+							}
+							aiGatewayRedisGCPAuthentication = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJSON,
+							}
+						}
+						if aiGatewayRedisGCPAuthentication != nil {
+							cloudAuthentication = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication,
+							}
+						}
+					}
+					var cluster *shared.Cluster
+					if r.ConversionOnly.TokenVault.Cache.Redis.Cluster != nil {
+						maxRedirections := new(int64)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsNull() {
+							*maxRedirections = r.ConversionOnly.TokenVault.Cache.Redis.Cluster.MaxRedirections.ValueInt64()
+						} else {
+							maxRedirections = nil
+						}
+						var nodes []shared.Nodes
+						if r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+							nodes = make([]shared.Nodes, 0, len(r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes))
+							for nodesIndex := range r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes {
+								ip := new(string)
+								if !r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex].IP.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex].IP.IsNull() {
+									*ip = r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex].IP.ValueString()
+								} else {
+									ip = nil
+								}
+								port := new(int64)
+								if !r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex].Port.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex].Port.IsNull() {
+									*port = r.ConversionOnly.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex].Port.ValueInt64()
+								} else {
+									port = nil
+								}
+								nodes = append(nodes, shared.Nodes{
+									IP:   ip,
+									Port: port,
+								})
+							}
+						}
+						cluster = &shared.Cluster{
+							MaxRedirections: maxRedirections,
+							Nodes:           nodes,
+						}
+					}
+					connectTimeout := new(int64)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.ConnectTimeout.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.ConnectTimeout.IsNull() {
+						*connectTimeout = r.ConversionOnly.TokenVault.Cache.Redis.ConnectTimeout.ValueInt64()
+					} else {
+						connectTimeout = nil
+					}
+					connectionIsProxied := new(bool)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.ConnectionIsProxied.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.ConnectionIsProxied.IsNull() {
+						*connectionIsProxied = r.ConversionOnly.TokenVault.Cache.Redis.ConnectionIsProxied.ValueBool()
+					} else {
+						connectionIsProxied = nil
+					}
+					database := new(int64)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.Database.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Database.IsNull() {
+						*database = r.ConversionOnly.TokenVault.Cache.Redis.Database.ValueInt64()
+					} else {
+						database = nil
+					}
+					host1 := new(string)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.Host.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Host.IsNull() {
+						*host1 = r.ConversionOnly.TokenVault.Cache.Redis.Host.ValueString()
+					} else {
+						host1 = nil
+					}
+					var keepalive *shared.Keepalive
+					if r.ConversionOnly.TokenVault.Cache.Redis.Keepalive != nil {
+						backlog := new(int64)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.Backlog.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.Backlog.IsNull() {
+							*backlog = r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.Backlog.ValueInt64()
+						} else {
+							backlog = nil
+						}
+						poolSize := new(int64)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.PoolSize.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.PoolSize.IsNull() {
+							*poolSize = r.ConversionOnly.TokenVault.Cache.Redis.Keepalive.PoolSize.ValueInt64()
+						} else {
+							poolSize = nil
+						}
+						keepalive = &shared.Keepalive{
+							Backlog:  backlog,
+							PoolSize: poolSize,
+						}
+					}
+					password := new(string)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.Password.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Password.IsNull() {
+						*password = r.ConversionOnly.TokenVault.Cache.Redis.Password.ValueString()
+					} else {
+						password = nil
+					}
+					port1 := new(string)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.Port.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Port.IsNull() {
+						*port1 = r.ConversionOnly.TokenVault.Cache.Redis.Port.ValueString()
+					} else {
+						port1 = nil
+					}
+					readTimeout := new(int64)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.ReadTimeout.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.ReadTimeout.IsNull() {
+						*readTimeout = r.ConversionOnly.TokenVault.Cache.Redis.ReadTimeout.ValueInt64()
+					} else {
+						readTimeout = nil
+					}
+					sendTimeout := new(int64)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.SendTimeout.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.SendTimeout.IsNull() {
+						*sendTimeout = r.ConversionOnly.TokenVault.Cache.Redis.SendTimeout.ValueInt64()
+					} else {
+						sendTimeout = nil
+					}
+					var sentinel *shared.Sentinel
+					if r.ConversionOnly.TokenVault.Cache.Redis.Sentinel != nil {
+						master := new(string)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Master.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Master.IsNull() {
+							*master = r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Master.ValueString()
+						} else {
+							master = nil
+						}
+						var nodes1 []shared.AIGatewayRedisCloudConfigurationNodes
+						if r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+							nodes1 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes))
+							for nodesIndex1 := range r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes {
+								host2 := new(string)
+								if !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex1].Host.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex1].Host.IsNull() {
+									*host2 = r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex1].Host.ValueString()
+								} else {
+									host2 = nil
+								}
+								port2 := new(int64)
+								if !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex1].Port.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex1].Port.IsNull() {
+									*port2 = r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex1].Port.ValueInt64()
+								} else {
+									port2 = nil
+								}
+								nodes1 = append(nodes1, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host2,
+									Port: port2,
+								})
+							}
+						}
+						password1 := new(string)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Password.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Password.IsNull() {
+							*password1 = r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Password.ValueString()
+						} else {
+							password1 = nil
+						}
+						role := new(shared.Role)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Role.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Role.IsNull() {
+							*role = shared.Role(r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Role.ValueString())
+						} else {
+							role = nil
+						}
+						username := new(string)
+						if !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Username.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Username.IsNull() {
+							*username = r.ConversionOnly.TokenVault.Cache.Redis.Sentinel.Username.ValueString()
+						} else {
+							username = nil
+						}
+						sentinel = &shared.Sentinel{
+							Master:   master,
+							Nodes:    nodes1,
+							Password: password1,
+							Role:     role,
+							Username: username,
+						}
+					}
+					serverName := new(string)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.ServerName.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.ServerName.IsNull() {
+						*serverName = r.ConversionOnly.TokenVault.Cache.Redis.ServerName.ValueString()
+					} else {
+						serverName = nil
+					}
+					ssl := new(bool)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.Ssl.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Ssl.IsNull() {
+						*ssl = r.ConversionOnly.TokenVault.Cache.Redis.Ssl.ValueBool()
+					} else {
+						ssl = nil
+					}
+					sslVerify := new(bool)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.SslVerify.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.SslVerify.IsNull() {
+						*sslVerify = r.ConversionOnly.TokenVault.Cache.Redis.SslVerify.ValueBool()
+					} else {
+						sslVerify = nil
+					}
+					username1 := new(string)
+					if !r.ConversionOnly.TokenVault.Cache.Redis.Username.IsUnknown() && !r.ConversionOnly.TokenVault.Cache.Redis.Username.IsNull() {
+						*username1 = r.ConversionOnly.TokenVault.Cache.Redis.Username.ValueString()
+					} else {
+						username1 = nil
+					}
+					redis = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication,
+						Cluster:             cluster,
+						ConnectTimeout:      connectTimeout,
+						ConnectionIsProxied: connectionIsProxied,
+						Database:            database,
+						Host:                host1,
+						Keepalive:           keepalive,
+						Password:            password,
+						Port:                port1,
+						ReadTimeout:         readTimeout,
+						SendTimeout:         sendTimeout,
+						Sentinel:            sentinel,
+						ServerName:          serverName,
+						Ssl:                 ssl,
+						SslVerify:           sslVerify,
+						Username:            username1,
+					}
+				}
+				cache = &shared.Cache{
+					Redis: redis,
+				}
+			}
+			tokenVault = &shared.AIGatewayTokenVault{
+				Provider:         provider,
+				SubjectTokenType: subjectTokenType,
+				Credential:       credential,
+				Cache:            cache,
+			}
+		}
 		aiGatewayMCPServerConversionOnly = &shared.AIGatewayMCPServerConversionOnly{
 			Config:      config,
 			Tools:       tools,
@@ -6229,6 +10395,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			Policies:    policies,
 			Labels:      labels,
 			ManagedBy:   managedBy,
+			Datastores:  datastores,
+			TokenVault:  tokenVault,
 		}
 	}
 	if aiGatewayMCPServerConversionOnly != nil {
@@ -6371,317 +10539,317 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				} else {
 					managed = nil
 				}
-				var redis *shared.AIGatewayRedisCloudConfiguration
+				var redis1 *shared.AIGatewayRedisCloudConfiguration
 				if r.ConversionListener.Config.Server.Session.Redis != nil {
-					var cloudAuthentication *shared.CloudAuthentication
+					var cloudAuthentication1 *shared.CloudAuthentication
 					if r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication != nil {
-						var aiGatewayRedisAWSAuthentication *shared.AIGatewayRedisAWSAuthentication
+						var aiGatewayRedisAWSAuthentication1 *shared.AIGatewayRedisAWSAuthentication
 						if r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId1 := new(string)
+							accessKeyId2 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId2 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId1 = nil
+								accessKeyId2 = nil
 							}
-							assumeRoleArn1 := new(string)
+							assumeRoleArn2 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn2 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn1 = nil
+								assumeRoleArn2 = nil
 							}
-							cacheName := new(string)
+							cacheName1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
-								*cacheName = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+								*cacheName1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
 							} else {
-								cacheName = nil
+								cacheName1 = nil
 							}
-							isServerless := new(bool)
+							isServerless1 := new(bool)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
-								*isServerless = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+								*isServerless1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
 							} else {
-								isServerless = nil
+								isServerless1 = nil
 							}
-							region1 := new(string)
+							region2 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region2 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region1 = nil
+								region2 = nil
 							}
-							roleSessionName1 := new(string)
+							roleSessionName2 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName2 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName1 = nil
+								roleSessionName2 = nil
 							}
-							secretAccessKey1 := new(string)
+							secretAccessKey2 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey2 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey1 = nil
+								secretAccessKey2 = nil
 							}
-							aiGatewayRedisAWSAuthentication = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId1,
-								AssumeRoleArn:   assumeRoleArn1,
-								CacheName:       cacheName,
-								IsServerless:    isServerless,
-								Region:          region1,
-								RoleSessionName: roleSessionName1,
-								SecretAccessKey: secretAccessKey1,
-							}
-						}
-						if aiGatewayRedisAWSAuthentication != nil {
-							cloudAuthentication = &shared.CloudAuthentication{
-								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication,
+							aiGatewayRedisAWSAuthentication1 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId2,
+								AssumeRoleArn:   assumeRoleArn2,
+								CacheName:       cacheName1,
+								IsServerless:    isServerless1,
+								Region:          region2,
+								RoleSessionName: roleSessionName2,
+								SecretAccessKey: secretAccessKey2,
 							}
 						}
-						var aiGatewayRedisAzureAuthentication *shared.AIGatewayRedisAzureAuthentication
+						if aiGatewayRedisAWSAuthentication1 != nil {
+							cloudAuthentication1 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication1,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication1 *shared.AIGatewayRedisAzureAuthentication
 						if r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure != nil {
-							clientID := new(string)
+							clientId1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
-								*clientID = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+								*clientId1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
 							} else {
-								clientID = nil
+								clientId1 = nil
 							}
-							clientSecret := new(string)
+							clientSecret1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
-								*clientSecret = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+								*clientSecret1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
 							} else {
-								clientSecret = nil
+								clientSecret1 = nil
 							}
-							tenantID := new(string)
+							tenantId1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
-								*tenantID = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+								*tenantId1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
 							} else {
-								tenantID = nil
+								tenantId1 = nil
 							}
-							aiGatewayRedisAzureAuthentication = &shared.AIGatewayRedisAzureAuthentication{
-								ClientID:     clientID,
-								ClientSecret: clientSecret,
-								TenantID:     tenantID,
-							}
-						}
-						if aiGatewayRedisAzureAuthentication != nil {
-							cloudAuthentication = &shared.CloudAuthentication{
-								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication,
+							aiGatewayRedisAzureAuthentication1 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId1,
+								ClientSecret: clientSecret1,
+								TenantID:     tenantId1,
 							}
 						}
-						var aiGatewayRedisGCPAuthentication *shared.AIGatewayRedisGCPAuthentication
+						if aiGatewayRedisAzureAuthentication1 != nil {
+							cloudAuthentication1 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication1,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication1 *shared.AIGatewayRedisGCPAuthentication
 						if r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Gcp != nil {
-							serviceAccountJSON := new(string)
+							serviceAccountJson1 := new(string)
 							if !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
-								*serviceAccountJSON = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+								*serviceAccountJson1 = r.ConversionListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
 							} else {
-								serviceAccountJSON = nil
+								serviceAccountJson1 = nil
 							}
-							aiGatewayRedisGCPAuthentication = &shared.AIGatewayRedisGCPAuthentication{
-								ServiceAccountJSON: serviceAccountJSON,
+							aiGatewayRedisGCPAuthentication1 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson1,
 							}
 						}
-						if aiGatewayRedisGCPAuthentication != nil {
-							cloudAuthentication = &shared.CloudAuthentication{
-								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication,
+						if aiGatewayRedisGCPAuthentication1 != nil {
+							cloudAuthentication1 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication1,
 							}
 						}
 					}
-					var cluster *shared.Cluster
+					var cluster1 *shared.Cluster
 					if r.ConversionListener.Config.Server.Session.Redis.Cluster != nil {
-						maxRedirections := new(int64)
+						maxRedirections1 := new(int64)
 						if !r.ConversionListener.Config.Server.Session.Redis.Cluster.MaxRedirections.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Cluster.MaxRedirections.IsNull() {
-							*maxRedirections = r.ConversionListener.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
+							*maxRedirections1 = r.ConversionListener.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
 						} else {
-							maxRedirections = nil
+							maxRedirections1 = nil
 						}
-						var nodes []shared.Nodes
+						var nodes2 []shared.Nodes
 						if r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes != nil {
-							nodes = make([]shared.Nodes, 0, len(r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes))
-							for nodesIndex := range r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes {
-								ip := new(string)
-								if !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex].IP.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex].IP.IsNull() {
-									*ip = r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex].IP.ValueString()
+							nodes2 = make([]shared.Nodes, 0, len(r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes))
+							for nodesIndex2 := range r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes {
+								ip1 := new(string)
+								if !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].IP.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].IP.IsNull() {
+									*ip1 = r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].IP.ValueString()
 								} else {
-									ip = nil
+									ip1 = nil
 								}
-								port := new(int64)
-								if !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex].Port.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex].Port.IsNull() {
-									*port = r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex].Port.ValueInt64()
+								port3 := new(int64)
+								if !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].Port.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].Port.IsNull() {
+									*port3 = r.ConversionListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].Port.ValueInt64()
 								} else {
-									port = nil
+									port3 = nil
 								}
-								nodes = append(nodes, shared.Nodes{
-									IP:   ip,
-									Port: port,
+								nodes2 = append(nodes2, shared.Nodes{
+									IP:   ip1,
+									Port: port3,
 								})
 							}
 						}
-						cluster = &shared.Cluster{
-							MaxRedirections: maxRedirections,
-							Nodes:           nodes,
+						cluster1 = &shared.Cluster{
+							MaxRedirections: maxRedirections1,
+							Nodes:           nodes2,
 						}
 					}
-					connectTimeout := new(int64)
+					connectTimeout1 := new(int64)
 					if !r.ConversionListener.Config.Server.Session.Redis.ConnectTimeout.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.ConnectTimeout.IsNull() {
-						*connectTimeout = r.ConversionListener.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
+						*connectTimeout1 = r.ConversionListener.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
 					} else {
-						connectTimeout = nil
+						connectTimeout1 = nil
 					}
-					connectionIsProxied := new(bool)
+					connectionIsProxied1 := new(bool)
 					if !r.ConversionListener.Config.Server.Session.Redis.ConnectionIsProxied.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.ConnectionIsProxied.IsNull() {
-						*connectionIsProxied = r.ConversionListener.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
+						*connectionIsProxied1 = r.ConversionListener.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
 					} else {
-						connectionIsProxied = nil
+						connectionIsProxied1 = nil
 					}
-					database := new(int64)
+					database1 := new(int64)
 					if !r.ConversionListener.Config.Server.Session.Redis.Database.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Database.IsNull() {
-						*database = r.ConversionListener.Config.Server.Session.Redis.Database.ValueInt64()
+						*database1 = r.ConversionListener.Config.Server.Session.Redis.Database.ValueInt64()
 					} else {
-						database = nil
+						database1 = nil
 					}
-					host1 := new(string)
+					host3 := new(string)
 					if !r.ConversionListener.Config.Server.Session.Redis.Host.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Host.IsNull() {
-						*host1 = r.ConversionListener.Config.Server.Session.Redis.Host.ValueString()
+						*host3 = r.ConversionListener.Config.Server.Session.Redis.Host.ValueString()
 					} else {
-						host1 = nil
+						host3 = nil
 					}
-					var keepalive *shared.Keepalive
+					var keepalive1 *shared.Keepalive
 					if r.ConversionListener.Config.Server.Session.Redis.Keepalive != nil {
-						backlog := new(int64)
+						backlog1 := new(int64)
 						if !r.ConversionListener.Config.Server.Session.Redis.Keepalive.Backlog.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Keepalive.Backlog.IsNull() {
-							*backlog = r.ConversionListener.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
+							*backlog1 = r.ConversionListener.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
 						} else {
-							backlog = nil
+							backlog1 = nil
 						}
-						poolSize := new(int64)
+						poolSize1 := new(int64)
 						if !r.ConversionListener.Config.Server.Session.Redis.Keepalive.PoolSize.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Keepalive.PoolSize.IsNull() {
-							*poolSize = r.ConversionListener.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
+							*poolSize1 = r.ConversionListener.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
 						} else {
-							poolSize = nil
+							poolSize1 = nil
 						}
-						keepalive = &shared.Keepalive{
-							Backlog:  backlog,
-							PoolSize: poolSize,
+						keepalive1 = &shared.Keepalive{
+							Backlog:  backlog1,
+							PoolSize: poolSize1,
 						}
 					}
-					password := new(string)
+					password2 := new(string)
 					if !r.ConversionListener.Config.Server.Session.Redis.Password.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Password.IsNull() {
-						*password = r.ConversionListener.Config.Server.Session.Redis.Password.ValueString()
+						*password2 = r.ConversionListener.Config.Server.Session.Redis.Password.ValueString()
 					} else {
-						password = nil
+						password2 = nil
 					}
-					port1 := new(string)
+					port4 := new(string)
 					if !r.ConversionListener.Config.Server.Session.Redis.Port.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Port.IsNull() {
-						*port1 = r.ConversionListener.Config.Server.Session.Redis.Port.ValueString()
+						*port4 = r.ConversionListener.Config.Server.Session.Redis.Port.ValueString()
 					} else {
-						port1 = nil
+						port4 = nil
 					}
-					readTimeout := new(int64)
+					readTimeout1 := new(int64)
 					if !r.ConversionListener.Config.Server.Session.Redis.ReadTimeout.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.ReadTimeout.IsNull() {
-						*readTimeout = r.ConversionListener.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
+						*readTimeout1 = r.ConversionListener.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
 					} else {
-						readTimeout = nil
+						readTimeout1 = nil
 					}
-					sendTimeout := new(int64)
+					sendTimeout1 := new(int64)
 					if !r.ConversionListener.Config.Server.Session.Redis.SendTimeout.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.SendTimeout.IsNull() {
-						*sendTimeout = r.ConversionListener.Config.Server.Session.Redis.SendTimeout.ValueInt64()
+						*sendTimeout1 = r.ConversionListener.Config.Server.Session.Redis.SendTimeout.ValueInt64()
 					} else {
-						sendTimeout = nil
+						sendTimeout1 = nil
 					}
-					var sentinel *shared.Sentinel
+					var sentinel1 *shared.Sentinel
 					if r.ConversionListener.Config.Server.Session.Redis.Sentinel != nil {
-						master := new(string)
+						master1 := new(string)
 						if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Master.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Master.IsNull() {
-							*master = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Master.ValueString()
+							*master1 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Master.ValueString()
 						} else {
-							master = nil
+							master1 = nil
 						}
-						var nodes1 []shared.AIGatewayRedisCloudConfigurationNodes
+						var nodes3 []shared.AIGatewayRedisCloudConfigurationNodes
 						if r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-							nodes1 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes))
-							for nodesIndex1 := range r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes {
-								host2 := new(string)
-								if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex1].Host.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex1].Host.IsNull() {
-									*host2 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex1].Host.ValueString()
+							nodes3 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes))
+							for nodesIndex3 := range r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes {
+								host4 := new(string)
+								if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Host.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Host.IsNull() {
+									*host4 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Host.ValueString()
 								} else {
-									host2 = nil
+									host4 = nil
 								}
-								port2 := new(int64)
-								if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex1].Port.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex1].Port.IsNull() {
-									*port2 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex1].Port.ValueInt64()
+								port5 := new(int64)
+								if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Port.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Port.IsNull() {
+									*port5 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Port.ValueInt64()
 								} else {
-									port2 = nil
+									port5 = nil
 								}
-								nodes1 = append(nodes1, shared.AIGatewayRedisCloudConfigurationNodes{
-									Host: host2,
-									Port: port2,
+								nodes3 = append(nodes3, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host4,
+									Port: port5,
 								})
 							}
 						}
-						password1 := new(string)
+						password3 := new(string)
 						if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Password.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Password.IsNull() {
-							*password1 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Password.ValueString()
+							*password3 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Password.ValueString()
 						} else {
-							password1 = nil
+							password3 = nil
 						}
-						role := new(shared.Role)
+						role1 := new(shared.Role)
 						if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Role.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Role.IsNull() {
-							*role = shared.Role(r.ConversionListener.Config.Server.Session.Redis.Sentinel.Role.ValueString())
+							*role1 = shared.Role(r.ConversionListener.Config.Server.Session.Redis.Sentinel.Role.ValueString())
 						} else {
-							role = nil
+							role1 = nil
 						}
-						username := new(string)
+						username2 := new(string)
 						if !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Username.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Sentinel.Username.IsNull() {
-							*username = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Username.ValueString()
+							*username2 = r.ConversionListener.Config.Server.Session.Redis.Sentinel.Username.ValueString()
 						} else {
-							username = nil
+							username2 = nil
 						}
-						sentinel = &shared.Sentinel{
-							Master:   master,
-							Nodes:    nodes1,
-							Password: password1,
-							Role:     role,
-							Username: username,
+						sentinel1 = &shared.Sentinel{
+							Master:   master1,
+							Nodes:    nodes3,
+							Password: password3,
+							Role:     role1,
+							Username: username2,
 						}
 					}
-					serverName := new(string)
+					serverName1 := new(string)
 					if !r.ConversionListener.Config.Server.Session.Redis.ServerName.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.ServerName.IsNull() {
-						*serverName = r.ConversionListener.Config.Server.Session.Redis.ServerName.ValueString()
+						*serverName1 = r.ConversionListener.Config.Server.Session.Redis.ServerName.ValueString()
 					} else {
-						serverName = nil
+						serverName1 = nil
 					}
-					ssl := new(bool)
+					ssl1 := new(bool)
 					if !r.ConversionListener.Config.Server.Session.Redis.Ssl.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Ssl.IsNull() {
-						*ssl = r.ConversionListener.Config.Server.Session.Redis.Ssl.ValueBool()
+						*ssl1 = r.ConversionListener.Config.Server.Session.Redis.Ssl.ValueBool()
 					} else {
-						ssl = nil
+						ssl1 = nil
 					}
-					sslVerify := new(bool)
+					sslVerify1 := new(bool)
 					if !r.ConversionListener.Config.Server.Session.Redis.SslVerify.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.SslVerify.IsNull() {
-						*sslVerify = r.ConversionListener.Config.Server.Session.Redis.SslVerify.ValueBool()
+						*sslVerify1 = r.ConversionListener.Config.Server.Session.Redis.SslVerify.ValueBool()
 					} else {
-						sslVerify = nil
+						sslVerify1 = nil
 					}
-					username1 := new(string)
+					username3 := new(string)
 					if !r.ConversionListener.Config.Server.Session.Redis.Username.IsUnknown() && !r.ConversionListener.Config.Server.Session.Redis.Username.IsNull() {
-						*username1 = r.ConversionListener.Config.Server.Session.Redis.Username.ValueString()
+						*username3 = r.ConversionListener.Config.Server.Session.Redis.Username.ValueString()
 					} else {
-						username1 = nil
+						username3 = nil
 					}
-					redis = &shared.AIGatewayRedisCloudConfiguration{
-						CloudAuthentication: cloudAuthentication,
-						Cluster:             cluster,
-						ConnectTimeout:      connectTimeout,
-						ConnectionIsProxied: connectionIsProxied,
-						Database:            database,
-						Host:                host1,
-						Keepalive:           keepalive,
-						Password:            password,
-						Port:                port1,
-						ReadTimeout:         readTimeout,
-						SendTimeout:         sendTimeout,
-						Sentinel:            sentinel,
-						ServerName:          serverName,
-						Ssl:                 ssl,
-						SslVerify:           sslVerify,
-						Username:            username1,
+					redis1 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication1,
+						Cluster:             cluster1,
+						ConnectTimeout:      connectTimeout1,
+						ConnectionIsProxied: connectionIsProxied1,
+						Database:            database1,
+						Host:                host3,
+						Keepalive:           keepalive1,
+						Password:            password2,
+						Port:                port4,
+						ReadTimeout:         readTimeout1,
+						SendTimeout:         sendTimeout1,
+						Sentinel:            sentinel1,
+						ServerName:          serverName1,
+						Ssl:                 ssl1,
+						SslVerify:           sslVerify1,
+						Username:            username3,
 					}
 				}
 				sessionTTL := new(int64)
@@ -6699,7 +10867,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				session = &shared.Session{
 					Client:     client,
 					Managed:    managed,
-					Redis:      redis,
+					Redis:      redis1,
 					SessionTTL: sessionTTL,
 					Strategy:   strategy,
 				}
@@ -6725,17 +10893,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			if r.ConversionListener.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws1 *shared.AIGatewayUpstreamAuthAWS
 				if r.ConversionListener.Config.Upstream.Auth.Aws != nil {
-					accessKeyId2 := new(string)
+					accessKeyId3 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
-						*accessKeyId2 = r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+						*accessKeyId3 = r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
 					} else {
-						accessKeyId2 = nil
+						accessKeyId3 = nil
 					}
-					secretAccessKey2 := new(string)
+					secretAccessKey3 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
-						*secretAccessKey2 = r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+						*secretAccessKey3 = r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
 					} else {
-						secretAccessKey2 = nil
+						secretAccessKey3 = nil
 					}
 					sessionToken1 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
@@ -6743,23 +10911,23 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						sessionToken1 = nil
 					}
-					region2 := new(string)
+					region3 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsNull() {
-						*region2 = r.ConversionListener.Config.Upstream.Auth.Aws.Region.ValueString()
+						*region3 = r.ConversionListener.Config.Upstream.Auth.Aws.Region.ValueString()
 					} else {
-						region2 = nil
+						region3 = nil
 					}
-					assumeRoleArn2 := new(string)
+					assumeRoleArn3 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
-						*assumeRoleArn2 = r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+						*assumeRoleArn3 = r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
 					} else {
-						assumeRoleArn2 = nil
+						assumeRoleArn3 = nil
 					}
-					roleSessionName2 := new(string)
+					roleSessionName3 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
-						*roleSessionName2 = r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+						*roleSessionName3 = r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
 					} else {
-						roleSessionName2 = nil
+						roleSessionName3 = nil
 					}
 					stsEndpointUrl1 := new(string)
 					if !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
@@ -6768,12 +10936,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 						stsEndpointUrl1 = nil
 					}
 					aiGatewayUpstreamAuthAws1 = &shared.AIGatewayUpstreamAuthAWS{
-						AccessKeyID:     accessKeyId2,
-						SecretAccessKey: secretAccessKey2,
+						AccessKeyID:     accessKeyId3,
+						SecretAccessKey: secretAccessKey3,
 						SessionToken:    sessionToken1,
-						Region:          region2,
-						AssumeRoleArn:   assumeRoleArn2,
-						RoleSessionName: roleSessionName2,
+						Region:          region3,
+						AssumeRoleArn:   assumeRoleArn3,
+						RoleSessionName: roleSessionName3,
 						StsEndpointURL:  stsEndpointUrl1,
 					}
 				}
@@ -6787,6 +10955,14 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Auth: auth1,
 			}
 		}
+		certificates1 := make([]string, 0, len(r.ConversionListener.Config.Certificates))
+		for certificatesIndex1 := range r.ConversionListener.Config.Certificates {
+			certificates1 = append(certificates1, r.ConversionListener.Config.Certificates[certificatesIndex1].ValueString())
+		}
+		caCertificates1 := make([]string, 0, len(r.ConversionListener.Config.CaCertificates))
+		for caCertificatesIndex1 := range r.ConversionListener.Config.CaCertificates {
+			caCertificates1 = append(caCertificates1, r.ConversionListener.Config.CaCertificates[caCertificatesIndex1].ValueString())
+		}
 		var allowedVersions []shared.AllowedVersions
 		if r.ConversionListener.Config.AllowedVersions != nil {
 			allowedVersions = make([]shared.AllowedVersions, 0, len(r.ConversionListener.Config.AllowedVersions))
@@ -6794,7 +10970,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				allowedVersions = append(allowedVersions, shared.AllowedVersions(allowedVersionsItem.ValueString()))
 			}
 		}
-		var cache *shared.AIGatewayMCPServerConversionListenerCache
+		var cache1 *shared.AIGatewayMCPServerConversionListenerCache
 		if r.ConversionListener.Config.Cache != nil {
 			var toolsList *shared.AIGatewayMCPServerCacheHint
 			if r.ConversionListener.Config.Cache.ToolsList != nil {
@@ -6834,7 +11010,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					CacheScope: cacheScope1,
 				}
 			}
-			cache = &shared.AIGatewayMCPServerConversionListenerCache{
+			cache1 = &shared.AIGatewayMCPServerConversionListenerCache{
 				ToolsList: toolsList,
 				Discover:  discover,
 			}
@@ -6846,8 +11022,10 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			Server:             server,
 			URL:                url1,
 			Upstream:           upstream1,
+			Certificates:       certificates1,
+			CaCertificates:     caCertificates1,
 			AllowedVersions:    allowedVersions,
-			Cache:              cache,
+			Cache:              cache1,
 		}
 		tools1 := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionListener.Tools))
 		for toolsIndex1 := range r.ConversionListener.Tools {
@@ -6863,9 +11041,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex1 := range r.ConversionListener.Tools[toolsIndex1].Access.Acls.Deny {
 						deny1 = append(deny1, r.ConversionListener.Tools[toolsIndex1].Access.Acls.Deny[denyIndex1].ValueString())
 					}
+					var allowWhen1 []string
+					if r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen != nil {
+						allowWhen1 = make([]string, 0, len(r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen))
+						for allowWhenIndex1 := range r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen {
+							allowWhen1 = append(allowWhen1, r.ConversionListener.Tools[toolsIndex1].Access.Acls.AllowWhen[allowWhenIndex1].ValueString())
+						}
+					}
+					var denyWhen1 []string
+					if r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen != nil {
+						denyWhen1 = make([]string, 0, len(r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen))
+						for denyWhenIndex1 := range r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen {
+							denyWhen1 = append(denyWhen1, r.ConversionListener.Tools[toolsIndex1].Access.Acls.DenyWhen[denyWhenIndex1].ValueString())
+						}
+					}
 					acls1 = &shared.AIGatewayMCPACLs{
-						Allow: allow1,
-						Deny:  deny1,
+						Allow:     allow1,
+						Deny:      deny1,
+						AllowWhen: allowWhen1,
+						DenyWhen:  denyWhen1,
 					}
 				}
 				access1 = &shared.AIGatewayMCPToolAccess{
@@ -6915,18 +11109,18 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			var description2 string
 			description2 = r.ConversionListener.Tools[toolsIndex1].Description.ValueString()
 
-			var name3 string
-			name3 = r.ConversionListener.Tools[toolsIndex1].Name.ValueString()
+			var name6 string
+			name6 = r.ConversionListener.Tools[toolsIndex1].Name.ValueString()
 
 			var headers3 interface{}
 			if !r.ConversionListener.Tools[toolsIndex1].Headers.IsUnknown() && !r.ConversionListener.Tools[toolsIndex1].Headers.IsNull() {
 				_ = json.Unmarshal([]byte(r.ConversionListener.Tools[toolsIndex1].Headers.ValueString()), &headers3)
 			}
-			host3 := new(string)
+			host5 := new(string)
 			if !r.ConversionListener.Tools[toolsIndex1].Host.IsUnknown() && !r.ConversionListener.Tools[toolsIndex1].Host.IsNull() {
-				*host3 = r.ConversionListener.Tools[toolsIndex1].Host.ValueString()
+				*host5 = r.ConversionListener.Tools[toolsIndex1].Host.ValueString()
 			} else {
-				host3 = nil
+				host5 = nil
 			}
 			method1 := shared.Method(r.ConversionListener.Tools[toolsIndex1].Method.ValueString())
 			path1 := new(string)
@@ -6955,8 +11149,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			}
 			parameters1 := make([]shared.AIGatewayMCPToolParameter, 0, len(r.ConversionListener.Tools[toolsIndex1].Parameters))
 			for parametersIndex1 := range r.ConversionListener.Tools[toolsIndex1].Parameters {
-				var name4 string
-				name4 = r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Name.ValueString()
+				var name7 string
+				name7 = r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].Name.ValueString()
 
 				in1 := shared.In(r.ConversionListener.Tools[toolsIndex1].Parameters[parametersIndex1].In.ValueString())
 				description3 := new(string)
@@ -6978,7 +11172,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					schema1[schemaKey1] = schemaInst1
 				}
 				parameters1 = append(parameters1, shared.AIGatewayMCPToolParameter{
-					Name:        name4,
+					Name:        name7,
 					In:          in1,
 					Description: description3,
 					Required:    required1,
@@ -6989,9 +11183,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Access:      access1,
 				Annotations: annotations1,
 				Description: description2,
-				Name:        name3,
+				Name:        name6,
 				Headers:     headers3,
-				Host:        host3,
+				Host:        host5,
 				Method:      method1,
 				Path:        path1,
 				Query:       query1,
@@ -7015,9 +11209,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex2 := range r.ConversionListener.Access.Consumer.Acls.Deny {
 						deny2 = append(deny2, r.ConversionListener.Access.Consumer.Acls.Deny[denyIndex2].ValueString())
 					}
+					var allowWhen2 []string
+					if r.ConversionListener.Access.Consumer.Acls.AllowWhen != nil {
+						allowWhen2 = make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.AllowWhen))
+						for allowWhenIndex2 := range r.ConversionListener.Access.Consumer.Acls.AllowWhen {
+							allowWhen2 = append(allowWhen2, r.ConversionListener.Access.Consumer.Acls.AllowWhen[allowWhenIndex2].ValueString())
+						}
+					}
+					var denyWhen2 []string
+					if r.ConversionListener.Access.Consumer.Acls.DenyWhen != nil {
+						denyWhen2 = make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.DenyWhen))
+						for denyWhenIndex2 := range r.ConversionListener.Access.Consumer.Acls.DenyWhen {
+							denyWhen2 = append(denyWhen2, r.ConversionListener.Access.Consumer.Acls.DenyWhen[denyWhenIndex2].ValueString())
+						}
+					}
 					acls2 = &shared.AIGatewayMCPACLs{
-						Allow: allow2,
-						Deny:  deny2,
+						Allow:     allow2,
+						Deny:      deny2,
+						AllowWhen: allowWhen2,
+						DenyWhen:  denyWhen2,
 					}
 				}
 				var defaultToolAcls *shared.AIGatewayMCPACLs
@@ -7030,9 +11240,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex3 := range r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny {
 						deny3 = append(deny3, r.ConversionListener.Access.Consumer.DefaultToolAcls.Deny[denyIndex3].ValueString())
 					}
+					var allowWhen3 []string
+					if r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen != nil {
+						allowWhen3 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex3 := range r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen {
+							allowWhen3 = append(allowWhen3, r.ConversionListener.Access.Consumer.DefaultToolAcls.AllowWhen[allowWhenIndex3].ValueString())
+						}
+					}
+					var denyWhen3 []string
+					if r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen != nil {
+						denyWhen3 = make([]string, 0, len(r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex3 := range r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen {
+							denyWhen3 = append(denyWhen3, r.ConversionListener.Access.Consumer.DefaultToolAcls.DenyWhen[denyWhenIndex3].ValueString())
+						}
+					}
 					defaultToolAcls = &shared.AIGatewayMCPACLs{
-						Allow: allow3,
-						Deny:  deny3,
+						Allow:     allow3,
+						Deny:      deny3,
+						AllowWhen: allowWhen3,
+						DenyWhen:  denyWhen3,
 					}
 				}
 				identityProviders := make([]string, 0, len(r.ConversionListener.Access.Consumer.IdentityProviders))
@@ -7107,9 +11333,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex4 := range r.ConversionListener.Access.OauthAccessToken.Acls.Deny {
 						deny4 = append(deny4, r.ConversionListener.Access.OauthAccessToken.Acls.Deny[denyIndex4].ValueString())
 					}
+					var allowWhen4 []string
+					if r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen != nil {
+						allowWhen4 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen))
+						for allowWhenIndex4 := range r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen {
+							allowWhen4 = append(allowWhen4, r.ConversionListener.Access.OauthAccessToken.Acls.AllowWhen[allowWhenIndex4].ValueString())
+						}
+					}
+					var denyWhen4 []string
+					if r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen != nil {
+						denyWhen4 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen))
+						for denyWhenIndex4 := range r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen {
+							denyWhen4 = append(denyWhen4, r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex4].ValueString())
+						}
+					}
 					acls3 = &shared.AIGatewayMCPACLs{
-						Allow: allow4,
-						Deny:  deny4,
+						Allow:     allow4,
+						Deny:      deny4,
+						AllowWhen: allowWhen4,
+						DenyWhen:  denyWhen4,
 					}
 				}
 				var defaultToolAcls1 *shared.AIGatewayMCPACLs
@@ -7122,9 +11364,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex5 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny {
 						deny5 = append(deny5, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex5].ValueString())
 					}
+					var allowWhen5 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen != nil {
+						allowWhen5 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex5 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen {
+							allowWhen5 = append(allowWhen5, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen[allowWhenIndex5].ValueString())
+						}
+					}
+					var denyWhen5 []string
+					if r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen != nil {
+						denyWhen5 = make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex5 := range r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen {
+							denyWhen5 = append(denyWhen5, r.ConversionListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen[denyWhenIndex5].ValueString())
+						}
+					}
 					defaultToolAcls1 = &shared.AIGatewayMCPACLs{
-						Allow: allow5,
-						Deny:  deny5,
+						Allow:     allow5,
+						Deny:      deny5,
+						AllowWhen: allowWhen5,
+						DenyWhen:  denyWhen5,
 					}
 				}
 				identityProviders1 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.IdentityProviders))
@@ -7186,11 +11444,42 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				}
 			}
 		}
+		var rateLimiting *shared.AIGatewayMCPServerRateLimiting
+		if r.ConversionListener.RateLimiting != nil {
+			limits := make([]shared.AIGatewayMCPServerRateLimit, 0, len(r.ConversionListener.RateLimiting.Limits))
+			for limitsIndex := range r.ConversionListener.RateLimiting.Limits {
+				method2 := new(string)
+				if !r.ConversionListener.RateLimiting.Limits[limitsIndex].Method.IsUnknown() && !r.ConversionListener.RateLimiting.Limits[limitsIndex].Method.IsNull() {
+					*method2 = r.ConversionListener.RateLimiting.Limits[limitsIndex].Method.ValueString()
+				} else {
+					method2 = nil
+				}
+				tool := new(string)
+				if !r.ConversionListener.RateLimiting.Limits[limitsIndex].Tool.IsUnknown() && !r.ConversionListener.RateLimiting.Limits[limitsIndex].Tool.IsNull() {
+					*tool = r.ConversionListener.RateLimiting.Limits[limitsIndex].Tool.ValueString()
+				} else {
+					tool = nil
+				}
+				var limit int64
+				limit = r.ConversionListener.RateLimiting.Limits[limitsIndex].Limit.ValueInt64()
+
+				windowSize := shared.WindowSize(r.ConversionListener.RateLimiting.Limits[limitsIndex].WindowSize.ValueInt64())
+				limits = append(limits, shared.AIGatewayMCPServerRateLimit{
+					Method:     method2,
+					Tool:       tool,
+					Limit:      limit,
+					WindowSize: windowSize,
+				})
+			}
+			rateLimiting = &shared.AIGatewayMCPServerRateLimiting{
+				Limits: limits,
+			}
+		}
 		var displayName1 string
 		displayName1 = r.ConversionListener.DisplayName.ValueString()
 
-		var name5 string
-		name5 = r.ConversionListener.Name.ValueString()
+		var name8 string
+		name8 = r.ConversionListener.Name.ValueString()
 
 		enabled1 := new(bool)
 		if !r.ConversionListener.Enabled.IsUnknown() && !r.ConversionListener.Enabled.IsNull() {
@@ -7216,16 +11505,427 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 
 			managedBy1[managedByKey1] = managedByInst1
 		}
+		var datastores1 []shared.AIGatewayDatastoreRef
+		if r.ConversionListener.Datastores != nil {
+			datastores1 = make([]shared.AIGatewayDatastoreRef, 0, len(r.ConversionListener.Datastores))
+			for datastoresIndex1 := range r.ConversionListener.Datastores {
+				var name9 string
+				name9 = r.ConversionListener.Datastores[datastoresIndex1].Name.ValueString()
+
+				datastores1 = append(datastores1, shared.AIGatewayDatastoreRef{
+					Name: name9,
+				})
+			}
+		}
+		var tokenVault1 *shared.AIGatewayTokenVault
+		if r.ConversionListener.TokenVault != nil {
+			var provider1 string
+			provider1 = r.ConversionListener.TokenVault.Provider.ValueString()
+
+			subjectTokenType1 := new(shared.SubjectTokenType)
+			if !r.ConversionListener.TokenVault.SubjectTokenType.IsUnknown() && !r.ConversionListener.TokenVault.SubjectTokenType.IsNull() {
+				*subjectTokenType1 = shared.SubjectTokenType(r.ConversionListener.TokenVault.SubjectTokenType.ValueString())
+			} else {
+				subjectTokenType1 = nil
+			}
+			var credential1 *shared.AIGatewayTokenVaultCredential
+			if r.ConversionListener.TokenVault.Credential != nil {
+				var inbound1 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.ConversionListener.TokenVault.Credential.Inbound != nil {
+					location2 := new(shared.Location)
+					if !r.ConversionListener.TokenVault.Credential.Inbound.Location.IsUnknown() && !r.ConversionListener.TokenVault.Credential.Inbound.Location.IsNull() {
+						*location2 = shared.Location(r.ConversionListener.TokenVault.Credential.Inbound.Location.ValueString())
+					} else {
+						location2 = nil
+					}
+					name10 := new(string)
+					if !r.ConversionListener.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.ConversionListener.TokenVault.Credential.Inbound.Name.IsNull() {
+						*name10 = r.ConversionListener.TokenVault.Credential.Inbound.Name.ValueString()
+					} else {
+						name10 = nil
+					}
+					prefix2 := new(string)
+					if !r.ConversionListener.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.ConversionListener.TokenVault.Credential.Inbound.Prefix.IsNull() {
+						*prefix2 = r.ConversionListener.TokenVault.Credential.Inbound.Prefix.ValueString()
+					} else {
+						prefix2 = nil
+					}
+					inbound1 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location2,
+						Name:     name10,
+						Prefix:   prefix2,
+					}
+				}
+				var outbound1 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.ConversionListener.TokenVault.Credential.Outbound != nil {
+					location3 := new(shared.Location)
+					if !r.ConversionListener.TokenVault.Credential.Outbound.Location.IsUnknown() && !r.ConversionListener.TokenVault.Credential.Outbound.Location.IsNull() {
+						*location3 = shared.Location(r.ConversionListener.TokenVault.Credential.Outbound.Location.ValueString())
+					} else {
+						location3 = nil
+					}
+					name11 := new(string)
+					if !r.ConversionListener.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.ConversionListener.TokenVault.Credential.Outbound.Name.IsNull() {
+						*name11 = r.ConversionListener.TokenVault.Credential.Outbound.Name.ValueString()
+					} else {
+						name11 = nil
+					}
+					prefix3 := new(string)
+					if !r.ConversionListener.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.ConversionListener.TokenVault.Credential.Outbound.Prefix.IsNull() {
+						*prefix3 = r.ConversionListener.TokenVault.Credential.Outbound.Prefix.ValueString()
+					} else {
+						prefix3 = nil
+					}
+					outbound1 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location3,
+						Name:     name11,
+						Prefix:   prefix3,
+					}
+				}
+				credential1 = &shared.AIGatewayTokenVaultCredential{
+					Inbound:  inbound1,
+					Outbound: outbound1,
+				}
+			}
+			var cache2 *shared.Cache
+			if r.ConversionListener.TokenVault.Cache != nil {
+				var redis2 *shared.AIGatewayRedisCloudConfiguration
+				if r.ConversionListener.TokenVault.Cache.Redis != nil {
+					var cloudAuthentication2 *shared.CloudAuthentication
+					if r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication != nil {
+						var aiGatewayRedisAWSAuthentication2 *shared.AIGatewayRedisAWSAuthentication
+						if r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws != nil {
+							accessKeyId4 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
+								*accessKeyId4 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+							} else {
+								accessKeyId4 = nil
+							}
+							assumeRoleArn4 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
+								*assumeRoleArn4 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+							} else {
+								assumeRoleArn4 = nil
+							}
+							cacheName2 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
+								*cacheName2 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+							} else {
+								cacheName2 = nil
+							}
+							isServerless2 := new(bool)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
+								*isServerless2 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+							} else {
+								isServerless2 = nil
+							}
+							region4 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsNull() {
+								*region4 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.ValueString()
+							} else {
+								region4 = nil
+							}
+							roleSessionName4 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
+								*roleSessionName4 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+							} else {
+								roleSessionName4 = nil
+							}
+							secretAccessKey4 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
+								*secretAccessKey4 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+							} else {
+								secretAccessKey4 = nil
+							}
+							aiGatewayRedisAWSAuthentication2 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId4,
+								AssumeRoleArn:   assumeRoleArn4,
+								CacheName:       cacheName2,
+								IsServerless:    isServerless2,
+								Region:          region4,
+								RoleSessionName: roleSessionName4,
+								SecretAccessKey: secretAccessKey4,
+							}
+						}
+						if aiGatewayRedisAWSAuthentication2 != nil {
+							cloudAuthentication2 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication2,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication2 *shared.AIGatewayRedisAzureAuthentication
+						if r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure != nil {
+							clientId2 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
+								*clientId2 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+							} else {
+								clientId2 = nil
+							}
+							clientSecret2 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
+								*clientSecret2 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+							} else {
+								clientSecret2 = nil
+							}
+							tenantId2 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
+								*tenantId2 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+							} else {
+								tenantId2 = nil
+							}
+							aiGatewayRedisAzureAuthentication2 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId2,
+								ClientSecret: clientSecret2,
+								TenantID:     tenantId2,
+							}
+						}
+						if aiGatewayRedisAzureAuthentication2 != nil {
+							cloudAuthentication2 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication2,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication2 *shared.AIGatewayRedisGCPAuthentication
+						if r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp != nil {
+							serviceAccountJson2 := new(string)
+							if !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
+								*serviceAccountJson2 = r.ConversionListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+							} else {
+								serviceAccountJson2 = nil
+							}
+							aiGatewayRedisGCPAuthentication2 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson2,
+							}
+						}
+						if aiGatewayRedisGCPAuthentication2 != nil {
+							cloudAuthentication2 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication2,
+							}
+						}
+					}
+					var cluster2 *shared.Cluster
+					if r.ConversionListener.TokenVault.Cache.Redis.Cluster != nil {
+						maxRedirections2 := new(int64)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsNull() {
+							*maxRedirections2 = r.ConversionListener.TokenVault.Cache.Redis.Cluster.MaxRedirections.ValueInt64()
+						} else {
+							maxRedirections2 = nil
+						}
+						var nodes4 []shared.Nodes
+						if r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+							nodes4 = make([]shared.Nodes, 0, len(r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes))
+							for nodesIndex4 := range r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes {
+								ip2 := new(string)
+								if !r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex4].IP.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex4].IP.IsNull() {
+									*ip2 = r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex4].IP.ValueString()
+								} else {
+									ip2 = nil
+								}
+								port6 := new(int64)
+								if !r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex4].Port.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex4].Port.IsNull() {
+									*port6 = r.ConversionListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex4].Port.ValueInt64()
+								} else {
+									port6 = nil
+								}
+								nodes4 = append(nodes4, shared.Nodes{
+									IP:   ip2,
+									Port: port6,
+								})
+							}
+						}
+						cluster2 = &shared.Cluster{
+							MaxRedirections: maxRedirections2,
+							Nodes:           nodes4,
+						}
+					}
+					connectTimeout2 := new(int64)
+					if !r.ConversionListener.TokenVault.Cache.Redis.ConnectTimeout.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.ConnectTimeout.IsNull() {
+						*connectTimeout2 = r.ConversionListener.TokenVault.Cache.Redis.ConnectTimeout.ValueInt64()
+					} else {
+						connectTimeout2 = nil
+					}
+					connectionIsProxied2 := new(bool)
+					if !r.ConversionListener.TokenVault.Cache.Redis.ConnectionIsProxied.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.ConnectionIsProxied.IsNull() {
+						*connectionIsProxied2 = r.ConversionListener.TokenVault.Cache.Redis.ConnectionIsProxied.ValueBool()
+					} else {
+						connectionIsProxied2 = nil
+					}
+					database2 := new(int64)
+					if !r.ConversionListener.TokenVault.Cache.Redis.Database.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Database.IsNull() {
+						*database2 = r.ConversionListener.TokenVault.Cache.Redis.Database.ValueInt64()
+					} else {
+						database2 = nil
+					}
+					host6 := new(string)
+					if !r.ConversionListener.TokenVault.Cache.Redis.Host.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Host.IsNull() {
+						*host6 = r.ConversionListener.TokenVault.Cache.Redis.Host.ValueString()
+					} else {
+						host6 = nil
+					}
+					var keepalive2 *shared.Keepalive
+					if r.ConversionListener.TokenVault.Cache.Redis.Keepalive != nil {
+						backlog2 := new(int64)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Keepalive.Backlog.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Keepalive.Backlog.IsNull() {
+							*backlog2 = r.ConversionListener.TokenVault.Cache.Redis.Keepalive.Backlog.ValueInt64()
+						} else {
+							backlog2 = nil
+						}
+						poolSize2 := new(int64)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Keepalive.PoolSize.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Keepalive.PoolSize.IsNull() {
+							*poolSize2 = r.ConversionListener.TokenVault.Cache.Redis.Keepalive.PoolSize.ValueInt64()
+						} else {
+							poolSize2 = nil
+						}
+						keepalive2 = &shared.Keepalive{
+							Backlog:  backlog2,
+							PoolSize: poolSize2,
+						}
+					}
+					password4 := new(string)
+					if !r.ConversionListener.TokenVault.Cache.Redis.Password.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Password.IsNull() {
+						*password4 = r.ConversionListener.TokenVault.Cache.Redis.Password.ValueString()
+					} else {
+						password4 = nil
+					}
+					port7 := new(string)
+					if !r.ConversionListener.TokenVault.Cache.Redis.Port.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Port.IsNull() {
+						*port7 = r.ConversionListener.TokenVault.Cache.Redis.Port.ValueString()
+					} else {
+						port7 = nil
+					}
+					readTimeout2 := new(int64)
+					if !r.ConversionListener.TokenVault.Cache.Redis.ReadTimeout.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.ReadTimeout.IsNull() {
+						*readTimeout2 = r.ConversionListener.TokenVault.Cache.Redis.ReadTimeout.ValueInt64()
+					} else {
+						readTimeout2 = nil
+					}
+					sendTimeout2 := new(int64)
+					if !r.ConversionListener.TokenVault.Cache.Redis.SendTimeout.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.SendTimeout.IsNull() {
+						*sendTimeout2 = r.ConversionListener.TokenVault.Cache.Redis.SendTimeout.ValueInt64()
+					} else {
+						sendTimeout2 = nil
+					}
+					var sentinel2 *shared.Sentinel
+					if r.ConversionListener.TokenVault.Cache.Redis.Sentinel != nil {
+						master2 := new(string)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Master.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Master.IsNull() {
+							*master2 = r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Master.ValueString()
+						} else {
+							master2 = nil
+						}
+						var nodes5 []shared.AIGatewayRedisCloudConfigurationNodes
+						if r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+							nodes5 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes))
+							for nodesIndex5 := range r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes {
+								host7 := new(string)
+								if !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex5].Host.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex5].Host.IsNull() {
+									*host7 = r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex5].Host.ValueString()
+								} else {
+									host7 = nil
+								}
+								port8 := new(int64)
+								if !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex5].Port.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex5].Port.IsNull() {
+									*port8 = r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex5].Port.ValueInt64()
+								} else {
+									port8 = nil
+								}
+								nodes5 = append(nodes5, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host7,
+									Port: port8,
+								})
+							}
+						}
+						password5 := new(string)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Password.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Password.IsNull() {
+							*password5 = r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Password.ValueString()
+						} else {
+							password5 = nil
+						}
+						role2 := new(shared.Role)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Role.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Role.IsNull() {
+							*role2 = shared.Role(r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Role.ValueString())
+						} else {
+							role2 = nil
+						}
+						username4 := new(string)
+						if !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Username.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Username.IsNull() {
+							*username4 = r.ConversionListener.TokenVault.Cache.Redis.Sentinel.Username.ValueString()
+						} else {
+							username4 = nil
+						}
+						sentinel2 = &shared.Sentinel{
+							Master:   master2,
+							Nodes:    nodes5,
+							Password: password5,
+							Role:     role2,
+							Username: username4,
+						}
+					}
+					serverName2 := new(string)
+					if !r.ConversionListener.TokenVault.Cache.Redis.ServerName.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.ServerName.IsNull() {
+						*serverName2 = r.ConversionListener.TokenVault.Cache.Redis.ServerName.ValueString()
+					} else {
+						serverName2 = nil
+					}
+					ssl2 := new(bool)
+					if !r.ConversionListener.TokenVault.Cache.Redis.Ssl.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Ssl.IsNull() {
+						*ssl2 = r.ConversionListener.TokenVault.Cache.Redis.Ssl.ValueBool()
+					} else {
+						ssl2 = nil
+					}
+					sslVerify2 := new(bool)
+					if !r.ConversionListener.TokenVault.Cache.Redis.SslVerify.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.SslVerify.IsNull() {
+						*sslVerify2 = r.ConversionListener.TokenVault.Cache.Redis.SslVerify.ValueBool()
+					} else {
+						sslVerify2 = nil
+					}
+					username5 := new(string)
+					if !r.ConversionListener.TokenVault.Cache.Redis.Username.IsUnknown() && !r.ConversionListener.TokenVault.Cache.Redis.Username.IsNull() {
+						*username5 = r.ConversionListener.TokenVault.Cache.Redis.Username.ValueString()
+					} else {
+						username5 = nil
+					}
+					redis2 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication2,
+						Cluster:             cluster2,
+						ConnectTimeout:      connectTimeout2,
+						ConnectionIsProxied: connectionIsProxied2,
+						Database:            database2,
+						Host:                host6,
+						Keepalive:           keepalive2,
+						Password:            password4,
+						Port:                port7,
+						ReadTimeout:         readTimeout2,
+						SendTimeout:         sendTimeout2,
+						Sentinel:            sentinel2,
+						ServerName:          serverName2,
+						Ssl:                 ssl2,
+						SslVerify:           sslVerify2,
+						Username:            username5,
+					}
+				}
+				cache2 = &shared.Cache{
+					Redis: redis2,
+				}
+			}
+			tokenVault1 = &shared.AIGatewayTokenVault{
+				Provider:         provider1,
+				SubjectTokenType: subjectTokenType1,
+				Credential:       credential1,
+				Cache:            cache2,
+			}
+		}
 		aiGatewayMCPServerConversionListener = &shared.AIGatewayMCPServerConversionListener{
-			Config:      config1,
-			Tools:       tools1,
-			Access:      access2,
-			DisplayName: displayName1,
-			Name:        name5,
-			Enabled:     enabled1,
-			Policies:    policies1,
-			Labels:      labels1,
-			ManagedBy:   managedBy1,
+			Config:       config1,
+			Tools:        tools1,
+			Access:       access2,
+			RateLimiting: rateLimiting,
+			DisplayName:  displayName1,
+			Name:         name8,
+			Enabled:      enabled1,
+			Policies:     policies1,
+			Labels:       labels1,
+			ManagedBy:    managedBy1,
+			Datastores:   datastores1,
+			TokenVault:   tokenVault1,
 		}
 	}
 	if aiGatewayMCPServerConversionListener != nil {
@@ -7368,317 +12068,317 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				} else {
 					managed1 = nil
 				}
-				var redis1 *shared.AIGatewayRedisCloudConfiguration
+				var redis3 *shared.AIGatewayRedisCloudConfiguration
 				if r.Listener.Config.Server.Session.Redis != nil {
-					var cloudAuthentication1 *shared.CloudAuthentication
+					var cloudAuthentication3 *shared.CloudAuthentication
 					if r.Listener.Config.Server.Session.Redis.CloudAuthentication != nil {
-						var aiGatewayRedisAWSAuthentication1 *shared.AIGatewayRedisAWSAuthentication
+						var aiGatewayRedisAWSAuthentication3 *shared.AIGatewayRedisAWSAuthentication
 						if r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId3 := new(string)
+							accessKeyId5 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId5 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId3 = nil
+								accessKeyId5 = nil
 							}
-							assumeRoleArn3 := new(string)
+							assumeRoleArn5 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn5 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn3 = nil
+								assumeRoleArn5 = nil
 							}
-							cacheName1 := new(string)
+							cacheName3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
-								*cacheName1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+								*cacheName3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
 							} else {
-								cacheName1 = nil
+								cacheName3 = nil
 							}
-							isServerless1 := new(bool)
+							isServerless3 := new(bool)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
-								*isServerless1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+								*isServerless3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
 							} else {
-								isServerless1 = nil
+								isServerless3 = nil
 							}
-							region3 := new(string)
+							region5 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region5 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region3 = nil
+								region5 = nil
 							}
-							roleSessionName3 := new(string)
+							roleSessionName5 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName5 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName3 = nil
+								roleSessionName5 = nil
 							}
-							secretAccessKey3 := new(string)
+							secretAccessKey5 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey5 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey3 = nil
+								secretAccessKey5 = nil
 							}
-							aiGatewayRedisAWSAuthentication1 = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId3,
-								AssumeRoleArn:   assumeRoleArn3,
-								CacheName:       cacheName1,
-								IsServerless:    isServerless1,
-								Region:          region3,
-								RoleSessionName: roleSessionName3,
-								SecretAccessKey: secretAccessKey3,
-							}
-						}
-						if aiGatewayRedisAWSAuthentication1 != nil {
-							cloudAuthentication1 = &shared.CloudAuthentication{
-								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication1,
+							aiGatewayRedisAWSAuthentication3 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId5,
+								AssumeRoleArn:   assumeRoleArn5,
+								CacheName:       cacheName3,
+								IsServerless:    isServerless3,
+								Region:          region5,
+								RoleSessionName: roleSessionName5,
+								SecretAccessKey: secretAccessKey5,
 							}
 						}
-						var aiGatewayRedisAzureAuthentication1 *shared.AIGatewayRedisAzureAuthentication
+						if aiGatewayRedisAWSAuthentication3 != nil {
+							cloudAuthentication3 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication3,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication3 *shared.AIGatewayRedisAzureAuthentication
 						if r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure != nil {
-							clientId1 := new(string)
+							clientId3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
-								*clientId1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+								*clientId3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
 							} else {
-								clientId1 = nil
+								clientId3 = nil
 							}
-							clientSecret1 := new(string)
+							clientSecret3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
-								*clientSecret1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+								*clientSecret3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
 							} else {
-								clientSecret1 = nil
+								clientSecret3 = nil
 							}
-							tenantId1 := new(string)
+							tenantId3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
-								*tenantId1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+								*tenantId3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
 							} else {
-								tenantId1 = nil
+								tenantId3 = nil
 							}
-							aiGatewayRedisAzureAuthentication1 = &shared.AIGatewayRedisAzureAuthentication{
-								ClientID:     clientId1,
-								ClientSecret: clientSecret1,
-								TenantID:     tenantId1,
-							}
-						}
-						if aiGatewayRedisAzureAuthentication1 != nil {
-							cloudAuthentication1 = &shared.CloudAuthentication{
-								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication1,
+							aiGatewayRedisAzureAuthentication3 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId3,
+								ClientSecret: clientSecret3,
+								TenantID:     tenantId3,
 							}
 						}
-						var aiGatewayRedisGCPAuthentication1 *shared.AIGatewayRedisGCPAuthentication
+						if aiGatewayRedisAzureAuthentication3 != nil {
+							cloudAuthentication3 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication3,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication3 *shared.AIGatewayRedisGCPAuthentication
 						if r.Listener.Config.Server.Session.Redis.CloudAuthentication.Gcp != nil {
-							serviceAccountJson1 := new(string)
+							serviceAccountJson3 := new(string)
 							if !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.Listener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
-								*serviceAccountJson1 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+								*serviceAccountJson3 = r.Listener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
 							} else {
-								serviceAccountJson1 = nil
+								serviceAccountJson3 = nil
 							}
-							aiGatewayRedisGCPAuthentication1 = &shared.AIGatewayRedisGCPAuthentication{
-								ServiceAccountJSON: serviceAccountJson1,
+							aiGatewayRedisGCPAuthentication3 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson3,
 							}
 						}
-						if aiGatewayRedisGCPAuthentication1 != nil {
-							cloudAuthentication1 = &shared.CloudAuthentication{
-								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication1,
+						if aiGatewayRedisGCPAuthentication3 != nil {
+							cloudAuthentication3 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication3,
 							}
 						}
 					}
-					var cluster1 *shared.Cluster
+					var cluster3 *shared.Cluster
 					if r.Listener.Config.Server.Session.Redis.Cluster != nil {
-						maxRedirections1 := new(int64)
+						maxRedirections3 := new(int64)
 						if !r.Listener.Config.Server.Session.Redis.Cluster.MaxRedirections.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Cluster.MaxRedirections.IsNull() {
-							*maxRedirections1 = r.Listener.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
+							*maxRedirections3 = r.Listener.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
 						} else {
-							maxRedirections1 = nil
+							maxRedirections3 = nil
 						}
-						var nodes2 []shared.Nodes
+						var nodes6 []shared.Nodes
 						if r.Listener.Config.Server.Session.Redis.Cluster.Nodes != nil {
-							nodes2 = make([]shared.Nodes, 0, len(r.Listener.Config.Server.Session.Redis.Cluster.Nodes))
-							for nodesIndex2 := range r.Listener.Config.Server.Session.Redis.Cluster.Nodes {
-								ip1 := new(string)
-								if !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].IP.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].IP.IsNull() {
-									*ip1 = r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].IP.ValueString()
+							nodes6 = make([]shared.Nodes, 0, len(r.Listener.Config.Server.Session.Redis.Cluster.Nodes))
+							for nodesIndex6 := range r.Listener.Config.Server.Session.Redis.Cluster.Nodes {
+								ip3 := new(string)
+								if !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].IP.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].IP.IsNull() {
+									*ip3 = r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].IP.ValueString()
 								} else {
-									ip1 = nil
+									ip3 = nil
 								}
-								port3 := new(int64)
-								if !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].Port.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].Port.IsNull() {
-									*port3 = r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex2].Port.ValueInt64()
+								port9 := new(int64)
+								if !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].Port.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].Port.IsNull() {
+									*port9 = r.Listener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].Port.ValueInt64()
 								} else {
-									port3 = nil
+									port9 = nil
 								}
-								nodes2 = append(nodes2, shared.Nodes{
-									IP:   ip1,
-									Port: port3,
+								nodes6 = append(nodes6, shared.Nodes{
+									IP:   ip3,
+									Port: port9,
 								})
 							}
 						}
-						cluster1 = &shared.Cluster{
-							MaxRedirections: maxRedirections1,
-							Nodes:           nodes2,
+						cluster3 = &shared.Cluster{
+							MaxRedirections: maxRedirections3,
+							Nodes:           nodes6,
 						}
 					}
-					connectTimeout1 := new(int64)
+					connectTimeout3 := new(int64)
 					if !r.Listener.Config.Server.Session.Redis.ConnectTimeout.IsUnknown() && !r.Listener.Config.Server.Session.Redis.ConnectTimeout.IsNull() {
-						*connectTimeout1 = r.Listener.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
+						*connectTimeout3 = r.Listener.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
 					} else {
-						connectTimeout1 = nil
+						connectTimeout3 = nil
 					}
-					connectionIsProxied1 := new(bool)
+					connectionIsProxied3 := new(bool)
 					if !r.Listener.Config.Server.Session.Redis.ConnectionIsProxied.IsUnknown() && !r.Listener.Config.Server.Session.Redis.ConnectionIsProxied.IsNull() {
-						*connectionIsProxied1 = r.Listener.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
+						*connectionIsProxied3 = r.Listener.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
 					} else {
-						connectionIsProxied1 = nil
+						connectionIsProxied3 = nil
 					}
-					database1 := new(int64)
+					database3 := new(int64)
 					if !r.Listener.Config.Server.Session.Redis.Database.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Database.IsNull() {
-						*database1 = r.Listener.Config.Server.Session.Redis.Database.ValueInt64()
+						*database3 = r.Listener.Config.Server.Session.Redis.Database.ValueInt64()
 					} else {
-						database1 = nil
+						database3 = nil
 					}
-					host4 := new(string)
+					host8 := new(string)
 					if !r.Listener.Config.Server.Session.Redis.Host.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Host.IsNull() {
-						*host4 = r.Listener.Config.Server.Session.Redis.Host.ValueString()
+						*host8 = r.Listener.Config.Server.Session.Redis.Host.ValueString()
 					} else {
-						host4 = nil
+						host8 = nil
 					}
-					var keepalive1 *shared.Keepalive
+					var keepalive3 *shared.Keepalive
 					if r.Listener.Config.Server.Session.Redis.Keepalive != nil {
-						backlog1 := new(int64)
+						backlog3 := new(int64)
 						if !r.Listener.Config.Server.Session.Redis.Keepalive.Backlog.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Keepalive.Backlog.IsNull() {
-							*backlog1 = r.Listener.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
+							*backlog3 = r.Listener.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
 						} else {
-							backlog1 = nil
+							backlog3 = nil
 						}
-						poolSize1 := new(int64)
+						poolSize3 := new(int64)
 						if !r.Listener.Config.Server.Session.Redis.Keepalive.PoolSize.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Keepalive.PoolSize.IsNull() {
-							*poolSize1 = r.Listener.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
+							*poolSize3 = r.Listener.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
 						} else {
-							poolSize1 = nil
+							poolSize3 = nil
 						}
-						keepalive1 = &shared.Keepalive{
-							Backlog:  backlog1,
-							PoolSize: poolSize1,
+						keepalive3 = &shared.Keepalive{
+							Backlog:  backlog3,
+							PoolSize: poolSize3,
 						}
 					}
-					password2 := new(string)
+					password6 := new(string)
 					if !r.Listener.Config.Server.Session.Redis.Password.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Password.IsNull() {
-						*password2 = r.Listener.Config.Server.Session.Redis.Password.ValueString()
+						*password6 = r.Listener.Config.Server.Session.Redis.Password.ValueString()
 					} else {
-						password2 = nil
+						password6 = nil
 					}
-					port4 := new(string)
+					port10 := new(string)
 					if !r.Listener.Config.Server.Session.Redis.Port.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Port.IsNull() {
-						*port4 = r.Listener.Config.Server.Session.Redis.Port.ValueString()
+						*port10 = r.Listener.Config.Server.Session.Redis.Port.ValueString()
 					} else {
-						port4 = nil
+						port10 = nil
 					}
-					readTimeout1 := new(int64)
+					readTimeout3 := new(int64)
 					if !r.Listener.Config.Server.Session.Redis.ReadTimeout.IsUnknown() && !r.Listener.Config.Server.Session.Redis.ReadTimeout.IsNull() {
-						*readTimeout1 = r.Listener.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
+						*readTimeout3 = r.Listener.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
 					} else {
-						readTimeout1 = nil
+						readTimeout3 = nil
 					}
-					sendTimeout1 := new(int64)
+					sendTimeout3 := new(int64)
 					if !r.Listener.Config.Server.Session.Redis.SendTimeout.IsUnknown() && !r.Listener.Config.Server.Session.Redis.SendTimeout.IsNull() {
-						*sendTimeout1 = r.Listener.Config.Server.Session.Redis.SendTimeout.ValueInt64()
+						*sendTimeout3 = r.Listener.Config.Server.Session.Redis.SendTimeout.ValueInt64()
 					} else {
-						sendTimeout1 = nil
+						sendTimeout3 = nil
 					}
-					var sentinel1 *shared.Sentinel
+					var sentinel3 *shared.Sentinel
 					if r.Listener.Config.Server.Session.Redis.Sentinel != nil {
-						master1 := new(string)
+						master3 := new(string)
 						if !r.Listener.Config.Server.Session.Redis.Sentinel.Master.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Master.IsNull() {
-							*master1 = r.Listener.Config.Server.Session.Redis.Sentinel.Master.ValueString()
+							*master3 = r.Listener.Config.Server.Session.Redis.Sentinel.Master.ValueString()
 						} else {
-							master1 = nil
+							master3 = nil
 						}
-						var nodes3 []shared.AIGatewayRedisCloudConfigurationNodes
+						var nodes7 []shared.AIGatewayRedisCloudConfigurationNodes
 						if r.Listener.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-							nodes3 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.Listener.Config.Server.Session.Redis.Sentinel.Nodes))
-							for nodesIndex3 := range r.Listener.Config.Server.Session.Redis.Sentinel.Nodes {
-								host5 := new(string)
-								if !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Host.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Host.IsNull() {
-									*host5 = r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Host.ValueString()
+							nodes7 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.Listener.Config.Server.Session.Redis.Sentinel.Nodes))
+							for nodesIndex7 := range r.Listener.Config.Server.Session.Redis.Sentinel.Nodes {
+								host9 := new(string)
+								if !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Host.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Host.IsNull() {
+									*host9 = r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Host.ValueString()
 								} else {
-									host5 = nil
+									host9 = nil
 								}
-								port5 := new(int64)
-								if !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Port.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Port.IsNull() {
-									*port5 = r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex3].Port.ValueInt64()
+								port11 := new(int64)
+								if !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Port.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Port.IsNull() {
+									*port11 = r.Listener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Port.ValueInt64()
 								} else {
-									port5 = nil
+									port11 = nil
 								}
-								nodes3 = append(nodes3, shared.AIGatewayRedisCloudConfigurationNodes{
-									Host: host5,
-									Port: port5,
+								nodes7 = append(nodes7, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host9,
+									Port: port11,
 								})
 							}
 						}
-						password3 := new(string)
+						password7 := new(string)
 						if !r.Listener.Config.Server.Session.Redis.Sentinel.Password.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Password.IsNull() {
-							*password3 = r.Listener.Config.Server.Session.Redis.Sentinel.Password.ValueString()
+							*password7 = r.Listener.Config.Server.Session.Redis.Sentinel.Password.ValueString()
 						} else {
-							password3 = nil
+							password7 = nil
 						}
-						role1 := new(shared.Role)
+						role3 := new(shared.Role)
 						if !r.Listener.Config.Server.Session.Redis.Sentinel.Role.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Role.IsNull() {
-							*role1 = shared.Role(r.Listener.Config.Server.Session.Redis.Sentinel.Role.ValueString())
+							*role3 = shared.Role(r.Listener.Config.Server.Session.Redis.Sentinel.Role.ValueString())
 						} else {
-							role1 = nil
+							role3 = nil
 						}
-						username2 := new(string)
+						username6 := new(string)
 						if !r.Listener.Config.Server.Session.Redis.Sentinel.Username.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Sentinel.Username.IsNull() {
-							*username2 = r.Listener.Config.Server.Session.Redis.Sentinel.Username.ValueString()
+							*username6 = r.Listener.Config.Server.Session.Redis.Sentinel.Username.ValueString()
 						} else {
-							username2 = nil
+							username6 = nil
 						}
-						sentinel1 = &shared.Sentinel{
-							Master:   master1,
-							Nodes:    nodes3,
-							Password: password3,
-							Role:     role1,
-							Username: username2,
+						sentinel3 = &shared.Sentinel{
+							Master:   master3,
+							Nodes:    nodes7,
+							Password: password7,
+							Role:     role3,
+							Username: username6,
 						}
 					}
-					serverName1 := new(string)
+					serverName3 := new(string)
 					if !r.Listener.Config.Server.Session.Redis.ServerName.IsUnknown() && !r.Listener.Config.Server.Session.Redis.ServerName.IsNull() {
-						*serverName1 = r.Listener.Config.Server.Session.Redis.ServerName.ValueString()
+						*serverName3 = r.Listener.Config.Server.Session.Redis.ServerName.ValueString()
 					} else {
-						serverName1 = nil
+						serverName3 = nil
 					}
-					ssl1 := new(bool)
+					ssl3 := new(bool)
 					if !r.Listener.Config.Server.Session.Redis.Ssl.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Ssl.IsNull() {
-						*ssl1 = r.Listener.Config.Server.Session.Redis.Ssl.ValueBool()
+						*ssl3 = r.Listener.Config.Server.Session.Redis.Ssl.ValueBool()
 					} else {
-						ssl1 = nil
+						ssl3 = nil
 					}
-					sslVerify1 := new(bool)
+					sslVerify3 := new(bool)
 					if !r.Listener.Config.Server.Session.Redis.SslVerify.IsUnknown() && !r.Listener.Config.Server.Session.Redis.SslVerify.IsNull() {
-						*sslVerify1 = r.Listener.Config.Server.Session.Redis.SslVerify.ValueBool()
+						*sslVerify3 = r.Listener.Config.Server.Session.Redis.SslVerify.ValueBool()
 					} else {
-						sslVerify1 = nil
+						sslVerify3 = nil
 					}
-					username3 := new(string)
+					username7 := new(string)
 					if !r.Listener.Config.Server.Session.Redis.Username.IsUnknown() && !r.Listener.Config.Server.Session.Redis.Username.IsNull() {
-						*username3 = r.Listener.Config.Server.Session.Redis.Username.ValueString()
+						*username7 = r.Listener.Config.Server.Session.Redis.Username.ValueString()
 					} else {
-						username3 = nil
+						username7 = nil
 					}
-					redis1 = &shared.AIGatewayRedisCloudConfiguration{
-						CloudAuthentication: cloudAuthentication1,
-						Cluster:             cluster1,
-						ConnectTimeout:      connectTimeout1,
-						ConnectionIsProxied: connectionIsProxied1,
-						Database:            database1,
-						Host:                host4,
-						Keepalive:           keepalive1,
-						Password:            password2,
-						Port:                port4,
-						ReadTimeout:         readTimeout1,
-						SendTimeout:         sendTimeout1,
-						Sentinel:            sentinel1,
-						ServerName:          serverName1,
-						Ssl:                 ssl1,
-						SslVerify:           sslVerify1,
-						Username:            username3,
+					redis3 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication3,
+						Cluster:             cluster3,
+						ConnectTimeout:      connectTimeout3,
+						ConnectionIsProxied: connectionIsProxied3,
+						Database:            database3,
+						Host:                host8,
+						Keepalive:           keepalive3,
+						Password:            password6,
+						Port:                port10,
+						ReadTimeout:         readTimeout3,
+						SendTimeout:         sendTimeout3,
+						Sentinel:            sentinel3,
+						ServerName:          serverName3,
+						Ssl:                 ssl3,
+						SslVerify:           sslVerify3,
+						Username:            username7,
 					}
 				}
 				sessionTtl1 := new(int64)
@@ -7696,7 +12396,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				session1 = &shared.Session{
 					Client:     client1,
 					Managed:    managed1,
-					Redis:      redis1,
+					Redis:      redis3,
 					SessionTTL: sessionTtl1,
 					Strategy:   strategy1,
 				}
@@ -7720,7 +12420,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				allowedVersions1 = append(allowedVersions1, shared.AIGatewayMCPServerListenerAllowedVersions(allowedVersionsItem1.ValueString()))
 			}
 		}
-		var cache1 *shared.AIGatewayMCPServerListenerCache
+		var cache3 *shared.AIGatewayMCPServerListenerCache
 		if r.Listener.Config.Cache != nil {
 			var toolsList1 *shared.AIGatewayMCPServerCacheHint
 			if r.Listener.Config.Cache.ToolsList != nil {
@@ -7760,7 +12460,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					CacheScope: cacheScope3,
 				}
 			}
-			cache1 = &shared.AIGatewayMCPServerListenerCache{
+			cache3 = &shared.AIGatewayMCPServerListenerCache{
 				ToolsList: toolsList1,
 				Discover:  discover1,
 			}
@@ -7771,7 +12471,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			MaxRequestBodySize: maxRequestBodySize2,
 			Server:             server1,
 			AllowedVersions:    allowedVersions1,
-			Cache:              cache1,
+			Cache:              cache3,
 		}
 		sources := make([]string, 0, len(r.Listener.Sources))
 		for sourcesIndex := range r.Listener.Sources {
@@ -7791,9 +12491,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex6 := range r.Listener.Access.Consumer.Acls.Deny {
 						deny6 = append(deny6, r.Listener.Access.Consumer.Acls.Deny[denyIndex6].ValueString())
 					}
+					var allowWhen6 []string
+					if r.Listener.Access.Consumer.Acls.AllowWhen != nil {
+						allowWhen6 = make([]string, 0, len(r.Listener.Access.Consumer.Acls.AllowWhen))
+						for allowWhenIndex6 := range r.Listener.Access.Consumer.Acls.AllowWhen {
+							allowWhen6 = append(allowWhen6, r.Listener.Access.Consumer.Acls.AllowWhen[allowWhenIndex6].ValueString())
+						}
+					}
+					var denyWhen6 []string
+					if r.Listener.Access.Consumer.Acls.DenyWhen != nil {
+						denyWhen6 = make([]string, 0, len(r.Listener.Access.Consumer.Acls.DenyWhen))
+						for denyWhenIndex6 := range r.Listener.Access.Consumer.Acls.DenyWhen {
+							denyWhen6 = append(denyWhen6, r.Listener.Access.Consumer.Acls.DenyWhen[denyWhenIndex6].ValueString())
+						}
+					}
 					acls4 = &shared.AIGatewayMCPACLs{
-						Allow: allow6,
-						Deny:  deny6,
+						Allow:     allow6,
+						Deny:      deny6,
+						AllowWhen: allowWhen6,
+						DenyWhen:  denyWhen6,
 					}
 				}
 				var defaultToolAcls2 *shared.AIGatewayMCPACLs
@@ -7806,9 +12522,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex7 := range r.Listener.Access.Consumer.DefaultToolAcls.Deny {
 						deny7 = append(deny7, r.Listener.Access.Consumer.DefaultToolAcls.Deny[denyIndex7].ValueString())
 					}
+					var allowWhen7 []string
+					if r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen != nil {
+						allowWhen7 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex7 := range r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen {
+							allowWhen7 = append(allowWhen7, r.Listener.Access.Consumer.DefaultToolAcls.AllowWhen[allowWhenIndex7].ValueString())
+						}
+					}
+					var denyWhen7 []string
+					if r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen != nil {
+						denyWhen7 = make([]string, 0, len(r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex7 := range r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen {
+							denyWhen7 = append(denyWhen7, r.Listener.Access.Consumer.DefaultToolAcls.DenyWhen[denyWhenIndex7].ValueString())
+						}
+					}
 					defaultToolAcls2 = &shared.AIGatewayMCPACLs{
-						Allow: allow7,
-						Deny:  deny7,
+						Allow:     allow7,
+						Deny:      deny7,
+						AllowWhen: allowWhen7,
+						DenyWhen:  denyWhen7,
 					}
 				}
 				identityProviders2 := make([]string, 0, len(r.Listener.Access.Consumer.IdentityProviders))
@@ -7883,9 +12615,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex8 := range r.Listener.Access.OauthAccessToken.Acls.Deny {
 						deny8 = append(deny8, r.Listener.Access.OauthAccessToken.Acls.Deny[denyIndex8].ValueString())
 					}
+					var allowWhen8 []string
+					if r.Listener.Access.OauthAccessToken.Acls.AllowWhen != nil {
+						allowWhen8 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.AllowWhen))
+						for allowWhenIndex8 := range r.Listener.Access.OauthAccessToken.Acls.AllowWhen {
+							allowWhen8 = append(allowWhen8, r.Listener.Access.OauthAccessToken.Acls.AllowWhen[allowWhenIndex8].ValueString())
+						}
+					}
+					var denyWhen8 []string
+					if r.Listener.Access.OauthAccessToken.Acls.DenyWhen != nil {
+						denyWhen8 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.DenyWhen))
+						for denyWhenIndex8 := range r.Listener.Access.OauthAccessToken.Acls.DenyWhen {
+							denyWhen8 = append(denyWhen8, r.Listener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex8].ValueString())
+						}
+					}
 					acls5 = &shared.AIGatewayMCPACLs{
-						Allow: allow8,
-						Deny:  deny8,
+						Allow:     allow8,
+						Deny:      deny8,
+						AllowWhen: allowWhen8,
+						DenyWhen:  denyWhen8,
 					}
 				}
 				var defaultToolAcls3 *shared.AIGatewayMCPACLs
@@ -7898,9 +12646,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex9 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny {
 						deny9 = append(deny9, r.Listener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex9].ValueString())
 					}
+					var allowWhen9 []string
+					if r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen != nil {
+						allowWhen9 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex9 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen {
+							allowWhen9 = append(allowWhen9, r.Listener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen[allowWhenIndex9].ValueString())
+						}
+					}
+					var denyWhen9 []string
+					if r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen != nil {
+						denyWhen9 = make([]string, 0, len(r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex9 := range r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen {
+							denyWhen9 = append(denyWhen9, r.Listener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen[denyWhenIndex9].ValueString())
+						}
+					}
 					defaultToolAcls3 = &shared.AIGatewayMCPACLs{
-						Allow: allow9,
-						Deny:  deny9,
+						Allow:     allow9,
+						Deny:      deny9,
+						AllowWhen: allowWhen9,
+						DenyWhen:  denyWhen9,
 					}
 				}
 				identityProviders3 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.IdentityProviders))
@@ -7965,8 +12729,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		var displayName2 string
 		displayName2 = r.Listener.DisplayName.ValueString()
 
-		var name6 string
-		name6 = r.Listener.Name.ValueString()
+		var name12 string
+		name12 = r.Listener.Name.ValueString()
 
 		enabled2 := new(bool)
 		if !r.Listener.Enabled.IsUnknown() && !r.Listener.Enabled.IsNull() {
@@ -7992,16 +12756,426 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 
 			managedBy2[managedByKey2] = managedByInst2
 		}
+		var datastores2 []shared.AIGatewayDatastoreRef
+		if r.Listener.Datastores != nil {
+			datastores2 = make([]shared.AIGatewayDatastoreRef, 0, len(r.Listener.Datastores))
+			for datastoresIndex2 := range r.Listener.Datastores {
+				var name13 string
+				name13 = r.Listener.Datastores[datastoresIndex2].Name.ValueString()
+
+				datastores2 = append(datastores2, shared.AIGatewayDatastoreRef{
+					Name: name13,
+				})
+			}
+		}
+		var tokenVault2 *shared.AIGatewayTokenVault
+		if r.Listener.TokenVault != nil {
+			var provider2 string
+			provider2 = r.Listener.TokenVault.Provider.ValueString()
+
+			subjectTokenType2 := new(shared.SubjectTokenType)
+			if !r.Listener.TokenVault.SubjectTokenType.IsUnknown() && !r.Listener.TokenVault.SubjectTokenType.IsNull() {
+				*subjectTokenType2 = shared.SubjectTokenType(r.Listener.TokenVault.SubjectTokenType.ValueString())
+			} else {
+				subjectTokenType2 = nil
+			}
+			var credential2 *shared.AIGatewayTokenVaultCredential
+			if r.Listener.TokenVault.Credential != nil {
+				var inbound2 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.Listener.TokenVault.Credential.Inbound != nil {
+					location4 := new(shared.Location)
+					if !r.Listener.TokenVault.Credential.Inbound.Location.IsUnknown() && !r.Listener.TokenVault.Credential.Inbound.Location.IsNull() {
+						*location4 = shared.Location(r.Listener.TokenVault.Credential.Inbound.Location.ValueString())
+					} else {
+						location4 = nil
+					}
+					name14 := new(string)
+					if !r.Listener.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.Listener.TokenVault.Credential.Inbound.Name.IsNull() {
+						*name14 = r.Listener.TokenVault.Credential.Inbound.Name.ValueString()
+					} else {
+						name14 = nil
+					}
+					prefix4 := new(string)
+					if !r.Listener.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.Listener.TokenVault.Credential.Inbound.Prefix.IsNull() {
+						*prefix4 = r.Listener.TokenVault.Credential.Inbound.Prefix.ValueString()
+					} else {
+						prefix4 = nil
+					}
+					inbound2 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location4,
+						Name:     name14,
+						Prefix:   prefix4,
+					}
+				}
+				var outbound2 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.Listener.TokenVault.Credential.Outbound != nil {
+					location5 := new(shared.Location)
+					if !r.Listener.TokenVault.Credential.Outbound.Location.IsUnknown() && !r.Listener.TokenVault.Credential.Outbound.Location.IsNull() {
+						*location5 = shared.Location(r.Listener.TokenVault.Credential.Outbound.Location.ValueString())
+					} else {
+						location5 = nil
+					}
+					name15 := new(string)
+					if !r.Listener.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.Listener.TokenVault.Credential.Outbound.Name.IsNull() {
+						*name15 = r.Listener.TokenVault.Credential.Outbound.Name.ValueString()
+					} else {
+						name15 = nil
+					}
+					prefix5 := new(string)
+					if !r.Listener.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.Listener.TokenVault.Credential.Outbound.Prefix.IsNull() {
+						*prefix5 = r.Listener.TokenVault.Credential.Outbound.Prefix.ValueString()
+					} else {
+						prefix5 = nil
+					}
+					outbound2 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location5,
+						Name:     name15,
+						Prefix:   prefix5,
+					}
+				}
+				credential2 = &shared.AIGatewayTokenVaultCredential{
+					Inbound:  inbound2,
+					Outbound: outbound2,
+				}
+			}
+			var cache4 *shared.Cache
+			if r.Listener.TokenVault.Cache != nil {
+				var redis4 *shared.AIGatewayRedisCloudConfiguration
+				if r.Listener.TokenVault.Cache.Redis != nil {
+					var cloudAuthentication4 *shared.CloudAuthentication
+					if r.Listener.TokenVault.Cache.Redis.CloudAuthentication != nil {
+						var aiGatewayRedisAWSAuthentication4 *shared.AIGatewayRedisAWSAuthentication
+						if r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws != nil {
+							accessKeyId6 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
+								*accessKeyId6 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+							} else {
+								accessKeyId6 = nil
+							}
+							assumeRoleArn6 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
+								*assumeRoleArn6 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+							} else {
+								assumeRoleArn6 = nil
+							}
+							cacheName4 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
+								*cacheName4 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+							} else {
+								cacheName4 = nil
+							}
+							isServerless4 := new(bool)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
+								*isServerless4 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+							} else {
+								isServerless4 = nil
+							}
+							region6 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsNull() {
+								*region6 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.ValueString()
+							} else {
+								region6 = nil
+							}
+							roleSessionName6 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
+								*roleSessionName6 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+							} else {
+								roleSessionName6 = nil
+							}
+							secretAccessKey6 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
+								*secretAccessKey6 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+							} else {
+								secretAccessKey6 = nil
+							}
+							aiGatewayRedisAWSAuthentication4 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId6,
+								AssumeRoleArn:   assumeRoleArn6,
+								CacheName:       cacheName4,
+								IsServerless:    isServerless4,
+								Region:          region6,
+								RoleSessionName: roleSessionName6,
+								SecretAccessKey: secretAccessKey6,
+							}
+						}
+						if aiGatewayRedisAWSAuthentication4 != nil {
+							cloudAuthentication4 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication4,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication4 *shared.AIGatewayRedisAzureAuthentication
+						if r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure != nil {
+							clientId4 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
+								*clientId4 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+							} else {
+								clientId4 = nil
+							}
+							clientSecret4 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
+								*clientSecret4 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+							} else {
+								clientSecret4 = nil
+							}
+							tenantId4 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
+								*tenantId4 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+							} else {
+								tenantId4 = nil
+							}
+							aiGatewayRedisAzureAuthentication4 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId4,
+								ClientSecret: clientSecret4,
+								TenantID:     tenantId4,
+							}
+						}
+						if aiGatewayRedisAzureAuthentication4 != nil {
+							cloudAuthentication4 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication4,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication4 *shared.AIGatewayRedisGCPAuthentication
+						if r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Gcp != nil {
+							serviceAccountJson4 := new(string)
+							if !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
+								*serviceAccountJson4 = r.Listener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+							} else {
+								serviceAccountJson4 = nil
+							}
+							aiGatewayRedisGCPAuthentication4 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson4,
+							}
+						}
+						if aiGatewayRedisGCPAuthentication4 != nil {
+							cloudAuthentication4 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication4,
+							}
+						}
+					}
+					var cluster4 *shared.Cluster
+					if r.Listener.TokenVault.Cache.Redis.Cluster != nil {
+						maxRedirections4 := new(int64)
+						if !r.Listener.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsNull() {
+							*maxRedirections4 = r.Listener.TokenVault.Cache.Redis.Cluster.MaxRedirections.ValueInt64()
+						} else {
+							maxRedirections4 = nil
+						}
+						var nodes8 []shared.Nodes
+						if r.Listener.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+							nodes8 = make([]shared.Nodes, 0, len(r.Listener.TokenVault.Cache.Redis.Cluster.Nodes))
+							for nodesIndex8 := range r.Listener.TokenVault.Cache.Redis.Cluster.Nodes {
+								ip4 := new(string)
+								if !r.Listener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex8].IP.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex8].IP.IsNull() {
+									*ip4 = r.Listener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex8].IP.ValueString()
+								} else {
+									ip4 = nil
+								}
+								port12 := new(int64)
+								if !r.Listener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex8].Port.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex8].Port.IsNull() {
+									*port12 = r.Listener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex8].Port.ValueInt64()
+								} else {
+									port12 = nil
+								}
+								nodes8 = append(nodes8, shared.Nodes{
+									IP:   ip4,
+									Port: port12,
+								})
+							}
+						}
+						cluster4 = &shared.Cluster{
+							MaxRedirections: maxRedirections4,
+							Nodes:           nodes8,
+						}
+					}
+					connectTimeout4 := new(int64)
+					if !r.Listener.TokenVault.Cache.Redis.ConnectTimeout.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.ConnectTimeout.IsNull() {
+						*connectTimeout4 = r.Listener.TokenVault.Cache.Redis.ConnectTimeout.ValueInt64()
+					} else {
+						connectTimeout4 = nil
+					}
+					connectionIsProxied4 := new(bool)
+					if !r.Listener.TokenVault.Cache.Redis.ConnectionIsProxied.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.ConnectionIsProxied.IsNull() {
+						*connectionIsProxied4 = r.Listener.TokenVault.Cache.Redis.ConnectionIsProxied.ValueBool()
+					} else {
+						connectionIsProxied4 = nil
+					}
+					database4 := new(int64)
+					if !r.Listener.TokenVault.Cache.Redis.Database.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Database.IsNull() {
+						*database4 = r.Listener.TokenVault.Cache.Redis.Database.ValueInt64()
+					} else {
+						database4 = nil
+					}
+					host10 := new(string)
+					if !r.Listener.TokenVault.Cache.Redis.Host.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Host.IsNull() {
+						*host10 = r.Listener.TokenVault.Cache.Redis.Host.ValueString()
+					} else {
+						host10 = nil
+					}
+					var keepalive4 *shared.Keepalive
+					if r.Listener.TokenVault.Cache.Redis.Keepalive != nil {
+						backlog4 := new(int64)
+						if !r.Listener.TokenVault.Cache.Redis.Keepalive.Backlog.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Keepalive.Backlog.IsNull() {
+							*backlog4 = r.Listener.TokenVault.Cache.Redis.Keepalive.Backlog.ValueInt64()
+						} else {
+							backlog4 = nil
+						}
+						poolSize4 := new(int64)
+						if !r.Listener.TokenVault.Cache.Redis.Keepalive.PoolSize.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Keepalive.PoolSize.IsNull() {
+							*poolSize4 = r.Listener.TokenVault.Cache.Redis.Keepalive.PoolSize.ValueInt64()
+						} else {
+							poolSize4 = nil
+						}
+						keepalive4 = &shared.Keepalive{
+							Backlog:  backlog4,
+							PoolSize: poolSize4,
+						}
+					}
+					password8 := new(string)
+					if !r.Listener.TokenVault.Cache.Redis.Password.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Password.IsNull() {
+						*password8 = r.Listener.TokenVault.Cache.Redis.Password.ValueString()
+					} else {
+						password8 = nil
+					}
+					port13 := new(string)
+					if !r.Listener.TokenVault.Cache.Redis.Port.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Port.IsNull() {
+						*port13 = r.Listener.TokenVault.Cache.Redis.Port.ValueString()
+					} else {
+						port13 = nil
+					}
+					readTimeout4 := new(int64)
+					if !r.Listener.TokenVault.Cache.Redis.ReadTimeout.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.ReadTimeout.IsNull() {
+						*readTimeout4 = r.Listener.TokenVault.Cache.Redis.ReadTimeout.ValueInt64()
+					} else {
+						readTimeout4 = nil
+					}
+					sendTimeout4 := new(int64)
+					if !r.Listener.TokenVault.Cache.Redis.SendTimeout.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.SendTimeout.IsNull() {
+						*sendTimeout4 = r.Listener.TokenVault.Cache.Redis.SendTimeout.ValueInt64()
+					} else {
+						sendTimeout4 = nil
+					}
+					var sentinel4 *shared.Sentinel
+					if r.Listener.TokenVault.Cache.Redis.Sentinel != nil {
+						master4 := new(string)
+						if !r.Listener.TokenVault.Cache.Redis.Sentinel.Master.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Sentinel.Master.IsNull() {
+							*master4 = r.Listener.TokenVault.Cache.Redis.Sentinel.Master.ValueString()
+						} else {
+							master4 = nil
+						}
+						var nodes9 []shared.AIGatewayRedisCloudConfigurationNodes
+						if r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+							nodes9 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes))
+							for nodesIndex9 := range r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes {
+								host11 := new(string)
+								if !r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex9].Host.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex9].Host.IsNull() {
+									*host11 = r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex9].Host.ValueString()
+								} else {
+									host11 = nil
+								}
+								port14 := new(int64)
+								if !r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex9].Port.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex9].Port.IsNull() {
+									*port14 = r.Listener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex9].Port.ValueInt64()
+								} else {
+									port14 = nil
+								}
+								nodes9 = append(nodes9, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host11,
+									Port: port14,
+								})
+							}
+						}
+						password9 := new(string)
+						if !r.Listener.TokenVault.Cache.Redis.Sentinel.Password.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Sentinel.Password.IsNull() {
+							*password9 = r.Listener.TokenVault.Cache.Redis.Sentinel.Password.ValueString()
+						} else {
+							password9 = nil
+						}
+						role4 := new(shared.Role)
+						if !r.Listener.TokenVault.Cache.Redis.Sentinel.Role.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Sentinel.Role.IsNull() {
+							*role4 = shared.Role(r.Listener.TokenVault.Cache.Redis.Sentinel.Role.ValueString())
+						} else {
+							role4 = nil
+						}
+						username8 := new(string)
+						if !r.Listener.TokenVault.Cache.Redis.Sentinel.Username.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Sentinel.Username.IsNull() {
+							*username8 = r.Listener.TokenVault.Cache.Redis.Sentinel.Username.ValueString()
+						} else {
+							username8 = nil
+						}
+						sentinel4 = &shared.Sentinel{
+							Master:   master4,
+							Nodes:    nodes9,
+							Password: password9,
+							Role:     role4,
+							Username: username8,
+						}
+					}
+					serverName4 := new(string)
+					if !r.Listener.TokenVault.Cache.Redis.ServerName.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.ServerName.IsNull() {
+						*serverName4 = r.Listener.TokenVault.Cache.Redis.ServerName.ValueString()
+					} else {
+						serverName4 = nil
+					}
+					ssl4 := new(bool)
+					if !r.Listener.TokenVault.Cache.Redis.Ssl.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Ssl.IsNull() {
+						*ssl4 = r.Listener.TokenVault.Cache.Redis.Ssl.ValueBool()
+					} else {
+						ssl4 = nil
+					}
+					sslVerify4 := new(bool)
+					if !r.Listener.TokenVault.Cache.Redis.SslVerify.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.SslVerify.IsNull() {
+						*sslVerify4 = r.Listener.TokenVault.Cache.Redis.SslVerify.ValueBool()
+					} else {
+						sslVerify4 = nil
+					}
+					username9 := new(string)
+					if !r.Listener.TokenVault.Cache.Redis.Username.IsUnknown() && !r.Listener.TokenVault.Cache.Redis.Username.IsNull() {
+						*username9 = r.Listener.TokenVault.Cache.Redis.Username.ValueString()
+					} else {
+						username9 = nil
+					}
+					redis4 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication4,
+						Cluster:             cluster4,
+						ConnectTimeout:      connectTimeout4,
+						ConnectionIsProxied: connectionIsProxied4,
+						Database:            database4,
+						Host:                host10,
+						Keepalive:           keepalive4,
+						Password:            password8,
+						Port:                port13,
+						ReadTimeout:         readTimeout4,
+						SendTimeout:         sendTimeout4,
+						Sentinel:            sentinel4,
+						ServerName:          serverName4,
+						Ssl:                 ssl4,
+						SslVerify:           sslVerify4,
+						Username:            username9,
+					}
+				}
+				cache4 = &shared.Cache{
+					Redis: redis4,
+				}
+			}
+			tokenVault2 = &shared.AIGatewayTokenVault{
+				Provider:         provider2,
+				SubjectTokenType: subjectTokenType2,
+				Credential:       credential2,
+				Cache:            cache4,
+			}
+		}
 		aiGatewayMCPServerListener = &shared.AIGatewayMCPServerListener{
 			Config:      config2,
 			Sources:     sources,
 			Access:      access3,
 			DisplayName: displayName2,
-			Name:        name6,
+			Name:        name12,
 			Enabled:     enabled2,
 			Policies:    policies2,
 			Labels:      labels2,
 			ManagedBy:   managedBy2,
+			Datastores:  datastores2,
+			TokenVault:  tokenVault2,
 		}
 	}
 	if aiGatewayMCPServerListener != nil {
@@ -8144,317 +13318,317 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				} else {
 					managed2 = nil
 				}
-				var redis2 *shared.AIGatewayRedisCloudConfiguration
+				var redis5 *shared.AIGatewayRedisCloudConfiguration
 				if r.PassthroughListener.Config.Server.Session.Redis != nil {
-					var cloudAuthentication2 *shared.CloudAuthentication
+					var cloudAuthentication5 *shared.CloudAuthentication
 					if r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication != nil {
-						var aiGatewayRedisAWSAuthentication2 *shared.AIGatewayRedisAWSAuthentication
+						var aiGatewayRedisAWSAuthentication5 *shared.AIGatewayRedisAWSAuthentication
 						if r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId4 := new(string)
+							accessKeyId7 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId7 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId4 = nil
+								accessKeyId7 = nil
 							}
-							assumeRoleArn4 := new(string)
+							assumeRoleArn7 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn7 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn4 = nil
+								assumeRoleArn7 = nil
 							}
-							cacheName2 := new(string)
+							cacheName5 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
-								*cacheName2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+								*cacheName5 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
 							} else {
-								cacheName2 = nil
+								cacheName5 = nil
 							}
-							isServerless2 := new(bool)
+							isServerless5 := new(bool)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
-								*isServerless2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+								*isServerless5 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
 							} else {
-								isServerless2 = nil
+								isServerless5 = nil
 							}
-							region4 := new(string)
+							region7 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region7 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region4 = nil
+								region7 = nil
 							}
-							roleSessionName4 := new(string)
+							roleSessionName7 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName7 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName4 = nil
+								roleSessionName7 = nil
 							}
-							secretAccessKey4 := new(string)
+							secretAccessKey7 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey4 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey7 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey4 = nil
+								secretAccessKey7 = nil
 							}
-							aiGatewayRedisAWSAuthentication2 = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId4,
-								AssumeRoleArn:   assumeRoleArn4,
-								CacheName:       cacheName2,
-								IsServerless:    isServerless2,
-								Region:          region4,
-								RoleSessionName: roleSessionName4,
-								SecretAccessKey: secretAccessKey4,
-							}
-						}
-						if aiGatewayRedisAWSAuthentication2 != nil {
-							cloudAuthentication2 = &shared.CloudAuthentication{
-								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication2,
+							aiGatewayRedisAWSAuthentication5 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId7,
+								AssumeRoleArn:   assumeRoleArn7,
+								CacheName:       cacheName5,
+								IsServerless:    isServerless5,
+								Region:          region7,
+								RoleSessionName: roleSessionName7,
+								SecretAccessKey: secretAccessKey7,
 							}
 						}
-						var aiGatewayRedisAzureAuthentication2 *shared.AIGatewayRedisAzureAuthentication
+						if aiGatewayRedisAWSAuthentication5 != nil {
+							cloudAuthentication5 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication5,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication5 *shared.AIGatewayRedisAzureAuthentication
 						if r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure != nil {
-							clientId2 := new(string)
+							clientId5 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
-								*clientId2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+								*clientId5 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
 							} else {
-								clientId2 = nil
+								clientId5 = nil
 							}
-							clientSecret2 := new(string)
+							clientSecret5 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
-								*clientSecret2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+								*clientSecret5 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
 							} else {
-								clientSecret2 = nil
+								clientSecret5 = nil
 							}
-							tenantId2 := new(string)
+							tenantId5 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
-								*tenantId2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+								*tenantId5 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
 							} else {
-								tenantId2 = nil
+								tenantId5 = nil
 							}
-							aiGatewayRedisAzureAuthentication2 = &shared.AIGatewayRedisAzureAuthentication{
-								ClientID:     clientId2,
-								ClientSecret: clientSecret2,
-								TenantID:     tenantId2,
-							}
-						}
-						if aiGatewayRedisAzureAuthentication2 != nil {
-							cloudAuthentication2 = &shared.CloudAuthentication{
-								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication2,
+							aiGatewayRedisAzureAuthentication5 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId5,
+								ClientSecret: clientSecret5,
+								TenantID:     tenantId5,
 							}
 						}
-						var aiGatewayRedisGCPAuthentication2 *shared.AIGatewayRedisGCPAuthentication
+						if aiGatewayRedisAzureAuthentication5 != nil {
+							cloudAuthentication5 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication5,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication5 *shared.AIGatewayRedisGCPAuthentication
 						if r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Gcp != nil {
-							serviceAccountJson2 := new(string)
+							serviceAccountJson5 := new(string)
 							if !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
-								*serviceAccountJson2 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+								*serviceAccountJson5 = r.PassthroughListener.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
 							} else {
-								serviceAccountJson2 = nil
+								serviceAccountJson5 = nil
 							}
-							aiGatewayRedisGCPAuthentication2 = &shared.AIGatewayRedisGCPAuthentication{
-								ServiceAccountJSON: serviceAccountJson2,
+							aiGatewayRedisGCPAuthentication5 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson5,
 							}
 						}
-						if aiGatewayRedisGCPAuthentication2 != nil {
-							cloudAuthentication2 = &shared.CloudAuthentication{
-								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication2,
+						if aiGatewayRedisGCPAuthentication5 != nil {
+							cloudAuthentication5 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication5,
 							}
 						}
 					}
-					var cluster2 *shared.Cluster
+					var cluster5 *shared.Cluster
 					if r.PassthroughListener.Config.Server.Session.Redis.Cluster != nil {
-						maxRedirections2 := new(int64)
+						maxRedirections5 := new(int64)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Cluster.MaxRedirections.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Cluster.MaxRedirections.IsNull() {
-							*maxRedirections2 = r.PassthroughListener.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
+							*maxRedirections5 = r.PassthroughListener.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
 						} else {
-							maxRedirections2 = nil
+							maxRedirections5 = nil
 						}
-						var nodes4 []shared.Nodes
+						var nodes10 []shared.Nodes
 						if r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes != nil {
-							nodes4 = make([]shared.Nodes, 0, len(r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes))
-							for nodesIndex4 := range r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes {
-								ip2 := new(string)
-								if !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex4].IP.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex4].IP.IsNull() {
-									*ip2 = r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex4].IP.ValueString()
+							nodes10 = make([]shared.Nodes, 0, len(r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes))
+							for nodesIndex10 := range r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes {
+								ip5 := new(string)
+								if !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex10].IP.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex10].IP.IsNull() {
+									*ip5 = r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex10].IP.ValueString()
 								} else {
-									ip2 = nil
+									ip5 = nil
 								}
-								port6 := new(int64)
-								if !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex4].Port.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex4].Port.IsNull() {
-									*port6 = r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex4].Port.ValueInt64()
+								port15 := new(int64)
+								if !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex10].Port.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex10].Port.IsNull() {
+									*port15 = r.PassthroughListener.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex10].Port.ValueInt64()
 								} else {
-									port6 = nil
+									port15 = nil
 								}
-								nodes4 = append(nodes4, shared.Nodes{
-									IP:   ip2,
-									Port: port6,
+								nodes10 = append(nodes10, shared.Nodes{
+									IP:   ip5,
+									Port: port15,
 								})
 							}
 						}
-						cluster2 = &shared.Cluster{
-							MaxRedirections: maxRedirections2,
-							Nodes:           nodes4,
+						cluster5 = &shared.Cluster{
+							MaxRedirections: maxRedirections5,
+							Nodes:           nodes10,
 						}
 					}
-					connectTimeout2 := new(int64)
+					connectTimeout5 := new(int64)
 					if !r.PassthroughListener.Config.Server.Session.Redis.ConnectTimeout.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.ConnectTimeout.IsNull() {
-						*connectTimeout2 = r.PassthroughListener.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
+						*connectTimeout5 = r.PassthroughListener.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
 					} else {
-						connectTimeout2 = nil
+						connectTimeout5 = nil
 					}
-					connectionIsProxied2 := new(bool)
+					connectionIsProxied5 := new(bool)
 					if !r.PassthroughListener.Config.Server.Session.Redis.ConnectionIsProxied.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.ConnectionIsProxied.IsNull() {
-						*connectionIsProxied2 = r.PassthroughListener.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
+						*connectionIsProxied5 = r.PassthroughListener.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
 					} else {
-						connectionIsProxied2 = nil
+						connectionIsProxied5 = nil
 					}
-					database2 := new(int64)
+					database5 := new(int64)
 					if !r.PassthroughListener.Config.Server.Session.Redis.Database.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Database.IsNull() {
-						*database2 = r.PassthroughListener.Config.Server.Session.Redis.Database.ValueInt64()
+						*database5 = r.PassthroughListener.Config.Server.Session.Redis.Database.ValueInt64()
 					} else {
-						database2 = nil
+						database5 = nil
 					}
-					host6 := new(string)
+					host12 := new(string)
 					if !r.PassthroughListener.Config.Server.Session.Redis.Host.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Host.IsNull() {
-						*host6 = r.PassthroughListener.Config.Server.Session.Redis.Host.ValueString()
+						*host12 = r.PassthroughListener.Config.Server.Session.Redis.Host.ValueString()
 					} else {
-						host6 = nil
+						host12 = nil
 					}
-					var keepalive2 *shared.Keepalive
+					var keepalive5 *shared.Keepalive
 					if r.PassthroughListener.Config.Server.Session.Redis.Keepalive != nil {
-						backlog2 := new(int64)
+						backlog5 := new(int64)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Keepalive.Backlog.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Keepalive.Backlog.IsNull() {
-							*backlog2 = r.PassthroughListener.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
+							*backlog5 = r.PassthroughListener.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
 						} else {
-							backlog2 = nil
+							backlog5 = nil
 						}
-						poolSize2 := new(int64)
+						poolSize5 := new(int64)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Keepalive.PoolSize.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Keepalive.PoolSize.IsNull() {
-							*poolSize2 = r.PassthroughListener.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
+							*poolSize5 = r.PassthroughListener.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
 						} else {
-							poolSize2 = nil
+							poolSize5 = nil
 						}
-						keepalive2 = &shared.Keepalive{
-							Backlog:  backlog2,
-							PoolSize: poolSize2,
+						keepalive5 = &shared.Keepalive{
+							Backlog:  backlog5,
+							PoolSize: poolSize5,
 						}
 					}
-					password4 := new(string)
+					password10 := new(string)
 					if !r.PassthroughListener.Config.Server.Session.Redis.Password.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Password.IsNull() {
-						*password4 = r.PassthroughListener.Config.Server.Session.Redis.Password.ValueString()
+						*password10 = r.PassthroughListener.Config.Server.Session.Redis.Password.ValueString()
 					} else {
-						password4 = nil
+						password10 = nil
 					}
-					port7 := new(string)
+					port16 := new(string)
 					if !r.PassthroughListener.Config.Server.Session.Redis.Port.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Port.IsNull() {
-						*port7 = r.PassthroughListener.Config.Server.Session.Redis.Port.ValueString()
+						*port16 = r.PassthroughListener.Config.Server.Session.Redis.Port.ValueString()
 					} else {
-						port7 = nil
+						port16 = nil
 					}
-					readTimeout2 := new(int64)
+					readTimeout5 := new(int64)
 					if !r.PassthroughListener.Config.Server.Session.Redis.ReadTimeout.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.ReadTimeout.IsNull() {
-						*readTimeout2 = r.PassthroughListener.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
+						*readTimeout5 = r.PassthroughListener.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
 					} else {
-						readTimeout2 = nil
+						readTimeout5 = nil
 					}
-					sendTimeout2 := new(int64)
+					sendTimeout5 := new(int64)
 					if !r.PassthroughListener.Config.Server.Session.Redis.SendTimeout.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.SendTimeout.IsNull() {
-						*sendTimeout2 = r.PassthroughListener.Config.Server.Session.Redis.SendTimeout.ValueInt64()
+						*sendTimeout5 = r.PassthroughListener.Config.Server.Session.Redis.SendTimeout.ValueInt64()
 					} else {
-						sendTimeout2 = nil
+						sendTimeout5 = nil
 					}
-					var sentinel2 *shared.Sentinel
+					var sentinel5 *shared.Sentinel
 					if r.PassthroughListener.Config.Server.Session.Redis.Sentinel != nil {
-						master2 := new(string)
+						master5 := new(string)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Master.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Master.IsNull() {
-							*master2 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Master.ValueString()
+							*master5 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Master.ValueString()
 						} else {
-							master2 = nil
+							master5 = nil
 						}
-						var nodes5 []shared.AIGatewayRedisCloudConfigurationNodes
+						var nodes11 []shared.AIGatewayRedisCloudConfigurationNodes
 						if r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-							nodes5 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes))
-							for nodesIndex5 := range r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes {
-								host7 := new(string)
-								if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex5].Host.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex5].Host.IsNull() {
-									*host7 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex5].Host.ValueString()
+							nodes11 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes))
+							for nodesIndex11 := range r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes {
+								host13 := new(string)
+								if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex11].Host.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex11].Host.IsNull() {
+									*host13 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex11].Host.ValueString()
 								} else {
-									host7 = nil
+									host13 = nil
 								}
-								port8 := new(int64)
-								if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex5].Port.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex5].Port.IsNull() {
-									*port8 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex5].Port.ValueInt64()
+								port17 := new(int64)
+								if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex11].Port.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex11].Port.IsNull() {
+									*port17 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex11].Port.ValueInt64()
 								} else {
-									port8 = nil
+									port17 = nil
 								}
-								nodes5 = append(nodes5, shared.AIGatewayRedisCloudConfigurationNodes{
-									Host: host7,
-									Port: port8,
+								nodes11 = append(nodes11, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host13,
+									Port: port17,
 								})
 							}
 						}
-						password5 := new(string)
+						password11 := new(string)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Password.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Password.IsNull() {
-							*password5 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Password.ValueString()
+							*password11 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Password.ValueString()
 						} else {
-							password5 = nil
+							password11 = nil
 						}
-						role2 := new(shared.Role)
+						role5 := new(shared.Role)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Role.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Role.IsNull() {
-							*role2 = shared.Role(r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Role.ValueString())
+							*role5 = shared.Role(r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Role.ValueString())
 						} else {
-							role2 = nil
+							role5 = nil
 						}
-						username4 := new(string)
+						username10 := new(string)
 						if !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Username.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Username.IsNull() {
-							*username4 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Username.ValueString()
+							*username10 = r.PassthroughListener.Config.Server.Session.Redis.Sentinel.Username.ValueString()
 						} else {
-							username4 = nil
+							username10 = nil
 						}
-						sentinel2 = &shared.Sentinel{
-							Master:   master2,
-							Nodes:    nodes5,
-							Password: password5,
-							Role:     role2,
-							Username: username4,
+						sentinel5 = &shared.Sentinel{
+							Master:   master5,
+							Nodes:    nodes11,
+							Password: password11,
+							Role:     role5,
+							Username: username10,
 						}
 					}
-					serverName2 := new(string)
+					serverName5 := new(string)
 					if !r.PassthroughListener.Config.Server.Session.Redis.ServerName.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.ServerName.IsNull() {
-						*serverName2 = r.PassthroughListener.Config.Server.Session.Redis.ServerName.ValueString()
+						*serverName5 = r.PassthroughListener.Config.Server.Session.Redis.ServerName.ValueString()
 					} else {
-						serverName2 = nil
+						serverName5 = nil
 					}
-					ssl2 := new(bool)
+					ssl5 := new(bool)
 					if !r.PassthroughListener.Config.Server.Session.Redis.Ssl.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Ssl.IsNull() {
-						*ssl2 = r.PassthroughListener.Config.Server.Session.Redis.Ssl.ValueBool()
+						*ssl5 = r.PassthroughListener.Config.Server.Session.Redis.Ssl.ValueBool()
 					} else {
-						ssl2 = nil
+						ssl5 = nil
 					}
-					sslVerify2 := new(bool)
+					sslVerify5 := new(bool)
 					if !r.PassthroughListener.Config.Server.Session.Redis.SslVerify.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.SslVerify.IsNull() {
-						*sslVerify2 = r.PassthroughListener.Config.Server.Session.Redis.SslVerify.ValueBool()
+						*sslVerify5 = r.PassthroughListener.Config.Server.Session.Redis.SslVerify.ValueBool()
 					} else {
-						sslVerify2 = nil
+						sslVerify5 = nil
 					}
-					username5 := new(string)
+					username11 := new(string)
 					if !r.PassthroughListener.Config.Server.Session.Redis.Username.IsUnknown() && !r.PassthroughListener.Config.Server.Session.Redis.Username.IsNull() {
-						*username5 = r.PassthroughListener.Config.Server.Session.Redis.Username.ValueString()
+						*username11 = r.PassthroughListener.Config.Server.Session.Redis.Username.ValueString()
 					} else {
-						username5 = nil
+						username11 = nil
 					}
-					redis2 = &shared.AIGatewayRedisCloudConfiguration{
-						CloudAuthentication: cloudAuthentication2,
-						Cluster:             cluster2,
-						ConnectTimeout:      connectTimeout2,
-						ConnectionIsProxied: connectionIsProxied2,
-						Database:            database2,
-						Host:                host6,
-						Keepalive:           keepalive2,
-						Password:            password4,
-						Port:                port7,
-						ReadTimeout:         readTimeout2,
-						SendTimeout:         sendTimeout2,
-						Sentinel:            sentinel2,
-						ServerName:          serverName2,
-						Ssl:                 ssl2,
-						SslVerify:           sslVerify2,
-						Username:            username5,
+					redis5 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication5,
+						Cluster:             cluster5,
+						ConnectTimeout:      connectTimeout5,
+						ConnectionIsProxied: connectionIsProxied5,
+						Database:            database5,
+						Host:                host12,
+						Keepalive:           keepalive5,
+						Password:            password10,
+						Port:                port16,
+						ReadTimeout:         readTimeout5,
+						SendTimeout:         sendTimeout5,
+						Sentinel:            sentinel5,
+						ServerName:          serverName5,
+						Ssl:                 ssl5,
+						SslVerify:           sslVerify5,
+						Username:            username11,
 					}
 				}
 				sessionTtl2 := new(int64)
@@ -8472,7 +13646,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				session2 = &shared.AIGatewayMCPServerWithUpstreamConfigSession{
 					Client:     client2,
 					Managed:    managed2,
-					Redis:      redis2,
+					Redis:      redis5,
 					SessionTTL: sessionTtl2,
 					Strategy:   strategy2,
 				}
@@ -8498,17 +13672,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			if r.PassthroughListener.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws2 *shared.AIGatewayUpstreamAuthAWS
 				if r.PassthroughListener.Config.Upstream.Auth.Aws != nil {
-					accessKeyId5 := new(string)
+					accessKeyId8 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
-						*accessKeyId5 = r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+						*accessKeyId8 = r.PassthroughListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
 					} else {
-						accessKeyId5 = nil
+						accessKeyId8 = nil
 					}
-					secretAccessKey5 := new(string)
+					secretAccessKey8 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
-						*secretAccessKey5 = r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+						*secretAccessKey8 = r.PassthroughListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
 					} else {
-						secretAccessKey5 = nil
+						secretAccessKey8 = nil
 					}
 					sessionToken2 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
@@ -8516,23 +13690,23 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						sessionToken2 = nil
 					}
-					region5 := new(string)
+					region8 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.Region.IsNull() {
-						*region5 = r.PassthroughListener.Config.Upstream.Auth.Aws.Region.ValueString()
+						*region8 = r.PassthroughListener.Config.Upstream.Auth.Aws.Region.ValueString()
 					} else {
-						region5 = nil
+						region8 = nil
 					}
-					assumeRoleArn5 := new(string)
+					assumeRoleArn8 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
-						*assumeRoleArn5 = r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+						*assumeRoleArn8 = r.PassthroughListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
 					} else {
-						assumeRoleArn5 = nil
+						assumeRoleArn8 = nil
 					}
-					roleSessionName5 := new(string)
+					roleSessionName8 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
-						*roleSessionName5 = r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+						*roleSessionName8 = r.PassthroughListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
 					} else {
-						roleSessionName5 = nil
+						roleSessionName8 = nil
 					}
 					stsEndpointUrl2 := new(string)
 					if !r.PassthroughListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.PassthroughListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
@@ -8541,12 +13715,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 						stsEndpointUrl2 = nil
 					}
 					aiGatewayUpstreamAuthAws2 = &shared.AIGatewayUpstreamAuthAWS{
-						AccessKeyID:     accessKeyId5,
-						SecretAccessKey: secretAccessKey5,
+						AccessKeyID:     accessKeyId8,
+						SecretAccessKey: secretAccessKey8,
 						SessionToken:    sessionToken2,
-						Region:          region5,
-						AssumeRoleArn:   assumeRoleArn5,
-						RoleSessionName: roleSessionName5,
+						Region:          region8,
+						AssumeRoleArn:   assumeRoleArn8,
+						RoleSessionName: roleSessionName8,
 						StsEndpointURL:  stsEndpointUrl2,
 					}
 				}
@@ -8560,44 +13734,52 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Auth: auth2,
 			}
 		}
+		certificates2 := make([]string, 0, len(r.PassthroughListener.Config.Certificates))
+		for certificatesIndex2 := range r.PassthroughListener.Config.Certificates {
+			certificates2 = append(certificates2, r.PassthroughListener.Config.Certificates[certificatesIndex2].ValueString())
+		}
+		caCertificates2 := make([]string, 0, len(r.PassthroughListener.Config.CaCertificates))
+		for caCertificatesIndex2 := range r.PassthroughListener.Config.CaCertificates {
+			caCertificates2 = append(caCertificates2, r.PassthroughListener.Config.CaCertificates[caCertificatesIndex2].ValueString())
+		}
 		var proxy *shared.AIGatewayProxyConfig
 		if r.PassthroughListener.Config.Proxy != nil {
 			var httpProxy *shared.HTTPProxy
 			if r.PassthroughListener.Config.Proxy.HTTPProxy != nil {
-				host8 := new(string)
+				host14 := new(string)
 				if !r.PassthroughListener.Config.Proxy.HTTPProxy.Host.IsUnknown() && !r.PassthroughListener.Config.Proxy.HTTPProxy.Host.IsNull() {
-					*host8 = r.PassthroughListener.Config.Proxy.HTTPProxy.Host.ValueString()
+					*host14 = r.PassthroughListener.Config.Proxy.HTTPProxy.Host.ValueString()
 				} else {
-					host8 = nil
+					host14 = nil
 				}
-				port9 := new(int64)
+				port18 := new(int64)
 				if !r.PassthroughListener.Config.Proxy.HTTPProxy.Port.IsUnknown() && !r.PassthroughListener.Config.Proxy.HTTPProxy.Port.IsNull() {
-					*port9 = r.PassthroughListener.Config.Proxy.HTTPProxy.Port.ValueInt64()
+					*port18 = r.PassthroughListener.Config.Proxy.HTTPProxy.Port.ValueInt64()
 				} else {
-					port9 = nil
+					port18 = nil
 				}
 				httpProxy = &shared.HTTPProxy{
-					Host: host8,
-					Port: port9,
+					Host: host14,
+					Port: port18,
 				}
 			}
 			var httpsProxy *shared.HTTPSProxy
 			if r.PassthroughListener.Config.Proxy.HTTPSProxy != nil {
-				host9 := new(string)
+				host15 := new(string)
 				if !r.PassthroughListener.Config.Proxy.HTTPSProxy.Host.IsUnknown() && !r.PassthroughListener.Config.Proxy.HTTPSProxy.Host.IsNull() {
-					*host9 = r.PassthroughListener.Config.Proxy.HTTPSProxy.Host.ValueString()
+					*host15 = r.PassthroughListener.Config.Proxy.HTTPSProxy.Host.ValueString()
 				} else {
-					host9 = nil
+					host15 = nil
 				}
-				port10 := new(int64)
+				port19 := new(int64)
 				if !r.PassthroughListener.Config.Proxy.HTTPSProxy.Port.IsUnknown() && !r.PassthroughListener.Config.Proxy.HTTPSProxy.Port.IsNull() {
-					*port10 = r.PassthroughListener.Config.Proxy.HTTPSProxy.Port.ValueInt64()
+					*port19 = r.PassthroughListener.Config.Proxy.HTTPSProxy.Port.ValueInt64()
 				} else {
-					port10 = nil
+					port19 = nil
 				}
 				httpsProxy = &shared.HTTPSProxy{
-					Host: host9,
-					Port: port10,
+					Host: host15,
+					Port: port19,
 				}
 			}
 			proxyScheme := new(shared.ProxyScheme)
@@ -8608,21 +13790,21 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			}
 			var auth3 *shared.AIGatewayProxyConfigAuth
 			if r.PassthroughListener.Config.Proxy.Auth != nil {
-				username6 := new(string)
+				username12 := new(string)
 				if !r.PassthroughListener.Config.Proxy.Auth.Username.IsUnknown() && !r.PassthroughListener.Config.Proxy.Auth.Username.IsNull() {
-					*username6 = r.PassthroughListener.Config.Proxy.Auth.Username.ValueString()
+					*username12 = r.PassthroughListener.Config.Proxy.Auth.Username.ValueString()
 				} else {
-					username6 = nil
+					username12 = nil
 				}
-				password6 := new(string)
+				password12 := new(string)
 				if !r.PassthroughListener.Config.Proxy.Auth.Password.IsUnknown() && !r.PassthroughListener.Config.Proxy.Auth.Password.IsNull() {
-					*password6 = r.PassthroughListener.Config.Proxy.Auth.Password.ValueString()
+					*password12 = r.PassthroughListener.Config.Proxy.Auth.Password.ValueString()
 				} else {
-					password6 = nil
+					password12 = nil
 				}
 				auth3 = &shared.AIGatewayProxyConfigAuth{
-					Username: username6,
-					Password: password6,
+					Username: username12,
+					Password: password12,
 				}
 			}
 			noProxy := new(string)
@@ -8646,6 +13828,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			Server:             server2,
 			URL:                url2,
 			Upstream:           upstream2,
+			Certificates:       certificates2,
+			CaCertificates:     caCertificates2,
 			Proxy:              proxy,
 		}
 		tools2 := make([]shared.AIGatewayMCPPassthroughTool, 0, len(r.PassthroughListener.Tools))
@@ -8660,20 +13844,36 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				for denyIndex10 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny {
 					deny10 = append(deny10, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.Deny[denyIndex10].ValueString())
 				}
+				var allowWhen10 []string
+				if r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen != nil {
+					allowWhen10 = make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen))
+					for allowWhenIndex10 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen {
+						allowWhen10 = append(allowWhen10, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.AllowWhen[allowWhenIndex10].ValueString())
+					}
+				}
+				var denyWhen10 []string
+				if r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen != nil {
+					denyWhen10 = make([]string, 0, len(r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen))
+					for denyWhenIndex10 := range r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen {
+						denyWhen10 = append(denyWhen10, r.PassthroughListener.Tools[toolsIndex2].Access.Acls.DenyWhen[denyWhenIndex10].ValueString())
+					}
+				}
 				acls6 = &shared.AIGatewayMCPACLs{
-					Allow: allow10,
-					Deny:  deny10,
+					Allow:     allow10,
+					Deny:      deny10,
+					AllowWhen: allowWhen10,
+					DenyWhen:  denyWhen10,
 				}
 			}
 			access4 := shared.AIGatewayMCPToolAccess{
 				Acls: acls6,
 			}
-			var name7 string
-			name7 = r.PassthroughListener.Tools[toolsIndex2].Name.ValueString()
+			var name16 string
+			name16 = r.PassthroughListener.Tools[toolsIndex2].Name.ValueString()
 
 			tools2 = append(tools2, shared.AIGatewayMCPPassthroughTool{
 				Access: access4,
-				Name:   name7,
+				Name:   name16,
 			})
 		}
 		var access5 *shared.AIGatewayMCPServerListenerAccess
@@ -8690,9 +13890,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex11 := range r.PassthroughListener.Access.Consumer.Acls.Deny {
 						deny11 = append(deny11, r.PassthroughListener.Access.Consumer.Acls.Deny[denyIndex11].ValueString())
 					}
+					var allowWhen11 []string
+					if r.PassthroughListener.Access.Consumer.Acls.AllowWhen != nil {
+						allowWhen11 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.AllowWhen))
+						for allowWhenIndex11 := range r.PassthroughListener.Access.Consumer.Acls.AllowWhen {
+							allowWhen11 = append(allowWhen11, r.PassthroughListener.Access.Consumer.Acls.AllowWhen[allowWhenIndex11].ValueString())
+						}
+					}
+					var denyWhen11 []string
+					if r.PassthroughListener.Access.Consumer.Acls.DenyWhen != nil {
+						denyWhen11 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.DenyWhen))
+						for denyWhenIndex11 := range r.PassthroughListener.Access.Consumer.Acls.DenyWhen {
+							denyWhen11 = append(denyWhen11, r.PassthroughListener.Access.Consumer.Acls.DenyWhen[denyWhenIndex11].ValueString())
+						}
+					}
 					acls7 = &shared.AIGatewayMCPACLs{
-						Allow: allow11,
-						Deny:  deny11,
+						Allow:     allow11,
+						Deny:      deny11,
+						AllowWhen: allowWhen11,
+						DenyWhen:  denyWhen11,
 					}
 				}
 				var defaultToolAcls4 *shared.AIGatewayMCPACLs
@@ -8705,9 +13921,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex12 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny {
 						deny12 = append(deny12, r.PassthroughListener.Access.Consumer.DefaultToolAcls.Deny[denyIndex12].ValueString())
 					}
+					var allowWhen12 []string
+					if r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen != nil {
+						allowWhen12 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex12 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen {
+							allowWhen12 = append(allowWhen12, r.PassthroughListener.Access.Consumer.DefaultToolAcls.AllowWhen[allowWhenIndex12].ValueString())
+						}
+					}
+					var denyWhen12 []string
+					if r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen != nil {
+						denyWhen12 = make([]string, 0, len(r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex12 := range r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen {
+							denyWhen12 = append(denyWhen12, r.PassthroughListener.Access.Consumer.DefaultToolAcls.DenyWhen[denyWhenIndex12].ValueString())
+						}
+					}
 					defaultToolAcls4 = &shared.AIGatewayMCPACLs{
-						Allow: allow12,
-						Deny:  deny12,
+						Allow:     allow12,
+						Deny:      deny12,
+						AllowWhen: allowWhen12,
+						DenyWhen:  denyWhen12,
 					}
 				}
 				identityProviders4 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.IdentityProviders))
@@ -8782,9 +14014,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex13 := range r.PassthroughListener.Access.OauthAccessToken.Acls.Deny {
 						deny13 = append(deny13, r.PassthroughListener.Access.OauthAccessToken.Acls.Deny[denyIndex13].ValueString())
 					}
+					var allowWhen13 []string
+					if r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen != nil {
+						allowWhen13 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen))
+						for allowWhenIndex13 := range r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen {
+							allowWhen13 = append(allowWhen13, r.PassthroughListener.Access.OauthAccessToken.Acls.AllowWhen[allowWhenIndex13].ValueString())
+						}
+					}
+					var denyWhen13 []string
+					if r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen != nil {
+						denyWhen13 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen))
+						for denyWhenIndex13 := range r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen {
+							denyWhen13 = append(denyWhen13, r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex13].ValueString())
+						}
+					}
 					acls8 = &shared.AIGatewayMCPACLs{
-						Allow: allow13,
-						Deny:  deny13,
+						Allow:     allow13,
+						Deny:      deny13,
+						AllowWhen: allowWhen13,
+						DenyWhen:  denyWhen13,
 					}
 				}
 				var defaultToolAcls5 *shared.AIGatewayMCPACLs
@@ -8797,9 +14045,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex14 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny {
 						deny14 = append(deny14, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.Deny[denyIndex14].ValueString())
 					}
+					var allowWhen14 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen != nil {
+						allowWhen14 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen))
+						for allowWhenIndex14 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen {
+							allowWhen14 = append(allowWhen14, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.AllowWhen[allowWhenIndex14].ValueString())
+						}
+					}
+					var denyWhen14 []string
+					if r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen != nil {
+						denyWhen14 = make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen))
+						for denyWhenIndex14 := range r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen {
+							denyWhen14 = append(denyWhen14, r.PassthroughListener.Access.OauthAccessToken.DefaultToolAcls.DenyWhen[denyWhenIndex14].ValueString())
+						}
+					}
 					defaultToolAcls5 = &shared.AIGatewayMCPACLs{
-						Allow: allow14,
-						Deny:  deny14,
+						Allow:     allow14,
+						Deny:      deny14,
+						AllowWhen: allowWhen14,
+						DenyWhen:  denyWhen14,
 					}
 				}
 				identityProviders5 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.IdentityProviders))
@@ -8861,11 +14125,42 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				}
 			}
 		}
+		var rateLimiting1 *shared.AIGatewayMCPServerRateLimiting
+		if r.PassthroughListener.RateLimiting != nil {
+			limits1 := make([]shared.AIGatewayMCPServerRateLimit, 0, len(r.PassthroughListener.RateLimiting.Limits))
+			for limitsIndex1 := range r.PassthroughListener.RateLimiting.Limits {
+				method3 := new(string)
+				if !r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Method.IsUnknown() && !r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Method.IsNull() {
+					*method3 = r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Method.ValueString()
+				} else {
+					method3 = nil
+				}
+				tool1 := new(string)
+				if !r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Tool.IsUnknown() && !r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Tool.IsNull() {
+					*tool1 = r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Tool.ValueString()
+				} else {
+					tool1 = nil
+				}
+				var limit1 int64
+				limit1 = r.PassthroughListener.RateLimiting.Limits[limitsIndex1].Limit.ValueInt64()
+
+				windowSize1 := shared.WindowSize(r.PassthroughListener.RateLimiting.Limits[limitsIndex1].WindowSize.ValueInt64())
+				limits1 = append(limits1, shared.AIGatewayMCPServerRateLimit{
+					Method:     method3,
+					Tool:       tool1,
+					Limit:      limit1,
+					WindowSize: windowSize1,
+				})
+			}
+			rateLimiting1 = &shared.AIGatewayMCPServerRateLimiting{
+				Limits: limits1,
+			}
+		}
 		var displayName3 string
 		displayName3 = r.PassthroughListener.DisplayName.ValueString()
 
-		var name8 string
-		name8 = r.PassthroughListener.Name.ValueString()
+		var name17 string
+		name17 = r.PassthroughListener.Name.ValueString()
 
 		enabled3 := new(bool)
 		if !r.PassthroughListener.Enabled.IsUnknown() && !r.PassthroughListener.Enabled.IsNull() {
@@ -8891,16 +14186,427 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 
 			managedBy3[managedByKey3] = managedByInst3
 		}
+		var datastores3 []shared.AIGatewayDatastoreRef
+		if r.PassthroughListener.Datastores != nil {
+			datastores3 = make([]shared.AIGatewayDatastoreRef, 0, len(r.PassthroughListener.Datastores))
+			for datastoresIndex3 := range r.PassthroughListener.Datastores {
+				var name18 string
+				name18 = r.PassthroughListener.Datastores[datastoresIndex3].Name.ValueString()
+
+				datastores3 = append(datastores3, shared.AIGatewayDatastoreRef{
+					Name: name18,
+				})
+			}
+		}
+		var tokenVault3 *shared.AIGatewayTokenVault
+		if r.PassthroughListener.TokenVault != nil {
+			var provider3 string
+			provider3 = r.PassthroughListener.TokenVault.Provider.ValueString()
+
+			subjectTokenType3 := new(shared.SubjectTokenType)
+			if !r.PassthroughListener.TokenVault.SubjectTokenType.IsUnknown() && !r.PassthroughListener.TokenVault.SubjectTokenType.IsNull() {
+				*subjectTokenType3 = shared.SubjectTokenType(r.PassthroughListener.TokenVault.SubjectTokenType.ValueString())
+			} else {
+				subjectTokenType3 = nil
+			}
+			var credential3 *shared.AIGatewayTokenVaultCredential
+			if r.PassthroughListener.TokenVault.Credential != nil {
+				var inbound3 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.PassthroughListener.TokenVault.Credential.Inbound != nil {
+					location6 := new(shared.Location)
+					if !r.PassthroughListener.TokenVault.Credential.Inbound.Location.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Inbound.Location.IsNull() {
+						*location6 = shared.Location(r.PassthroughListener.TokenVault.Credential.Inbound.Location.ValueString())
+					} else {
+						location6 = nil
+					}
+					name19 := new(string)
+					if !r.PassthroughListener.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Inbound.Name.IsNull() {
+						*name19 = r.PassthroughListener.TokenVault.Credential.Inbound.Name.ValueString()
+					} else {
+						name19 = nil
+					}
+					prefix6 := new(string)
+					if !r.PassthroughListener.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Inbound.Prefix.IsNull() {
+						*prefix6 = r.PassthroughListener.TokenVault.Credential.Inbound.Prefix.ValueString()
+					} else {
+						prefix6 = nil
+					}
+					inbound3 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location6,
+						Name:     name19,
+						Prefix:   prefix6,
+					}
+				}
+				var outbound3 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.PassthroughListener.TokenVault.Credential.Outbound != nil {
+					location7 := new(shared.Location)
+					if !r.PassthroughListener.TokenVault.Credential.Outbound.Location.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Outbound.Location.IsNull() {
+						*location7 = shared.Location(r.PassthroughListener.TokenVault.Credential.Outbound.Location.ValueString())
+					} else {
+						location7 = nil
+					}
+					name20 := new(string)
+					if !r.PassthroughListener.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Outbound.Name.IsNull() {
+						*name20 = r.PassthroughListener.TokenVault.Credential.Outbound.Name.ValueString()
+					} else {
+						name20 = nil
+					}
+					prefix7 := new(string)
+					if !r.PassthroughListener.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.PassthroughListener.TokenVault.Credential.Outbound.Prefix.IsNull() {
+						*prefix7 = r.PassthroughListener.TokenVault.Credential.Outbound.Prefix.ValueString()
+					} else {
+						prefix7 = nil
+					}
+					outbound3 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location7,
+						Name:     name20,
+						Prefix:   prefix7,
+					}
+				}
+				credential3 = &shared.AIGatewayTokenVaultCredential{
+					Inbound:  inbound3,
+					Outbound: outbound3,
+				}
+			}
+			var cache5 *shared.Cache
+			if r.PassthroughListener.TokenVault.Cache != nil {
+				var redis6 *shared.AIGatewayRedisCloudConfiguration
+				if r.PassthroughListener.TokenVault.Cache.Redis != nil {
+					var cloudAuthentication6 *shared.CloudAuthentication
+					if r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication != nil {
+						var aiGatewayRedisAWSAuthentication6 *shared.AIGatewayRedisAWSAuthentication
+						if r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws != nil {
+							accessKeyId9 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
+								*accessKeyId9 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+							} else {
+								accessKeyId9 = nil
+							}
+							assumeRoleArn9 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
+								*assumeRoleArn9 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+							} else {
+								assumeRoleArn9 = nil
+							}
+							cacheName6 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
+								*cacheName6 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+							} else {
+								cacheName6 = nil
+							}
+							isServerless6 := new(bool)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
+								*isServerless6 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+							} else {
+								isServerless6 = nil
+							}
+							region9 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsNull() {
+								*region9 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.ValueString()
+							} else {
+								region9 = nil
+							}
+							roleSessionName9 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
+								*roleSessionName9 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+							} else {
+								roleSessionName9 = nil
+							}
+							secretAccessKey9 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
+								*secretAccessKey9 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+							} else {
+								secretAccessKey9 = nil
+							}
+							aiGatewayRedisAWSAuthentication6 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId9,
+								AssumeRoleArn:   assumeRoleArn9,
+								CacheName:       cacheName6,
+								IsServerless:    isServerless6,
+								Region:          region9,
+								RoleSessionName: roleSessionName9,
+								SecretAccessKey: secretAccessKey9,
+							}
+						}
+						if aiGatewayRedisAWSAuthentication6 != nil {
+							cloudAuthentication6 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication6,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication6 *shared.AIGatewayRedisAzureAuthentication
+						if r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure != nil {
+							clientId6 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
+								*clientId6 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+							} else {
+								clientId6 = nil
+							}
+							clientSecret6 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
+								*clientSecret6 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+							} else {
+								clientSecret6 = nil
+							}
+							tenantId6 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
+								*tenantId6 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+							} else {
+								tenantId6 = nil
+							}
+							aiGatewayRedisAzureAuthentication6 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId6,
+								ClientSecret: clientSecret6,
+								TenantID:     tenantId6,
+							}
+						}
+						if aiGatewayRedisAzureAuthentication6 != nil {
+							cloudAuthentication6 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication6,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication6 *shared.AIGatewayRedisGCPAuthentication
+						if r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp != nil {
+							serviceAccountJson6 := new(string)
+							if !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
+								*serviceAccountJson6 = r.PassthroughListener.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+							} else {
+								serviceAccountJson6 = nil
+							}
+							aiGatewayRedisGCPAuthentication6 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson6,
+							}
+						}
+						if aiGatewayRedisGCPAuthentication6 != nil {
+							cloudAuthentication6 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication6,
+							}
+						}
+					}
+					var cluster6 *shared.Cluster
+					if r.PassthroughListener.TokenVault.Cache.Redis.Cluster != nil {
+						maxRedirections6 := new(int64)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsNull() {
+							*maxRedirections6 = r.PassthroughListener.TokenVault.Cache.Redis.Cluster.MaxRedirections.ValueInt64()
+						} else {
+							maxRedirections6 = nil
+						}
+						var nodes12 []shared.Nodes
+						if r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+							nodes12 = make([]shared.Nodes, 0, len(r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes))
+							for nodesIndex12 := range r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes {
+								ip6 := new(string)
+								if !r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex12].IP.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex12].IP.IsNull() {
+									*ip6 = r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex12].IP.ValueString()
+								} else {
+									ip6 = nil
+								}
+								port20 := new(int64)
+								if !r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex12].Port.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex12].Port.IsNull() {
+									*port20 = r.PassthroughListener.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex12].Port.ValueInt64()
+								} else {
+									port20 = nil
+								}
+								nodes12 = append(nodes12, shared.Nodes{
+									IP:   ip6,
+									Port: port20,
+								})
+							}
+						}
+						cluster6 = &shared.Cluster{
+							MaxRedirections: maxRedirections6,
+							Nodes:           nodes12,
+						}
+					}
+					connectTimeout6 := new(int64)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.ConnectTimeout.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.ConnectTimeout.IsNull() {
+						*connectTimeout6 = r.PassthroughListener.TokenVault.Cache.Redis.ConnectTimeout.ValueInt64()
+					} else {
+						connectTimeout6 = nil
+					}
+					connectionIsProxied6 := new(bool)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.ConnectionIsProxied.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.ConnectionIsProxied.IsNull() {
+						*connectionIsProxied6 = r.PassthroughListener.TokenVault.Cache.Redis.ConnectionIsProxied.ValueBool()
+					} else {
+						connectionIsProxied6 = nil
+					}
+					database6 := new(int64)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.Database.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Database.IsNull() {
+						*database6 = r.PassthroughListener.TokenVault.Cache.Redis.Database.ValueInt64()
+					} else {
+						database6 = nil
+					}
+					host16 := new(string)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.Host.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Host.IsNull() {
+						*host16 = r.PassthroughListener.TokenVault.Cache.Redis.Host.ValueString()
+					} else {
+						host16 = nil
+					}
+					var keepalive6 *shared.Keepalive
+					if r.PassthroughListener.TokenVault.Cache.Redis.Keepalive != nil {
+						backlog6 := new(int64)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.Backlog.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.Backlog.IsNull() {
+							*backlog6 = r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.Backlog.ValueInt64()
+						} else {
+							backlog6 = nil
+						}
+						poolSize6 := new(int64)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.PoolSize.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.PoolSize.IsNull() {
+							*poolSize6 = r.PassthroughListener.TokenVault.Cache.Redis.Keepalive.PoolSize.ValueInt64()
+						} else {
+							poolSize6 = nil
+						}
+						keepalive6 = &shared.Keepalive{
+							Backlog:  backlog6,
+							PoolSize: poolSize6,
+						}
+					}
+					password13 := new(string)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.Password.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Password.IsNull() {
+						*password13 = r.PassthroughListener.TokenVault.Cache.Redis.Password.ValueString()
+					} else {
+						password13 = nil
+					}
+					port21 := new(string)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.Port.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Port.IsNull() {
+						*port21 = r.PassthroughListener.TokenVault.Cache.Redis.Port.ValueString()
+					} else {
+						port21 = nil
+					}
+					readTimeout6 := new(int64)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.ReadTimeout.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.ReadTimeout.IsNull() {
+						*readTimeout6 = r.PassthroughListener.TokenVault.Cache.Redis.ReadTimeout.ValueInt64()
+					} else {
+						readTimeout6 = nil
+					}
+					sendTimeout6 := new(int64)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.SendTimeout.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.SendTimeout.IsNull() {
+						*sendTimeout6 = r.PassthroughListener.TokenVault.Cache.Redis.SendTimeout.ValueInt64()
+					} else {
+						sendTimeout6 = nil
+					}
+					var sentinel6 *shared.Sentinel
+					if r.PassthroughListener.TokenVault.Cache.Redis.Sentinel != nil {
+						master6 := new(string)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Master.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Master.IsNull() {
+							*master6 = r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Master.ValueString()
+						} else {
+							master6 = nil
+						}
+						var nodes13 []shared.AIGatewayRedisCloudConfigurationNodes
+						if r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+							nodes13 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes))
+							for nodesIndex13 := range r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes {
+								host17 := new(string)
+								if !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex13].Host.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex13].Host.IsNull() {
+									*host17 = r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex13].Host.ValueString()
+								} else {
+									host17 = nil
+								}
+								port22 := new(int64)
+								if !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex13].Port.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex13].Port.IsNull() {
+									*port22 = r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex13].Port.ValueInt64()
+								} else {
+									port22 = nil
+								}
+								nodes13 = append(nodes13, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host17,
+									Port: port22,
+								})
+							}
+						}
+						password14 := new(string)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Password.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Password.IsNull() {
+							*password14 = r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Password.ValueString()
+						} else {
+							password14 = nil
+						}
+						role6 := new(shared.Role)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Role.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Role.IsNull() {
+							*role6 = shared.Role(r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Role.ValueString())
+						} else {
+							role6 = nil
+						}
+						username13 := new(string)
+						if !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Username.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Username.IsNull() {
+							*username13 = r.PassthroughListener.TokenVault.Cache.Redis.Sentinel.Username.ValueString()
+						} else {
+							username13 = nil
+						}
+						sentinel6 = &shared.Sentinel{
+							Master:   master6,
+							Nodes:    nodes13,
+							Password: password14,
+							Role:     role6,
+							Username: username13,
+						}
+					}
+					serverName6 := new(string)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.ServerName.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.ServerName.IsNull() {
+						*serverName6 = r.PassthroughListener.TokenVault.Cache.Redis.ServerName.ValueString()
+					} else {
+						serverName6 = nil
+					}
+					ssl6 := new(bool)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.Ssl.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Ssl.IsNull() {
+						*ssl6 = r.PassthroughListener.TokenVault.Cache.Redis.Ssl.ValueBool()
+					} else {
+						ssl6 = nil
+					}
+					sslVerify6 := new(bool)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.SslVerify.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.SslVerify.IsNull() {
+						*sslVerify6 = r.PassthroughListener.TokenVault.Cache.Redis.SslVerify.ValueBool()
+					} else {
+						sslVerify6 = nil
+					}
+					username14 := new(string)
+					if !r.PassthroughListener.TokenVault.Cache.Redis.Username.IsUnknown() && !r.PassthroughListener.TokenVault.Cache.Redis.Username.IsNull() {
+						*username14 = r.PassthroughListener.TokenVault.Cache.Redis.Username.ValueString()
+					} else {
+						username14 = nil
+					}
+					redis6 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication6,
+						Cluster:             cluster6,
+						ConnectTimeout:      connectTimeout6,
+						ConnectionIsProxied: connectionIsProxied6,
+						Database:            database6,
+						Host:                host16,
+						Keepalive:           keepalive6,
+						Password:            password13,
+						Port:                port21,
+						ReadTimeout:         readTimeout6,
+						SendTimeout:         sendTimeout6,
+						Sentinel:            sentinel6,
+						ServerName:          serverName6,
+						Ssl:                 ssl6,
+						SslVerify:           sslVerify6,
+						Username:            username14,
+					}
+				}
+				cache5 = &shared.Cache{
+					Redis: redis6,
+				}
+			}
+			tokenVault3 = &shared.AIGatewayTokenVault{
+				Provider:         provider3,
+				SubjectTokenType: subjectTokenType3,
+				Credential:       credential3,
+				Cache:            cache5,
+			}
+		}
 		aiGatewayMCPServerPassthroughListener = &shared.AIGatewayMCPServerPassthroughListener{
-			Config:      config3,
-			Tools:       tools2,
-			Access:      access5,
-			DisplayName: displayName3,
-			Name:        name8,
-			Enabled:     enabled3,
-			Policies:    policies3,
-			Labels:      labels3,
-			ManagedBy:   managedBy3,
+			Config:       config3,
+			Tools:        tools2,
+			Access:       access5,
+			RateLimiting: rateLimiting1,
+			DisplayName:  displayName3,
+			Name:         name17,
+			Enabled:      enabled3,
+			Policies:     policies3,
+			Labels:       labels3,
+			ManagedBy:    managedBy3,
+			Datastores:   datastores3,
+			TokenVault:   tokenVault3,
 		}
 	}
 	if aiGatewayMCPServerPassthroughListener != nil {
@@ -9043,317 +14749,317 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				} else {
 					managed3 = nil
 				}
-				var redis3 *shared.AIGatewayRedisCloudConfiguration
+				var redis7 *shared.AIGatewayRedisCloudConfiguration
 				if r.UpstreamServer.Config.Server.Session.Redis != nil {
-					var cloudAuthentication3 *shared.CloudAuthentication
+					var cloudAuthentication7 *shared.CloudAuthentication
 					if r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication != nil {
-						var aiGatewayRedisAWSAuthentication3 *shared.AIGatewayRedisAWSAuthentication
+						var aiGatewayRedisAWSAuthentication7 *shared.AIGatewayRedisAWSAuthentication
 						if r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws != nil {
-							accessKeyId6 := new(string)
+							accessKeyId10 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
-								*accessKeyId6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+								*accessKeyId10 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
 							} else {
-								accessKeyId6 = nil
+								accessKeyId10 = nil
 							}
-							assumeRoleArn6 := new(string)
+							assumeRoleArn10 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
-								*assumeRoleArn6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+								*assumeRoleArn10 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
 							} else {
-								assumeRoleArn6 = nil
+								assumeRoleArn10 = nil
 							}
-							cacheName3 := new(string)
+							cacheName7 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
-								*cacheName3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+								*cacheName7 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.CacheName.ValueString()
 							} else {
-								cacheName3 = nil
+								cacheName7 = nil
 							}
-							isServerless3 := new(bool)
+							isServerless7 := new(bool)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
-								*isServerless3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+								*isServerless7 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
 							} else {
-								isServerless3 = nil
+								isServerless7 = nil
 							}
-							region6 := new(string)
+							region10 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.IsNull() {
-								*region6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
+								*region10 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.Region.ValueString()
 							} else {
-								region6 = nil
+								region10 = nil
 							}
-							roleSessionName6 := new(string)
+							roleSessionName10 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
-								*roleSessionName6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+								*roleSessionName10 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
 							} else {
-								roleSessionName6 = nil
+								roleSessionName10 = nil
 							}
-							secretAccessKey6 := new(string)
+							secretAccessKey10 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
-								*secretAccessKey6 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+								*secretAccessKey10 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
 							} else {
-								secretAccessKey6 = nil
+								secretAccessKey10 = nil
 							}
-							aiGatewayRedisAWSAuthentication3 = &shared.AIGatewayRedisAWSAuthentication{
-								AccessKeyID:     accessKeyId6,
-								AssumeRoleArn:   assumeRoleArn6,
-								CacheName:       cacheName3,
-								IsServerless:    isServerless3,
-								Region:          region6,
-								RoleSessionName: roleSessionName6,
-								SecretAccessKey: secretAccessKey6,
-							}
-						}
-						if aiGatewayRedisAWSAuthentication3 != nil {
-							cloudAuthentication3 = &shared.CloudAuthentication{
-								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication3,
+							aiGatewayRedisAWSAuthentication7 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId10,
+								AssumeRoleArn:   assumeRoleArn10,
+								CacheName:       cacheName7,
+								IsServerless:    isServerless7,
+								Region:          region10,
+								RoleSessionName: roleSessionName10,
+								SecretAccessKey: secretAccessKey10,
 							}
 						}
-						var aiGatewayRedisAzureAuthentication3 *shared.AIGatewayRedisAzureAuthentication
+						if aiGatewayRedisAWSAuthentication7 != nil {
+							cloudAuthentication7 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication7,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication7 *shared.AIGatewayRedisAzureAuthentication
 						if r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure != nil {
-							clientId3 := new(string)
+							clientId7 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
-								*clientId3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+								*clientId7 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientID.ValueString()
 							} else {
-								clientId3 = nil
+								clientId7 = nil
 							}
-							clientSecret3 := new(string)
+							clientSecret7 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
-								*clientSecret3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+								*clientSecret7 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
 							} else {
-								clientSecret3 = nil
+								clientSecret7 = nil
 							}
-							tenantId3 := new(string)
+							tenantId7 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
-								*tenantId3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+								*tenantId7 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Azure.TenantID.ValueString()
 							} else {
-								tenantId3 = nil
+								tenantId7 = nil
 							}
-							aiGatewayRedisAzureAuthentication3 = &shared.AIGatewayRedisAzureAuthentication{
-								ClientID:     clientId3,
-								ClientSecret: clientSecret3,
-								TenantID:     tenantId3,
-							}
-						}
-						if aiGatewayRedisAzureAuthentication3 != nil {
-							cloudAuthentication3 = &shared.CloudAuthentication{
-								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication3,
+							aiGatewayRedisAzureAuthentication7 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId7,
+								ClientSecret: clientSecret7,
+								TenantID:     tenantId7,
 							}
 						}
-						var aiGatewayRedisGCPAuthentication3 *shared.AIGatewayRedisGCPAuthentication
+						if aiGatewayRedisAzureAuthentication7 != nil {
+							cloudAuthentication7 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication7,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication7 *shared.AIGatewayRedisGCPAuthentication
 						if r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Gcp != nil {
-							serviceAccountJson3 := new(string)
+							serviceAccountJson7 := new(string)
 							if !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
-								*serviceAccountJson3 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+								*serviceAccountJson7 = r.UpstreamServer.Config.Server.Session.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
 							} else {
-								serviceAccountJson3 = nil
+								serviceAccountJson7 = nil
 							}
-							aiGatewayRedisGCPAuthentication3 = &shared.AIGatewayRedisGCPAuthentication{
-								ServiceAccountJSON: serviceAccountJson3,
+							aiGatewayRedisGCPAuthentication7 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson7,
 							}
 						}
-						if aiGatewayRedisGCPAuthentication3 != nil {
-							cloudAuthentication3 = &shared.CloudAuthentication{
-								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication3,
+						if aiGatewayRedisGCPAuthentication7 != nil {
+							cloudAuthentication7 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication7,
 							}
 						}
 					}
-					var cluster3 *shared.Cluster
+					var cluster7 *shared.Cluster
 					if r.UpstreamServer.Config.Server.Session.Redis.Cluster != nil {
-						maxRedirections3 := new(int64)
+						maxRedirections7 := new(int64)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Cluster.MaxRedirections.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Cluster.MaxRedirections.IsNull() {
-							*maxRedirections3 = r.UpstreamServer.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
+							*maxRedirections7 = r.UpstreamServer.Config.Server.Session.Redis.Cluster.MaxRedirections.ValueInt64()
 						} else {
-							maxRedirections3 = nil
+							maxRedirections7 = nil
 						}
-						var nodes6 []shared.Nodes
+						var nodes14 []shared.Nodes
 						if r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes != nil {
-							nodes6 = make([]shared.Nodes, 0, len(r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes))
-							for nodesIndex6 := range r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes {
-								ip3 := new(string)
-								if !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].IP.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].IP.IsNull() {
-									*ip3 = r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].IP.ValueString()
+							nodes14 = make([]shared.Nodes, 0, len(r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes))
+							for nodesIndex14 := range r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes {
+								ip7 := new(string)
+								if !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex14].IP.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex14].IP.IsNull() {
+									*ip7 = r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex14].IP.ValueString()
 								} else {
-									ip3 = nil
+									ip7 = nil
 								}
-								port11 := new(int64)
-								if !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].Port.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].Port.IsNull() {
-									*port11 = r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex6].Port.ValueInt64()
+								port23 := new(int64)
+								if !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex14].Port.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex14].Port.IsNull() {
+									*port23 = r.UpstreamServer.Config.Server.Session.Redis.Cluster.Nodes[nodesIndex14].Port.ValueInt64()
 								} else {
-									port11 = nil
+									port23 = nil
 								}
-								nodes6 = append(nodes6, shared.Nodes{
-									IP:   ip3,
-									Port: port11,
+								nodes14 = append(nodes14, shared.Nodes{
+									IP:   ip7,
+									Port: port23,
 								})
 							}
 						}
-						cluster3 = &shared.Cluster{
-							MaxRedirections: maxRedirections3,
-							Nodes:           nodes6,
+						cluster7 = &shared.Cluster{
+							MaxRedirections: maxRedirections7,
+							Nodes:           nodes14,
 						}
 					}
-					connectTimeout3 := new(int64)
+					connectTimeout7 := new(int64)
 					if !r.UpstreamServer.Config.Server.Session.Redis.ConnectTimeout.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.ConnectTimeout.IsNull() {
-						*connectTimeout3 = r.UpstreamServer.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
+						*connectTimeout7 = r.UpstreamServer.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
 					} else {
-						connectTimeout3 = nil
+						connectTimeout7 = nil
 					}
-					connectionIsProxied3 := new(bool)
+					connectionIsProxied7 := new(bool)
 					if !r.UpstreamServer.Config.Server.Session.Redis.ConnectionIsProxied.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.ConnectionIsProxied.IsNull() {
-						*connectionIsProxied3 = r.UpstreamServer.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
+						*connectionIsProxied7 = r.UpstreamServer.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
 					} else {
-						connectionIsProxied3 = nil
+						connectionIsProxied7 = nil
 					}
-					database3 := new(int64)
+					database7 := new(int64)
 					if !r.UpstreamServer.Config.Server.Session.Redis.Database.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Database.IsNull() {
-						*database3 = r.UpstreamServer.Config.Server.Session.Redis.Database.ValueInt64()
+						*database7 = r.UpstreamServer.Config.Server.Session.Redis.Database.ValueInt64()
 					} else {
-						database3 = nil
+						database7 = nil
 					}
-					host10 := new(string)
+					host18 := new(string)
 					if !r.UpstreamServer.Config.Server.Session.Redis.Host.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Host.IsNull() {
-						*host10 = r.UpstreamServer.Config.Server.Session.Redis.Host.ValueString()
+						*host18 = r.UpstreamServer.Config.Server.Session.Redis.Host.ValueString()
 					} else {
-						host10 = nil
+						host18 = nil
 					}
-					var keepalive3 *shared.Keepalive
+					var keepalive7 *shared.Keepalive
 					if r.UpstreamServer.Config.Server.Session.Redis.Keepalive != nil {
-						backlog3 := new(int64)
+						backlog7 := new(int64)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Keepalive.Backlog.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Keepalive.Backlog.IsNull() {
-							*backlog3 = r.UpstreamServer.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
+							*backlog7 = r.UpstreamServer.Config.Server.Session.Redis.Keepalive.Backlog.ValueInt64()
 						} else {
-							backlog3 = nil
+							backlog7 = nil
 						}
-						poolSize3 := new(int64)
+						poolSize7 := new(int64)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Keepalive.PoolSize.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Keepalive.PoolSize.IsNull() {
-							*poolSize3 = r.UpstreamServer.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
+							*poolSize7 = r.UpstreamServer.Config.Server.Session.Redis.Keepalive.PoolSize.ValueInt64()
 						} else {
-							poolSize3 = nil
+							poolSize7 = nil
 						}
-						keepalive3 = &shared.Keepalive{
-							Backlog:  backlog3,
-							PoolSize: poolSize3,
+						keepalive7 = &shared.Keepalive{
+							Backlog:  backlog7,
+							PoolSize: poolSize7,
 						}
 					}
-					password7 := new(string)
+					password15 := new(string)
 					if !r.UpstreamServer.Config.Server.Session.Redis.Password.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Password.IsNull() {
-						*password7 = r.UpstreamServer.Config.Server.Session.Redis.Password.ValueString()
+						*password15 = r.UpstreamServer.Config.Server.Session.Redis.Password.ValueString()
 					} else {
-						password7 = nil
+						password15 = nil
 					}
-					port12 := new(string)
+					port24 := new(string)
 					if !r.UpstreamServer.Config.Server.Session.Redis.Port.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Port.IsNull() {
-						*port12 = r.UpstreamServer.Config.Server.Session.Redis.Port.ValueString()
+						*port24 = r.UpstreamServer.Config.Server.Session.Redis.Port.ValueString()
 					} else {
-						port12 = nil
+						port24 = nil
 					}
-					readTimeout3 := new(int64)
+					readTimeout7 := new(int64)
 					if !r.UpstreamServer.Config.Server.Session.Redis.ReadTimeout.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.ReadTimeout.IsNull() {
-						*readTimeout3 = r.UpstreamServer.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
+						*readTimeout7 = r.UpstreamServer.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
 					} else {
-						readTimeout3 = nil
+						readTimeout7 = nil
 					}
-					sendTimeout3 := new(int64)
+					sendTimeout7 := new(int64)
 					if !r.UpstreamServer.Config.Server.Session.Redis.SendTimeout.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.SendTimeout.IsNull() {
-						*sendTimeout3 = r.UpstreamServer.Config.Server.Session.Redis.SendTimeout.ValueInt64()
+						*sendTimeout7 = r.UpstreamServer.Config.Server.Session.Redis.SendTimeout.ValueInt64()
 					} else {
-						sendTimeout3 = nil
+						sendTimeout7 = nil
 					}
-					var sentinel3 *shared.Sentinel
+					var sentinel7 *shared.Sentinel
 					if r.UpstreamServer.Config.Server.Session.Redis.Sentinel != nil {
-						master3 := new(string)
+						master7 := new(string)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Master.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Master.IsNull() {
-							*master3 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Master.ValueString()
+							*master7 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Master.ValueString()
 						} else {
-							master3 = nil
+							master7 = nil
 						}
-						var nodes7 []shared.AIGatewayRedisCloudConfigurationNodes
+						var nodes15 []shared.AIGatewayRedisCloudConfigurationNodes
 						if r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes != nil {
-							nodes7 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes))
-							for nodesIndex7 := range r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes {
-								host11 := new(string)
-								if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Host.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Host.IsNull() {
-									*host11 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Host.ValueString()
+							nodes15 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes))
+							for nodesIndex15 := range r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes {
+								host19 := new(string)
+								if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex15].Host.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex15].Host.IsNull() {
+									*host19 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex15].Host.ValueString()
 								} else {
-									host11 = nil
+									host19 = nil
 								}
-								port13 := new(int64)
-								if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Port.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Port.IsNull() {
-									*port13 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex7].Port.ValueInt64()
+								port25 := new(int64)
+								if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex15].Port.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex15].Port.IsNull() {
+									*port25 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Nodes[nodesIndex15].Port.ValueInt64()
 								} else {
-									port13 = nil
+									port25 = nil
 								}
-								nodes7 = append(nodes7, shared.AIGatewayRedisCloudConfigurationNodes{
-									Host: host11,
-									Port: port13,
+								nodes15 = append(nodes15, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host19,
+									Port: port25,
 								})
 							}
 						}
-						password8 := new(string)
+						password16 := new(string)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Password.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Password.IsNull() {
-							*password8 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Password.ValueString()
+							*password16 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Password.ValueString()
 						} else {
-							password8 = nil
+							password16 = nil
 						}
-						role3 := new(shared.Role)
+						role7 := new(shared.Role)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Role.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Role.IsNull() {
-							*role3 = shared.Role(r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Role.ValueString())
+							*role7 = shared.Role(r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Role.ValueString())
 						} else {
-							role3 = nil
+							role7 = nil
 						}
-						username7 := new(string)
+						username15 := new(string)
 						if !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Username.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Username.IsNull() {
-							*username7 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Username.ValueString()
+							*username15 = r.UpstreamServer.Config.Server.Session.Redis.Sentinel.Username.ValueString()
 						} else {
-							username7 = nil
+							username15 = nil
 						}
-						sentinel3 = &shared.Sentinel{
-							Master:   master3,
-							Nodes:    nodes7,
-							Password: password8,
-							Role:     role3,
-							Username: username7,
+						sentinel7 = &shared.Sentinel{
+							Master:   master7,
+							Nodes:    nodes15,
+							Password: password16,
+							Role:     role7,
+							Username: username15,
 						}
 					}
-					serverName3 := new(string)
+					serverName7 := new(string)
 					if !r.UpstreamServer.Config.Server.Session.Redis.ServerName.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.ServerName.IsNull() {
-						*serverName3 = r.UpstreamServer.Config.Server.Session.Redis.ServerName.ValueString()
+						*serverName7 = r.UpstreamServer.Config.Server.Session.Redis.ServerName.ValueString()
 					} else {
-						serverName3 = nil
+						serverName7 = nil
 					}
-					ssl3 := new(bool)
+					ssl7 := new(bool)
 					if !r.UpstreamServer.Config.Server.Session.Redis.Ssl.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Ssl.IsNull() {
-						*ssl3 = r.UpstreamServer.Config.Server.Session.Redis.Ssl.ValueBool()
+						*ssl7 = r.UpstreamServer.Config.Server.Session.Redis.Ssl.ValueBool()
 					} else {
-						ssl3 = nil
+						ssl7 = nil
 					}
-					sslVerify3 := new(bool)
+					sslVerify7 := new(bool)
 					if !r.UpstreamServer.Config.Server.Session.Redis.SslVerify.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.SslVerify.IsNull() {
-						*sslVerify3 = r.UpstreamServer.Config.Server.Session.Redis.SslVerify.ValueBool()
+						*sslVerify7 = r.UpstreamServer.Config.Server.Session.Redis.SslVerify.ValueBool()
 					} else {
-						sslVerify3 = nil
+						sslVerify7 = nil
 					}
-					username8 := new(string)
+					username16 := new(string)
 					if !r.UpstreamServer.Config.Server.Session.Redis.Username.IsUnknown() && !r.UpstreamServer.Config.Server.Session.Redis.Username.IsNull() {
-						*username8 = r.UpstreamServer.Config.Server.Session.Redis.Username.ValueString()
+						*username16 = r.UpstreamServer.Config.Server.Session.Redis.Username.ValueString()
 					} else {
-						username8 = nil
+						username16 = nil
 					}
-					redis3 = &shared.AIGatewayRedisCloudConfiguration{
-						CloudAuthentication: cloudAuthentication3,
-						Cluster:             cluster3,
-						ConnectTimeout:      connectTimeout3,
-						ConnectionIsProxied: connectionIsProxied3,
-						Database:            database3,
-						Host:                host10,
-						Keepalive:           keepalive3,
-						Password:            password7,
-						Port:                port12,
-						ReadTimeout:         readTimeout3,
-						SendTimeout:         sendTimeout3,
-						Sentinel:            sentinel3,
-						ServerName:          serverName3,
-						Ssl:                 ssl3,
-						SslVerify:           sslVerify3,
-						Username:            username8,
+					redis7 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication7,
+						Cluster:             cluster7,
+						ConnectTimeout:      connectTimeout7,
+						ConnectionIsProxied: connectionIsProxied7,
+						Database:            database7,
+						Host:                host18,
+						Keepalive:           keepalive7,
+						Password:            password15,
+						Port:                port24,
+						ReadTimeout:         readTimeout7,
+						SendTimeout:         sendTimeout7,
+						Sentinel:            sentinel7,
+						ServerName:          serverName7,
+						Ssl:                 ssl7,
+						SslVerify:           sslVerify7,
+						Username:            username16,
 					}
 				}
 				sessionTtl3 := new(int64)
@@ -9371,7 +15077,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				session3 = &shared.AIGatewayMCPServerUpstreamServerServerConfigSession{
 					Client:     client3,
 					Managed:    managed3,
-					Redis:      redis3,
+					Redis:      redis7,
 					SessionTTL: sessionTtl3,
 					Strategy:   strategy3,
 				}
@@ -9444,22 +15150,22 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					var tokenEndpoint string
 					tokenEndpoint = r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.TokenEndpoint.ValueString()
 
-					var clientId4 string
-					clientId4 = r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.ClientID.ValueString()
+					var clientId8 string
+					clientId8 = r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.ClientID.ValueString()
 
-					clientSecret4 := new(string)
+					clientSecret8 := new(string)
 					if !r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.ClientSecret.IsUnknown() && !r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.ClientSecret.IsNull() {
-						*clientSecret4 = r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.ClientSecret.ValueString()
+						*clientSecret8 = r.UpstreamServer.Config.Server.ToolsListAuth.Credentials.ClientSecret.ValueString()
 					} else {
-						clientSecret4 = nil
+						clientSecret8 = nil
 					}
 					aiGatewayMCPServerUpstreamServerToolOauth2ConfigCredentials = &shared.AIGatewayMCPServerUpstreamServerToolOauth2ConfigCredentials{
 						Scope:             scope1,
 						AccessTokenHeader: accessTokenHeader1,
 						IDTokenHeader:     idTokenHeader1,
 						TokenEndpoint:     tokenEndpoint,
-						ClientID:          clientId4,
-						ClientSecret:      clientSecret4,
+						ClientID:          clientId8,
+						ClientSecret:      clientSecret8,
 					}
 				}
 				if aiGatewayMCPServerUpstreamServerToolOauth2ConfigCredentials != nil {
@@ -9492,17 +15198,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			if r.UpstreamServer.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws3 *shared.AIGatewayUpstreamAuthAWS
 				if r.UpstreamServer.Config.Upstream.Auth.Aws != nil {
-					accessKeyId7 := new(string)
+					accessKeyId11 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
-						*accessKeyId7 = r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+						*accessKeyId11 = r.UpstreamServer.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
 					} else {
-						accessKeyId7 = nil
+						accessKeyId11 = nil
 					}
-					secretAccessKey7 := new(string)
+					secretAccessKey11 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
-						*secretAccessKey7 = r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+						*secretAccessKey11 = r.UpstreamServer.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
 					} else {
-						secretAccessKey7 = nil
+						secretAccessKey11 = nil
 					}
 					sessionToken3 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
@@ -9510,23 +15216,23 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					} else {
 						sessionToken3 = nil
 					}
-					region7 := new(string)
+					region11 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.Region.IsNull() {
-						*region7 = r.UpstreamServer.Config.Upstream.Auth.Aws.Region.ValueString()
+						*region11 = r.UpstreamServer.Config.Upstream.Auth.Aws.Region.ValueString()
 					} else {
-						region7 = nil
+						region11 = nil
 					}
-					assumeRoleArn7 := new(string)
+					assumeRoleArn11 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
-						*assumeRoleArn7 = r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+						*assumeRoleArn11 = r.UpstreamServer.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
 					} else {
-						assumeRoleArn7 = nil
+						assumeRoleArn11 = nil
 					}
-					roleSessionName7 := new(string)
+					roleSessionName11 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
-						*roleSessionName7 = r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+						*roleSessionName11 = r.UpstreamServer.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
 					} else {
-						roleSessionName7 = nil
+						roleSessionName11 = nil
 					}
 					stsEndpointUrl3 := new(string)
 					if !r.UpstreamServer.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.UpstreamServer.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
@@ -9535,12 +15241,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 						stsEndpointUrl3 = nil
 					}
 					aiGatewayUpstreamAuthAws3 = &shared.AIGatewayUpstreamAuthAWS{
-						AccessKeyID:     accessKeyId7,
-						SecretAccessKey: secretAccessKey7,
+						AccessKeyID:     accessKeyId11,
+						SecretAccessKey: secretAccessKey11,
 						SessionToken:    sessionToken3,
-						Region:          region7,
-						AssumeRoleArn:   assumeRoleArn7,
-						RoleSessionName: roleSessionName7,
+						Region:          region11,
+						AssumeRoleArn:   assumeRoleArn11,
+						RoleSessionName: roleSessionName11,
 						StsEndpointURL:  stsEndpointUrl3,
 					}
 				}
@@ -9554,6 +15260,14 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Auth: auth4,
 			}
 		}
+		certificates3 := make([]string, 0, len(r.UpstreamServer.Config.Certificates))
+		for certificatesIndex3 := range r.UpstreamServer.Config.Certificates {
+			certificates3 = append(certificates3, r.UpstreamServer.Config.Certificates[certificatesIndex3].ValueString())
+		}
+		caCertificates3 := make([]string, 0, len(r.UpstreamServer.Config.CaCertificates))
+		for caCertificatesIndex3 := range r.UpstreamServer.Config.CaCertificates {
+			caCertificates3 = append(caCertificates3, r.UpstreamServer.Config.CaCertificates[caCertificatesIndex3].ValueString())
+		}
 		var toolsCacheTTLSeconds int64
 		toolsCacheTTLSeconds = r.UpstreamServer.Config.ToolsCacheTTLSeconds.ValueInt64()
 
@@ -9564,6 +15278,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			Server:               server3,
 			URL:                  url3,
 			Upstream:             upstream3,
+			Certificates:         certificates3,
+			CaCertificates:       caCertificates3,
 			ToolsCacheTTLSeconds: toolsCacheTTLSeconds,
 		}
 		tools3 := make([]shared.AIGatewayMCPUpstreamTool, 0, len(r.UpstreamServer.Tools))
@@ -9580,9 +15296,25 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					for denyIndex15 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny {
 						deny15 = append(deny15, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.Deny[denyIndex15].ValueString())
 					}
+					var allowWhen15 []string
+					if r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen != nil {
+						allowWhen15 = make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen))
+						for allowWhenIndex15 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen {
+							allowWhen15 = append(allowWhen15, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.AllowWhen[allowWhenIndex15].ValueString())
+						}
+					}
+					var denyWhen15 []string
+					if r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen != nil {
+						denyWhen15 = make([]string, 0, len(r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen))
+						for denyWhenIndex15 := range r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen {
+							denyWhen15 = append(denyWhen15, r.UpstreamServer.Tools[toolsIndex3].Access.Acls.DenyWhen[denyWhenIndex15].ValueString())
+						}
+					}
 					acls9 = &shared.AIGatewayMCPACLs{
-						Allow: allow15,
-						Deny:  deny15,
+						Allow:     allow15,
+						Deny:      deny15,
+						AllowWhen: allowWhen15,
+						DenyWhen:  denyWhen15,
 					}
 				}
 				access6 = &shared.AIGatewayMCPToolAccess{
@@ -9635,8 +15367,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				description4 = nil
 			}
-			var name9 string
-			name9 = r.UpstreamServer.Tools[toolsIndex3].Name.ValueString()
+			var name21 string
+			name21 = r.UpstreamServer.Tools[toolsIndex3].Name.ValueString()
 
 			var inputSchema interface{}
 			if !r.UpstreamServer.Tools[toolsIndex3].InputSchema.IsUnknown() && !r.UpstreamServer.Tools[toolsIndex3].InputSchema.IsNull() {
@@ -9650,7 +15382,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Access:       access6,
 				Annotations:  annotations2,
 				Description:  description4,
-				Name:         name9,
+				Name:         name21,
 				InputSchema:  inputSchema,
 				OutputSchema: outputSchema,
 			})
@@ -9658,8 +15390,8 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		var displayName4 string
 		displayName4 = r.UpstreamServer.DisplayName.ValueString()
 
-		var name10 string
-		name10 = r.UpstreamServer.Name.ValueString()
+		var name22 string
+		name22 = r.UpstreamServer.Name.ValueString()
 
 		enabled4 := new(bool)
 		if !r.UpstreamServer.Enabled.IsUnknown() && !r.UpstreamServer.Enabled.IsNull() {
@@ -9685,15 +15417,425 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 
 			managedBy4[managedByKey4] = managedByInst4
 		}
+		var datastores4 []shared.AIGatewayDatastoreRef
+		if r.UpstreamServer.Datastores != nil {
+			datastores4 = make([]shared.AIGatewayDatastoreRef, 0, len(r.UpstreamServer.Datastores))
+			for datastoresIndex4 := range r.UpstreamServer.Datastores {
+				var name23 string
+				name23 = r.UpstreamServer.Datastores[datastoresIndex4].Name.ValueString()
+
+				datastores4 = append(datastores4, shared.AIGatewayDatastoreRef{
+					Name: name23,
+				})
+			}
+		}
+		var tokenVault4 *shared.AIGatewayTokenVault
+		if r.UpstreamServer.TokenVault != nil {
+			var provider4 string
+			provider4 = r.UpstreamServer.TokenVault.Provider.ValueString()
+
+			subjectTokenType4 := new(shared.SubjectTokenType)
+			if !r.UpstreamServer.TokenVault.SubjectTokenType.IsUnknown() && !r.UpstreamServer.TokenVault.SubjectTokenType.IsNull() {
+				*subjectTokenType4 = shared.SubjectTokenType(r.UpstreamServer.TokenVault.SubjectTokenType.ValueString())
+			} else {
+				subjectTokenType4 = nil
+			}
+			var credential4 *shared.AIGatewayTokenVaultCredential
+			if r.UpstreamServer.TokenVault.Credential != nil {
+				var inbound4 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.UpstreamServer.TokenVault.Credential.Inbound != nil {
+					location8 := new(shared.Location)
+					if !r.UpstreamServer.TokenVault.Credential.Inbound.Location.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Inbound.Location.IsNull() {
+						*location8 = shared.Location(r.UpstreamServer.TokenVault.Credential.Inbound.Location.ValueString())
+					} else {
+						location8 = nil
+					}
+					name24 := new(string)
+					if !r.UpstreamServer.TokenVault.Credential.Inbound.Name.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Inbound.Name.IsNull() {
+						*name24 = r.UpstreamServer.TokenVault.Credential.Inbound.Name.ValueString()
+					} else {
+						name24 = nil
+					}
+					prefix8 := new(string)
+					if !r.UpstreamServer.TokenVault.Credential.Inbound.Prefix.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Inbound.Prefix.IsNull() {
+						*prefix8 = r.UpstreamServer.TokenVault.Credential.Inbound.Prefix.ValueString()
+					} else {
+						prefix8 = nil
+					}
+					inbound4 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location8,
+						Name:     name24,
+						Prefix:   prefix8,
+					}
+				}
+				var outbound4 *shared.AIGatewayTokenVaultCredentialPlacement
+				if r.UpstreamServer.TokenVault.Credential.Outbound != nil {
+					location9 := new(shared.Location)
+					if !r.UpstreamServer.TokenVault.Credential.Outbound.Location.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Outbound.Location.IsNull() {
+						*location9 = shared.Location(r.UpstreamServer.TokenVault.Credential.Outbound.Location.ValueString())
+					} else {
+						location9 = nil
+					}
+					name25 := new(string)
+					if !r.UpstreamServer.TokenVault.Credential.Outbound.Name.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Outbound.Name.IsNull() {
+						*name25 = r.UpstreamServer.TokenVault.Credential.Outbound.Name.ValueString()
+					} else {
+						name25 = nil
+					}
+					prefix9 := new(string)
+					if !r.UpstreamServer.TokenVault.Credential.Outbound.Prefix.IsUnknown() && !r.UpstreamServer.TokenVault.Credential.Outbound.Prefix.IsNull() {
+						*prefix9 = r.UpstreamServer.TokenVault.Credential.Outbound.Prefix.ValueString()
+					} else {
+						prefix9 = nil
+					}
+					outbound4 = &shared.AIGatewayTokenVaultCredentialPlacement{
+						Location: location9,
+						Name:     name25,
+						Prefix:   prefix9,
+					}
+				}
+				credential4 = &shared.AIGatewayTokenVaultCredential{
+					Inbound:  inbound4,
+					Outbound: outbound4,
+				}
+			}
+			var cache6 *shared.Cache
+			if r.UpstreamServer.TokenVault.Cache != nil {
+				var redis8 *shared.AIGatewayRedisCloudConfiguration
+				if r.UpstreamServer.TokenVault.Cache.Redis != nil {
+					var cloudAuthentication8 *shared.CloudAuthentication
+					if r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication != nil {
+						var aiGatewayRedisAWSAuthentication8 *shared.AIGatewayRedisAWSAuthentication
+						if r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws != nil {
+							accessKeyId12 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.IsNull() {
+								*accessKeyId12 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AccessKeyID.ValueString()
+							} else {
+								accessKeyId12 = nil
+							}
+							assumeRoleArn12 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.IsNull() {
+								*assumeRoleArn12 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.AssumeRoleArn.ValueString()
+							} else {
+								assumeRoleArn12 = nil
+							}
+							cacheName8 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.IsNull() {
+								*cacheName8 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.CacheName.ValueString()
+							} else {
+								cacheName8 = nil
+							}
+							isServerless8 := new(bool)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.IsNull() {
+								*isServerless8 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.IsServerless.ValueBool()
+							} else {
+								isServerless8 = nil
+							}
+							region12 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.IsNull() {
+								*region12 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.Region.ValueString()
+							} else {
+								region12 = nil
+							}
+							roleSessionName12 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.IsNull() {
+								*roleSessionName12 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.RoleSessionName.ValueString()
+							} else {
+								roleSessionName12 = nil
+							}
+							secretAccessKey12 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.IsNull() {
+								*secretAccessKey12 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Aws.SecretAccessKey.ValueString()
+							} else {
+								secretAccessKey12 = nil
+							}
+							aiGatewayRedisAWSAuthentication8 = &shared.AIGatewayRedisAWSAuthentication{
+								AccessKeyID:     accessKeyId12,
+								AssumeRoleArn:   assumeRoleArn12,
+								CacheName:       cacheName8,
+								IsServerless:    isServerless8,
+								Region:          region12,
+								RoleSessionName: roleSessionName12,
+								SecretAccessKey: secretAccessKey12,
+							}
+						}
+						if aiGatewayRedisAWSAuthentication8 != nil {
+							cloudAuthentication8 = &shared.CloudAuthentication{
+								AIGatewayRedisAWSAuthentication: aiGatewayRedisAWSAuthentication8,
+							}
+						}
+						var aiGatewayRedisAzureAuthentication8 *shared.AIGatewayRedisAzureAuthentication
+						if r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure != nil {
+							clientId9 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.IsNull() {
+								*clientId9 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientID.ValueString()
+							} else {
+								clientId9 = nil
+							}
+							clientSecret9 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.IsNull() {
+								*clientSecret9 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.ClientSecret.ValueString()
+							} else {
+								clientSecret9 = nil
+							}
+							tenantId8 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.IsNull() {
+								*tenantId8 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Azure.TenantID.ValueString()
+							} else {
+								tenantId8 = nil
+							}
+							aiGatewayRedisAzureAuthentication8 = &shared.AIGatewayRedisAzureAuthentication{
+								ClientID:     clientId9,
+								ClientSecret: clientSecret9,
+								TenantID:     tenantId8,
+							}
+						}
+						if aiGatewayRedisAzureAuthentication8 != nil {
+							cloudAuthentication8 = &shared.CloudAuthentication{
+								AIGatewayRedisAzureAuthentication: aiGatewayRedisAzureAuthentication8,
+							}
+						}
+						var aiGatewayRedisGCPAuthentication8 *shared.AIGatewayRedisGCPAuthentication
+						if r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Gcp != nil {
+							serviceAccountJson8 := new(string)
+							if !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.IsNull() {
+								*serviceAccountJson8 = r.UpstreamServer.TokenVault.Cache.Redis.CloudAuthentication.Gcp.ServiceAccountJSON.ValueString()
+							} else {
+								serviceAccountJson8 = nil
+							}
+							aiGatewayRedisGCPAuthentication8 = &shared.AIGatewayRedisGCPAuthentication{
+								ServiceAccountJSON: serviceAccountJson8,
+							}
+						}
+						if aiGatewayRedisGCPAuthentication8 != nil {
+							cloudAuthentication8 = &shared.CloudAuthentication{
+								AIGatewayRedisGCPAuthentication: aiGatewayRedisGCPAuthentication8,
+							}
+						}
+					}
+					var cluster8 *shared.Cluster
+					if r.UpstreamServer.TokenVault.Cache.Redis.Cluster != nil {
+						maxRedirections8 := new(int64)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Cluster.MaxRedirections.IsNull() {
+							*maxRedirections8 = r.UpstreamServer.TokenVault.Cache.Redis.Cluster.MaxRedirections.ValueInt64()
+						} else {
+							maxRedirections8 = nil
+						}
+						var nodes16 []shared.Nodes
+						if r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes != nil {
+							nodes16 = make([]shared.Nodes, 0, len(r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes))
+							for nodesIndex16 := range r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes {
+								ip8 := new(string)
+								if !r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex16].IP.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex16].IP.IsNull() {
+									*ip8 = r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex16].IP.ValueString()
+								} else {
+									ip8 = nil
+								}
+								port26 := new(int64)
+								if !r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex16].Port.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex16].Port.IsNull() {
+									*port26 = r.UpstreamServer.TokenVault.Cache.Redis.Cluster.Nodes[nodesIndex16].Port.ValueInt64()
+								} else {
+									port26 = nil
+								}
+								nodes16 = append(nodes16, shared.Nodes{
+									IP:   ip8,
+									Port: port26,
+								})
+							}
+						}
+						cluster8 = &shared.Cluster{
+							MaxRedirections: maxRedirections8,
+							Nodes:           nodes16,
+						}
+					}
+					connectTimeout8 := new(int64)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.ConnectTimeout.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.ConnectTimeout.IsNull() {
+						*connectTimeout8 = r.UpstreamServer.TokenVault.Cache.Redis.ConnectTimeout.ValueInt64()
+					} else {
+						connectTimeout8 = nil
+					}
+					connectionIsProxied8 := new(bool)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.ConnectionIsProxied.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.ConnectionIsProxied.IsNull() {
+						*connectionIsProxied8 = r.UpstreamServer.TokenVault.Cache.Redis.ConnectionIsProxied.ValueBool()
+					} else {
+						connectionIsProxied8 = nil
+					}
+					database8 := new(int64)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.Database.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Database.IsNull() {
+						*database8 = r.UpstreamServer.TokenVault.Cache.Redis.Database.ValueInt64()
+					} else {
+						database8 = nil
+					}
+					host20 := new(string)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.Host.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Host.IsNull() {
+						*host20 = r.UpstreamServer.TokenVault.Cache.Redis.Host.ValueString()
+					} else {
+						host20 = nil
+					}
+					var keepalive8 *shared.Keepalive
+					if r.UpstreamServer.TokenVault.Cache.Redis.Keepalive != nil {
+						backlog8 := new(int64)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.Backlog.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.Backlog.IsNull() {
+							*backlog8 = r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.Backlog.ValueInt64()
+						} else {
+							backlog8 = nil
+						}
+						poolSize8 := new(int64)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.PoolSize.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.PoolSize.IsNull() {
+							*poolSize8 = r.UpstreamServer.TokenVault.Cache.Redis.Keepalive.PoolSize.ValueInt64()
+						} else {
+							poolSize8 = nil
+						}
+						keepalive8 = &shared.Keepalive{
+							Backlog:  backlog8,
+							PoolSize: poolSize8,
+						}
+					}
+					password17 := new(string)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.Password.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Password.IsNull() {
+						*password17 = r.UpstreamServer.TokenVault.Cache.Redis.Password.ValueString()
+					} else {
+						password17 = nil
+					}
+					port27 := new(string)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.Port.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Port.IsNull() {
+						*port27 = r.UpstreamServer.TokenVault.Cache.Redis.Port.ValueString()
+					} else {
+						port27 = nil
+					}
+					readTimeout8 := new(int64)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.ReadTimeout.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.ReadTimeout.IsNull() {
+						*readTimeout8 = r.UpstreamServer.TokenVault.Cache.Redis.ReadTimeout.ValueInt64()
+					} else {
+						readTimeout8 = nil
+					}
+					sendTimeout8 := new(int64)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.SendTimeout.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.SendTimeout.IsNull() {
+						*sendTimeout8 = r.UpstreamServer.TokenVault.Cache.Redis.SendTimeout.ValueInt64()
+					} else {
+						sendTimeout8 = nil
+					}
+					var sentinel8 *shared.Sentinel
+					if r.UpstreamServer.TokenVault.Cache.Redis.Sentinel != nil {
+						master8 := new(string)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Master.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Master.IsNull() {
+							*master8 = r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Master.ValueString()
+						} else {
+							master8 = nil
+						}
+						var nodes17 []shared.AIGatewayRedisCloudConfigurationNodes
+						if r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
+							nodes17 = make([]shared.AIGatewayRedisCloudConfigurationNodes, 0, len(r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes))
+							for nodesIndex17 := range r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes {
+								host21 := new(string)
+								if !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex17].Host.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex17].Host.IsNull() {
+									*host21 = r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex17].Host.ValueString()
+								} else {
+									host21 = nil
+								}
+								port28 := new(int64)
+								if !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex17].Port.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex17].Port.IsNull() {
+									*port28 = r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Nodes[nodesIndex17].Port.ValueInt64()
+								} else {
+									port28 = nil
+								}
+								nodes17 = append(nodes17, shared.AIGatewayRedisCloudConfigurationNodes{
+									Host: host21,
+									Port: port28,
+								})
+							}
+						}
+						password18 := new(string)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Password.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Password.IsNull() {
+							*password18 = r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Password.ValueString()
+						} else {
+							password18 = nil
+						}
+						role8 := new(shared.Role)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Role.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Role.IsNull() {
+							*role8 = shared.Role(r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Role.ValueString())
+						} else {
+							role8 = nil
+						}
+						username17 := new(string)
+						if !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Username.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Username.IsNull() {
+							*username17 = r.UpstreamServer.TokenVault.Cache.Redis.Sentinel.Username.ValueString()
+						} else {
+							username17 = nil
+						}
+						sentinel8 = &shared.Sentinel{
+							Master:   master8,
+							Nodes:    nodes17,
+							Password: password18,
+							Role:     role8,
+							Username: username17,
+						}
+					}
+					serverName8 := new(string)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.ServerName.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.ServerName.IsNull() {
+						*serverName8 = r.UpstreamServer.TokenVault.Cache.Redis.ServerName.ValueString()
+					} else {
+						serverName8 = nil
+					}
+					ssl8 := new(bool)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.Ssl.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Ssl.IsNull() {
+						*ssl8 = r.UpstreamServer.TokenVault.Cache.Redis.Ssl.ValueBool()
+					} else {
+						ssl8 = nil
+					}
+					sslVerify8 := new(bool)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.SslVerify.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.SslVerify.IsNull() {
+						*sslVerify8 = r.UpstreamServer.TokenVault.Cache.Redis.SslVerify.ValueBool()
+					} else {
+						sslVerify8 = nil
+					}
+					username18 := new(string)
+					if !r.UpstreamServer.TokenVault.Cache.Redis.Username.IsUnknown() && !r.UpstreamServer.TokenVault.Cache.Redis.Username.IsNull() {
+						*username18 = r.UpstreamServer.TokenVault.Cache.Redis.Username.ValueString()
+					} else {
+						username18 = nil
+					}
+					redis8 = &shared.AIGatewayRedisCloudConfiguration{
+						CloudAuthentication: cloudAuthentication8,
+						Cluster:             cluster8,
+						ConnectTimeout:      connectTimeout8,
+						ConnectionIsProxied: connectionIsProxied8,
+						Database:            database8,
+						Host:                host20,
+						Keepalive:           keepalive8,
+						Password:            password17,
+						Port:                port27,
+						ReadTimeout:         readTimeout8,
+						SendTimeout:         sendTimeout8,
+						Sentinel:            sentinel8,
+						ServerName:          serverName8,
+						Ssl:                 ssl8,
+						SslVerify:           sslVerify8,
+						Username:            username18,
+					}
+				}
+				cache6 = &shared.Cache{
+					Redis: redis8,
+				}
+			}
+			tokenVault4 = &shared.AIGatewayTokenVault{
+				Provider:         provider4,
+				SubjectTokenType: subjectTokenType4,
+				Credential:       credential4,
+				Cache:            cache6,
+			}
+		}
 		aiGatewayMCPServerUpstreamServer = &shared.AIGatewayMCPServerUpstreamServer{
 			Config:      config4,
 			Tools:       tools3,
 			DisplayName: displayName4,
-			Name:        name10,
+			Name:        name22,
 			Enabled:     enabled4,
 			Policies:    policies4,
 			Labels:      labels4,
 			ManagedBy:   managedBy4,
+			Datastores:  datastores4,
+			TokenVault:  tokenVault4,
 		}
 	}
 	if aiGatewayMCPServerUpstreamServer != nil {

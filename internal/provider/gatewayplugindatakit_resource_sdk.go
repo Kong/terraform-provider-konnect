@@ -375,10 +375,10 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 					}
 					r.Config.Resources.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.ClusterMaxRedirections)
 					if resp.Config.Resources.Cache.Redis.ClusterNodes != nil {
-						r.Config.Resources.Cache.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+						r.Config.Resources.Cache.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 						for _, clusterNodesItem := range resp.Config.Resources.Cache.Redis.ClusterNodes {
-							var clusterNodes tfTypes.ClusterNodes
+							var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 							clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 							clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -400,10 +400,10 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 					r.Config.Resources.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.SendTimeout)
 					r.Config.Resources.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Resources.Cache.Redis.SentinelMaster)
 					if resp.Config.Resources.Cache.Redis.SentinelNodes != nil {
-						r.Config.Resources.Cache.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+						r.Config.Resources.Cache.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 						for _, sentinelNodesItem := range resp.Config.Resources.Cache.Redis.SentinelNodes {
-							var sentinelNodes tfTypes.SentinelNodes
+							var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 							sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 							sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)

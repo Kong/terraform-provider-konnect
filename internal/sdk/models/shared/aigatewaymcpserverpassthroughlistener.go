@@ -16,6 +16,11 @@ type AIGatewayMCPServerPassthroughListener struct {
 	//
 	Tools  []AIGatewayMCPPassthroughTool     `json:"tools,omitempty"`
 	Access *AIGatewayMCPServerListenerAccess `json:"access,omitempty"`
+	// Rate limits applied to requests to this MCP Server, matched by MCP method or tool name.
+	// Each AI Gateway node counts and enforces the limits independently.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	RateLimiting *AIGatewayMCPServerRateLimiting `json:"rate_limiting,omitempty"`
 	// The display name for the MCP Server.
 	DisplayName string `json:"display_name"`
 	// A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
@@ -36,6 +41,23 @@ type AIGatewayMCPServerPassthroughListener struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVault `json:"token_vault,omitempty"`
 }
 
 func (a AIGatewayMCPServerPassthroughListener) MarshalJSON() ([]byte, error) {
@@ -88,6 +110,13 @@ func (a *AIGatewayMCPServerPassthroughListener) GetAccessOauthAccessToken() *AIG
 	return nil
 }
 
+func (a *AIGatewayMCPServerPassthroughListener) GetRateLimiting() *AIGatewayMCPServerRateLimiting {
+	if a == nil {
+		return nil
+	}
+	return a.RateLimiting
+}
+
 func (a *AIGatewayMCPServerPassthroughListener) GetDisplayName() string {
 	if a == nil {
 		return ""
@@ -128,4 +157,18 @@ func (a *AIGatewayMCPServerPassthroughListener) GetManagedBy() map[string]string
 		return nil
 	}
 	return a.ManagedBy
+}
+
+func (a *AIGatewayMCPServerPassthroughListener) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayMCPServerPassthroughListener) GetTokenVault() *AIGatewayTokenVault {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
 }

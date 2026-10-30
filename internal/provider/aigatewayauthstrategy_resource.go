@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -23,6 +24,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -201,6 +204,36 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
@@ -381,10 +414,13 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 								Description: `The name of the cookie in which the bearer token is passed.`,
 							},
 							"bearer_token_header_name": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Default:     stringdefault.StaticString(`authorization:bearer`),
-								Description: `The name of the HTTP header from which the bearer token is retrieved. The default value is ` + "`" + `authorization:bearer` + "`" + `, which reads the token from the ` + "`" + `Authorization: Bearer <token>` + "`" + ` header. Accepts plain header names such as ` + "`" + `x-my-token` + "`" + ` as well as Kong's special ` + "`" + `authorization:bearer` + "`" + ` notation. The ` + "`" + `access-token` + "`" + ` and ` + "`" + `x-access-token` + "`" + ` headers are also checked as a fallback for backward compatibility regardless of this setting. Default: "authorization:bearer"`,
+								Computed: true,
+								Optional: true,
+								Default:  stringdefault.StaticString(`authorization:bearer`),
+								MarkdownDescription: `The name of the HTTP header from which the bearer token is retrieved. The default value is ` + "`" + `authorization:bearer` + "`" + `, which reads the token from the ` + "`" + `Authorization: Bearer <token>` + "`" + ` header. Accepts plain header names such as ` + "`" + `x-my-token` + "`" + ` as well as Kong's special ` + "`" + `authorization:bearer` + "`" + ` notation. The ` + "`" + `access-token` + "`" + ` and ` + "`" + `x-access-token` + "`" + ` headers are also checked as a fallback for backward compatibility regardless of this setting.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.` + "\n" +
+									`Default: "authorization:bearer"`,
 							},
 							"bearer_token_param_type": schema.ListAttribute{
 								Computed: true,
@@ -858,9 +894,17 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 							"credential_claim": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("sub")})),
 								ElementType: types.StringType,
-								Description: `The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["sub"]`,
+								Description: `Claim path used to derive virtual credentials when consumer mapping is not used.`,
+							},
+							"credential_claims": schema.ListAttribute{
+								Optional: true,
+								ElementType: types.ListType{
+									ElemType: types.StringType,
+								},
+								MarkdownDescription: `The claims used to derive a virtual credential, for example to be consumed by the rate-limiting plugin, when consumer mapping is not used. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 							},
 							"disable_session": schema.ListAttribute{
 								Optional:    true,
@@ -1327,6 +1371,25 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 										Default:     booldefault.StaticBool(true),
 										Description: `When true (default), return 401 if fail to match a Principal in Kong Identity after token verification. When false, the request continues without authenticated_principal set. Default: true`,
 									},
+									"jit": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"all_claims": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `Send the full set of verified token claims with the Kong Identity principal lookup. Default: false`,
+											},
+											"claims": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Send only the named token claims with the Kong Identity principal lookup. The claims are picked from the same source the principal claim is read from. Set all_claims to send every verified claim instead.`,
+											},
+										},
+										MarkdownDescription: `Token claims to share with the Kong Identity principal lookup. Kong Identity, not this plugin, decides whether the claims are used: a trusted IdP with JIT provisioning enabled in Konnect maps them onto a principal provisioned just in time. By default the lookup only carries the principal claim (e.g. 'sub') and no additional claims are shared.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+									},
 									"match_consumer": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
@@ -1371,6 +1434,40 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 								Optional:    true,
 								Default:     stringdefault.StaticString(`off`),
 								Description: `Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. possible known values include one of ["off", "optional", "strict"]; Default: "off"`,
+							},
+							"protected_resource_metadata": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"authorization_servers": schema.ListAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `List of authorization server issuer URIs to advertise in the RFC 9728 metadata document. Not Null`,
+										Validators: []validator.List{
+											speakeasy_listvalidators.NotNull(),
+										},
+									},
+									"metadata_endpoint": schema.StringAttribute{
+										Optional:    true,
+										Description: `Override the well-known metadata endpoint path. Defaults to the path component of resource with /.well-known/oauth-protected-resource appended.`,
+									},
+									"resource": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The URI of the protected resource. Used as the resource field in the RFC 9728 metadata document and to derive the well-known endpoint path. Not Null`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+										},
+									},
+									"scopes_supported": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `Scopes supported by this protected resource. Included in the RFC 9728 metadata document and in the scope attribute of WWW-Authenticate challenge headers on 401 responses.`,
+									},
+								},
+								MarkdownDescription: `When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 							},
 							"pushed_authorization_request_endpoint": schema.StringAttribute{
 								Optional:    true,
@@ -1944,6 +2041,7 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"cache": schema.SingleNestedAttribute{
+										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"enabled": schema.BoolAttribute{
@@ -1959,9 +2057,64 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 										},
 										Description: `Cache support for token exchange`,
 									},
+									"grant_type": schema.StringAttribute{
+										Computed: true,
+										Optional: true,
+										Default:  stringdefault.StaticString(`token_exchange`),
+										MarkdownDescription: `The token exchange grant. ` + "`" + `token_exchange` + "`" + ` (default) uses the OAuth 2.0 Token Exchange grant (RFC 8693). ` + "`" + `jwt_bearer` + "`" + ` uses the JWT Bearer authorization-grant flow (RFC 7523); see ` + "`" + `token_exchange.provider` + "`" + ` for provider-specific defaults in this mode.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+											`possible known values include one of ["jwt_bearer", "token_exchange"]; Default: "token_exchange"`,
+									},
+									"map_identities_from": schema.StringAttribute{
+										Computed: true,
+										Optional: true,
+										Default:  stringdefault.StaticString(`exchanged_tokens`),
+										MarkdownDescription: `Which token's claims to use for consumer, consumer group, and principal mapping. Only takes effect when token exchange is configured. ` + "`" + `exchanged_tokens` + "`" + ` (default) uses the token(s) returned by the exchange or tokens derived from it, as today. ` + "`" + `subject_token` + "`" + ` uses the original, pre-exchange bearer token's claims instead.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+											`possible known values include one of ["exchanged_tokens", "subject_token"]; Default: "exchanged_tokens"`,
+									},
+									"provider": schema.StringAttribute{
+										Computed: true,
+										Optional: true,
+										Default:  stringdefault.StaticString(`standard`),
+										MarkdownDescription: `Identity provider used with ` + "`" + `grant_type = jwt_bearer` + "`" + `; not allowed with ` + "`" + `grant_type = token_exchange` + "`" + `. ` + "`" + `standard` + "`" + ` (default) adds no provider-specific parameter. ` + "`" + `microsoft` + "`" + ` adds the required ` + "`" + `requested_token_use=on_behalf_of` + "`" + `, which is fixed and cannot be overridden via ` + "`" + `post_args_names/values` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+											`possible known values include one of ["microsoft", "standard"]; Default: "standard"`,
+									},
 									"request": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
+											"actor_token": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"header_name": schema.StringAttribute{
+														Optional:    true,
+														Description: `Header name containing the actor token. Required when ` + "`" + `source` + "`" + ` is ` + "`" + `header` + "`" + `.`,
+													},
+													"source": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     stringdefault.StaticString(`none`),
+														Description: `Where to obtain the actor token. ` + "`" + `header` + "`" + ` reads it from a request header. ` + "`" + `config` + "`" + ` uses a fixed value. ` + "`" + `none` + "`" + ` disables actor token support. possible known values include one of ["config", "header", "none"]; Default: "none"`,
+													},
+													"static_token": schema.StringAttribute{
+														Optional:    true,
+														Description: `Static actor token value. Required when ` + "`" + `source` + "`" + ` is ` + "`" + `config` + "`" + `.`,
+													},
+													"type": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     stringdefault.StaticString(`urn:ietf:params:oauth:token-type:access_token`),
+														Description: `The RFC 8693 token type identifier of the actor token (the ` + "`" + `actor_token_type` + "`" + ` request parameter). Default: "urn:ietf:params:oauth:token-type:access_token"`,
+													},
+												},
+												MarkdownDescription: `How to obtain the actor token to include in the token exchange request. Represents the identity of the party acting on behalf of the subject.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 											"audience": schema.ListAttribute{
 												Optional:    true,
 												ElementType: types.StringType,
@@ -1971,13 +2124,59 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 												Computed:    true,
 												Optional:    true,
 												Default:     booldefault.StaticBool(false),
-												Description: `Use empty audiences. Use this field to override audiences defined in ` + "`" + `config.audience` + "`" + `. Default: false`,
+												Description: `Use empty audiences. Use this field to remove audiences defined in ` + "`" + `config.audience` + "`" + `. Default: false`,
+											},
+											"empty_headers": schema.BoolAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  booldefault.StaticBool(false),
+												MarkdownDescription: `Use no extra headers on the token exchange request. Use this field to remove extra headers defined in ` + "`" + `config.token_headers_names` + "`" + `.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+													`Default: false`,
+											},
+											"empty_post_args": schema.BoolAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  booldefault.StaticBool(false),
+												MarkdownDescription: `Use no extra POST arguments on the token exchange request. Use this field to remove extra POST arguments defined in ` + "`" + `config.token_post_args_names` + "`" + `.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+													`Default: false`,
 											},
 											"empty_scopes": schema.BoolAttribute{
 												Computed:    true,
 												Optional:    true,
 												Default:     booldefault.StaticBool(false),
-												Description: `Use empty scopes. Use this field to override scopes defined in ` + "`" + `config.scopes` + "`" + `. Default: false`,
+												Description: `Use empty scopes. Use this field to remove scopes defined in ` + "`" + `config.scopes` + "`" + `. Default: false`,
+											},
+											"headers_names": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Extra header names sent only on the token exchange request. Overrides ` + "`" + `config.token_headers_names` + "`" + ` for this request.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"headers_values": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Values paired by index with ` + "`" + `headers_names` + "`" + `.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"post_args_names": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Extra POST argument names sent only on the token exchange request. Overrides ` + "`" + `config.token_post_args_names` + "`" + ` for this request. Use this, not the top-level field, for parameters that must not be attached to the plugin's other token endpoint calls, for example ` + "`" + `requested_token_use` + "`" + ` for Entra ID's On-Behalf-Of flow.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"post_args_values": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Values paired by index with ` + "`" + `post_args_names` + "`" + `.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 											},
 											"scopes": schema.ListAttribute{
 												Optional:    true,
@@ -2001,21 +2200,34 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 														"has_audience": schema.ListAttribute{
 															Optional:    true,
 															ElementType: types.StringType,
+															Description: `Audience values that must all be present in the token, matched against ` + "`" + `audience_claim` + "`" + `.`,
 														},
 														"has_scopes": schema.ListAttribute{
 															Optional:    true,
 															ElementType: types.StringType,
+															Description: `Scope values that must all be present in the token, matched against ` + "`" + `scopes_claim` + "`" + `.`,
 														},
 														"missing_audience": schema.ListAttribute{
 															Optional:    true,
 															ElementType: types.StringType,
+															Description: `Audience values that must all be absent from the token, matched against ` + "`" + `audience_claim` + "`" + `.`,
 														},
 														"missing_scopes": schema.ListAttribute{
 															Optional:    true,
 															ElementType: types.StringType,
+															Description: `Scope values that must all be absent from the token, matched against ` + "`" + `scopes_claim` + "`" + `.`,
 														},
 													},
-													Description: `A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined.`,
+													Description: `A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, ` + "`" + `conditions` + "`" + ` must not be defined -- every token from that issuer is exchanged unconditionally, since a foreign-issued token that isn't exchanged can never pass normal verification against the target issuer anyway. In contrast, to exchange tokens issued by the target issuer itself, ` + "`" + `conditions` + "`" + ` must be defined.`,
+												},
+												"deny_on_mismatch": schema.BoolAttribute{
+													Computed: true,
+													Optional: true,
+													Default:  booldefault.StaticBool(false),
+													MarkdownDescription: `When true, a token issued by ` + "`" + `issuer` + "`" + ` that fails to match ` + "`" + `conditions` + "`" + ` is denied instead of being passed through unexchanged. Evaluated independently for this item only, with no effect on other ` + "`" + `subject_token_issuers` + "`" + ` items. Only allowed when this issuer is the target issuer, since ` + "`" + `conditions` + "`" + ` is required there and foreign-issuer items always match.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+														`Default: false`,
 												},
 												"issuer": schema.StringAttribute{
 													Computed:    true,
@@ -2024,6 +2236,21 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
 													},
+												},
+												"jwks_uri": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `An explicit JWKS endpoint for this issuer. This field should be left empty when this issuer is the same as the target issuer. It is only used when ` + "`" + `verify_signature` + "`" + ` is ` + "`" + `true` + "`" + `. When set, Kong fetches the signing keys from this URI directly instead of using OIDC Discovery.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+												"verify_signature": schema.BoolAttribute{
+													Computed: true,
+													Optional: true,
+													Default:  booldefault.StaticBool(false),
+													MarkdownDescription: `When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. This field should be left empty or set to ` + "`" + `false` + "`" + ` when this issuer is the same as the target issuer. Defaults to ` + "`" + `false` + "`" + ` for backward compatibility.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+														`Default: false`,
 												},
 											},
 										},
@@ -2264,6 +2491,36 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -2307,6 +2564,74 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 							stringvalidator.UTF8LengthBetween(1, 256),
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
+					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"enable_credential_manager": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Whether the self-service enrollment UI is served for this auth strategy. Default: false`,
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+						},
+						MarkdownDescription: `Serves the self-service enrollment UI through which end users authorize the upstream providers` + "\n" +
+							`this auth strategy authenticates against. Omit ` + "`" + `token_vault` + "`" + ` entirely to serve no such UI.` + "\n" +
+							`` + "\n" +
+							`Requires a ` + "`" + `token-vault` + "`" + ` Datastore reference in ` + "`" + `datastores` + "`" + `; enabling the credential manager` + "\n" +
+							`without one is rejected.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,

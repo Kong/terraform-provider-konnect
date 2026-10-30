@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type BootstrapServers struct {
-	Host types.String `tfsdk:"host"`
+type AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes struct {
+	IP   types.String `tfsdk:"ip"`
 	Port types.Int64  `tfsdk:"port"`
 }

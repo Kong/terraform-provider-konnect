@@ -166,6 +166,51 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Serverless Cloud Gateways
+  /v1/ai-cost-management/tag-capture:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCostManagementTags#read
+        terraform-datasource: null
+      operationId: get-cost-management-tags
+      summary: Get cost management tags
+      description: |
+        Returns the cost management tags configuration of the organization in this region.
+        If no configuration has been set, the defaults are returned.
+      responses:
+        '200':
+          $ref: '#/components/responses/CostManagementTagsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Cost Management Tags
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'AIGatewayCostManagementTags#create,update'
+        terraform-datasource: null
+      operationId: update-cost-management-tags
+      summary: Update cost management tags
+      description: |
+        Replaces the cost management tags configuration of the organization in this region.
+        Header names and prefixes are compared case-insensitively.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateCostManagementTags'
+      responses:
+        '200':
+          $ref: '#/components/responses/CostManagementTagsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Cost Management Tags
   /v1/ai-gateways:
     post:
       x-speakeasy-entity-operation:
@@ -1443,6 +1488,118 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
       tags:
         - AI Gateway DataPlane Certificates
+  '/v1/ai-gateways/{gatewayId}/datastores':
+    parameters:
+      - $ref: '#/components/parameters/AIGatewayId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayDatastore#create
+        terraform-datasource: null
+      operationId: create-ai-gateway-datastore
+      summary: Create an AI Gateway Datastore
+      description: Creates a new Datastore for the AI Gateway.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAIGatewayDatastoreRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateAIGatewayDatastoreResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Datastores
+  '/v1/ai-gateways/{gatewayId}/datastores/{datastoreIdOrName}':
+    parameters:
+      - $ref: '#/components/parameters/AIGatewayId'
+      - $ref: '#/components/parameters/AIGatewayDatastoreIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayDatastore#read
+        terraform-datasource: null
+      operationId: get-ai-gateway-datastore
+      summary: Get an AI Gateway Datastore
+      description: Returns the details of a specific AI Gateway Datastore.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAIGatewayDatastoreResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Datastores
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayDatastore#update
+        terraform-datasource: null
+      operationId: update-ai-gateway-datastore
+      summary: Update an AI Gateway Datastore
+      description: |
+        Updates the configuration of an existing AI Gateway Datastore.
+
+        `name` and `type` are immutable after creation; attempting to change either is rejected.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAIGatewayDatastoreRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateAIGatewayDatastoreResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Datastores
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayDatastore#delete
+        terraform-datasource: null
+      operationId: delete-ai-gateway-datastore
+      summary: Delete an AI Gateway Datastore
+      description: Deletes an AI Gateway Datastore. Rejected with a 409 if the Datastore is still referenced by a policy or model.
+      responses:
+        '204':
+          description: Datastore deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Datastores
   '/v1/ai-gateways/{gatewayId}/mcp-servers':
     parameters:
       - $ref: '#/components/parameters/AIGatewayId'
@@ -8787,7 +8944,7 @@ paths:
                   nullable: true
                   x-speakeasy-name-override: consumer_id
                   x-speakeasy-param-computed: false
-                  x-speakeasy-entity-version: 1
+              x-speakeasy-entity-version: 1
       responses:
         '201':
           description: Consumer added to group
@@ -9705,6 +9862,7 @@ paths:
       description: Get a Plugin using ID in a workspace.
       parameters:
         - $ref: '#/components/parameters/Workspace'
+        - $ref: '#/components/parameters/ExpandPartials'
       responses:
         '200':
           description: Successfully fetched Plugin
@@ -25084,6 +25242,8 @@ paths:
                 type: object
                 additionalProperties:
                   $ref: '#/components/schemas/LegacyStringFieldFilterWithExists'
+              konnect_managed:
+                $ref: '#/components/schemas/BooleanFieldFilter'
           style: deepObject
       responses:
         '200':
@@ -25551,6 +25711,37 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
         - Control Planes
+  '/v2/control-planes/{controlPlaneId}/core-entities/workspaces#single-resource':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: null
+        terraform-datasource:
+          - GatewayWorkspace#read
+      operationId: list-workspaces-single-resource
+      summary: List Workspaces Datasource
+      description: 'Returns a Workspace within a control plane, filtered by name.'
+      parameters:
+        - name: controlPlaneId
+          in: path
+          description: ID of a control plane
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: '#/components/parameters/WorkspaceFilter'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListWorkspacesResponse'
+        '400':
+          $ref: '#/components/responses/KonnectCPLegacyBadRequest'
+        '401':
+          $ref: '#/components/responses/KonnectCPLegacyUnauthorized'
+        '403':
+          $ref: '#/components/responses/KonnectCPLegacyForbidden'
+        '404':
+          $ref: '#/components/responses/KonnectCPLegacyNotFound'
+      tags:
+        - Workspaces
   /v2/cloud-gateways/configurations#delete:
     put:
       x-speakeasy-entity-operation: CloudGatewayConfiguration#delete
@@ -25608,37 +25799,6 @@ paths:
       tags:
         - Data-Plane Group Configurations
       x-speakeasy-group: CloudGateways
-  '/v2/control-planes/{controlPlaneId}/core-entities/workspaces#single-resource':
-    get:
-      x-speakeasy-entity-operation:
-        terraform-resource: null
-        terraform-datasource:
-          - GatewayWorkspace#read
-      operationId: list-workspaces-single-resource
-      summary: List Workspaces Datasource
-      description: 'Returns a Workspace within a control plane, filtered by name.'
-      parameters:
-        - name: controlPlaneId
-          in: path
-          description: ID of a control plane
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - $ref: '#/components/parameters/WorkspaceFilter'
-      responses:
-        '200':
-          $ref: '#/components/responses/ListWorkspacesResponse'
-        '400':
-          $ref: '#/components/responses/KonnectCPLegacyBadRequest'
-        '401':
-          $ref: '#/components/responses/KonnectCPLegacyUnauthorized'
-        '403':
-          $ref: '#/components/responses/KonnectCPLegacyForbidden'
-        '404':
-          $ref: '#/components/responses/KonnectCPLegacyNotFound'
-      tags:
-        - Workspaces
   /v2/audit-log-webhook#delete:
     patch:
       x-speakeasy-entity-operation:
@@ -25864,6 +26024,16 @@ components:
       required: true
       description: The unique ID of the DataPlane Certificate.
       example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+      x-speakeasy-match: id
+      schema:
+        $ref: '#/components/schemas/UUID'
+    AIGatewayDatastoreIdMatchingParam:
+      name: datastoreIdOrName
+      in: path
+      required: true
+      description: The unique ID of the AI Gateway Datastore.
+      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+      x-speakeasy-name-override: datastoreId
       x-speakeasy-match: id
       schema:
         $ref: '#/components/schemas/UUID'
@@ -26338,6 +26508,14 @@ components:
       description: |
         Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request.
       required: false
+    ExpandPartials:
+      description: Expand partials for the plugin.
+      example: true
+      in: query
+      name: expand_partials
+      schema:
+        type: boolean
+      x-speakeasy-terraform-ignore: true
     FilterByLabels:
       x-speakeasy-name-override: filter_labels
       name: labels
@@ -33029,6 +33207,8 @@ components:
           example: '2022-02-07T17:00:00.52Z'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
+        konnect_managed:
+          $ref: '#/components/schemas/KonnectManaged'
       example:
         id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
         name: IDM - Developers
@@ -33038,6 +33218,7 @@ components:
           env: test
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-08-31T17:00:00.52Z'
+        konnect_managed: false
       title: Team
     TeamResponse:
       allOf:
@@ -33051,6 +33232,7 @@ components:
             - labels
             - created_at
             - updated_at
+            - konnect_managed
     IdpTeamGroupMapping:
       description: A mapping between a Konnect team and an identity provider group.
       type: object
@@ -46871,6 +47053,12 @@ components:
       maxLength: 256
       minLength: 1
       pattern: '^[A-Za-z0-9._:@-]{1,256}$'
+    AIGatewayKonnectManagedEntityFlag:
+      description: An immutable read-only flag to identify resource managed by Konnect services.
+      type: boolean
+      example: true
+      readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
     AIGatewayVaultName:
       description: An immutable user-defined identifier for this resource.
       type: string
@@ -46885,6 +47073,22 @@ components:
       maxLength: 255
       minLength: 2
       pattern: '^[a-z][a-z0-9-]*[a-z0-9]+$'
+    AIGatewayDatastoreName:
+      description: An immutable user-defined identifier for this resource.
+      type: string
+      example: shared-redis
+      maxLength: 255
+      minLength: 2
+      pattern: '^[a-z][a-z0-9-]*[a-z0-9]+$'
+    AIGatewayDatastoreRef:
+      description: A reference to an existing datastore
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/AIGatewayDatastoreName'
+      additionalProperties: false
+      required:
+        - name
     AIGatewayProxyURL:
       description: Proxy URL associated with reaching the data-planes connected to a control-plane.
       type: object
@@ -47107,6 +47311,8 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        konnect_managed:
+          $ref: '#/components/schemas/AIGatewayKonnectManagedEntityFlag'
       required:
         - display_name
         - name
@@ -47210,6 +47416,8 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        konnect_managed:
+          $ref: '#/components/schemas/AIGatewayKonnectManagedEntityFlag'
       additionalProperties: false
       required:
         - name
@@ -47392,6 +47600,8 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        konnect_managed:
+          $ref: '#/components/schemas/AIGatewayKonnectManagedEntityFlag'
       additionalProperties: false
       required:
         - name
@@ -47404,6 +47614,14 @@ components:
       description: 'A reference to the certificate with which to associate the SNI hostname, by certificate name. The certificate must have a valid private key to be used by the SNI.'
       type: string
       example: my-certificate
+    AIGatewayCertificateReference:
+      description: 'A reference to an AI Certificate on the same AI Gateway, by certificate name. The certificate must have a valid private key to be presented as a client certificate to an upstream.'
+      type: string
+      example: my-certificate
+    AIGatewayCACertificateReference:
+      description: 'A reference to an AI CA Certificate on the same AI Gateway, by CA certificate name.'
+      type: string
+      example: my-ca-certificate
     AIGatewayHostname:
       description: A hostname used for TLS Server Name Indication (SNI) matching. Supports an optional wildcard segment at either end of the hostname (for example `*.example.com` or `example.*`).
       type: string
@@ -47501,6 +47719,8 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        konnect_managed:
+          $ref: '#/components/schemas/AIGatewayKonnectManagedEntityFlag'
       additionalProperties: false
       required:
         - name
@@ -47560,6 +47780,8 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        konnect_managed:
+          $ref: '#/components/schemas/AIGatewayKonnectManagedEntityFlag'
         metadata:
           description: Metadata extracted from the certificate.
           type: object
@@ -47650,7 +47872,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayModelFormat'
-          maxItems: 1
+          default:
+            - type: '*'
           minItems: 1
         targets:
           description: One or more backend models that this model entry routes to.
@@ -47664,17 +47887,31 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          description: Names of the Datastores this model references.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayDatastoreRef'
+          example:
+            - name: kong-managed
+          x-speakeasy-param-computed: true
         type:
           type: string
           const: model
         config:
           $ref: '#/components/schemas/AIGatewayModelModelConfig'
         capabilities:
-          description: List of AI capabilities enabled for this model.
+          description: |
+            The capabilities this model supports. Set to a specific capability to
+            restrict the model to that capability only, or to `*` to allow all
+            capabilities that the targets support at the gateway's
+            min_runtime_version. A capability that needs a newer
+            min_runtime_version is left out of `*`.
           type: array
           items:
             type: string
             enum:
+              - '*'
               - generate
               - agentic
               - realtime
@@ -47690,6 +47927,8 @@ components:
               decisions: '2.2'
             description: '**`decisions` requires a minimum runtime version of `2.2`**.'
             x-speakeasy-unknown-values: allow
+          default:
+            - '*'
       required:
         - display_name
         - name
@@ -47725,7 +47964,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AIGatewayModelFormat'
-          maxItems: 1
+          default:
+            - type: '*'
           minItems: 1
         targets:
           description: One or more backend models that this model entry routes to.
@@ -47739,17 +47979,31 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          description: Names of the Datastores this model references.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayDatastoreRef'
+          example:
+            - name: kong-managed
+          x-speakeasy-param-computed: true
         type:
           type: string
           const: api
         config:
           $ref: '#/components/schemas/AIGatewayModelAPIConfig'
         capabilities:
-          description: List of AI capabilities enabled for this API model.
+          description: |
+            The capabilities this model supports. Set to a specific capability to
+            restrict the model to that capability only, or to `*` to allow all
+            capabilities that the targets support at the gateway's
+            min_runtime_version. A capability that needs a newer
+            min_runtime_version is left out of `*`.
           type: array
           items:
             type: string
             enum:
+              - '*'
               - batches
               - files
               - skills
@@ -47757,6 +48011,8 @@ components:
               skills: '2.2'
             description: '**`skills` requires a minimum runtime version of `2.2`**.'
             x-speakeasy-unknown-values: allow
+          default:
+            - '*'
       required:
         - display_name
         - name
@@ -48031,16 +48287,65 @@ components:
             type: string
             enum:
               - error
+              - http_400
+              - http_401
+              - http_402
               - http_403
               - http_404
+              - http_405
+              - http_408
+              - http_409
+              - http_413
+              - http_415
+              - http_422
               - http_429
               - http_500
               - http_502
               - http_503
               - http_504
+              - http_522
+              - http_529
+              - http_5xx
               - invalid_header
               - non_idempotent
               - timeout
+            x-enum-min-runtime-version:
+              http_400: '2.3'
+              http_401: '2.3'
+              http_402: '2.3'
+              http_405: '2.3'
+              http_408: '2.3'
+              http_409: '2.3'
+              http_413: '2.3'
+              http_415: '2.3'
+              http_422: '2.3'
+              http_522: '2.3'
+              http_529: '2.3'
+              http_5xx: '2.3'
+            description: |-
+              **`http_400` requires a minimum runtime version of `2.3`**.
+
+              **`http_401` requires a minimum runtime version of `2.3`**.
+
+              **`http_402` requires a minimum runtime version of `2.3`**.
+
+              **`http_405` requires a minimum runtime version of `2.3`**.
+
+              **`http_408` requires a minimum runtime version of `2.3`**.
+
+              **`http_409` requires a minimum runtime version of `2.3`**.
+
+              **`http_413` requires a minimum runtime version of `2.3`**.
+
+              **`http_415` requires a minimum runtime version of `2.3`**.
+
+              **`http_422` requires a minimum runtime version of `2.3`**.
+
+              **`http_522` requires a minimum runtime version of `2.3`**.
+
+              **`http_529` requires a minimum runtime version of `2.3`**.
+
+              **`http_5xx` requires a minimum runtime version of `2.3`**.
             x-speakeasy-unknown-values: allow
           default:
             - error
@@ -48104,16 +48409,65 @@ components:
             type: string
             enum:
               - error
+              - http_400
+              - http_401
+              - http_402
               - http_403
               - http_404
+              - http_405
+              - http_408
+              - http_409
+              - http_413
+              - http_415
+              - http_422
               - http_429
               - http_500
               - http_502
               - http_503
               - http_504
+              - http_522
+              - http_529
+              - http_5xx
               - invalid_header
               - non_idempotent
               - timeout
+            x-enum-min-runtime-version:
+              http_400: '2.3'
+              http_401: '2.3'
+              http_402: '2.3'
+              http_405: '2.3'
+              http_408: '2.3'
+              http_409: '2.3'
+              http_413: '2.3'
+              http_415: '2.3'
+              http_422: '2.3'
+              http_522: '2.3'
+              http_529: '2.3'
+              http_5xx: '2.3'
+            description: |-
+              **`http_400` requires a minimum runtime version of `2.3`**.
+
+              **`http_401` requires a minimum runtime version of `2.3`**.
+
+              **`http_402` requires a minimum runtime version of `2.3`**.
+
+              **`http_405` requires a minimum runtime version of `2.3`**.
+
+              **`http_408` requires a minimum runtime version of `2.3`**.
+
+              **`http_409` requires a minimum runtime version of `2.3`**.
+
+              **`http_413` requires a minimum runtime version of `2.3`**.
+
+              **`http_415` requires a minimum runtime version of `2.3`**.
+
+              **`http_422` requires a minimum runtime version of `2.3`**.
+
+              **`http_522` requires a minimum runtime version of `2.3`**.
+
+              **`http_529` requires a minimum runtime version of `2.3`**.
+
+              **`http_5xx` requires a minimum runtime version of `2.3`**.
             x-speakeasy-unknown-values: allow
           default:
             - error
@@ -48173,16 +48527,65 @@ components:
             type: string
             enum:
               - error
+              - http_400
+              - http_401
+              - http_402
               - http_403
               - http_404
+              - http_405
+              - http_408
+              - http_409
+              - http_413
+              - http_415
+              - http_422
               - http_429
               - http_500
               - http_502
               - http_503
               - http_504
+              - http_522
+              - http_529
+              - http_5xx
               - invalid_header
               - non_idempotent
               - timeout
+            x-enum-min-runtime-version:
+              http_400: '2.3'
+              http_401: '2.3'
+              http_402: '2.3'
+              http_405: '2.3'
+              http_408: '2.3'
+              http_409: '2.3'
+              http_413: '2.3'
+              http_415: '2.3'
+              http_422: '2.3'
+              http_522: '2.3'
+              http_529: '2.3'
+              http_5xx: '2.3'
+            description: |-
+              **`http_400` requires a minimum runtime version of `2.3`**.
+
+              **`http_401` requires a minimum runtime version of `2.3`**.
+
+              **`http_402` requires a minimum runtime version of `2.3`**.
+
+              **`http_405` requires a minimum runtime version of `2.3`**.
+
+              **`http_408` requires a minimum runtime version of `2.3`**.
+
+              **`http_409` requires a minimum runtime version of `2.3`**.
+
+              **`http_413` requires a minimum runtime version of `2.3`**.
+
+              **`http_415` requires a minimum runtime version of `2.3`**.
+
+              **`http_422` requires a minimum runtime version of `2.3`**.
+
+              **`http_522` requires a minimum runtime version of `2.3`**.
+
+              **`http_529` requires a minimum runtime version of `2.3`**.
+
+              **`http_5xx` requires a minimum runtime version of `2.3`**.
             x-speakeasy-unknown-values: allow
           default:
             - error
@@ -48251,16 +48654,65 @@ components:
             type: string
             enum:
               - error
+              - http_400
+              - http_401
+              - http_402
               - http_403
               - http_404
+              - http_405
+              - http_408
+              - http_409
+              - http_413
+              - http_415
+              - http_422
               - http_429
               - http_500
               - http_502
               - http_503
               - http_504
+              - http_522
+              - http_529
+              - http_5xx
               - invalid_header
               - non_idempotent
               - timeout
+            x-enum-min-runtime-version:
+              http_400: '2.3'
+              http_401: '2.3'
+              http_402: '2.3'
+              http_405: '2.3'
+              http_408: '2.3'
+              http_409: '2.3'
+              http_413: '2.3'
+              http_415: '2.3'
+              http_422: '2.3'
+              http_522: '2.3'
+              http_529: '2.3'
+              http_5xx: '2.3'
+            description: |-
+              **`http_400` requires a minimum runtime version of `2.3`**.
+
+              **`http_401` requires a minimum runtime version of `2.3`**.
+
+              **`http_402` requires a minimum runtime version of `2.3`**.
+
+              **`http_405` requires a minimum runtime version of `2.3`**.
+
+              **`http_408` requires a minimum runtime version of `2.3`**.
+
+              **`http_409` requires a minimum runtime version of `2.3`**.
+
+              **`http_413` requires a minimum runtime version of `2.3`**.
+
+              **`http_415` requires a minimum runtime version of `2.3`**.
+
+              **`http_422` requires a minimum runtime version of `2.3`**.
+
+              **`http_522` requires a minimum runtime version of `2.3`**.
+
+              **`http_529` requires a minimum runtime version of `2.3`**.
+
+              **`http_5xx` requires a minimum runtime version of `2.3`**.
             x-speakeasy-unknown-values: allow
           default:
             - error
@@ -48332,16 +48784,65 @@ components:
             type: string
             enum:
               - error
+              - http_400
+              - http_401
+              - http_402
               - http_403
               - http_404
+              - http_405
+              - http_408
+              - http_409
+              - http_413
+              - http_415
+              - http_422
               - http_429
               - http_500
               - http_502
               - http_503
               - http_504
+              - http_522
+              - http_529
+              - http_5xx
               - invalid_header
               - non_idempotent
               - timeout
+            x-enum-min-runtime-version:
+              http_400: '2.3'
+              http_401: '2.3'
+              http_402: '2.3'
+              http_405: '2.3'
+              http_408: '2.3'
+              http_409: '2.3'
+              http_413: '2.3'
+              http_415: '2.3'
+              http_422: '2.3'
+              http_522: '2.3'
+              http_529: '2.3'
+              http_5xx: '2.3'
+            description: |-
+              **`http_400` requires a minimum runtime version of `2.3`**.
+
+              **`http_401` requires a minimum runtime version of `2.3`**.
+
+              **`http_402` requires a minimum runtime version of `2.3`**.
+
+              **`http_405` requires a minimum runtime version of `2.3`**.
+
+              **`http_408` requires a minimum runtime version of `2.3`**.
+
+              **`http_409` requires a minimum runtime version of `2.3`**.
+
+              **`http_413` requires a minimum runtime version of `2.3`**.
+
+              **`http_415` requires a minimum runtime version of `2.3`**.
+
+              **`http_422` requires a minimum runtime version of `2.3`**.
+
+              **`http_522` requires a minimum runtime version of `2.3`**.
+
+              **`http_529` requires a minimum runtime version of `2.3`**.
+
+              **`http_5xx` requires a minimum runtime version of `2.3`**.
             x-speakeasy-unknown-values: allow
           default:
             - error
@@ -48401,16 +48902,65 @@ components:
             type: string
             enum:
               - error
+              - http_400
+              - http_401
+              - http_402
               - http_403
               - http_404
+              - http_405
+              - http_408
+              - http_409
+              - http_413
+              - http_415
+              - http_422
               - http_429
               - http_500
               - http_502
               - http_503
               - http_504
+              - http_522
+              - http_529
+              - http_5xx
               - invalid_header
               - non_idempotent
               - timeout
+            x-enum-min-runtime-version:
+              http_400: '2.3'
+              http_401: '2.3'
+              http_402: '2.3'
+              http_405: '2.3'
+              http_408: '2.3'
+              http_409: '2.3'
+              http_413: '2.3'
+              http_415: '2.3'
+              http_422: '2.3'
+              http_522: '2.3'
+              http_529: '2.3'
+              http_5xx: '2.3'
+            description: |-
+              **`http_400` requires a minimum runtime version of `2.3`**.
+
+              **`http_401` requires a minimum runtime version of `2.3`**.
+
+              **`http_402` requires a minimum runtime version of `2.3`**.
+
+              **`http_405` requires a minimum runtime version of `2.3`**.
+
+              **`http_408` requires a minimum runtime version of `2.3`**.
+
+              **`http_409` requires a minimum runtime version of `2.3`**.
+
+              **`http_413` requires a minimum runtime version of `2.3`**.
+
+              **`http_415` requires a minimum runtime version of `2.3`**.
+
+              **`http_422` requires a minimum runtime version of `2.3`**.
+
+              **`http_522` requires a minimum runtime version of `2.3`**.
+
+              **`http_529` requires a minimum runtime version of `2.3`**.
+
+              **`http_5xx` requires a minimum runtime version of `2.3`**.
             x-speakeasy-unknown-values: allow
           default:
             - error
@@ -48470,16 +49020,65 @@ components:
             type: string
             enum:
               - error
+              - http_400
+              - http_401
+              - http_402
               - http_403
               - http_404
+              - http_405
+              - http_408
+              - http_409
+              - http_413
+              - http_415
+              - http_422
               - http_429
               - http_500
               - http_502
               - http_503
               - http_504
+              - http_522
+              - http_529
+              - http_5xx
               - invalid_header
               - non_idempotent
               - timeout
+            x-enum-min-runtime-version:
+              http_400: '2.3'
+              http_401: '2.3'
+              http_402: '2.3'
+              http_405: '2.3'
+              http_408: '2.3'
+              http_409: '2.3'
+              http_413: '2.3'
+              http_415: '2.3'
+              http_422: '2.3'
+              http_522: '2.3'
+              http_529: '2.3'
+              http_5xx: '2.3'
+            description: |-
+              **`http_400` requires a minimum runtime version of `2.3`**.
+
+              **`http_401` requires a minimum runtime version of `2.3`**.
+
+              **`http_402` requires a minimum runtime version of `2.3`**.
+
+              **`http_405` requires a minimum runtime version of `2.3`**.
+
+              **`http_408` requires a minimum runtime version of `2.3`**.
+
+              **`http_409` requires a minimum runtime version of `2.3`**.
+
+              **`http_413` requires a minimum runtime version of `2.3`**.
+
+              **`http_415` requires a minimum runtime version of `2.3`**.
+
+              **`http_422` requires a minimum runtime version of `2.3`**.
+
+              **`http_522` requires a minimum runtime version of `2.3`**.
+
+              **`http_529` requires a minimum runtime version of `2.3`**.
+
+              **`http_5xx` requires a minimum runtime version of `2.3`**.
             x-speakeasy-unknown-values: allow
           default:
             - error
@@ -48621,6 +49220,15 @@ components:
         video_output_s3_uri:
           description: S3 URI for storing video generation outputs.
           type: string
+          x-speakeasy-param-computed: false
+        vpc_endpoint:
+          description: |-
+            Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.
+            Ignored if `upstream_url` is set.
+
+            **Requires a minimum runtime version of `2.3`**.
+          type: string
+          x-min-runtime-version: '2.3'
           x-speakeasy-param-computed: false
       additionalProperties: false
       required:
@@ -49048,7 +49656,7 @@ components:
       properties:
         type:
           description: |-
-            The format type.
+            The request and response format this model supports. Set to a specific format to restrict the model to that format only, or to `*` to allow all formats that the targets support at the gateway's min_runtime_version. A format that needs a newer min_runtime_version is left out of `*`. The `*` format never includes passthrough.
 
             **`passthrough` requires a minimum runtime version of `2.2`**.
 
@@ -49056,6 +49664,7 @@ components:
           type: string
           example: openai
           enum:
+            - '*'
             - anthropic
             - bedrock
             - cohere
@@ -49111,6 +49720,7 @@ components:
         mapping:
           anthropic: '#/components/schemas/AIGatewayTargetAnthropicConfig'
           azure: '#/components/schemas/AIGatewayTargetAzureConfig'
+          baseten: '#/components/schemas/AIGatewayTargetBasetenConfig'
           bedrock: '#/components/schemas/AIGatewayTargetBedrockConfig'
           cerebras: '#/components/schemas/AIGatewayTargetCerebrasConfig'
           cohere: '#/components/schemas/AIGatewayTargetCohereConfig'
@@ -49132,6 +49742,7 @@ components:
       oneOf:
         - $ref: '#/components/schemas/AIGatewayTargetAnthropicConfig'
         - $ref: '#/components/schemas/AIGatewayTargetAzureConfig'
+        - $ref: '#/components/schemas/AIGatewayTargetBasetenConfig'
         - $ref: '#/components/schemas/AIGatewayTargetBedrockConfig'
         - $ref: '#/components/schemas/AIGatewayTargetCerebrasConfig'
         - $ref: '#/components/schemas/AIGatewayTargetCohereConfig'
@@ -49487,6 +50098,132 @@ components:
           x-speakeasy-unknown-values: allow
       required:
         - type
+    AIGatewayTargetBasetenConfig:
+      description: |-
+        Baseten-specific configuration for a model. Requests are sent to Baseten Model APIs at
+        `https://inference.baseten.co/v1` by default, and the target `name` is the Baseten model
+        slug (for example, `deepseek-ai/DeepSeek-V4-Pro-0813`). To route to a dedicated Baseten
+        deployment, set `upstream_url` to the deployment's full OpenAI-compatible endpoint (for
+        example, `https://model-{model_id}.api.baseten.co/environments/{environment}/sync/v1/chat/completions`) or use passthrough format.
+
+        **Requires a minimum runtime version of `2.3`**.
+      type: object
+      properties:
+        embeddings_dimensions:
+          description: The number of dimensions for embedding outputs.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 2147483646
+          minimum: 0
+          x-speakeasy-param-computed: false
+        max_tokens:
+          description: The maximum number of tokens to generate in the response.
+          type: integer
+          maximum: 2147483646
+          minimum: 0
+          x-speakeasy-param-computed: false
+        input_cost:
+          description: Cost per 1M input tokens for billing and cost tracking.
+          type: number
+          exclusiveMinimum: true
+          minimum: 0
+          x-speakeasy-param-computed: false
+        output_cost:
+          description: Cost per 1M output tokens for billing and cost tracking.
+          type: number
+          minimum: 0
+          x-speakeasy-param-computed: false
+        cache_read_cost:
+          description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+          type: number
+          minimum: 0
+          x-speakeasy-param-computed: false
+        cache_write_cost:
+          description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
+          type: number
+          minimum: 0
+          x-speakeasy-param-computed: false
+        input_cost_list:
+          description: |-
+            Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+            **Requires a minimum runtime version of `2.1`**.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayModalCostList'
+          nullable: true
+          x-min-runtime-version: '2.1'
+          x-speakeasy-param-computed: false
+        output_cost_list:
+          description: |-
+            Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+            **Requires a minimum runtime version of `2.1`**.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayModalCostList'
+          nullable: true
+          x-min-runtime-version: '2.1'
+          x-speakeasy-param-computed: false
+        cache_read_cost_list:
+          description: |-
+            Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+            **Requires a minimum runtime version of `2.1`**.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayModalCostList'
+          nullable: true
+          x-min-runtime-version: '2.1'
+          x-speakeasy-param-computed: false
+        cache_write_cost_list:
+          description: Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCacheWriteCost'
+          x-speakeasy-param-computed: true
+        context_window_factor:
+          description: 'Above an input-token threshold, scale input and output pricing by the corresponding factor.'
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayContextWindowFactor'
+          x-speakeasy-param-computed: true
+        service_tier_factor:
+          description: Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayServiceTierFactor'
+          x-speakeasy-param-computed: true
+        temperature:
+          description: Controls randomness in the model output. Higher values produce more varied responses.
+          type: number
+          maximum: 5
+          minimum: 0
+          x-speakeasy-param-computed: false
+        top_k:
+          description: Limits the number of highest-probability tokens considered during generation.
+          type: integer
+          maximum: 500
+          minimum: 0
+          x-speakeasy-param-computed: false
+        top_p:
+          description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
+          type: number
+          maximum: 1
+          minimum: 0
+          x-speakeasy-param-computed: false
+        upstream_url:
+          description: The upstream URL for the model endpoint.
+          type: string
+          format: uri
+          x-speakeasy-param-computed: false
+        type:
+          type: string
+          const: baseten
+      required:
+        - type
+      x-min-runtime-version: '2.3'
+      x-speakeasy-param-computed: false
     AIGatewayTargetBedrockConfig:
       description: AWS Bedrock-specific configuration for a model.
       type: object
@@ -49624,6 +50361,36 @@ components:
           description: S3 URI for storing video generation outputs.
           type: string
           x-speakeasy-param-computed: false
+        vpc_endpoint:
+          description: |-
+            Hostname of an AWS PrivateLink VPC endpoint to use instead of the public Bedrock endpoint.
+            Ignored if `upstream_url` is set.
+
+            **Requires a minimum runtime version of `2.3`**.
+          type: string
+          x-min-runtime-version: '2.3'
+          x-speakeasy-param-computed: false
+        endpoint_type:
+          description: |-
+            The AWS Bedrock inference endpoint that requests to this target are sent to.
+            `runtime` sends requests to the Bedrock Runtime endpoint
+            (`bedrock-runtime.{region}.amazonaws.com`). `mantle` sends requests to the
+            Bedrock Mantle endpoint (`bedrock-mantle.{region}.api.aws`), which accepts
+            OpenAI and Anthropic request formats natively.
+
+            A target with `endpoint_type` set to `mantle` is rejected if its model
+            includes a format with `type` set to `bedrock`, because the Mantle endpoint
+            does not support the Bedrock Converse or InvokeModel APIs.
+
+            **Requires a minimum runtime version of `2.3`**.
+          type: string
+          example: runtime
+          enum:
+            - runtime
+            - mantle
+          x-min-runtime-version: '2.3'
+          x-speakeasy-param-computed: false
+          x-speakeasy-unknown-values: allow
       additionalProperties: false
       required:
         - type
@@ -51772,11 +52539,45 @@ components:
           items:
             type: string
           x-speakeasy-param-computed: true
+        allow_when:
+          description: |-
+            Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+            **Requires a minimum runtime version of `2.3`**.
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            x-expression:
+              type: boolean
+          nullable: true
+          x-min-runtime-version: '2.3'
+          x-speakeasy-param-computed: false
+        deny_when:
+          description: |-
+            Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+
+            **Requires a minimum runtime version of `2.3`**.
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            x-expression:
+              type: boolean
+          nullable: true
+          x-min-runtime-version: '2.3'
+          x-speakeasy-param-computed: false
       example:
         allow:
           - gold-partner
         deny:
           - bronze-partner
+        allow_when:
+          - has(principal.metadata.tier) && principal.metadata.tier == 'partner'
+        deny_when:
+          - has(principal.metadata.role) && principal.metadata.role != 'admin'
     AIGatewayPolicyReferences:
       description: List of policy references.
       type: array
@@ -53360,6 +54161,575 @@ components:
         - id
         - created_at
         - updated_at
+    DatastoreRedisCloudAuthentication:
+      description: Cloud-managed Redis authentication. Only the fields relevant to the chosen `auth_provider` need to be set.
+      type: object
+      properties:
+        auth_provider:
+          oneOf:
+            - type: string
+              nullable: true
+              enum:
+                - aws
+                - gcp
+                - azure
+              x-speakeasy-unknown-values: allow
+            - type: string
+              example: '{vault://hcv/redis/auth_provider}'
+          x-referenceable: true
+        aws_cache_name:
+          type: string
+          nullable: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        aws_region:
+          type: string
+          nullable: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        aws_is_serverless:
+          type: boolean
+          nullable: true
+          x-speakeasy-param-computed: false
+        aws_access_key_id:
+          type: string
+          nullable: true
+          x-speakeasy-param-computed: false
+        aws_secret_access_key:
+          type: string
+          nullable: true
+          writeOnly: true
+          x-speakeasy-param-computed: false
+        aws_assume_role_arn:
+          type: string
+          nullable: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        aws_role_session_name:
+          type: string
+          nullable: true
+          x-speakeasy-param-computed: false
+        gcp_service_account_json:
+          type: string
+          nullable: true
+          writeOnly: true
+          x-speakeasy-param-computed: false
+        azure_client_id:
+          type: string
+          nullable: true
+          x-speakeasy-param-computed: false
+        azure_client_secret:
+          type: string
+          nullable: true
+          writeOnly: true
+          x-speakeasy-param-computed: false
+        azure_tenant_id:
+          type: string
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      x-terraform-no-default-null: true
+    RedisCEDatastore:
+      type: object
+      properties:
+        name:
+          description: |
+            A user-defined unique identifier for this Datastore, used as a stable human-readable reference.
+            This value is immutable after creation.
+          example: shared-redis
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayDatastoreName'
+        display_name:
+          description: The display name for this Datastore.
+          type: string
+          example: Shared Redis
+          maxLength: 256
+          minLength: 1
+        description:
+          description: The description of the Datastore.
+          type: string
+          example: Redis shared by rate limiting and semantic cache
+          default: ''
+          maxLength: 1024
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        type:
+          type: string
+          const: redis-ce
+        config:
+          $ref: '#/components/schemas/RedisCEDatastoreConfig'
+      required:
+        - name
+        - display_name
+        - type
+        - config
+    RedisCEDatastoreConfig:
+      type: object
+      properties:
+        host:
+          type: string
+          example: 127.0.0.1
+        port:
+          type: integer
+          maximum: 65535
+          minimum: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        username:
+          type: string
+          nullable: true
+          x-speakeasy-param-computed: false
+        password:
+          type: string
+          nullable: true
+          writeOnly: true
+          x-speakeasy-param-computed: false
+        database:
+          description: The Redis database index to use.
+          type: integer
+          nullable: true
+          x-speakeasy-param-computed: false
+        timeout:
+          description: 'Timeout in milliseconds for connecting, reading, and writing to the Redis server.'
+          type: integer
+          nullable: true
+          x-speakeasy-param-computed: false
+        ssl:
+          type: boolean
+          nullable: true
+          x-speakeasy-param-computed: false
+        ssl_verify:
+          type: boolean
+          nullable: true
+          x-speakeasy-param-computed: false
+        server_name:
+          description: SNI to use when connecting over SSL.
+          type: string
+          nullable: true
+          x-speakeasy-param-computed: false
+        cloud_authentication:
+          $ref: '#/components/schemas/DatastoreRedisCloudAuthentication'
+      additionalProperties: false
+      required:
+        - host
+      title: RedisCEDatastoreConfig
+      x-terraform-no-default-null: true
+    RedisEEDatastore:
+      type: object
+      properties:
+        name:
+          description: |
+            A user-defined unique identifier for this Datastore, used as a stable human-readable reference.
+            This value is immutable after creation.
+          example: shared-redis
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayDatastoreName'
+        display_name:
+          description: The display name for this Datastore.
+          type: string
+          example: Shared Redis
+          maxLength: 256
+          minLength: 1
+        description:
+          description: The description of the Datastore.
+          type: string
+          example: Redis shared by rate limiting and semantic cache
+          default: ''
+          maxLength: 1024
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        type:
+          type: string
+          const: redis-ee
+        config:
+          $ref: '#/components/schemas/RedisEEDatastoreConfig'
+      required:
+        - name
+        - display_name
+        - type
+        - config
+    RedisEEDatastoreConfig:
+      type: object
+      properties:
+        host:
+          type: string
+          example: 127.0.0.1
+          x-referenceable: true
+        port:
+          description: |
+            An integer representing a port number between 0 and 65535, inclusive.
+            This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+          oneOf:
+            - type: integer
+              default: 6379
+              maximum: 65535
+              minimum: 0
+              example: 6379
+            - type: string
+              example: '{vault://hcv/redis/port}'
+          x-go-type: types.Referenceable
+          x-go-type-import:
+            path: github.com/kong-konnect/koko-private/internal/server/public/openapi/controlplanesconfig/types
+            name: types
+          x-referenceable: true
+        username:
+          type: string
+          nullable: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        password:
+          type: string
+          nullable: true
+          writeOnly: true
+          x-speakeasy-param-computed: false
+        database:
+          description: The Redis database index to use.
+          type: integer
+          nullable: true
+          x-speakeasy-param-computed: false
+        connect_timeout:
+          type: integer
+          nullable: true
+          x-speakeasy-param-computed: false
+        send_timeout:
+          type: integer
+          nullable: true
+          x-speakeasy-param-computed: false
+        read_timeout:
+          type: integer
+          nullable: true
+          x-speakeasy-param-computed: false
+        keepalive_pool_size:
+          type: integer
+          nullable: true
+          x-speakeasy-param-computed: false
+        keepalive_backlog:
+          type: integer
+          nullable: true
+          x-speakeasy-param-computed: false
+        ssl:
+          type: boolean
+          nullable: true
+          x-speakeasy-param-computed: false
+        ssl_verify:
+          type: boolean
+          nullable: true
+          x-speakeasy-param-computed: false
+        server_name:
+          description: SNI to use when connecting over SSL.
+          type: string
+          nullable: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        connection_is_proxied:
+          type: boolean
+          nullable: true
+          x-speakeasy-param-computed: false
+        sentinel_master:
+          type: string
+          nullable: true
+          x-speakeasy-param-computed: false
+        sentinel_role:
+          type: string
+          enum:
+            - master
+            - slave
+            - any
+          nullable: true
+          x-speakeasy-unknown-values: allow
+        sentinel_username:
+          type: string
+          nullable: true
+          x-speakeasy-param-computed: false
+        sentinel_password:
+          type: string
+          nullable: true
+          writeOnly: true
+          x-speakeasy-param-computed: false
+        sentinel_nodes:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required:
+              - host
+              - port
+            properties:
+              host:
+                type: string
+                example: 127.0.0.1
+              port:
+                type: integer
+                example: 6379
+                maximum: 65535
+                minimum: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        cluster_nodes:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required:
+              - ip
+              - port
+            properties:
+              ip:
+                type: string
+                example: 127.0.0.1
+              port:
+                type: integer
+                example: 6379
+                maximum: 65535
+                minimum: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        cluster_max_redirections:
+          type: integer
+          nullable: true
+          x-speakeasy-param-computed: false
+        cloud_authentication:
+          $ref: '#/components/schemas/DatastoreRedisCloudAuthentication'
+      additionalProperties: false
+      required:
+        - host
+      title: RedisEEDatastoreConfig
+      x-terraform-no-default-null: true
+    VectorDBDatastore:
+      description: |
+        Carries the pgvector connection only. `strategy`, `dimensions`, `distance_metric`, and `threshold`
+        belong to the policy or model referencing this Datastore, not the Datastore itself.
+      type: object
+      properties:
+        name:
+          description: |
+            A user-defined unique identifier for this Datastore, used as a stable human-readable reference.
+            This value is immutable after creation.
+          example: shared-redis
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayDatastoreName'
+        display_name:
+          description: The display name for this Datastore.
+          type: string
+          example: Shared Redis
+          maxLength: 256
+          minLength: 1
+        description:
+          description: The description of the Datastore.
+          type: string
+          example: Redis shared by rate limiting and semantic cache
+          default: ''
+          maxLength: 1024
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        type:
+          type: string
+          const: vectordb
+        config:
+          $ref: '#/components/schemas/VectorDBDatastoreConfig'
+      required:
+        - name
+        - display_name
+        - type
+        - config
+    VectorDBDatastoreConfig:
+      type: object
+      properties:
+        host:
+          type: string
+          example: 127.0.0.1
+        port:
+          type: integer
+          default: 5432
+          maximum: 65535
+          minimum: 1
+        user:
+          type: string
+          default: postgres
+        password:
+          type: string
+          default: null
+          nullable: true
+          writeOnly: true
+          x-speakeasy-param-computed: false
+        database:
+          type: string
+          example: kong-pgvector
+        timeout:
+          description: 'Timeout in milliseconds for connecting, reading, and writing to the database.'
+          type: integer
+          default: 5000
+        ssl:
+          type: boolean
+          default: false
+        ssl_required:
+          type: boolean
+          default: false
+        ssl_verify:
+          type: boolean
+          default: true
+        ssl_version:
+          type: string
+          default: tlsv1_2
+        ssl_cert:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        ssl_cert_key:
+          type: string
+          default: null
+          nullable: true
+          writeOnly: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - host
+        - database
+      title: VectorDBDatastoreConfig
+      x-terraform-no-default-null: true
+    TokenVaultDatastore:
+      type: object
+      properties:
+        name:
+          description: |
+            A user-defined unique identifier for this Datastore, used as a stable human-readable reference.
+            This value is immutable after creation.
+          example: shared-redis
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayDatastoreName'
+        display_name:
+          description: The display name for this Datastore.
+          type: string
+          example: Shared Redis
+          maxLength: 256
+          minLength: 1
+        description:
+          description: The description of the Datastore.
+          type: string
+          example: Redis shared by rate limiting and semantic cache
+          default: ''
+          maxLength: 1024
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        type:
+          type: string
+          const: token-vault
+        config:
+          $ref: '#/components/schemas/TokenVaultDatastoreConfig'
+      required:
+        - name
+        - display_name
+        - type
+        - config
+    TokenVaultDatastoreConfig:
+      type: object
+      properties:
+        directory:
+          description: The name of the directory in which tokens are stored.
+          type: string
+          example: my-directory
+        current_version:
+          description: The version of the encryption key used to encrypt new tokens.
+          type: string
+          example: v1
+        keys:
+          description: The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.
+          type: array
+          items:
+            $ref: '#/components/schemas/TokenVaultDatastoreKey'
+          minItems: 1
+      additionalProperties: false
+      required:
+        - directory
+        - current_version
+        - keys
+      title: TokenVaultDatastoreConfig
+    TokenVaultDatastoreKey:
+      type: object
+      properties:
+        version:
+          description: The identifier of this key version.
+          type: string
+          example: v1
+        key:
+          description: |
+            A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.
+          type: string
+          example: '{vault://hcv/vault-enc-key}'
+          nullable: true
+          pattern: '^\{vault://.*\}$'
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - version
+      title: TokenVaultDatastoreKey
+      x-terraform-no-default-null: true
+    CreateAIGatewayDatastoreRequest:
+      description: Configuration for an AI Gateway Datastore.
+      discriminator:
+        propertyName: type
+        mapping:
+          redis-ce: '#/components/schemas/RedisCEDatastore'
+          redis-ee: '#/components/schemas/RedisEEDatastore'
+          vectordb: '#/components/schemas/VectorDBDatastore'
+          token-vault: '#/components/schemas/TokenVaultDatastore'
+      oneOf:
+        - $ref: '#/components/schemas/RedisCEDatastore'
+        - $ref: '#/components/schemas/RedisEEDatastore'
+        - $ref: '#/components/schemas/VectorDBDatastore'
+        - $ref: '#/components/schemas/TokenVaultDatastore'
+    UpdateAIGatewayDatastoreRequest:
+      description: Configuration for an AI Gateway Datastore.
+      discriminator:
+        propertyName: type
+        mapping:
+          redis-ce: '#/components/schemas/RedisCEDatastore'
+          redis-ee: '#/components/schemas/RedisEEDatastore'
+          vectordb: '#/components/schemas/VectorDBDatastore'
+          token-vault: '#/components/schemas/TokenVaultDatastore'
+      oneOf:
+        - $ref: '#/components/schemas/RedisCEDatastore'
+        - $ref: '#/components/schemas/RedisEEDatastore'
+        - $ref: '#/components/schemas/VectorDBDatastore'
+        - $ref: '#/components/schemas/TokenVaultDatastore'
+    AIGatewayDatastore:
+      description: Configuration for an AI Gateway Datastore.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        konnect_managed:
+          $ref: '#/components/schemas/AIGatewayKonnectManagedEntityFlag'
+      discriminator:
+        propertyName: type
+        mapping:
+          redis-ce: '#/components/schemas/RedisCEDatastore'
+          redis-ee: '#/components/schemas/RedisEEDatastore'
+          vectordb: '#/components/schemas/VectorDBDatastore'
+          token-vault: '#/components/schemas/TokenVaultDatastore'
+      oneOf:
+        - $ref: '#/components/schemas/RedisCEDatastore'
+        - $ref: '#/components/schemas/RedisEEDatastore'
+        - $ref: '#/components/schemas/VectorDBDatastore'
+        - $ref: '#/components/schemas/TokenVaultDatastore'
+      required:
+        - id
+        - created_at
+        - updated_at
     CreateAIGatewayPolicyRequest:
       type: object
       properties:
@@ -53417,6 +54787,14 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          description: Names of the Datastores this policy references.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayDatastoreRef'
+          example:
+            - name: kong-managed
+          x-speakeasy-param-computed: true
       additionalProperties: false
       required:
         - display_name
@@ -53480,6 +54858,14 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          description: Names of the Datastores this policy references.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayDatastoreRef'
+          example:
+            - name: kong-managed
+          x-speakeasy-param-computed: true
       additionalProperties: false
       required:
         - display_name
@@ -53543,6 +54929,14 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          description: Names of the Datastores this policy references.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayDatastoreRef'
+          example:
+            - name: kong-managed
+          x-speakeasy-param-computed: true
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
@@ -53888,6 +55282,37 @@ components:
                   maximum: 2147483646
                   minimum: 0
               x-speakeasy-param-computed: true
+            certificates:
+              description: |
+                Client certificates used for mutual TLS (mTLS) authentication with the upstream agent
+                endpoint, referenced by name. Each entry must be the `name` of an existing AI Certificate
+                on the same AI Gateway.
+
+                The certificates are applied to the Kong Gateway Service generated for this Agent, which
+                proxies requests to `config.url`. The generated Service presents a single client
+                certificate (`client_certificate`) during the TLS handshake with the upstream, so at most
+                one certificate may be configured.
+
+                If unset, no client certificate is presented to the upstream.
+              type: array
+              items:
+                $ref: '#/components/schemas/AIGatewayCertificateReference'
+              maxItems: 1
+              x-speakeasy-param-computed: true
+            ca_certificates:
+              description: |
+                CA certificates used to verify the TLS certificate of the upstream agent endpoint,
+                referenced by name. Each entry must be the `name` of an existing AI CA Certificate on the
+                same AI Gateway.
+
+                The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
+                generated for this Agent, which proxies requests to `config.url`.
+
+                If unset, the default trust store is used to verify the upstream's TLS certificate.
+              type: array
+              items:
+                $ref: '#/components/schemas/AIGatewayCACertificateReference'
+              x-speakeasy-param-computed: true
           required:
             - url
         labels:
@@ -53972,6 +55397,37 @@ components:
                   maximum: 2147483646
                   minimum: 0
               x-speakeasy-param-computed: true
+            certificates:
+              description: |
+                Client certificates used for mutual TLS (mTLS) authentication with the upstream agent
+                endpoint, referenced by name. Each entry must be the `name` of an existing AI Certificate
+                on the same AI Gateway.
+
+                The certificates are applied to the Kong Gateway Service generated for this Agent, which
+                proxies requests to `config.url`. The generated Service presents a single client
+                certificate (`client_certificate`) during the TLS handshake with the upstream, so at most
+                one certificate may be configured.
+
+                If unset, no client certificate is presented to the upstream.
+              type: array
+              items:
+                $ref: '#/components/schemas/AIGatewayCertificateReference'
+              maxItems: 1
+              x-speakeasy-param-computed: true
+            ca_certificates:
+              description: |
+                CA certificates used to verify the TLS certificate of the upstream agent endpoint,
+                referenced by name. Each entry must be the `name` of an existing AI CA Certificate on the
+                same AI Gateway.
+
+                The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
+                generated for this Agent, which proxies requests to `config.url`.
+
+                If unset, the default trust store is used to verify the upstream's TLS certificate.
+              type: array
+              items:
+                $ref: '#/components/schemas/AIGatewayCACertificateReference'
+              x-speakeasy-param-computed: true
           required:
             - url
         labels:
@@ -54055,6 +55511,37 @@ components:
                   exclusiveMinimum: true
                   maximum: 2147483646
                   minimum: 0
+              x-speakeasy-param-computed: true
+            certificates:
+              description: |
+                Client certificates used for mutual TLS (mTLS) authentication with the upstream agent
+                endpoint, referenced by name. Each entry must be the `name` of an existing AI Certificate
+                on the same AI Gateway.
+
+                The certificates are applied to the Kong Gateway Service generated for this Agent, which
+                proxies requests to `config.url`. The generated Service presents a single client
+                certificate (`client_certificate`) during the TLS handshake with the upstream, so at most
+                one certificate may be configured.
+
+                If unset, no client certificate is presented to the upstream.
+              type: array
+              items:
+                $ref: '#/components/schemas/AIGatewayCertificateReference'
+              maxItems: 1
+              x-speakeasy-param-computed: true
+            ca_certificates:
+              description: |
+                CA certificates used to verify the TLS certificate of the upstream agent endpoint,
+                referenced by name. Each entry must be the `name` of an existing AI CA Certificate on the
+                same AI Gateway.
+
+                The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
+                generated for this Agent, which proxies requests to `config.url`.
+
+                If unset, the default trust store is used to verify the upstream's TLS certificate.
+              type: array
+              items:
+                $ref: '#/components/schemas/AIGatewayCACertificateReference'
               x-speakeasy-param-computed: true
           required:
             - url
@@ -54448,6 +55935,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
       additionalProperties: false
       required:
         - type
@@ -54497,6 +55988,36 @@ components:
               example: 'https://mcp.internal.kongair.com'
             upstream:
               $ref: '#/components/schemas/AIGatewayUpstreamConfig'
+            certificates:
+              description: |
+                Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
+                referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
+                AI Gateway.
+
+                The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
+                proxies requests to the upstream MCP server. The generated Service presents a single client
+                certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
+                certificate may be configured.
+
+                If unset, no client certificate is presented to the upstream.
+              type: array
+              items:
+                $ref: '#/components/schemas/AIGatewayCertificateReference'
+              maxItems: 1
+              x-speakeasy-param-computed: true
+            ca_certificates:
+              description: |
+                CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
+                name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
+
+                The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
+                generated for this MCP Server, which proxies requests to the upstream MCP server.
+
+                If unset, the default trust store is used to verify the upstream's TLS certificate.
+              type: array
+              items:
+                $ref: '#/components/schemas/AIGatewayCACertificateReference'
+              x-speakeasy-param-computed: true
             allowed_versions:
               description: |-
                 The MCP protocol revisions this server accepts. Leave unset to accept every revision Kong
@@ -54549,6 +56070,8 @@ components:
           x-speakeasy-param-computed: true
         access:
           $ref: '#/components/schemas/AIGatewayMCPServerListenerAccess'
+        rate_limiting:
+          $ref: '#/components/schemas/AIGatewayMCPServerRateLimiting'
         display_name:
           description: The display name for the MCP Server.
           type: string
@@ -54571,6 +56094,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
       additionalProperties: false
       required:
         - type
@@ -54686,6 +56213,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
       additionalProperties: false
       required:
         - type
@@ -54711,6 +56242,8 @@ components:
           x-speakeasy-param-computed: true
         access:
           $ref: '#/components/schemas/AIGatewayMCPServerListenerAccess'
+        rate_limiting:
+          $ref: '#/components/schemas/AIGatewayMCPServerRateLimiting'
         display_name:
           description: The display name for the MCP Server.
           type: string
@@ -54733,12 +56266,87 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
       additionalProperties: false
       required:
         - type
         - config
         - display_name
         - name
+    AIGatewayMCPServerRateLimiting:
+      description: |-
+        Rate limits applied to requests to this MCP Server, matched by MCP method or tool name.
+        Each AI Gateway node counts and enforces the limits independently.
+
+        **Requires a minimum runtime version of `2.3`**.
+      type: object
+      properties:
+        limits:
+          description: |
+            The rate limits to enforce. Each entry targets exactly one of `method` or `tool`. Two
+            entries cannot share the same target and `window_size`.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayMCPServerRateLimit'
+          example:
+            - method: tools/call
+              limit: 100
+              window_size: 60
+            - tool: search_flights
+              limit: 10
+              window_size: 1
+          minItems: 1
+      additionalProperties: false
+      required:
+        - limits
+      title: AIGatewayMCPServerRateLimiting
+      x-min-runtime-version: '2.3'
+      x-speakeasy-param-computed: false
+    AIGatewayMCPServerRateLimit:
+      description: A rate limit on an MCP method or tool. Exactly one of `method` or `tool` must be set.
+      type: object
+      properties:
+        method:
+          description: The MCP method this limit applies to.
+          type: string
+          example: tools/call
+          nullable: true
+          pattern: '^[A-Za-z0-9._/-]+$'
+          x-speakeasy-param-computed: false
+        tool:
+          description: The name of the tool this limit applies to.
+          type: string
+          example: search_flights
+          maxLength: 128
+          minLength: 1
+          nullable: true
+          pattern: '^[A-Za-z0-9._/-]+$'
+          x-speakeasy-param-computed: false
+        limit:
+          description: The number of requests allowed per window.
+          type: integer
+          example: 100
+          maximum: 2147483646
+          minimum: 1
+        window_size:
+          description: 'The window size in seconds, one of a second, a minute, an hour, or a day.'
+          type: integer
+          example: 60
+          enum:
+            - 1
+            - 60
+            - 3600
+            - 86400
+          x-speakeasy-unknown-values: allow
+      additionalProperties: false
+      required:
+        - limit
+        - window_size
+      title: AIGatewayMCPServerRateLimit
+      x-terraform-no-default-null: true
     AIGatewayMCPServerUpstreamServer:
       type: object
       properties:
@@ -54776,6 +56384,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
       additionalProperties: false
       required:
         - type
@@ -55038,6 +56650,173 @@ components:
             type: string
           x-speakeasy-param-computed: false
       title: AIGatewayMCPServerProtectedResourceMetadata
+    AIGatewayTokenVaultDatastores:
+      description: |-
+        The Token Vault Datastore holding this entity's credential storage: the directory credentials
+        are written to, and the encryption keys that seal them. Required when `token_vault` is set
+        (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+        must have type `token-vault`. Only one Datastore can be referenced.
+
+        **Requires a minimum runtime version of `2.3`**.
+      type: array
+      items:
+        $ref: '#/components/schemas/AIGatewayDatastoreRef'
+      example:
+        - name: vault-konnect-prod
+      maxItems: 1
+      minItems: 1
+      nullable: true
+      title: AIGatewayTokenVaultDatastores
+      x-min-runtime-version: '2.3'
+      x-speakeasy-param-computed: false
+    AIGatewayTokenVault:
+      description: |-
+        Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+        credential. The directory credentials live in, and the keys that encrypt them, come from the
+        `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+
+        Callers must enroll with the configured Token Vault provider before the credential can be
+        resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+        `check_authentication_status` tools that guide the caller through the enrollment flow.
+
+        **Requires a minimum runtime version of `2.3`**.
+      type: object
+      properties:
+        provider:
+          description: Name of the upstream credential provider registered in the Token Vault directory.
+          type: string
+        subject_token_type:
+          description: |
+            The kind of bearer token the caller presents, which the Token Vault exchanges for the
+            upstream credential. Omit it unless the request shape makes the token type ambiguous: it is
+            otherwise resolved from the request, and failing that from the token's shape (a JWS is an
+            `access_token`, anything else an `api_key`).
+          type: string
+          enum:
+            - access_token
+            - api_key
+          x-speakeasy-unknown-values: allow
+        credential:
+          $ref: '#/components/schemas/AIGatewayTokenVaultCredential'
+        cache:
+          description: |
+            Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it
+            only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault
+            Datastore before being cached.
+          type: object
+          additionalProperties: false
+          nullable: true
+          properties:
+            redis:
+              $ref: '#/components/schemas/AIGatewayRedisCloudConfiguration'
+          x-speakeasy-param-computed: false
+        storage:
+          description: |
+            Read-only. The directory and encryption key versions this entity's credentials are stored
+            with, resolved from the `token-vault` Datastore referenced in `datastores`; change them on
+            the Datastore.
+          allOf:
+            - $ref: '#/components/schemas/TokenVaultDatastoreConfig'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      example:
+        provider: my-upstream-provider
+        subject_token_type: access_token
+        credential:
+          inbound:
+            location: header
+            name: Authorization
+            prefix: 'Bearer '
+        cache:
+          redis:
+            host: redis.internal
+            port: 6379
+      additionalProperties: false
+      required:
+        - provider
+      title: AIGatewayTokenVault
+      x-min-runtime-version: '2.3'
+      x-speakeasy-param-computed: false
+      x-terraform-no-default-null: true
+    AIGatewayTokenVaultCredential:
+      description: |
+        Where the caller's subject token is read from, and where the credential the Token Vault returns
+        is placed on the upstream request.
+
+        Both placements default to `Authorization: Bearer <credential>` in a header, though an
+        `outbound` placement left unset honours whatever the provider advertises instead. Set them for
+        providers that take the credential elsewhere, such as an `x-api-key` header carrying the raw
+        credential.
+      type: object
+      properties:
+        inbound:
+          $ref: '#/components/schemas/AIGatewayTokenVaultCredentialPlacement'
+        outbound:
+          $ref: '#/components/schemas/AIGatewayTokenVaultCredentialPlacement'
+      additionalProperties: false
+      title: AIGatewayTokenVaultCredential
+    AIGatewayTokenVaultCredentialPlacement:
+      type: object
+      properties:
+        location:
+          description: 'Whether the credential travels in a header, the request body, or the query string. Defaults to `header`.'
+          type: string
+          enum:
+            - header
+            - body
+            - query
+          x-speakeasy-unknown-values: allow
+        name:
+          description: |
+            Name of the header, query parameter, or body field carrying the credential. Defaults to
+            `Authorization` for a header, `access_token` otherwise.
+          type: string
+          nullable: true
+          x-speakeasy-param-computed: false
+        prefix:
+          description: |
+            String prepended verbatim to the credential value. Defaults to `Bearer ` (with its trailing
+            space) for a header, and to no prefix otherwise. Set it to an empty string when the provider
+            expects the raw credential.
+          type: string
+          minLength: 0
+          nullable: true
+          x-speakeasy-param-computed: false
+      example:
+        location: header
+        name: x-api-key
+        prefix: ''
+      additionalProperties: false
+      title: AIGatewayTokenVaultCredentialPlacement
+      x-terraform-no-default-null: true
+    AIGatewayTokenVaultCredentialManager:
+      description: |-
+        Serves the self-service enrollment UI through which end users authorize the upstream providers
+        this auth strategy authenticates against. Omit `token_vault` entirely to serve no such UI.
+
+        Requires a `token-vault` Datastore reference in `datastores`; enabling the credential manager
+        without one is rejected.
+
+        **Requires a minimum runtime version of `2.3`**.
+      type: object
+      properties:
+        enable_credential_manager:
+          description: Whether the self-service enrollment UI is served for this auth strategy.
+          type: boolean
+          default: false
+        storage:
+          description: |
+            Read-only. The directory and encryption key versions this entity's credentials are stored
+            with, resolved from the `token-vault` Datastore referenced in `datastores`; change them on
+            the Datastore.
+          allOf:
+            - $ref: '#/components/schemas/TokenVaultDatastoreConfig'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      title: AIGatewayTokenVaultCredentialManager
+      x-min-runtime-version: '2.3'
+      x-speakeasy-param-computed: false
     AIGatewayRedisAWSAuthentication:
       description: AWS specific configs for connecting to a Cloud Provider's redis instance.
       type: object
@@ -55567,6 +57346,36 @@ components:
           example: 'https://mcp.internal.kongair.com'
         upstream:
           $ref: '#/components/schemas/AIGatewayUpstreamConfig'
+        certificates:
+          description: |
+            Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
+            referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
+            AI Gateway.
+
+            The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
+            proxies requests to the upstream MCP server. The generated Service presents a single client
+            certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
+            certificate may be configured.
+
+            If unset, no client certificate is presented to the upstream.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCertificateReference'
+          maxItems: 1
+          x-speakeasy-param-computed: true
+        ca_certificates:
+          description: |
+            CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
+            name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
+
+            The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
+            generated for this MCP Server, which proxies requests to the upstream MCP server.
+
+            If unset, the default trust store is used to verify the upstream's TLS certificate.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCACertificateReference'
+          x-speakeasy-param-computed: true
       additionalProperties: false
       required:
         - url
@@ -55670,6 +57479,36 @@ components:
           example: 'https://mcp.internal.kongair.com'
         upstream:
           $ref: '#/components/schemas/AIGatewayUpstreamConfig'
+        certificates:
+          description: |
+            Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
+            referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
+            AI Gateway.
+
+            The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
+            proxies requests to the upstream MCP server. The generated Service presents a single client
+            certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
+            certificate may be configured.
+
+            If unset, no client certificate is presented to the upstream.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCertificateReference'
+          maxItems: 1
+          x-speakeasy-param-computed: true
+        ca_certificates:
+          description: |
+            CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
+            name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
+
+            The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
+            generated for this MCP Server, which proxies requests to the upstream MCP server.
+
+            If unset, the default trust store is used to verify the upstream's TLS certificate.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCACertificateReference'
+          x-speakeasy-param-computed: true
         proxy:
           $ref: '#/components/schemas/AIGatewayProxyConfig'
       additionalProperties: false
@@ -55718,6 +57557,36 @@ components:
           example: 'https://mcp.internal.kongair.com'
         upstream:
           $ref: '#/components/schemas/AIGatewayUpstreamConfig'
+        certificates:
+          description: |
+            Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
+            referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
+            AI Gateway.
+
+            The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
+            proxies requests to the upstream MCP server. The generated Service presents a single client
+            certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
+            certificate may be configured.
+
+            If unset, no client certificate is presented to the upstream.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCertificateReference'
+          maxItems: 1
+          x-speakeasy-param-computed: true
+        ca_certificates:
+          description: |
+            CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
+            name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
+
+            The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
+            generated for this MCP Server, which proxies requests to the upstream MCP server.
+
+            If unset, the default trust store is used to verify the upstream's TLS certificate.
+          type: array
+          items:
+            $ref: '#/components/schemas/AIGatewayCACertificateReference'
+          x-speakeasy-param-computed: true
         tools_cache_ttl_seconds:
           description: |
             The time-to-live (TTL) for the upstream tools cache in seconds. Set to `0` to refresh on
@@ -56098,6 +57967,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
@@ -56157,6 +58030,36 @@ components:
               example: 'https://mcp.internal.kongair.com'
             upstream:
               $ref: '#/components/schemas/AIGatewayUpstreamConfig'
+            certificates:
+              description: |
+                Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
+                referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
+                AI Gateway.
+
+                The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
+                proxies requests to the upstream MCP server. The generated Service presents a single client
+                certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
+                certificate may be configured.
+
+                If unset, no client certificate is presented to the upstream.
+              type: array
+              items:
+                $ref: '#/components/schemas/AIGatewayCertificateReference'
+              maxItems: 1
+              x-speakeasy-param-computed: true
+            ca_certificates:
+              description: |
+                CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
+                name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
+
+                The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
+                generated for this MCP Server, which proxies requests to the upstream MCP server.
+
+                If unset, the default trust store is used to verify the upstream's TLS certificate.
+              type: array
+              items:
+                $ref: '#/components/schemas/AIGatewayCACertificateReference'
+              x-speakeasy-param-computed: true
             allowed_versions:
               description: |-
                 The MCP protocol revisions this server accepts. Leave unset to accept every revision Kong
@@ -56209,6 +58112,8 @@ components:
           x-speakeasy-param-computed: true
         access:
           $ref: '#/components/schemas/AIGatewayMCPServerListenerAccess'
+        rate_limiting:
+          $ref: '#/components/schemas/AIGatewayMCPServerRateLimiting'
         display_name:
           description: The display name for the MCP Server.
           type: string
@@ -56231,6 +58136,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
@@ -56356,6 +58265,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
@@ -56391,6 +58304,8 @@ components:
           x-speakeasy-param-computed: true
         access:
           $ref: '#/components/schemas/AIGatewayMCPServerListenerAccess'
+        rate_limiting:
+          $ref: '#/components/schemas/AIGatewayMCPServerRateLimiting'
         display_name:
           description: The display name for the MCP Server.
           type: string
@@ -56413,6 +58328,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
@@ -56466,6 +58385,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
@@ -56641,6 +58564,8 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
         type:
           type: string
           const: key-auth
@@ -56670,9 +58595,13 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
         type:
           type: string
           const: openid-connect
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVaultCredentialManager'
         config:
           $ref: '#/components/schemas/AIGWOpenIDConnectGeneratedConfig'
       required:
@@ -56707,6 +58636,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -56721,6 +58654,49 @@ components:
         - display_name
         - name
         - config
+    AIGatewayModelProviderBaseten:
+      description: |
+        Configuration for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: baseten
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: 'A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.'
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+      required:
+        - type
+        - display_name
+        - name
+        - config
+      x-min-runtime-version: '2.3'
+      x-speakeasy-param-computed: false
     AIGatewayModelProviderCerebras:
       description: |
         Configuration for an upstream model provider.
@@ -56744,6 +58720,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -56781,6 +58761,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -56818,6 +58802,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -56855,6 +58843,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -56892,6 +58884,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -56929,6 +58925,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -56966,6 +58966,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -57003,6 +59007,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -57040,6 +59048,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -57077,6 +59089,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -57114,6 +59130,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -57151,6 +59171,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -57188,6 +59212,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -57225,6 +59253,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -57262,6 +59294,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           description: Configuration for the model provider.
           type: object
@@ -57369,6 +59405,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           type: object
           additionalProperties: false
@@ -57546,6 +59586,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           type: object
           additionalProperties: false
@@ -57661,6 +59705,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           type: object
           additionalProperties: false
@@ -57785,6 +59833,10 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVault'
         config:
           type: object
           additionalProperties: false
@@ -57961,6 +60013,7 @@ components:
         mapping:
           anthropic: '#/components/schemas/AIGatewayModelProviderAnthropic'
           azure: '#/components/schemas/AIGatewayModelProviderAzure'
+          baseten: '#/components/schemas/AIGatewayModelProviderBaseten'
           bedrock: '#/components/schemas/AIGatewayModelProviderBedrock'
           cerebras: '#/components/schemas/AIGatewayModelProviderCerebras'
           cohere: '#/components/schemas/AIGatewayModelProviderCohere'
@@ -57982,6 +60035,7 @@ components:
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
+        - $ref: '#/components/schemas/AIGatewayModelProviderBaseten'
         - $ref: '#/components/schemas/AIGatewayModelProviderBedrock'
         - $ref: '#/components/schemas/AIGatewayModelProviderCerebras'
         - $ref: '#/components/schemas/AIGatewayModelProviderCohere'
@@ -58006,6 +60060,7 @@ components:
         mapping:
           anthropic: '#/components/schemas/AIGatewayModelProviderAnthropic'
           azure: '#/components/schemas/AIGatewayModelProviderAzure'
+          baseten: '#/components/schemas/AIGatewayModelProviderBaseten'
           bedrock: '#/components/schemas/AIGatewayModelProviderBedrock'
           cerebras: '#/components/schemas/AIGatewayModelProviderCerebras'
           cohere: '#/components/schemas/AIGatewayModelProviderCohere'
@@ -58027,6 +60082,7 @@ components:
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
+        - $ref: '#/components/schemas/AIGatewayModelProviderBaseten'
         - $ref: '#/components/schemas/AIGatewayModelProviderBedrock'
         - $ref: '#/components/schemas/AIGatewayModelProviderCerebras'
         - $ref: '#/components/schemas/AIGatewayModelProviderCohere'
@@ -58059,6 +60115,7 @@ components:
         mapping:
           anthropic: '#/components/schemas/AIGatewayModelProviderAnthropic'
           azure: '#/components/schemas/AIGatewayModelProviderAzure'
+          baseten: '#/components/schemas/AIGatewayModelProviderBaseten'
           bedrock: '#/components/schemas/AIGatewayModelProviderBedrock'
           cerebras: '#/components/schemas/AIGatewayModelProviderCerebras'
           cohere: '#/components/schemas/AIGatewayModelProviderCohere'
@@ -58080,6 +60137,7 @@ components:
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
+        - $ref: '#/components/schemas/AIGatewayModelProviderBaseten'
         - $ref: '#/components/schemas/AIGatewayModelProviderBedrock'
         - $ref: '#/components/schemas/AIGatewayModelProviderCerebras'
         - $ref: '#/components/schemas/AIGatewayModelProviderCohere'
@@ -58148,6 +60206,8 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
         type:
           type: string
           const: key-auth
@@ -58186,9 +60246,13 @@ components:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
+        datastores:
+          $ref: '#/components/schemas/AIGatewayTokenVaultDatastores'
         type:
           type: string
           const: openid-connect
+        token_vault:
+          $ref: '#/components/schemas/AIGatewayTokenVaultCredentialManager'
         config:
           $ref: '#/components/schemas/AIGWOpenIDConnectGeneratedConfig'
         id:
@@ -58205,6 +60269,112 @@ components:
         - created_at
         - updated_at
       title: AIGatewayAuthStrategyOpenIDConnectConfig
+    UpdateCostManagementTags:
+      type: object
+      properties:
+        headers:
+          description: |
+            Request headers captured as cost tags. Each header is mapped to one tag key.
+            Together with `prefixes`, at most 32 entries are allowed.
+          type: array
+          items:
+            $ref: '#/components/schemas/CostTagHeader'
+          maxItems: 32
+        prefixes:
+          description: |
+            Request header prefixes. A request header matches a prefix when its name is the prefix
+            followed by `-` and a remainder, compared case-insensitively. For example, the prefix
+            `my-co` matches `my-co-region` but not `my-company`. The remainder becomes the tag key,
+            so `my-co-region` is captured as the tag `region`. Headers whose remainder is not a
+            valid tag key (see the `tag_key` pattern, at most 128 characters) produce no tag and
+            are skipped; capture continues for the remaining headers.
+            Headers starting with `ai-cost-` are always captured, in addition to any configured here.
+            Together with `headers`, at most 32 entries are allowed.
+          type: array
+          items:
+            $ref: '#/components/schemas/CostTagPrefix'
+          maxItems: 32
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      required:
+        - headers
+        - prefixes
+    CostManagementTags:
+      type: object
+      properties:
+        headers:
+          description: |
+            Request headers captured as cost tags. Each header is mapped to one tag key.
+            Together with `prefixes`, at most 32 entries are allowed.
+          type: array
+          items:
+            $ref: '#/components/schemas/CostTagHeader'
+          maxItems: 32
+        prefixes:
+          description: |
+            Request header prefixes. A request header matches a prefix when its name is the prefix
+            followed by `-` and a remainder, compared case-insensitively. For example, the prefix
+            `my-co` matches `my-co-region` but not `my-company`. The remainder becomes the tag key,
+            so `my-co-region` is captured as the tag `region`. Headers whose remainder is not a
+            valid tag key (see the `tag_key` pattern, at most 128 characters) produce no tag and
+            are skipped; capture continues for the remaining headers.
+            Headers starting with `ai-cost-` are always captured, in addition to any configured here.
+            Together with `headers`, at most 32 entries are allowed.
+          type: array
+          items:
+            $ref: '#/components/schemas/CostTagPrefix'
+          maxItems: 32
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - headers
+        - prefixes
+    CostTagHeader:
+      description: Maps a request header to a cost tag key.
+      type: object
+      properties:
+        name:
+          description: |
+            Name of the request header. Cannot be a credential header, such as `authorization`,
+            `x-api-key` or `cookie`. Names are compared case-insensitively.
+          type: string
+          example: my-tenant-id
+          pattern: '^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$'
+        tag_key:
+          description: Key of the cost tag the header value is stored under.
+          type: string
+          example: tenant
+          maxLength: 128
+          minLength: 1
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+      required:
+        - name
+        - tag_key
+      title: CostTagHeader
+    CostTagPrefix:
+      description: A request header prefix whose matching headers are captured as cost tags.
+      type: object
+      properties:
+        name:
+          description: |
+            Header prefix with at least two dash-separated segments. Cannot be a credential
+            header name, nor a prefix of one, such as `x-goog` for `x-goog-api-key`. Credential
+            headers are never captured, even when they match a configured prefix. Prefixes are
+            compared case-insensitively.
+          type: string
+          example: my-co
+          pattern: '^[A-Za-z0-9]+(-[A-Za-z0-9]+)+$'
+      required:
+        - name
+      title: CostTagPrefix
     TooManyRequestsError:
       description: standard error
       type: object
@@ -101786,7 +103956,10 @@ components:
           nullable: true
           x-speakeasy-param-computed: false
         bearer_token_header_name:
-          description: 'The name of the HTTP header from which the bearer token is retrieved. The default value is `authorization:bearer`, which reads the token from the `Authorization: Bearer <token>` header. Accepts plain header names such as `x-my-token` as well as Kong''s special `authorization:bearer` notation. The `access-token` and `x-access-token` headers are also checked as a fallback for backward compatibility regardless of this setting.'
+          description: |-
+            The name of the HTTP header from which the bearer token is retrieved. The default value is `authorization:bearer`, which reads the token from the `Authorization: Bearer <token>` header. Accepts plain header names such as `x-my-token` as well as Kong's special `authorization:bearer` notation. The `access-token` and `x-access-token` headers are also checked as a fallback for backward compatibility regardless of this setting.
+
+            **Requires a minimum runtime version of `2.1`**.
           type: string
           default: 'authorization:bearer'
           x-min-runtime-version: '2.1'
@@ -102357,13 +104530,23 @@ components:
           description: Do not terminate the request if consumer mapping fails.
           type: boolean
           default: false
-        credential_claim:
-          description: 'The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.'
+        credential_claims:
+          description: |-
+            The claims used to derive a virtual credential, for example to be consumed by the rate-limiting plugin, when consumer mapping is not used. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.
+
+            **Requires a minimum runtime version of `2.3`**.
           type: array
           items:
-            type: string
+            description: 'A path of strings representing the location of the claim in a nested object. For example, to map to `account.id`, set `[ "account", "id" ]`.'
+            items:
+              type: string
+            minLength: 1
+            type: array
           default:
-            - sub
+            - - sub
+          nullable: true
+          x-min-runtime-version: '2.3'
+          x-speakeasy-param-computed: false
         disable_session:
           description: Disable issuing the session cookie with the specified grants.
           type: array
@@ -102915,6 +105098,28 @@ components:
               description: 'When true (default), return 401 if fail to match a Principal in Kong Identity after token verification. When false, the request continues without authenticated_principal set.'
               type: boolean
               default: true
+            jit:
+              description: |-
+                Token claims to share with the Kong Identity principal lookup. Kong Identity, not this plugin, decides whether the claims are used: a trusted IdP with JIT provisioning enabled in Konnect maps them onto a principal provisioned just in time. By default the lookup only carries the principal claim (e.g. 'sub') and no additional claims are shared.
+
+                **Requires a minimum runtime version of `2.3`**.
+              type: object
+              properties:
+                all_claims:
+                  description: Send the full set of verified token claims with the Kong Identity principal lookup.
+                  type: boolean
+                  default: false
+                claims:
+                  description: Send only the named token claims with the Kong Identity principal lookup. The claims are picked from the same source the principal claim is read from. Set all_claims to send every verified claim instead.
+                  type: array
+                  items:
+                    minLength: 1
+                    type: string
+                  minLength: 1
+                  nullable: true
+                  x-speakeasy-param-computed: false
+              x-min-runtime-version: '2.3'
+              x-speakeasy-param-computed: false
             match_consumer:
               description: 'If a Consumer is attached to the matched Principal in Kong Identity, load it and set it in the request context, overriding consumer_by.'
               type: boolean
@@ -102961,6 +105166,41 @@ components:
             - optional
             - strict
           x-speakeasy-unknown-values: allow
+        protected_resource_metadata:
+          description: |-
+            When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.
+
+            **Requires a minimum runtime version of `2.3`**.
+          type: object
+          properties:
+            authorization_servers:
+              description: List of authorization server issuer URIs to advertise in the RFC 9728 metadata document.
+              type: array
+              items:
+                description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+                type: string
+              minLength: 1
+            metadata_endpoint:
+              description: Override the well-known metadata endpoint path. Defaults to the path component of resource with /.well-known/oauth-protected-resource appended.
+              type: string
+              nullable: true
+              x-speakeasy-param-computed: false
+            resource:
+              description: The URI of the protected resource. Used as the resource field in the RFC 9728 metadata document and to derive the well-known endpoint path.
+              type: string
+            scopes_supported:
+              description: Scopes supported by this protected resource. Included in the RFC 9728 metadata document and in the scope attribute of WWW-Authenticate challenge headers on 401 responses.
+              type: array
+              items:
+                type: string
+              minLength: 1
+              nullable: true
+              x-speakeasy-param-computed: false
+          required:
+            - authorization_servers
+            - resource
+          x-min-runtime-version: '2.3'
+          x-speakeasy-param-computed: false
         pushed_authorization_request_endpoint:
           description: The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
           type: string
@@ -103594,7 +105834,8 @@ components:
             cache:
               description: Cache support for token exchange
               type: object
-              nullable: true
+              default:
+                enabled: true
               properties:
                 enabled:
                   description: Whether to enable caching.
@@ -103605,12 +105846,84 @@ components:
                   type: integer
                   nullable: true
                   x-speakeasy-param-computed: false
+            grant_type:
+              description: |-
+                The token exchange grant. `token_exchange` (default) uses the OAuth 2.0 Token Exchange grant (RFC 8693). `jwt_bearer` uses the JWT Bearer authorization-grant flow (RFC 7523); see `token_exchange.provider` for provider-specific defaults in this mode.
+
+                **Requires a minimum runtime version of `2.3`**.
+              type: string
+              default: token_exchange
+              enum:
+                - jwt_bearer
+                - token_exchange
+              x-min-runtime-version: '2.3'
               x-speakeasy-param-computed: false
+              x-speakeasy-unknown-values: allow
+            map_identities_from:
+              description: |-
+                Which token's claims to use for consumer, consumer group, and principal mapping. Only takes effect when token exchange is configured. `exchanged_tokens` (default) uses the token(s) returned by the exchange or tokens derived from it, as today. `subject_token` uses the original, pre-exchange bearer token's claims instead.
+
+                **Requires a minimum runtime version of `2.3`**.
+              type: string
+              default: exchanged_tokens
+              enum:
+                - exchanged_tokens
+                - subject_token
+              x-min-runtime-version: '2.3'
+              x-speakeasy-param-computed: false
+              x-speakeasy-unknown-values: allow
+            provider:
+              description: |-
+                Identity provider used with `grant_type = jwt_bearer`; not allowed with `grant_type = token_exchange`. `standard` (default) adds no provider-specific parameter. `microsoft` adds the required `requested_token_use=on_behalf_of`, which is fixed and cannot be overridden via `post_args_names/values`.
+
+                **Requires a minimum runtime version of `2.3`**.
+              type: string
+              default: standard
+              enum:
+                - microsoft
+                - standard
+              x-min-runtime-version: '2.3'
+              x-speakeasy-param-computed: false
+              x-speakeasy-unknown-values: allow
             request:
               description: Parameters used in the token exchange request.
               type: object
               nullable: true
               properties:
+                actor_token:
+                  description: |-
+                    How to obtain the actor token to include in the token exchange request. Represents the identity of the party acting on behalf of the subject.
+
+                    **Requires a minimum runtime version of `2.3`**.
+                  type: object
+                  properties:
+                    header_name:
+                      description: Header name containing the actor token. Required when `source` is `header`.
+                      type: string
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    source:
+                      description: Where to obtain the actor token. `header` reads it from a request header. `config` uses a fixed value. `none` disables actor token support.
+                      type: string
+                      default: none
+                      enum:
+                        - config
+                        - header
+                        - none
+                      x-speakeasy-unknown-values: allow
+                    static_token:
+                      description: Static actor token value. Required when `source` is `config`.
+                      type: string
+                      nullable: true
+                      x-encrypted: true
+                      x-referenceable: true
+                      x-speakeasy-param-computed: false
+                    type:
+                      description: The RFC 8693 token type identifier of the actor token (the `actor_token_type` request parameter).
+                      type: string
+                      default: 'urn:ietf:params:oauth:token-type:access_token'
+                  x-min-runtime-version: '2.3'
+                  x-speakeasy-param-computed: false
                 audience:
                   description: Audiences used in the token exchange request. Values defined here override those defined in `config.audience`.
                   type: array
@@ -103619,13 +105932,75 @@ components:
                   nullable: true
                   x-speakeasy-param-computed: false
                 empty_audience:
-                  description: Use empty audiences. Use this field to override audiences defined in `config.audience`.
+                  description: Use empty audiences. Use this field to remove audiences defined in `config.audience`.
                   type: boolean
                   default: false
+                empty_headers:
+                  description: |-
+                    Use no extra headers on the token exchange request. Use this field to remove extra headers defined in `config.token_headers_names`.
+
+                    **Requires a minimum runtime version of `2.3`**.
+                  type: boolean
+                  default: false
+                  x-min-runtime-version: '2.3'
+                  x-speakeasy-param-computed: false
+                empty_post_args:
+                  description: |-
+                    Use no extra POST arguments on the token exchange request. Use this field to remove extra POST arguments defined in `config.token_post_args_names`.
+
+                    **Requires a minimum runtime version of `2.3`**.
+                  type: boolean
+                  default: false
+                  x-min-runtime-version: '2.3'
+                  x-speakeasy-param-computed: false
                 empty_scopes:
-                  description: Use empty scopes. Use this field to override scopes defined in `config.scopes`.
+                  description: Use empty scopes. Use this field to remove scopes defined in `config.scopes`.
                   type: boolean
                   default: false
+                headers_names:
+                  description: |-
+                    Extra header names sent only on the token exchange request. Overrides `config.token_headers_names` for this request.
+
+                    **Requires a minimum runtime version of `2.3`**.
+                  type: array
+                  items:
+                    type: string
+                  nullable: true
+                  x-min-runtime-version: '2.3'
+                  x-speakeasy-param-computed: false
+                headers_values:
+                  description: |-
+                    Values paired by index with `headers_names`.
+
+                    **Requires a minimum runtime version of `2.3`**.
+                  type: array
+                  items:
+                    type: string
+                  nullable: true
+                  x-min-runtime-version: '2.3'
+                  x-speakeasy-param-computed: false
+                post_args_names:
+                  description: |-
+                    Extra POST argument names sent only on the token exchange request. Overrides `config.token_post_args_names` for this request. Use this, not the top-level field, for parameters that must not be attached to the plugin's other token endpoint calls, for example `requested_token_use` for Entra ID's On-Behalf-Of flow.
+
+                    **Requires a minimum runtime version of `2.3`**.
+                  type: array
+                  items:
+                    type: string
+                  nullable: true
+                  x-min-runtime-version: '2.3'
+                  x-speakeasy-param-computed: false
+                post_args_values:
+                  description: |-
+                    Values paired by index with `post_args_names`.
+
+                    **Requires a minimum runtime version of `2.3`**.
+                  type: array
+                  items:
+                    type: string
+                  nullable: true
+                  x-min-runtime-version: '2.3'
+                  x-speakeasy-param-computed: false
                 scopes:
                   description: Scopes used in the token exchange request. Values defined here override those defined in `config.scopes`.
                   type: array
@@ -103640,38 +106015,68 @@ components:
               items:
                 properties:
                   conditions:
-                    description: 'A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined.'
+                    description: 'A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined -- every token from that issuer is exchanged unconditionally, since a foreign-issued token that isn''t exchanged can never pass normal verification against the target issuer anyway. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.'
                     type: object
                     nullable: true
                     properties:
                       has_audience:
+                        description: 'Audience values that must all be present in the token, matched against `audience_claim`.'
                         type: array
                         items:
                           type: string
                         nullable: true
                         x-speakeasy-param-computed: false
                       has_scopes:
+                        description: 'Scope values that must all be present in the token, matched against `scopes_claim`.'
                         type: array
                         items:
                           type: string
                         nullable: true
                         x-speakeasy-param-computed: false
                       missing_audience:
+                        description: 'Audience values that must all be absent from the token, matched against `audience_claim`.'
                         type: array
                         items:
                           type: string
                         nullable: true
                         x-speakeasy-param-computed: false
                       missing_scopes:
+                        description: 'Scope values that must all be absent from the token, matched against `scopes_claim`.'
                         type: array
                         items:
                           type: string
                         nullable: true
                         x-speakeasy-param-computed: false
                     x-speakeasy-param-computed: false
+                  deny_on_mismatch:
+                    description: |-
+                      When true, a token issued by `issuer` that fails to match `conditions` is denied instead of being passed through unexchanged. Evaluated independently for this item only, with no effect on other `subject_token_issuers` items. Only allowed when this issuer is the target issuer, since `conditions` is required there and foreign-issuer items always match.
+
+                      **Requires a minimum runtime version of `2.3`**.
+                    type: boolean
+                    default: false
+                    x-min-runtime-version: '2.3'
+                    x-speakeasy-param-computed: false
                   issuer:
                     description: Tokens of whose iss claim matches this value will be exchanged.
                     type: string
+                  jwks_uri:
+                    description: |-
+                      An explicit JWKS endpoint for this issuer. This field should be left empty when this issuer is the same as the target issuer. It is only used when `verify_signature` is `true`. When set, Kong fetches the signing keys from this URI directly instead of using OIDC Discovery.
+
+                      **Requires a minimum runtime version of `2.3`**.
+                    type: string
+                    x-min-runtime-version: '2.3'
+                    x-speakeasy-param-computed: false
+                  verify_signature:
+                    description: |-
+                      When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. This field should be left empty or set to `false` when this issuer is the same as the target issuer. Defaults to `false` for backward compatibility.
+
+                      **Requires a minimum runtime version of `2.3`**.
+                    type: boolean
+                    default: false
+                    x-min-runtime-version: '2.3'
+                    x-speakeasy-param-computed: false
                 required:
                   - issuer
                 type: object
@@ -103933,6 +106338,12 @@ components:
           description: 'Verify the cryptographic signature of tokens. Disabling this skips verification for every token source, including tokens presented directly by clients (bearer); this is insecure for that path. To trust only tokens fetched from the identity provider for specific grants, use `ignore_signature` instead, which never affects bearer tokens.'
           type: boolean
           default: true
+        credential_claim:
+          description: Claim path used to derive virtual credentials when consumer mapping is not used.
+          type: array
+          items:
+            type: string
+          x-speakeasy-param-computed: true
       required:
         - issuer
         - cache_tokens_salt
@@ -104806,6 +107217,8 @@ components:
                 x-speakeasy-param-computed: false
               labels:
                 $ref: '#/components/schemas/Labels'
+              konnect_managed:
+                $ref: '#/components/schemas/KonnectManaged'
             required:
               - name
     UpdateTeam:
@@ -104839,6 +107252,8 @@ components:
                 x-speakeasy-param-computed: false
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
+              konnect_managed:
+                $ref: '#/components/schemas/KonnectManaged'
     AddUserToTeam:
       description: The request schema for adding a user to a team.
       content:
@@ -106664,6 +109079,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateCatalogMCPImplementation'
+    UpdateCostManagementTags:
+      description: The cost management tags configuration that replaces the existing one.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateCostManagementTags'
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -108588,6 +111010,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AIGatewayVault'
+    CreateAIGatewayDatastoreResponse:
+      description: AI Gateway Datastore created successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayDatastore'
+    GetAIGatewayDatastoreResponse:
+      description: A successful response returning an AI Gateway Datastore.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayDatastore'
+    UpdateAIGatewayDatastoreResponse:
+      description: Datastore updated successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayDatastore'
     CreateAIGatewayPolicyResponse:
       description: Policy created successfully.
       content:
@@ -108797,6 +111237,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AIGatewayAuthStrategy'
+    CostManagementTagsResponse:
+      description: The cost management tags configuration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CostManagementTags'
     TooManyRequests:
       description: Too Many Requests
       content:
@@ -109173,6 +111619,8 @@ tags:
     description: API related to the management of AI Gateway Config Stores.
   - name: AI Gateway Vaults
     description: API related to the management of AI Gateway vaults for storing secrets.
+  - name: AI Gateway Datastores
+    description: 'Datastores that back AI Gateway policies and models, such as Redis and vector database connections.'
   - name: AI Gateway Agents
     description: AI Agents registered with the AI Gateway.
   - name: AI Gateway Consumers
@@ -109191,6 +111639,8 @@ tags:
     description: MCP Servers that expose tools for AI Gateway integrations.
   - name: AI Gateway Model Providers
     description: Model providers that define the backend AI service connections for the AI Gateway.
+  - name: AI Gateway Cost Management Tags
+    description: Configure which request headers are captured as cost tags on AI usage events. The configuration applies to the organization in the region the request is sent to.
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas

@@ -24,6 +24,13 @@ type AIGatewayAuthStrategyKeyAuth struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_  string                      `const:"key-auth" json:"type"`
 	Config *AIGWKeyAuthGeneratedConfig `json:"config,omitempty"`
@@ -66,6 +73,13 @@ func (a *AIGatewayAuthStrategyKeyAuth) GetManagedBy() map[string]string {
 		return nil
 	}
 	return a.ManagedBy
+}
+
+func (a *AIGatewayAuthStrategyKeyAuth) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
 }
 
 func (a *AIGatewayAuthStrategyKeyAuth) GetType() string {

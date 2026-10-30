@@ -14,7 +14,8 @@ Team Resource
 
 ```terraform
 resource "konnect_team" "my_team" {
-  description = "The Identity Management (IDM) team."
+  description     = "The Identity Management (IDM) team."
+  konnect_managed = false
   labels = {
     key = "value"
   }
@@ -32,6 +33,7 @@ resource "konnect_team" "my_team" {
 ### Optional
 
 - `description` (String) The description of the team.
+- `konnect_managed` (Boolean) Whether the team's membership is managed by Konnect instead of being synced from an identity provider's team mappings. Set to `false` (default) to let identity provider team mappings keep syncing members into this team. Set to `true` to manage membership directly in Konnect and prevent identity provider team mappings from syncing to this team. Default: false
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".

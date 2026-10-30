@@ -66,6 +66,8 @@ type Konnect struct {
 	// Konnect IP inventory
 	PlatformIPs             *PlatformIPs
 	ServerlessCloudGateways *ServerlessCloudGateways
+	// Configure which request headers are captured as cost tags on AI usage events. The configuration applies to the organization in the region the request is sent to.
+	AIGatewayCostManagementTags *AIGatewayCostManagementTags
 	// API related to the management of Konnect AI Gateway resources.
 	AIGateways *AIGateways
 	// AI Agents registered with the AI Gateway.
@@ -86,6 +88,8 @@ type Konnect struct {
 	AIGatewayCustomPolicies *AIGatewayCustomPolicies
 	// API related to the management of AI Gateway DataPlane Certificates.
 	AIGatewayDataPlaneCertificates *AIGatewayDataPlaneCertificates
+	// Datastores that back AI Gateway policies and models, such as Redis and vector database connections.
+	AIGatewayDatastores *AIGatewayDatastores
 	// MCP Servers that expose tools for AI Gateway integrations.
 	AIGatewayMCPServers *AIGatewayMCPServers
 	// Model providers that define the backend AI service connections for the AI Gateway.
@@ -501,6 +505,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.PlatformRegions = newPlatformRegions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PlatformIPs = newPlatformIPs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayCostManagementTags = newAIGatewayCostManagementTags(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGateways = newAIGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayAgents = newAIGatewayAgents(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayAuthStrategies = newAIGatewayAuthStrategies(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -511,6 +516,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.AIGatewayConsumers = newAIGatewayConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayCustomPolicies = newAIGatewayCustomPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayDataPlaneCertificates = newAIGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayDatastores = newAIGatewayDatastores(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayMCPServers = newAIGatewayMCPServers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayModelProviders = newAIGatewayModelProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayModels = newAIGatewayModels(sdk, sdk.sdkConfiguration, sdk.hooks)

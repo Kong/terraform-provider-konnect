@@ -7,6 +7,8 @@ import (
 )
 
 type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig struct {
+	CaCertificates     []types.String                               `tfsdk:"ca_certificates"`
+	Certificates       []types.String                               `tfsdk:"certificates"`
 	Logging            *AIGatewayMCPServerConversionListenerLogging `tfsdk:"logging"`
 	MaxRequestBodySize types.Int64                                  `tfsdk:"max_request_body_size"`
 	Route              *AIGatewayRouteConfig                        `tfsdk:"route"`

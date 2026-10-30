@@ -18,9 +18,9 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.AiRagInjectorPluginConfig{}
 		if resp.Config.CollectionACLConfig != nil {
-			r.Config.CollectionACLConfig = make(map[string]tfTypes.AIGatewayMCPACLs, len(resp.Config.CollectionACLConfig))
+			r.Config.CollectionACLConfig = make(map[string]tfTypes.CollectionACLConfig, len(resp.Config.CollectionACLConfig))
 			for collectionACLConfigKey, collectionACLConfigValue := range resp.Config.CollectionACLConfig {
-				var collectionACLConfigResult tfTypes.AIGatewayMCPACLs
+				var collectionACLConfigResult tfTypes.CollectionACLConfig
 				collectionACLConfigResult.Allow = make([]types.String, 0, len(collectionACLConfigValue.Allow))
 				for _, v := range collectionACLConfigValue.Allow {
 					collectionACLConfigResult.Allow = append(collectionACLConfigResult.Allow, types.StringValue(v))
@@ -123,7 +123,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 		if resp.Config.GlobalACLConfig == nil {
 			r.Config.GlobalACLConfig = nil
 		} else {
-			r.Config.GlobalACLConfig = &tfTypes.AIGatewayMCPACLs{}
+			r.Config.GlobalACLConfig = &tfTypes.CollectionACLConfig{}
 			r.Config.GlobalACLConfig.Allow = make([]types.String, 0, len(resp.Config.GlobalACLConfig.Allow))
 			for _, v := range resp.Config.GlobalACLConfig.Allow {
 				r.Config.GlobalACLConfig.Allow = append(r.Config.GlobalACLConfig.Allow, types.StringValue(v))
@@ -241,10 +241,10 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 				}
 				r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
 				if resp.Config.Vectordb.Redis.ClusterNodes != nil {
-					r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+					r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 					for _, clusterNodesItem := range resp.Config.Vectordb.Redis.ClusterNodes {
-						var clusterNodes tfTypes.ClusterNodes
+						var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -266,10 +266,10 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 				r.Config.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.SendTimeout)
 				r.Config.Vectordb.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelMaster)
 				if resp.Config.Vectordb.Redis.SentinelNodes != nil {
-					r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+					r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 					for _, sentinelNodesItem := range resp.Config.Vectordb.Redis.SentinelNodes {
-						var sentinelNodes tfTypes.SentinelNodes
+						var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)

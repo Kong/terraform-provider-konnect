@@ -24,9 +24,24 @@ type AIGatewayAuthStrategyOpenIDConnect struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_  string                            `const:"openid-connect" json:"type"`
-	Config *AIGWOpenIDConnectGeneratedConfig `json:"config,omitempty"`
+	type_ string `const:"openid-connect" json:"type"`
+	// Serves the self-service enrollment UI through which end users authorize the upstream providers
+	// this auth strategy authenticates against. Omit `token_vault` entirely to serve no such UI.
+	//
+	// Requires a `token-vault` Datastore reference in `datastores`; enabling the credential manager
+	// without one is rejected.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultCredentialManagerInput `json:"token_vault,omitempty"`
+	Config     *AIGWOpenIDConnectGeneratedConfig          `json:"config,omitempty"`
 }
 
 func (a AIGatewayAuthStrategyOpenIDConnect) MarshalJSON() ([]byte, error) {
@@ -68,8 +83,22 @@ func (a *AIGatewayAuthStrategyOpenIDConnect) GetManagedBy() map[string]string {
 	return a.ManagedBy
 }
 
+func (a *AIGatewayAuthStrategyOpenIDConnect) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
 func (a *AIGatewayAuthStrategyOpenIDConnect) GetType() string {
 	return "openid-connect"
+}
+
+func (a *AIGatewayAuthStrategyOpenIDConnect) GetTokenVault() *AIGatewayTokenVaultCredentialManagerInput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
 }
 
 func (a *AIGatewayAuthStrategyOpenIDConnect) GetConfig() *AIGWOpenIDConnectGeneratedConfig {

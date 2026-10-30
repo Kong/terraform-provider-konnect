@@ -60,6 +60,10 @@ func (r *TeamListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 							Computed:    true,
 							Description: `The team ID.`,
 						},
+						"konnect_managed": schema.BoolAttribute{
+							Computed:    true,
+							Description: `Whether the team's membership is managed by Konnect instead of being synced from an identity provider's team mappings. Set to ` + "`" + `false` + "`" + ` (default) to let identity provider team mappings keep syncing members into this team. Set to ` + "`" + `true` + "`" + ` to manage membership directly in Konnect and prevent identity provider team mappings from syncing to this team.`,
+						},
 						"labels": schema.MapAttribute{
 							Computed:    true,
 							ElementType: types.StringType,
@@ -85,6 +89,10 @@ func (r *TeamListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 			"filter": schema.SingleNestedAttribute{
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
+					"konnect_managed": schema.BoolAttribute{
+						Optional:    true,
+						Description: `Filter by a boolean value (true/false).`,
+					},
 					"labels": schema.MapNestedAttribute{
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{

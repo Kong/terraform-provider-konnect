@@ -9,6 +9,7 @@ import (
 type AIGatewayMCPServerUpstreamServer struct {
 	Config      *AIGatewayMCPServerUpstreamServerConfig `tfsdk:"config"`
 	CreatedAt   types.String                            `tfsdk:"created_at"`
+	Datastores  []AIGatewayDatastoreRef                 `tfsdk:"datastores"`
 	DisplayName types.String                            `tfsdk:"display_name"`
 	Enabled     types.Bool                              `tfsdk:"enabled"`
 	ID          types.String                            `tfsdk:"id"`
@@ -16,6 +17,7 @@ type AIGatewayMCPServerUpstreamServer struct {
 	ManagedBy   map[string]types.String                 `tfsdk:"managed_by"`
 	Name        types.String                            `tfsdk:"name"`
 	Policies    []types.String                          `tfsdk:"policies"`
+	TokenVault  *AIGatewayTokenVault                    `tfsdk:"token_vault"`
 	Tools       []AIGatewayMCPUpstreamTool              `tfsdk:"tools"`
 	UpdatedAt   types.String                            `tfsdk:"updated_at"`
 }

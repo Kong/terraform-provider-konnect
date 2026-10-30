@@ -19,6 +19,8 @@ type ListTeamsQueryParamFilter struct {
 	// Filter using **one** of the following operators: `eq`, `contains`
 	Name   *shared.LegacyStringFieldFilter                     `queryParam:"name=name"`
 	Labels map[string]shared.LegacyStringFieldFilterWithExists `queryParam:"name=labels"`
+	// Filter by a boolean value (true/false).
+	KonnectManaged *bool `queryParam:"name=konnect_managed"`
 }
 
 func (l ListTeamsQueryParamFilter) MarshalJSON() ([]byte, error) {
@@ -44,6 +46,13 @@ func (l *ListTeamsQueryParamFilter) GetLabels() map[string]shared.LegacyStringFi
 		return nil
 	}
 	return l.Labels
+}
+
+func (l *ListTeamsQueryParamFilter) GetKonnectManaged() *bool {
+	if l == nil {
+		return nil
+	}
+	return l.KonnectManaged
 }
 
 type ListTeamsRequest struct {

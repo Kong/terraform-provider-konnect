@@ -77,6 +77,28 @@ type UpdateAIGatewayAgentRequestConfig struct {
 	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
 	// Configuration for AI Gateway logging.
 	Logging *UpdateAIGatewayAgentRequestLogging `json:"logging,omitempty"`
+	// Client certificates used for mutual TLS (mTLS) authentication with the upstream agent
+	// endpoint, referenced by name. Each entry must be the `name` of an existing AI Certificate
+	// on the same AI Gateway.
+	//
+	// The certificates are applied to the Kong Gateway Service generated for this Agent, which
+	// proxies requests to `config.url`. The generated Service presents a single client
+	// certificate (`client_certificate`) during the TLS handshake with the upstream, so at most
+	// one certificate may be configured.
+	//
+	// If unset, no client certificate is presented to the upstream.
+	//
+	Certificates []string `json:"certificates,omitempty"`
+	// CA certificates used to verify the TLS certificate of the upstream agent endpoint,
+	// referenced by name. Each entry must be the `name` of an existing AI CA Certificate on the
+	// same AI Gateway.
+	//
+	// The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
+	// generated for this Agent, which proxies requests to `config.url`.
+	//
+	// If unset, the default trust store is used to verify the upstream's TLS certificate.
+	//
+	CaCertificates []string `json:"ca_certificates,omitempty"`
 }
 
 func (u UpdateAIGatewayAgentRequestConfig) MarshalJSON() ([]byte, error) {
@@ -130,6 +152,20 @@ func (u *UpdateAIGatewayAgentRequestConfig) GetLogging() *UpdateAIGatewayAgentRe
 		return nil
 	}
 	return u.Logging
+}
+
+func (u *UpdateAIGatewayAgentRequestConfig) GetCertificates() []string {
+	if u == nil {
+		return nil
+	}
+	return u.Certificates
+}
+
+func (u *UpdateAIGatewayAgentRequestConfig) GetCaCertificates() []string {
+	if u == nil {
+		return nil
+	}
+	return u.CaCertificates
 }
 
 type UpdateAIGatewayAgentRequest struct {

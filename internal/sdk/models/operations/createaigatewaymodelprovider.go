@@ -47,6 +47,10 @@ func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderReq
 	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderAzure
 }
 
+func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderRequestBaseten() *shared.AIGatewayModelProviderBaseten {
+	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderBaseten
+}
+
 func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderRequestBedrock() *shared.AIGatewayModelProviderBedrock {
 	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderBedrock
 }
@@ -189,6 +193,13 @@ func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderAnthropi
 func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderAzure() *shared.AIGatewayModelProviderAIGatewayModelProviderAzure {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderAzure
+	}
+	return nil
+}
+
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderBaseten() *shared.AIGatewayModelProviderAIGatewayModelProviderBaseten {
+	if v := c.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderBaseten
 	}
 	return nil
 }
