@@ -29,19 +29,16 @@ resource "konnect_identity_group_membership" "my_identitygroupmembership" {
 resource "konnect_identity_group_api_key" "my_identitygroupapikey" {
   directory_id = konnect_identity_directory.my_identitydirectory.id
   group_id     = konnect_identity_group.my_identitygroup.id
-  v1 = {
-    name = "tftest-group-key"
-  }
+  name = "tftest-group-key"
+  type = "v1"
 }
 
 resource "konnect_identity_principal_api_key" "my_identityprincipalapikey" {
   directory_id = konnect_identity_directory.my_identitydirectory.id
   principal_id = konnect_identity_principal.my_identityprincipal.id
-  v1 = {
-    name = "tftest-principal-key"
-  }
+  name = "tftest-principal-key"
+  type = "v1"
 }
-
 resource "konnect_identity_principal_basic_auth" "my_identityprincipalbasicauth" {
   directory_id = konnect_identity_directory.my_identitydirectory.id
   principal_id = konnect_identity_principal.my_identityprincipal.id
@@ -67,8 +64,8 @@ resource "konnect_identity_principal_identity" "my_identityprincipalidentity" {
 resource "konnect_identity_trusted_idp" "my_identitytrustedidp" {
   directory_id = konnect_identity_directory.my_identitydirectory.id
   display_name = "TF Test Trusted IdP Updated"
-  issuer_url   = "https://tftest.example.com/oauth2/default"
-  jwks_uri     = "https://tftest.example.com/oauth2/default/v1/keys"
+  issuer_url   = "https://accounts.google.com"
+  //jwks_uri     = "https://accounts.google.com/.well-known/jwks.json"
 }
 
 resource "konnect_identity_vault_key" "my_identityvaultkey" {
