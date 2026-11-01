@@ -4,11 +4,14 @@ package shared
 
 import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+	"time"
 )
 
 // CreatePasswordBody - Password to be created
 type CreatePasswordBody struct {
 	Secret *string `default:"null" json:"secret"`
+	// An ISO-8601 timestamp representation of entity expiration date.
+	ExpiresAt *time.Time `default:"null" json:"expires_at"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
@@ -32,6 +35,13 @@ func (c *CreatePasswordBody) GetSecret() *string {
 		return nil
 	}
 	return c.Secret
+}
+
+func (c *CreatePasswordBody) GetExpiresAt() *time.Time {
+	if c == nil {
+		return nil
+	}
+	return c.ExpiresAt
 }
 
 func (c *CreatePasswordBody) GetManagedBy() map[string]string {

@@ -19,6 +19,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	"regexp"
@@ -103,9 +104,11 @@ func (r *IdentityVaultProviderResource) Schema(ctx context.Context, req resource
 				Description: `Credential scope. Defaults to "user" for authorization_code templates when omitted; static_secret templates require "shared".`,
 			},
 			"dcr_enabled": schema.BoolAttribute{
+				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 				},
 				Description: `When true, requests Dynamic Client Registration (RFC 7591) instead of a static client_id. Requires a resolvable registration_endpoint (provider override or template default) and that client_id is omitted. Each principal using this provider is registered its own upstream OAuth client lazily, on first use. Templates that ship their own registration endpoint (e.g. datadog) are DCR-based: dcr_enabled defaults to true when neither dcr_enabled nor client_id is supplied, and supplying a client_id selects a static client. Requires replacement if changed.`,
 			},
@@ -119,6 +122,9 @@ func (r *IdentityVaultProviderResource) Schema(ctx context.Context, req resource
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 			},
 			"name": schema.StringAttribute{
 				Required: true,
@@ -127,6 +133,7 @@ func (r *IdentityVaultProviderResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"pkce_enabled": schema.BoolAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `Use PKCE (S256) on the authorization-code flow. Templates whose authorization server mandates PKCE (pkce_required, e.g. datadog) imply true when this field is omitted; setting it explicitly to false is rejected with 400.`,
 			},
@@ -151,6 +158,7 @@ func (r *IdentityVaultProviderResource) Schema(ctx context.Context, req resource
 				Description: `Resolved DCR registration endpoint (provider override or template default).`,
 			},
 			"scopes": schema.ListAttribute{
+				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `Requested OAuth scopes. Defaults to the full set of template default scopes when omitted. Each scope must be a valid RFC 6749 §3.3 scope-token.`,

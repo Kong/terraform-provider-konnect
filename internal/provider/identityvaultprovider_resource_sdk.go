@@ -31,13 +31,9 @@ func (r *IdentityVaultProviderResourceModel) RefreshFromSharedVaultProvider(ctx 
 		r.PkceEnabled = types.BoolValue(resp.PkceEnabled)
 		r.RefreshBufferSeconds = types.Int64Value(resp.RefreshBufferSeconds)
 		r.RegistrationEndpointEffective = types.StringPointerValue(resp.RegistrationEndpointEffective)
-		if resp.Scopes != nil {
-			r.Scopes = make([]types.String, 0, len(resp.Scopes))
-			for _, v := range resp.Scopes {
-				r.Scopes = append(r.Scopes, types.StringValue(v))
-			}
-		} else {
-			r.Scopes = nil
+		r.Scopes = make([]types.String, 0, len(resp.Scopes))
+		for _, v := range resp.Scopes {
+			r.Scopes = append(r.Scopes, types.StringValue(v))
 		}
 		r.TemplateName = types.StringValue(string(resp.TemplateName))
 		r.TokenEndpointEffective = types.StringPointerValue(resp.TokenEndpointEffective)
@@ -170,12 +166,9 @@ func (r *IdentityVaultProviderResourceModel) ToSharedCreateVaultProviderBody(ctx
 	} else {
 		dcrEnabled = nil
 	}
-	var scopes []string
-	if r.Scopes != nil {
-		scopes = make([]string, 0, len(r.Scopes))
-		for scopesIndex := range r.Scopes {
-			scopes = append(scopes, r.Scopes[scopesIndex].ValueString())
-		}
+	scopes := make([]string, 0, len(r.Scopes))
+	for scopesIndex := range r.Scopes {
+		scopes = append(scopes, r.Scopes[scopesIndex].ValueString())
 	}
 	credentialType := new(string)
 	if !r.CredentialType.IsUnknown() && !r.CredentialType.IsNull() {
@@ -250,12 +243,9 @@ func (r *IdentityVaultProviderResourceModel) ToSharedReplaceVaultProviderBody(ct
 	} else {
 		authorizationEndpoint = nil
 	}
-	var scopes []string
-	if r.Scopes != nil {
-		scopes = make([]string, 0, len(r.Scopes))
-		for scopesIndex := range r.Scopes {
-			scopes = append(scopes, r.Scopes[scopesIndex].ValueString())
-		}
+	scopes := make([]string, 0, len(r.Scopes))
+	for scopesIndex := range r.Scopes {
+		scopes = append(scopes, r.Scopes[scopesIndex].ValueString())
 	}
 	credentialType := new(string)
 	if !r.CredentialType.IsUnknown() && !r.CredentialType.IsNull() {

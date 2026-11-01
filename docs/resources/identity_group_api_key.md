@@ -15,17 +15,14 @@ IdentityGroupAPIKey Resource
 ```terraform
 resource "konnect_identity_group_api_key" "my_identitygroupapikey" {
   directory_id = "43362763-22ea-4f72-a11c-338abb6a15f8"
+  expires_at   = "2022-11-04T20:10:06.927Z"
   group_id     = "6a68841d-e321-49ad-bef4-e849bcf5b944"
-  imported = {
-    name   = "...my_name..."
-    secret = "...my_secret..."
+  managed_by = {
+    key = "value"
   }
-  v1 = {
-    managed_by = {
-      key = "value"
-    }
-    name = "...my_name..."
-  }
+  name   = "...my_name..."
+  secret = "...my_secret..."
+  type   = "v1"
 }
 ```
 
@@ -36,49 +33,22 @@ resource "konnect_identity_group_api_key" "my_identitygroupapikey" {
 
 - `directory_id` (String) ID of the directory
 - `group_id` (String) Unique identifier of the group (UUID format)
+- `type` (String) possible known values include one of ["imported", "v1"]; Requires replacement if changed.
 
 ### Optional
 
-- `imported` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--imported))
-- `v1` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--v1))
+- `expires_at` (String) An ISO-8601 timestamp representation of entity expiration date.
+- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+Keys must be 1–63 characters long and start with an alphanumeric character.
+- `name` (String) Human-readable name of the API key. `null` if the key has no name.
+- `secret` (String) Required if `type` is `imported`. Requires replacement if changed.
 
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `expires_at` (String) An ISO-8601 timestamp representation of entity expiration date.
 - `id` (String) Contains a unique identifier used for this resource.
-- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
-
-Set a key's value to `null` to remove it.
-
-Keys must be 1–63 characters long and start with an alphanumeric character.
-- `name` (String) Human-readable name of the API key. `null` if the key has no name.
-- `secret` (String) The API key secret value. This is only returned when the key is first created
-and cannot be retrieved again later.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--imported"></a>
-### Nested Schema for `imported`
-
-Required:
-
-- `secret` (String) Requires replacement if changed.
-
-Optional:
-
-- `name` (String) Human-readable name of the API key. `null` if the key has no name. Requires replacement if changed.
-
-
-<a id="nestedatt--v1"></a>
-### Nested Schema for `v1`
-
-Optional:
-
-- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
-
-Keys must be 1–63 characters long and start with an alphanumeric character.
-Requires replacement if changed.
-- `name` (String) Human-readable name of the API key. `null` if the key has no name. Requires replacement if changed.
 
 ## Import
 

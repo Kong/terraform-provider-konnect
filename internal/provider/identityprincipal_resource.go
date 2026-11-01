@@ -128,6 +128,7 @@ func (r *IdentityPrincipalResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"metadata": schema.StringAttribute{
 				CustomType:  jsontypes.NormalizedType{},
+				Computed:    true,
 				Optional:    true,
 				Description: `A map of metadata key-value pairs associated with this entity. This metadata is passed to the data plane to enrich the execution context. During authentication, metadata is inherited and overridden in a hierarchical manner: Directory metadata is inherited by Principals, which is then inherited and overridden by Credentials. Parsed as JSON.`,
 			},

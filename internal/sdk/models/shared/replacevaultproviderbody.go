@@ -12,21 +12,21 @@ type ReplaceVaultProviderBody struct {
 	//
 	TemplateName ProviderTemplateName `json:"template_name"`
 	Name         string               `json:"name"`
-	ClientID     *string              `default:"null" json:"client_id"`
+	ClientID     *string              `json:"client_id,omitempty"`
 	// OAuth client secret. Write-only; never returned in read APIs.
-	ClientSecret *string `default:"null" json:"client_secret"`
+	ClientSecret *string `json:"client_secret,omitempty"`
 	// Defines if the provider is enabled or not
 	Enabled *bool `json:"enabled,omitempty"`
 	// Overrides the template token endpoint.
-	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	TokenEndpoint *string `json:"token_endpoint,omitempty"`
 	// Overrides the template authorization endpoint.
-	AuthorizationEndpoint *string `default:"null" json:"authorization_endpoint"`
+	AuthorizationEndpoint *string `json:"authorization_endpoint,omitempty"`
 	// Requested OAuth scopes. Defaults to the full set of template default scopes when omitted. Each scope must be a valid RFC 6749 §3.3 scope-token.
-	Scopes         []string `json:"scopes"`
+	Scopes         []string `json:"scopes,omitempty"`
 	CredentialType *string  `default:"user" json:"credential_type"`
 	// Use PKCE (S256) on the authorization-code flow. Templates whose authorization server mandates PKCE (pkce_required, e.g. datadog) imply true when this field is omitted; setting it explicitly to false is rejected with 400.
 	//
-	PkceEnabled          *bool  `default:"null" json:"pkce_enabled"`
+	PkceEnabled          *bool  `json:"pkce_enabled,omitempty"`
 	RefreshBufferSeconds *int64 `default:"0" json:"refresh_buffer_seconds"`
 }
 

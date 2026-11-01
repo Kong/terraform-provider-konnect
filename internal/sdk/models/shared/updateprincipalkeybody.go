@@ -4,6 +4,7 @@ package shared
 
 import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+	"time"
 )
 
 // UpdatePrincipalKeyBody - Request body for updating an API key's metadata
@@ -11,6 +12,8 @@ type UpdatePrincipalKeyBody struct {
 	// Human-readable name of the API key. `null` if the key has no name.
 	//
 	Name *string `default:"null" json:"name"`
+	// An ISO-8601 timestamp representation of entity expiration date.
+	ExpiresAt *time.Time `default:"null" json:"expires_at"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
 	// Set a key's value to `null` to remove it.
@@ -36,6 +39,13 @@ func (u *UpdatePrincipalKeyBody) GetName() *string {
 		return nil
 	}
 	return u.Name
+}
+
+func (u *UpdatePrincipalKeyBody) GetExpiresAt() *time.Time {
+	if u == nil {
+		return nil
+	}
+	return u.ExpiresAt
 }
 
 func (u *UpdatePrincipalKeyBody) GetManagedBy() map[string]*string {

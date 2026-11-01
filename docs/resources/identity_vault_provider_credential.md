@@ -39,45 +39,10 @@ resource "konnect_identity_vault_provider_credential" "my_identityvaultproviderc
 ### Read-Only
 
 - `created_at` (String)
-- `id` (String) The ID of this resource.
-- `shared_obj` (Attributes) (see [below for nested schema](#nestedatt--shared_obj))
-- `status` (String) "pending" until admin enrollment completes; "active" once the secret exists.
-- `updated_at` (String)
-- `user` (Attributes) (see [below for nested schema](#nestedatt--user))
-
-<a id="nestedatt--shared_obj"></a>
-### Nested Schema for `shared_obj`
-
-Read-Only:
-
-- `created_at` (String)
 - `enrollment_url` (String) URL to complete OAuth consent. Fresh on every get-by-id call; set on create for a shared authorization_code provider. Omitted from list responses.
-- `id` (String)
-- `priority` (Number)
-- `selector` (String)
+- `id` (String) The ID of this resource.
 - `status` (String) "pending" until admin enrollment completes; "active" once the secret exists.
 - `updated_at` (String)
-
-
-<a id="nestedatt--user"></a>
-### Nested Schema for `user`
-
-Read-Only:
-
-- `created_at` (String)
-- `expires_at` (String) Expiry of the current access token, if any.
-- `id` (String)
-- `principal` (Attributes) (see [below for nested schema](#nestedatt--user--principal))
-- `status` (String) A user credential exists only once authorization has completed, so this is always "active".
-- `updated_at` (String)
-
-<a id="nestedatt--user--principal"></a>
-### Nested Schema for `user.principal`
-
-Read-Only:
-
-- `display_name` (String) The principal's display name.
-- `id` (String) The principal's ID.
 
 ## Import
 

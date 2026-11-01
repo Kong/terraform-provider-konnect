@@ -53,14 +53,6 @@ func (c *CreateGroupKeyRequest) GetCreatePrincipalKeyBody() shared.CreatePrincip
 	return c.CreatePrincipalKeyBody
 }
 
-func (c *CreateGroupKeyRequest) GetCreatePrincipalKeyBodyImported() *shared.CreatePrincipalKeyBodyImported {
-	return c.GetCreatePrincipalKeyBody().CreatePrincipalKeyBodyImported
-}
-
-func (c *CreateGroupKeyRequest) GetCreatePrincipalKeyBodyV1() *shared.CreatePrincipalKeyBodyv1 {
-	return c.GetCreatePrincipalKeyBody().CreatePrincipalKeyBodyv1
-}
-
 type CreateGroupKeyResponse struct {
 	// HTTP response content type for this operation
 	ContentType string

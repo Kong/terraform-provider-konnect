@@ -13,13 +13,13 @@ type TrustedIdpJitMapping struct {
 	Metadata map[string]string `json:"metadata,omitempty"`
 	// Name of the claim whose string value is attached to the provisioned principal as a custom identity keyed `email`. When a principal already carries it, that principal adopts the looked-up identity instead of a new one being provisioned.
 	//
-	Email *string `default:"null" json:"email"`
+	Email *string `json:"email,omitempty"`
 	// Name of the claim carrying the names of the groups the provisioned principal joins — a string is one group, an array is many. Groups that do not exist yet are created. At most 100 groups per token.
 	//
-	Groups *string `default:"null" json:"groups"`
+	Groups *string `json:"groups,omitempty"`
 	// Name of the claim whose string value becomes the provisioned principal's display name. When absent from the token, the lookup's claim value is used instead.
 	//
-	DisplayName *string `default:"null" json:"display_name"`
+	DisplayName *string `json:"display_name,omitempty"`
 }
 
 func (t TrustedIdpJitMapping) MarshalJSON() ([]byte, error) {

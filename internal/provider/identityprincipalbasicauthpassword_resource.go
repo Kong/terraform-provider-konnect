@@ -17,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -70,8 +71,11 @@ func (r *IdentityPrincipalBasicAuthPasswordResource) Schema(ctx context.Context,
 				Description: `ID of the directory`,
 			},
 			"expires_at": schema.StringAttribute{
-				Computed:    true,
+				Optional:    true,
 				Description: `An ISO-8601 timestamp representation of entity expiration date.`,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

@@ -9,6 +9,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
+	"time"
 )
 
 func (r *IdentityGroupAPIKeyResourceModel) RefreshFromSharedKongPrincipalKey(ctx context.Context, resp *shared.KongPrincipalKey) diag.Diagnostics {
@@ -151,52 +152,38 @@ func (r *IdentityGroupAPIKeyResourceModel) ToOperationsUpdateGroupKeyRequest(ctx
 func (r *IdentityGroupAPIKeyResourceModel) ToSharedCreatePrincipalKeyBody(ctx context.Context) (*shared.CreatePrincipalKeyBody, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var out shared.CreatePrincipalKeyBody
-	var createPrincipalKeyBodyImported *shared.CreatePrincipalKeyBodyImported
-	if r.Imported != nil {
-		name := new(string)
-		if !r.Imported.Name.IsUnknown() && !r.Imported.Name.IsNull() {
-			*name = r.Imported.Name.ValueString()
-		} else {
-			name = nil
-		}
-		var secret string
-		secret = r.Imported.Secret.ValueString()
+	typeVar := shared.CreatePrincipalKeyBodyType(r.Type.ValueString())
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	secret := new(string)
+	if !r.Secret.IsUnknown() && !r.Secret.IsNull() {
+		*secret = r.Secret.ValueString()
+	} else {
+		secret = nil
+	}
+	expiresAt := new(time.Time)
+	if !r.ExpiresAt.IsUnknown() && !r.ExpiresAt.IsNull() {
+		*expiresAt, _ = time.Parse(time.RFC3339Nano, r.ExpiresAt.ValueString())
+	} else {
+		expiresAt = nil
+	}
+	managedBy := make(map[string]string)
+	for managedByKey := range r.ManagedBy {
+		var managedByInst string
+		managedByInst = r.ManagedBy[managedByKey].ValueString()
 
-		createPrincipalKeyBodyImported = &shared.CreatePrincipalKeyBodyImported{
-			Name:   name,
-			Secret: secret,
-		}
+		managedBy[managedByKey] = managedByInst
 	}
-	if createPrincipalKeyBodyImported != nil {
-		out = shared.CreatePrincipalKeyBody{
-			CreatePrincipalKeyBodyImported: createPrincipalKeyBodyImported,
-		}
-	}
-	var createPrincipalKeyBodyv1 *shared.CreatePrincipalKeyBodyv1
-	if r.V1 != nil {
-		name1 := new(string)
-		if !r.V1.Name.IsUnknown() && !r.V1.Name.IsNull() {
-			*name1 = r.V1.Name.ValueString()
-		} else {
-			name1 = nil
-		}
-		managedBy := make(map[string]string)
-		for managedByKey := range r.V1.ManagedBy {
-			var managedByInst string
-			managedByInst = r.V1.ManagedBy[managedByKey].ValueString()
-
-			managedBy[managedByKey] = managedByInst
-		}
-		createPrincipalKeyBodyv1 = &shared.CreatePrincipalKeyBodyv1{
-			Name:      name1,
-			ManagedBy: managedBy,
-		}
-	}
-	if createPrincipalKeyBodyv1 != nil {
-		out = shared.CreatePrincipalKeyBody{
-			CreatePrincipalKeyBodyv1: createPrincipalKeyBodyv1,
-		}
+	out := shared.CreatePrincipalKeyBody{
+		Type:      typeVar,
+		Name:      name,
+		Secret:    secret,
+		ExpiresAt: expiresAt,
+		ManagedBy: managedBy,
 	}
 
 	return &out, diags
@@ -211,6 +198,12 @@ func (r *IdentityGroupAPIKeyResourceModel) ToSharedUpdatePrincipalKeyBody(ctx co
 	} else {
 		name = nil
 	}
+	expiresAt := new(time.Time)
+	if !r.ExpiresAt.IsUnknown() && !r.ExpiresAt.IsNull() {
+		*expiresAt, _ = time.Parse(time.RFC3339Nano, r.ExpiresAt.ValueString())
+	} else {
+		expiresAt = nil
+	}
 	managedBy := make(map[string]*string)
 	for managedByKey := range r.ManagedBy {
 		managedByInst := new(string)
@@ -223,6 +216,7 @@ func (r *IdentityGroupAPIKeyResourceModel) ToSharedUpdatePrincipalKeyBody(ctx co
 	}
 	out := shared.UpdatePrincipalKeyBody{
 		Name:      name,
+		ExpiresAt: expiresAt,
 		ManagedBy: managedBy,
 	}
 

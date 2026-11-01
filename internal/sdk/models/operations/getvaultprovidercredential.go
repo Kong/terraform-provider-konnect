@@ -109,20 +109,6 @@ func (g *GetVaultProviderCredentialResponse) GetVaultProviderCredential() *share
 	return g.VaultProviderCredential
 }
 
-func (g *GetVaultProviderCredentialResponse) GetVaultProviderCredentialShared() *shared.VaultProviderCredentialShared {
-	if v := g.GetVaultProviderCredential(); v != nil {
-		return v.VaultProviderCredentialShared
-	}
-	return nil
-}
-
-func (g *GetVaultProviderCredentialResponse) GetVaultProviderCredentialUser() *shared.VaultProviderCredentialUser {
-	if v := g.GetVaultProviderCredential(); v != nil {
-		return v.VaultProviderCredentialUser
-	}
-	return nil
-}
-
 func (g *GetVaultProviderCredentialResponse) GetUnauthorizedError() *shared.UnauthorizedError {
 	if g == nil {
 		return nil

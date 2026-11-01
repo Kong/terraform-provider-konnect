@@ -9,6 +9,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
+	"time"
 )
 
 func (r *IdentityPrincipalBasicAuthPasswordResourceModel) RefreshFromSharedKongPassword(ctx context.Context, resp *shared.KongPassword) diag.Diagnostics {
@@ -171,6 +172,12 @@ func (r *IdentityPrincipalBasicAuthPasswordResourceModel) ToSharedCreatePassword
 	} else {
 		secret = nil
 	}
+	expiresAt := new(time.Time)
+	if !r.ExpiresAt.IsUnknown() && !r.ExpiresAt.IsNull() {
+		*expiresAt, _ = time.Parse(time.RFC3339Nano, r.ExpiresAt.ValueString())
+	} else {
+		expiresAt = nil
+	}
 	managedBy := make(map[string]string)
 	for managedByKey := range r.ManagedBy {
 		var managedByInst string
@@ -180,6 +187,7 @@ func (r *IdentityPrincipalBasicAuthPasswordResourceModel) ToSharedCreatePassword
 	}
 	out := shared.CreatePasswordBody{
 		Secret:    secret,
+		ExpiresAt: expiresAt,
 		ManagedBy: managedBy,
 	}
 
@@ -192,6 +200,12 @@ func (r *IdentityPrincipalBasicAuthPasswordResourceModel) ToSharedReplacePasswor
 	var secret string
 	secret = r.Secret.ValueString()
 
+	expiresAt := new(time.Time)
+	if !r.ExpiresAt.IsUnknown() && !r.ExpiresAt.IsNull() {
+		*expiresAt, _ = time.Parse(time.RFC3339Nano, r.ExpiresAt.ValueString())
+	} else {
+		expiresAt = nil
+	}
 	managedBy := make(map[string]string)
 	for managedByKey := range r.ManagedBy {
 		var managedByInst string
@@ -201,6 +215,7 @@ func (r *IdentityPrincipalBasicAuthPasswordResourceModel) ToSharedReplacePasswor
 	}
 	out := shared.ReplacePasswordBody{
 		Secret:    secret,
+		ExpiresAt: expiresAt,
 		ManagedBy: managedBy,
 	}
 

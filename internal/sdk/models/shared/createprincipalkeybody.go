@@ -3,94 +3,9 @@
 package shared
 
 import (
-	"encoding/json"
-	"errors"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+	"time"
 )
-
-type CreatePrincipalKeyBodyv1 struct {
-	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_ string `const:"v1" json:"type"`
-	// Human-readable name of the API key. `null` if the key has no name.
-	//
-	Name *string `default:"null" json:"name"`
-	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
-	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
-	//
-	ManagedBy map[string]string `json:"managed_by,omitempty"`
-}
-
-func (c CreatePrincipalKeyBodyv1) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreatePrincipalKeyBodyv1) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"type"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CreatePrincipalKeyBodyv1) GetType() string {
-	return "v1"
-}
-
-func (c *CreatePrincipalKeyBodyv1) GetName() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Name
-}
-
-func (c *CreatePrincipalKeyBodyv1) GetManagedBy() map[string]string {
-	if c == nil {
-		return nil
-	}
-	return c.ManagedBy
-}
-
-// #region class-body-createprincipalkeybodyv1
-// #endregion class-body-createprincipalkeybodyv1
-
-type CreatePrincipalKeyBodyImported struct {
-	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_ string `const:"imported" json:"type"`
-	// Human-readable name of the API key. `null` if the key has no name.
-	//
-	Name   *string `default:"null" json:"name"`
-	Secret string  `json:"secret"`
-}
-
-func (c CreatePrincipalKeyBodyImported) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreatePrincipalKeyBodyImported) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"type", "secret"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CreatePrincipalKeyBodyImported) GetType() string {
-	return "imported"
-}
-
-func (c *CreatePrincipalKeyBodyImported) GetName() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Name
-}
-
-func (c *CreatePrincipalKeyBodyImported) GetSecret() string {
-	if c == nil {
-		return ""
-	}
-	return c.Secret
-}
 
 type CreatePrincipalKeyBodyType string
 
@@ -99,82 +14,80 @@ const (
 	CreatePrincipalKeyBodyTypeV1       CreatePrincipalKeyBodyType = "v1"
 )
 
+func (e CreatePrincipalKeyBodyType) ToPointer() *CreatePrincipalKeyBodyType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CreatePrincipalKeyBodyType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "imported", "v1":
+			return true
+		}
+	}
+	return false
+}
+
 // CreatePrincipalKeyBody - Key to be created
 type CreatePrincipalKeyBody struct {
-	CreatePrincipalKeyBodyImported *CreatePrincipalKeyBodyImported `queryParam:"inline" union:"member"`
-	CreatePrincipalKeyBodyv1       *CreatePrincipalKeyBodyv1       `queryParam:"inline" union:"member"`
-
-	Type CreatePrincipalKeyBodyType
+	Type CreatePrincipalKeyBodyType `json:"type"`
+	// Human-readable name of the API key. `null` if the key has no name.
+	//
+	Name *string `default:"null" json:"name"`
+	// Required if `type` is `imported`.
+	Secret *string `json:"secret,omitempty"`
+	// An ISO-8601 timestamp representation of entity expiration date.
+	ExpiresAt *time.Time `default:"null" json:"expires_at"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }
 
-func CreateCreatePrincipalKeyBodyImported(imported CreatePrincipalKeyBodyImported) CreatePrincipalKeyBody {
-	typ := CreatePrincipalKeyBodyTypeImported
-
-	return CreatePrincipalKeyBody{
-		CreatePrincipalKeyBodyImported: &imported,
-		Type:                           typ,
-	}
+func (c CreatePrincipalKeyBody) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
 }
 
-func CreateCreatePrincipalKeyBodyV1(v1 CreatePrincipalKeyBodyv1) CreatePrincipalKeyBody {
-	typ := CreatePrincipalKeyBodyTypeV1
-
-	return CreatePrincipalKeyBody{
-		CreatePrincipalKeyBodyv1: &v1,
-		Type:                     typ,
+func (c *CreatePrincipalKeyBody) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"type"}); err != nil {
+		return err
 	}
+	return nil
 }
 
-func (u *CreatePrincipalKeyBody) UnmarshalJSON(data []byte) (err error) {
-	previous := *u
-	*u = CreatePrincipalKeyBody{}
-	defer func() {
-		if err != nil {
-			*u = previous
-		}
-	}()
-
-	type discriminator struct {
-		Type string `json:"type"`
+func (c *CreatePrincipalKeyBody) GetType() CreatePrincipalKeyBodyType {
+	if c == nil {
+		return CreatePrincipalKeyBodyType("")
 	}
+	return c.Type
+}
 
-	dis := new(discriminator)
-	if err := json.Unmarshal(data, &dis); err != nil {
-		return fmt.Errorf("could not unmarshal discriminator: %w", err)
-	}
-
-	switch dis.Type {
-	case "imported":
-		createPrincipalKeyBodyImported := new(CreatePrincipalKeyBodyImported)
-		if err := utils.UnmarshalJSON(data, &createPrincipalKeyBodyImported, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == imported) type CreatePrincipalKeyBodyImported within CreatePrincipalKeyBody: %w", string(data), err)
-		}
-
-		u.CreatePrincipalKeyBodyImported = createPrincipalKeyBodyImported
-		u.Type = CreatePrincipalKeyBodyTypeImported
-		return nil
-	case "v1":
-		createPrincipalKeyBodyv1 := new(CreatePrincipalKeyBodyv1)
-		if err := utils.UnmarshalJSON(data, &createPrincipalKeyBodyv1, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == v1) type CreatePrincipalKeyBodyv1 within CreatePrincipalKeyBody: %w", string(data), err)
-		}
-
-		u.CreatePrincipalKeyBodyv1 = createPrincipalKeyBodyv1
-		u.Type = CreatePrincipalKeyBodyTypeV1
+func (c *CreatePrincipalKeyBody) GetName() *string {
+	if c == nil {
 		return nil
 	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreatePrincipalKeyBody", string(data))
+	return c.Name
 }
 
-func (u CreatePrincipalKeyBody) MarshalJSON() ([]byte, error) {
-	if u.CreatePrincipalKeyBodyImported != nil {
-		return utils.MarshalJSON(u.CreatePrincipalKeyBodyImported, "", true)
+func (c *CreatePrincipalKeyBody) GetSecret() *string {
+	if c == nil {
+		return nil
 	}
+	return c.Secret
+}
 
-	if u.CreatePrincipalKeyBodyv1 != nil {
-		return utils.MarshalJSON(u.CreatePrincipalKeyBodyv1, "", true)
+func (c *CreatePrincipalKeyBody) GetExpiresAt() *time.Time {
+	if c == nil {
+		return nil
 	}
+	return c.ExpiresAt
+}
 
-	return nil, errors.New("could not marshal union type CreatePrincipalKeyBody: all fields are null")
+func (c *CreatePrincipalKeyBody) GetManagedBy() map[string]string {
+	if c == nil {
+		return nil
+	}
+	return c.ManagedBy
 }

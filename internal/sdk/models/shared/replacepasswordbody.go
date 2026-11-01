@@ -4,11 +4,14 @@ package shared
 
 import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+	"time"
 )
 
 // ReplacePasswordBody - Request body for replacing a password
 type ReplacePasswordBody struct {
 	Secret string `json:"secret"`
+	// An ISO-8601 timestamp representation of entity expiration date.
+	ExpiresAt *time.Time `default:"null" json:"expires_at"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
@@ -32,6 +35,13 @@ func (r *ReplacePasswordBody) GetSecret() string {
 		return ""
 	}
 	return r.Secret
+}
+
+func (r *ReplacePasswordBody) GetExpiresAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.ExpiresAt
 }
 
 func (r *ReplacePasswordBody) GetManagedBy() map[string]string {

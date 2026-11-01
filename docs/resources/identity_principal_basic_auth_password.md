@@ -16,6 +16,7 @@ IdentityPrincipalBasicAuthPassword Resource
 resource "konnect_identity_principal_basic_auth_password" "my_identityprincipalbasicauthpassword" {
   basic_auth_id = "d41f4f7a-b826-449f-833c-9e1c1604b8d3"
   directory_id  = "862d4d9d-af24-4ca2-ade8-ff5f18badf4d"
+  expires_at    = "2022-11-04T20:10:06.927Z"
   managed_by = {
     key = "value"
   }
@@ -35,6 +36,7 @@ resource "konnect_identity_principal_basic_auth_password" "my_identityprincipalb
 
 ### Optional
 
+- `expires_at` (String) An ISO-8601 timestamp representation of entity expiration date.
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
@@ -44,7 +46,6 @@ and cannot be retrieved again later.
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `expires_at` (String) An ISO-8601 timestamp representation of entity expiration date.
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 

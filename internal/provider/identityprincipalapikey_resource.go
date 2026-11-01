@@ -7,21 +7,18 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -40,17 +37,16 @@ type IdentityPrincipalAPIKeyResource struct {
 
 // IdentityPrincipalAPIKeyResourceModel describes the resource data model.
 type IdentityPrincipalAPIKeyResourceModel struct {
-	CreatedAt   types.String                            `tfsdk:"created_at"`
-	DirectoryID types.String                            `tfsdk:"directory_id"`
-	ExpiresAt   types.String                            `tfsdk:"expires_at"`
-	ID          types.String                            `tfsdk:"id"`
-	Imported    *tfTypes.CreatePrincipalKeyBodyImported `queryParam:"inline" tfsdk:"imported"`
-	ManagedBy   map[string]types.String                 `tfsdk:"managed_by"`
-	Name        types.String                            `tfsdk:"name"`
-	PrincipalID types.String                            `tfsdk:"principal_id"`
-	Secret      types.String                            `tfsdk:"secret"`
-	UpdatedAt   types.String                            `tfsdk:"updated_at"`
-	V1          *tfTypes.CreatePrincipalKeyBodyv1       `queryParam:"inline" tfsdk:"v1"`
+	CreatedAt   types.String            `tfsdk:"created_at"`
+	DirectoryID types.String            `tfsdk:"directory_id"`
+	ExpiresAt   types.String            `tfsdk:"expires_at"`
+	ID          types.String            `tfsdk:"id"`
+	ManagedBy   map[string]types.String `tfsdk:"managed_by"`
+	Name        types.String            `tfsdk:"name"`
+	PrincipalID types.String            `tfsdk:"principal_id"`
+	Secret      types.String            `tfsdk:"secret"`
+	Type        types.String            `tfsdk:"type"`
+	UpdatedAt   types.String            `tfsdk:"updated_at"`
 }
 
 func (r *IdentityPrincipalAPIKeyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -73,8 +69,11 @@ func (r *IdentityPrincipalAPIKeyResource) Schema(ctx context.Context, req resour
 				Description: `ID of the directory`,
 			},
 			"expires_at": schema.StringAttribute{
-				Computed:    true,
+				Optional:    true,
 				Description: `An ISO-8601 timestamp representation of entity expiration date.`,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -83,61 +82,41 @@ func (r *IdentityPrincipalAPIKeyResource) Schema(ctx context.Context, req resour
 				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
-			"imported": schema.SingleNestedAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Attributes: map[string]schema.Attribute{
-					"name": schema.StringAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Human-readable name of the API key. ` + "`" + `null` + "`" + ` if the key has no name. Requires replacement if changed.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthAtMost(255),
-						},
-					},
-					"secret": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Requires replacement if changed.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthBetween(1, 255),
-						},
-					},
-				},
-				Description: `Requires replacement if changed.`,
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("v1"),
-					}...),
-				},
-			},
 			"managed_by": schema.MapAttribute{
 				Computed:    true,
+				Optional:    true,
 				ElementType: types.StringType,
 				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
-					`` + "\n" +
-					`Set a key's value to ` + "`" + `null` + "`" + ` to remove it.` + "\n" +
 					`` + "\n" +
 					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
+				Optional:    true,
 				Description: `Human-readable name of the API key. ` + "`" + `null` + "`" + ` if the key has no name.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(255),
+				},
 			},
 			"principal_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Unique identifier of the principal (UUID format)`,
 			},
 			"secret": schema.StringAttribute{
-				Computed: true,
-				MarkdownDescription: `The API key secret value. This is only returned when the key is first created` + "\n" +
-					`and cannot be retrieved again later.`,
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Required if ` + "`" + `type` + "`" + ` is ` + "`" + `imported` + "`" + `. Requires replacement if changed.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthBetween(1, 255),
+				},
+			},
+			"type": schema.StringAttribute{
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `possible known values include one of ["imported", "v1"]; Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -145,41 +124,6 @@ func (r *IdentityPrincipalAPIKeyResource) Schema(ctx context.Context, req resour
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-			},
-			"v1": schema.SingleNestedAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Attributes: map[string]schema.Attribute{
-					"managed_by": schema.MapAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.Map{
-							mapplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						ElementType: types.StringType,
-						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
-							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.` + "\n" +
-							`Requires replacement if changed.`,
-					},
-					"name": schema.StringAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Human-readable name of the API key. ` + "`" + `null` + "`" + ` if the key has no name. Requires replacement if changed.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthAtMost(255),
-						},
-					},
-				},
-				Description: `Requires replacement if changed.`,
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("imported"),
-					}...),
-				},
 			},
 		},
 	}

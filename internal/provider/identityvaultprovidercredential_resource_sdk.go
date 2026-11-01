@@ -7,7 +7,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
-	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -16,35 +15,13 @@ func (r *IdentityVaultProviderCredentialResourceModel) RefreshFromSharedVaultPro
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.VaultProviderCredentialShared != nil {
-			r.SharedObj = &tfTypes.VaultProviderCredentialShared{}
-			r.SharedObj.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.VaultProviderCredentialShared.CreatedAt))
-			r.CreatedAt = r.SharedObj.CreatedAt
-			r.SharedObj.EnrollmentURL = types.StringPointerValue(resp.VaultProviderCredentialShared.EnrollmentURL)
-			r.SharedObj.ID = types.StringPointerValue(resp.VaultProviderCredentialShared.ID)
-			r.ID = r.SharedObj.ID
-			r.SharedObj.Priority = types.Int64PointerValue(resp.VaultProviderCredentialShared.Priority)
-			r.SharedObj.Selector = types.StringPointerValue(resp.VaultProviderCredentialShared.Selector)
-			r.SharedObj.Status = types.StringValue(string(resp.VaultProviderCredentialShared.Status))
-			r.Status = r.SharedObj.Status
-			r.SharedObj.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.VaultProviderCredentialShared.UpdatedAt))
-			r.UpdatedAt = r.SharedObj.UpdatedAt
-		}
-		if resp.VaultProviderCredentialUser != nil {
-			r.User = &tfTypes.VaultProviderCredentialUser{}
-			r.User.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.VaultProviderCredentialUser.CreatedAt))
-			r.CreatedAt = r.User.CreatedAt
-			r.User.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.VaultProviderCredentialUser.ExpiresAt))
-			r.User.ID = types.StringValue(resp.VaultProviderCredentialUser.ID)
-			r.ID = r.User.ID
-			r.User.Principal = &tfTypes.Principal{}
-			r.User.Principal.DisplayName = types.StringValue(resp.VaultProviderCredentialUser.Principal.DisplayName)
-			r.User.Principal.ID = types.StringValue(resp.VaultProviderCredentialUser.Principal.ID)
-			r.User.Status = types.StringValue(string(resp.VaultProviderCredentialUser.Status))
-			r.Status = r.User.Status
-			r.User.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.VaultProviderCredentialUser.UpdatedAt))
-			r.UpdatedAt = r.User.UpdatedAt
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.EnrollmentURL = types.StringPointerValue(resp.EnrollmentURL)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Priority = types.Int64PointerValue(resp.Priority)
+		r.Selector = types.StringPointerValue(resp.Selector)
+		r.Status = types.StringValue(string(resp.Status))
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
 
 	return diags

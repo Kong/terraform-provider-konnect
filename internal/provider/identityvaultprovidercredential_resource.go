@@ -16,8 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
-	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
-	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
 
@@ -37,17 +35,16 @@ type IdentityVaultProviderCredentialResource struct {
 
 // IdentityVaultProviderCredentialResourceModel describes the resource data model.
 type IdentityVaultProviderCredentialResourceModel struct {
-	CreatedAt   types.String                           `tfsdk:"created_at"`
-	DirectoryID types.String                           `tfsdk:"directory_id"`
-	ID          types.String                           `tfsdk:"id"`
-	Priority    types.Int64                            `tfsdk:"priority"`
-	ProviderID  types.String                           `tfsdk:"provider_id"`
-	Secret      types.String                           `tfsdk:"secret"`
-	Selector    types.String                           `tfsdk:"selector"`
-	SharedObj   *tfTypes.VaultProviderCredentialShared `queryParam:"inline" tfsdk:"shared_obj"`
-	Status      types.String                           `tfsdk:"status"`
-	UpdatedAt   types.String                           `tfsdk:"updated_at"`
-	User        *tfTypes.VaultProviderCredentialUser   `queryParam:"inline" tfsdk:"user"`
+	CreatedAt     types.String `tfsdk:"created_at"`
+	DirectoryID   types.String `tfsdk:"directory_id"`
+	EnrollmentURL types.String `tfsdk:"enrollment_url"`
+	ID            types.String `tfsdk:"id"`
+	Priority      types.Int64  `tfsdk:"priority"`
+	ProviderID    types.String `tfsdk:"provider_id"`
+	Secret        types.String `tfsdk:"secret"`
+	Selector      types.String `tfsdk:"selector"`
+	Status        types.String `tfsdk:"status"`
+	UpdatedAt     types.String `tfsdk:"updated_at"`
 }
 
 func (r *IdentityVaultProviderCredentialResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,21 +57,23 @@ func (r *IdentityVaultProviderCredentialResource) Schema(ctx context.Context, re
 		Attributes: map[string]schema.Attribute{
 			"created_at": schema.StringAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("shared"), FieldPath: path.Root("shared").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("user"), FieldPath: path.Root("user").AtName("created_at")}}),
-				},
 			},
 			"directory_id": schema.StringAttribute{
 				Required:    true,
 				Description: `ID of the directory`,
 			},
+			"enrollment_url": schema.StringAttribute{
+				Computed:    true,
+				Description: `URL to complete OAuth consent. Fresh on every get-by-id call; set on create for a shared authorization_code provider. Omitted from list responses.`,
+			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("shared"), FieldPath: path.Root("shared").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("user"), FieldPath: path.Root("user").AtName("id")}}),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 			},
 			"priority": schema.Int64Attribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `Order in which this credential is considered, lowest first. Required with a selector, and must be omitted without one.`,
 				Validators: []validator.Int64{
@@ -90,84 +89,16 @@ func (r *IdentityVaultProviderCredentialResource) Schema(ctx context.Context, re
 				Description: `Pre-issued static credential (API key, PAT, etc.). Stored encrypted, never returned in read APIs.`,
 			},
 			"selector": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `CEL expression deciding which callers this credential applies to. Omit to make it the provider's default, which applies to every caller and is considered after all the others.`,
 			},
-			"shared_obj": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"created_at": schema.StringAttribute{
-						Computed: true,
-					},
-					"enrollment_url": schema.StringAttribute{
-						Computed:    true,
-						Description: `URL to complete OAuth consent. Fresh on every get-by-id call; set on create for a shared authorization_code provider. Omitted from list responses.`,
-					},
-					"id": schema.StringAttribute{
-						Computed: true,
-					},
-					"priority": schema.Int64Attribute{
-						Computed: true,
-					},
-					"selector": schema.StringAttribute{
-						Computed: true,
-					},
-					"status": schema.StringAttribute{
-						Computed:    true,
-						Description: `"pending" until admin enrollment completes; "active" once the secret exists.`,
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-					},
-				},
-			},
 			"status": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("shared"), FieldPath: path.Root("shared").AtName("status")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("user"), FieldPath: path.Root("user").AtName("status")}}),
-				},
+				Computed:    true,
 				Description: `"pending" until admin enrollment completes; "active" once the secret exists.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("shared"), FieldPath: path.Root("shared").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("user"), FieldPath: path.Root("user").AtName("updated_at")}}),
-				},
-			},
-			"user": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"created_at": schema.StringAttribute{
-						Computed: true,
-					},
-					"expires_at": schema.StringAttribute{
-						Computed:    true,
-						Description: `Expiry of the current access token, if any.`,
-					},
-					"id": schema.StringAttribute{
-						Computed: true,
-					},
-					"principal": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"display_name": schema.StringAttribute{
-								Computed:    true,
-								Description: `The principal's display name.`,
-							},
-							"id": schema.StringAttribute{
-								Computed:    true,
-								Description: `The principal's ID.`,
-							},
-						},
-					},
-					"status": schema.StringAttribute{
-						Computed:    true,
-						Description: `A user credential exists only once authorization has completed, so this is always "active".`,
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-					},
-				},
 			},
 		},
 	}

@@ -3,95 +3,108 @@
 package shared
 
 import (
-	"encoding/json"
-	"errors"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+	"time"
 )
 
-type VaultProviderCredentialType string
+// VaultProviderCredentialStatus - "pending" until admin enrollment completes; "active" once the secret exists.
+type VaultProviderCredentialStatus string
 
 const (
-	VaultProviderCredentialTypeShared VaultProviderCredentialType = "shared"
-	VaultProviderCredentialTypeUser   VaultProviderCredentialType = "user"
+	VaultProviderCredentialStatusPending VaultProviderCredentialStatus = "pending"
+	VaultProviderCredentialStatusActive  VaultProviderCredentialStatus = "active"
 )
 
-// VaultProviderCredential - A provider's shared secret, or one principal's authorization of the provider, indicated by credential_type. Credential values are never returned.
+func (e VaultProviderCredentialStatus) ToPointer() *VaultProviderCredentialStatus {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *VaultProviderCredentialStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "pending", "active":
+			return true
+		}
+	}
+	return false
+}
+
+// VaultProviderCredential - Shared credential metadata (never includes the value)
 type VaultProviderCredential struct {
-	VaultProviderCredentialShared *VaultProviderCredentialShared `queryParam:"inline" union:"member"`
-	VaultProviderCredentialUser   *VaultProviderCredentialUser   `queryParam:"inline" union:"member"`
-
-	Type VaultProviderCredentialType
+	ID        *string    `json:"id,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	credentialType string  `const:"shared" json:"credential_type"`
+	Selector       *string `json:"selector,omitempty"`
+	Priority       *int64  `json:"priority,omitempty"`
+	// "pending" until admin enrollment completes; "active" once the secret exists.
+	Status VaultProviderCredentialStatus `json:"status"`
+	// URL to complete OAuth consent. Fresh on every get-by-id call; set on create for a shared authorization_code provider. Omitted from list responses.
+	EnrollmentURL *string `default:"null" json:"enrollment_url"`
 }
 
-func CreateVaultProviderCredentialShared(shared VaultProviderCredentialShared) VaultProviderCredential {
-	typ := VaultProviderCredentialTypeShared
-
-	return VaultProviderCredential{
-		VaultProviderCredentialShared: &shared,
-		Type:                          typ,
-	}
+func (v VaultProviderCredential) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
 }
 
-func CreateVaultProviderCredentialUser(user VaultProviderCredentialUser) VaultProviderCredential {
-	typ := VaultProviderCredentialTypeUser
-
-	return VaultProviderCredential{
-		VaultProviderCredentialUser: &user,
-		Type:                        typ,
+func (v *VaultProviderCredential) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"credential_type", "status"}); err != nil {
+		return err
 	}
+	return nil
 }
 
-func (u *VaultProviderCredential) UnmarshalJSON(data []byte) (err error) {
-	previous := *u
-	*u = VaultProviderCredential{}
-	defer func() {
-		if err != nil {
-			*u = previous
-		}
-	}()
-
-	type discriminator struct {
-		CredentialType string `json:"credential_type"`
-	}
-
-	dis := new(discriminator)
-	if err := json.Unmarshal(data, &dis); err != nil {
-		return fmt.Errorf("could not unmarshal discriminator: %w", err)
-	}
-
-	switch dis.CredentialType {
-	case "shared":
-		vaultProviderCredentialShared := new(VaultProviderCredentialShared)
-		if err := utils.UnmarshalJSON(data, &vaultProviderCredentialShared, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (CredentialType == shared) type VaultProviderCredentialShared within VaultProviderCredential: %w", string(data), err)
-		}
-
-		u.VaultProviderCredentialShared = vaultProviderCredentialShared
-		u.Type = VaultProviderCredentialTypeShared
-		return nil
-	case "user":
-		vaultProviderCredentialUser := new(VaultProviderCredentialUser)
-		if err := utils.UnmarshalJSON(data, &vaultProviderCredentialUser, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (CredentialType == user) type VaultProviderCredentialUser within VaultProviderCredential: %w", string(data), err)
-		}
-
-		u.VaultProviderCredentialUser = vaultProviderCredentialUser
-		u.Type = VaultProviderCredentialTypeUser
+func (v *VaultProviderCredential) GetID() *string {
+	if v == nil {
 		return nil
 	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for VaultProviderCredential", string(data))
+	return v.ID
 }
 
-func (u VaultProviderCredential) MarshalJSON() ([]byte, error) {
-	if u.VaultProviderCredentialShared != nil {
-		return utils.MarshalJSON(u.VaultProviderCredentialShared, "", true)
+func (v *VaultProviderCredential) GetCreatedAt() *time.Time {
+	if v == nil {
+		return nil
 	}
+	return v.CreatedAt
+}
 
-	if u.VaultProviderCredentialUser != nil {
-		return utils.MarshalJSON(u.VaultProviderCredentialUser, "", true)
+func (v *VaultProviderCredential) GetUpdatedAt() *time.Time {
+	if v == nil {
+		return nil
 	}
+	return v.UpdatedAt
+}
 
-	return nil, errors.New("could not marshal union type VaultProviderCredential: all fields are null")
+func (v *VaultProviderCredential) GetCredentialType() string {
+	return "shared"
+}
+
+func (v *VaultProviderCredential) GetSelector() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Selector
+}
+
+func (v *VaultProviderCredential) GetPriority() *int64 {
+	if v == nil {
+		return nil
+	}
+	return v.Priority
+}
+
+func (v *VaultProviderCredential) GetStatus() VaultProviderCredentialStatus {
+	if v == nil {
+		return VaultProviderCredentialStatus("")
+	}
+	return v.Status
+}
+
+func (v *VaultProviderCredential) GetEnrollmentURL() *string {
+	if v == nil {
+		return nil
+	}
+	return v.EnrollmentURL
 }

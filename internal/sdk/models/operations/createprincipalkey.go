@@ -53,14 +53,6 @@ func (c *CreatePrincipalKeyRequest) GetCreatePrincipalKeyBody() shared.CreatePri
 	return c.CreatePrincipalKeyBody
 }
 
-func (c *CreatePrincipalKeyRequest) GetCreatePrincipalKeyBodyImported() *shared.CreatePrincipalKeyBodyImported {
-	return c.GetCreatePrincipalKeyBody().CreatePrincipalKeyBodyImported
-}
-
-func (c *CreatePrincipalKeyRequest) GetCreatePrincipalKeyBodyV1() *shared.CreatePrincipalKeyBodyv1 {
-	return c.GetCreatePrincipalKeyBody().CreatePrincipalKeyBodyv1
-}
-
 type CreatePrincipalKeyResponse struct {
 	// HTTP response content type for this operation
 	ContentType string

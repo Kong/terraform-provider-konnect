@@ -14,27 +14,27 @@ type CreateVaultProviderBody struct {
 	Name         string               `json:"name"`
 	// OAuth client identifier. Applies only to OAuth templates (authorization_code). Rejected with 400 for static_secret templates.
 	//
-	ClientID *string `default:"null" json:"client_id"`
+	ClientID *string `json:"client_id,omitempty"`
 	// OAuth client secret. Applies only to OAuth templates. Rejected with 400 for static_secret templates. Write-only; never returned in read APIs.
 	//
-	ClientSecret *string `default:"null" json:"client_secret"`
+	ClientSecret *string `json:"client_secret,omitempty"`
 	// Overrides the template token endpoint.
-	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	TokenEndpoint *string `json:"token_endpoint,omitempty"`
 	// Overrides the template authorization endpoint.
-	AuthorizationEndpoint *string `default:"null" json:"authorization_endpoint"`
+	AuthorizationEndpoint *string `json:"authorization_endpoint,omitempty"`
 	// Overrides the template DCR registration endpoint.
-	RegistrationEndpoint *string `default:"null" json:"registration_endpoint"`
+	RegistrationEndpoint *string `json:"registration_endpoint,omitempty"`
 	// When true, requests Dynamic Client Registration (RFC 7591) instead of a static client_id. Requires a resolvable registration_endpoint (provider override or template default) and that client_id is omitted. Each principal using this provider is registered its own upstream OAuth client lazily, on first use. Templates that ship their own registration endpoint (e.g. datadog) are DCR-based: dcr_enabled defaults to true when neither dcr_enabled nor client_id is supplied, and supplying a client_id selects a static client.
 	//
-	DcrEnabled *bool `default:"null" json:"dcr_enabled"`
+	DcrEnabled *bool `json:"dcr_enabled,omitempty"`
 	// Requested OAuth scopes. Defaults to the full set of template default scopes when omitted. Each scope must be a valid RFC 6749 §3.3 scope-token.
-	Scopes []string `json:"scopes"`
+	Scopes []string `json:"scopes,omitempty"`
 	// Credential scope. Defaults to "user" for authorization_code templates when omitted; static_secret templates require "shared".
 	//
-	CredentialType *string `default:"null" json:"credential_type"`
+	CredentialType *string `json:"credential_type,omitempty"`
 	// Use PKCE (S256) on the authorization-code flow. Templates whose authorization server mandates PKCE (pkce_required, e.g. datadog) imply true when this field is omitted; setting it explicitly to false is rejected with 400.
 	//
-	PkceEnabled          *bool  `default:"null" json:"pkce_enabled"`
+	PkceEnabled          *bool  `json:"pkce_enabled,omitempty"`
 	RefreshBufferSeconds *int64 `default:"0" json:"refresh_buffer_seconds"`
 }
 

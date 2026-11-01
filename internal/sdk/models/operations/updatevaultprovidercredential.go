@@ -120,20 +120,6 @@ func (u *UpdateVaultProviderCredentialResponse) GetVaultProviderCredential() *sh
 	return u.VaultProviderCredential
 }
 
-func (u *UpdateVaultProviderCredentialResponse) GetVaultProviderCredentialShared() *shared.VaultProviderCredentialShared {
-	if v := u.GetVaultProviderCredential(); v != nil {
-		return v.VaultProviderCredentialShared
-	}
-	return nil
-}
-
-func (u *UpdateVaultProviderCredentialResponse) GetVaultProviderCredentialUser() *shared.VaultProviderCredentialUser {
-	if v := u.GetVaultProviderCredential(); v != nil {
-		return v.VaultProviderCredentialUser
-	}
-	return nil
-}
-
 func (u *UpdateVaultProviderCredentialResponse) GetBadRequestError() *shared.BadRequestError {
 	if u == nil {
 		return nil
