@@ -30,7 +30,7 @@ func TestIdentityDirectory(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_identity_principal_basic_auth.my_identityprincipalbasicauth", "username", "tftest-user"),
 						resource.TestCheckResourceAttrSet("konnect_identity_principal_basic_auth_password.my_identityprincipalbasicauthpassword", "id"),
 						resource.TestCheckResourceAttr("konnect_identity_principal_identity.my_identityprincipalidentity", "custom.key", "tftest-key"),
-						resource.TestCheckResourceAttr("konnect_identity_trusted_idp.my_identitytrustedidp", "issuer_url", "https://tftest.example.com/oauth2/default"),
+						resource.TestCheckResourceAttr("konnect_identity_trusted_idp.my_identitytrustedidp", "issuer_url", "https://accounts.google.com"),
 						resource.TestCheckResourceAttrSet("konnect_identity_vault_key.my_identityvaultkey", "kid"),
 						resource.TestCheckResourceAttr("konnect_identity_vault_provider.my_identityvaultprovider", "name", "tftest-vault-provider"),
 						resource.TestCheckResourceAttr("konnect_identity_vault_provider_credential.my_identityvaultprovidercredential", "status", "active"),
