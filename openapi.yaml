@@ -34979,14 +34979,6 @@ components:
       example: false
       default: false
       title: KonnectManaged
-    ExpiresAt:
-      description: An ISO-8601 timestamp representation of entity expiration date.
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      nullable: true
-      readOnly: true
-      x-speakeasy-param-suppress-computed-diff: true
     ServerlessCloudGateway:
       x-speakeasy-entity: ServerlessCloudGateway
       description: A serverless cloud gateway
@@ -62131,46 +62123,31 @@ components:
         - member
     CreatePrincipalKeyBody:
       type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          imported: '#/components/schemas/CreatePrincipalKeyBodyImported'
-          v1: '#/components/schemas/CreatePrincipalKeyBodyv1'
-      oneOf:
-        - $ref: '#/components/schemas/CreatePrincipalKeyBodyImported'
-        - $ref: '#/components/schemas/CreatePrincipalKeyBodyv1'
-    CreatePrincipalKeyBodyImported:
       properties:
         type:
           type: string
-          const: imported
+          enum:
+            - imported
+            - v1
+          x-speakeasy-unknown-values: allow
         name:
           $ref: '#/components/schemas/KongPrincipalKeyName'
         secret:
+          description: Required if `type` is `imported`.
           type: string
           maxLength: 255
           minLength: 1
+          nullable: true
           x-sensitive: true
+          x-speakeasy-param-computed: false
         expires_at:
-          $ref: '#/components/schemas/ExpiresAt'
-      additionalProperties: false
-      required:
-        - type
-        - secret
-    CreatePrincipalKeyBodyv1:
-      properties:
-        type:
-          type: string
-          const: v1
-        name:
-          $ref: '#/components/schemas/KongPrincipalKeyName'
-        expires_at:
-          $ref: '#/components/schemas/ExpiresAt'
+          $ref: '#/components/schemas/ExpiresAtWritable'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
       additionalProperties: false
       required:
         - type
+      x-terraform-no-default-null: true
     UpdatePrincipalKeyBody:
       description: Request body for updating an API key's metadata
       type: object
@@ -62178,7 +62155,7 @@ components:
         name:
           $ref: '#/components/schemas/KongPrincipalKeyName'
         expires_at:
-          $ref: '#/components/schemas/ExpiresAt'
+          $ref: '#/components/schemas/ExpiresAtWritable'
         managed_by:
           $ref: '#/components/schemas/ManagedByUpdate'
     CreateBasicAuthBody:
@@ -62217,7 +62194,7 @@ components:
           x-sensitive: true
           x-speakeasy-param-computed: false
         expires_at:
-          $ref: '#/components/schemas/ExpiresAt'
+          $ref: '#/components/schemas/ExpiresAtWritable'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
     ReplacePasswordBody:
@@ -62230,7 +62207,7 @@ components:
           minLength: 1
           x-sensitive: true
         expires_at:
-          $ref: '#/components/schemas/ExpiresAt'
+          $ref: '#/components/schemas/ExpiresAtWritable'
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
       required:
@@ -62889,6 +62866,8 @@ components:
         id:
           type: string
           format: uuid
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         directory_id:
           type: string
           format: uuid
@@ -63054,11 +63033,13 @@ components:
           type: string
           default: null
           nullable: true
+          writeOnly: true
           x-speakeasy-param-computed: false
         selector:
           $ref: '#/components/schemas/VaultCredentialSelector'
         priority:
           $ref: '#/components/schemas/VaultCredentialPriority'
+      nullable: false
     VaultCredentialSelector:
       description: 'CEL expression deciding which callers this credential applies to. Omit to make it the provider''s default, which applies to every caller and is considered after all the others.'
       type: string
@@ -63072,6 +63053,8 @@ components:
         id:
           type: string
           format: uuid
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         created_at:
           type: string
           format: date-time
@@ -63105,63 +63088,8 @@ components:
       required:
         - credential_type
         - status
-    VaultProviderCredentialUser:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        credential_type:
-          type: string
-          const: user
-        principal:
-          type: object
-          properties:
-            id:
-              description: The principal's ID.
-              type: string
-              format: uuid
-            display_name:
-              description: The principal's display name.
-              type: string
-          required:
-            - id
-            - display_name
-        status:
-          description: 'A user credential exists only once authorization has completed, so this is always "active".'
-          type: string
-          enum:
-            - active
-        expires_at:
-          description: 'Expiry of the current access token, if any.'
-          type: string
-          format: date-time
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
-      required:
-        - id
-        - created_at
-        - updated_at
-        - credential_type
-        - principal
-        - status
     VaultProviderCredential:
-      description: 'A provider''s shared secret, or one principal''s authorization of the provider, indicated by credential_type. Credential values are never returned.'
-      discriminator:
-        propertyName: credential_type
-        mapping:
-          shared: '#/components/schemas/VaultProviderCredentialShared'
-          user: '#/components/schemas/VaultProviderCredentialUser'
-      oneOf:
-        - $ref: '#/components/schemas/VaultProviderCredentialShared'
-        - $ref: '#/components/schemas/VaultProviderCredentialUser'
+      $ref: '#/components/schemas/VaultProviderCredentialShared'
     CreateVaultProviderBody:
       type: object
       properties:
@@ -63174,64 +63102,52 @@ components:
           description: |
             OAuth client identifier. Applies only to OAuth templates (authorization_code). Rejected with 400 for static_secret templates.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         client_secret:
           description: |
             OAuth client secret. Applies only to OAuth templates. Rejected with 400 for static_secret templates. Write-only; never returned in read APIs.
           type: string
-          default: null
           nullable: true
           x-sensitive: true
           x-speakeasy-param-computed: false
         token_endpoint:
           description: Overrides the template token endpoint.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         authorization_endpoint:
           description: Overrides the template authorization endpoint.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         registration_endpoint:
           description: Overrides the template DCR registration endpoint.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         dcr_enabled:
           description: |
             When true, requests Dynamic Client Registration (RFC 7591) instead of a static client_id. Requires a resolvable registration_endpoint (provider override or template default) and that client_id is omitted. Each principal using this provider is registered its own upstream OAuth client lazily, on first use. Templates that ship their own registration endpoint (e.g. datadog) are DCR-based: dcr_enabled defaults to true when neither dcr_enabled nor client_id is supplied, and supplying a client_id selects a static client.
           type: boolean
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         scopes:
           description: Requested OAuth scopes. Defaults to the full set of template default scopes when omitted. Each scope must be a valid RFC 6749 §3.3 scope-token.
           type: array
           items:
             type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         credential_type:
           description: |
             Credential scope. Defaults to "user" for authorization_code templates when omitted; static_secret templates require "shared".
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         pkce_enabled:
           description: |
             Use PKCE (S256) on the authorization-code flow. Templates whose authorization server mandates PKCE (pkce_required, e.g. datadog) imply true when this field is omitted; setting it explicitly to false is rejected with 400.
           type: boolean
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         refresh_buffer_seconds:
           type: integer
           default: 0
@@ -63239,6 +63155,7 @@ components:
       required:
         - template_name
         - name
+      x-terraform-no-default-null: true
     ProviderTemplateName:
       description: |
         The static name of the vault provider template to base this provider on (e.g. "github"). For static_secret, provide only name and credential_type ("shared"); the credential is provisioned separately via the vault provider credentials API, and client_id/client_secret are rejected.
@@ -63267,13 +63184,11 @@ components:
           pattern: '^[a-zA-Z0-9_-]+$'
         client_id:
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         client_secret:
           description: OAuth client secret. Write-only; never returned in read APIs.
           type: string
-          default: null
           nullable: true
           x-sensitive: true
           x-speakeasy-param-computed: false
@@ -63282,13 +63197,11 @@ components:
         token_endpoint:
           description: Overrides the template token endpoint.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         authorization_endpoint:
           description: Overrides the template authorization endpoint.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         scopes:
@@ -63296,9 +63209,7 @@ components:
           type: array
           items:
             type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         credential_type:
           type: string
           default: user
@@ -63306,9 +63217,7 @@ components:
           description: |
             Use PKCE (S256) on the authorization-code flow. Templates whose authorization server mandates PKCE (pkce_required, e.g. datadog) imply true when this field is omitted; setting it explicitly to false is rejected with 400.
           type: boolean
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         refresh_buffer_seconds:
           type: integer
           default: 0
@@ -63316,6 +63225,7 @@ components:
       required:
         - template_name
         - name
+      x-terraform-no-default-null: true
     CreateTrustedIdpPayload:
       description: Fields required to create a trusted IdP for a vault.
       type: object
@@ -63401,7 +63311,6 @@ components:
           type: object
           example:
             department: department
-          default: null
           additionalProperties:
             type: string
           nullable: true
@@ -63411,7 +63320,6 @@ components:
             Name of the claim whose string value is attached to the provisioned principal as a custom identity keyed `email`. When a principal already carries it, that principal adopts the looked-up identity instead of a new one being provisioned.
           type: string
           example: email
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         groups:
@@ -63419,7 +63327,6 @@ components:
             Name of the claim carrying the names of the groups the provisioned principal joins — a string is one group, an array is many. Groups that do not exist yet are created. At most 100 groups per token.
           type: string
           example: groups
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         display_name:
@@ -63427,9 +63334,9 @@ components:
             Name of the claim whose string value becomes the provisioned principal's display name. When absent from the token, the lookup's claim value is used instead.
           type: string
           example: name
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
+      x-terraform-no-default-null: true
     TrustedIdp:
       description: |
         A trusted external IdP for a token-vault enabled directory.
@@ -63466,7 +63373,6 @@ components:
     KongIdentityMetadata:
       description: 'A map of metadata key-value pairs associated with this entity. This metadata is passed to the data plane to enrich the execution context. During authentication, metadata is inherited and overridden in a hierarchical manner: Directory metadata is inherited by Principals, which is then inherited and overridden by Credentials.'
       type: object
-      default: null
       additionalProperties:
         oneOf:
           - type: boolean
@@ -63487,7 +63393,7 @@ components:
       maxProperties: 50
       minProperties: 0
       nullable: true
-      x-speakeasy-param-computed: false
+      x-speakeasy-param-computed: true
       x-speakeasy-type-override: any
     ProvisionedBy:
       description: 'Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user''s behalf (for example, `developer_portal` or `trusted_idp`).'
@@ -63540,6 +63446,15 @@ components:
       example: '2022-11-04T20:10:06.927Z'
       default: null
       nullable: true
+      x-speakeasy-param-computed: false
+    ExpiresAtWritable:
+      description: An ISO-8601 timestamp representation of entity expiration date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      default: null
+      nullable: true
+      title: ExpiresAt
       x-speakeasy-param-computed: false
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
