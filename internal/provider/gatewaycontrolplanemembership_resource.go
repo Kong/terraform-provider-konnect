@@ -33,8 +33,8 @@ type GatewayControlPlaneMembershipResource struct {
 
 // GatewayControlPlaneMembershipResourceModel describes the resource data model.
 type GatewayControlPlaneMembershipResourceModel struct {
-	ID      types.String                      `tfsdk:"id"`
-	Members []tfTypes.SchemaRegistryReference `tfsdk:"members"`
+	ID      types.String                    `tfsdk:"id"`
+	Members []tfTypes.AICostBudgetReference `tfsdk:"members"`
 }
 
 func (r *GatewayControlPlaneMembershipResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

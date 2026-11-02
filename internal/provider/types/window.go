@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type SchemaRegistryReference struct {
-	ID types.String `tfsdk:"id"`
+type Window struct {
+	Anchor   types.String `tfsdk:"anchor"`
+	Interval types.String `tfsdk:"interval"`
 }

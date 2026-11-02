@@ -17,7 +17,7 @@ func (r *GatewayPluginSolaceLogResourceModel) RefreshFromSharedSolaceLogPlugin(c
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.SolaceLogPluginConfig{}
-		r.Config.Message = &tfTypes.Message{}
+		r.Config.Message = &tfTypes.SolaceLogPluginMessage{}
 		r.Config.Message.AckTimeout = types.Int64PointerValue(resp.Config.Message.AckTimeout)
 		if resp.Config.Message.CustomFieldsByLua != nil {
 			r.Config.Message.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.Message.CustomFieldsByLua))
@@ -442,7 +442,7 @@ func (r *GatewayPluginSolaceLogResourceModel) ToSharedSolaceLogPlugin(ctx contex
 	} else {
 		ttl = nil
 	}
-	message := shared.Message{
+	message := shared.SolaceLogPluginMessage{
 		AckTimeout:        ackTimeout,
 		CustomFieldsByLua: customFieldsByLua,
 		DeliveryMode:      deliveryMode,

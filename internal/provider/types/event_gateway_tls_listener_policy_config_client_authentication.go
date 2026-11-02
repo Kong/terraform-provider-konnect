@@ -7,7 +7,7 @@ import (
 )
 
 type EventGatewayTLSListenerPolicyConfigClientAuthentication struct {
-	Mode             types.String              `tfsdk:"mode"`
-	PrincipalMapping types.String              `tfsdk:"principal_mapping"`
-	TLSTrustBundles  []SchemaRegistryReference `tfsdk:"tls_trust_bundles"`
+	Mode             types.String            `tfsdk:"mode"`
+	PrincipalMapping types.String            `tfsdk:"principal_mapping"`
+	TLSTrustBundles  []AICostBudgetReference `tfsdk:"tls_trust_bundles"`
 }

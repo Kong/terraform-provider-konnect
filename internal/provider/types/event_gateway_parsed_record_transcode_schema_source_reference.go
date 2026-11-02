@@ -8,7 +8,7 @@ import (
 
 type EventGatewayParsedRecordTranscodeSchemaSourceReference struct {
 	SchemaRefDestination *EventGatewayParsedRecordTranscodeSchemaRefDestination `tfsdk:"schema_ref_destination"`
-	SchemaRegistry       *SchemaRegistryReference                               `tfsdk:"schema_registry"`
+	SchemaRegistry       *AICostBudgetReference                                 `tfsdk:"schema_registry"`
 	Subject              types.String                                           `tfsdk:"subject"`
 	Version              types.String                                           `tfsdk:"version"`
 }
