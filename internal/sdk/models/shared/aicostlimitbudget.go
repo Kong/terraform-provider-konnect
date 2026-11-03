@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
@@ -44,34 +42,11 @@ func (a *AICostLimitBudgetScope) GetEach() *string {
 	return a.Each
 }
 
-// AICostLimitBudgetType - The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchor`.
-type AICostLimitBudgetType string
-
-const (
-	AICostLimitBudgetTypeFixed AICostLimitBudgetType = "fixed"
-)
-
-func (e AICostLimitBudgetType) ToPointer() *AICostLimitBudgetType {
-	return &e
-}
-func (e *AICostLimitBudgetType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "fixed":
-		*e = AICostLimitBudgetType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AICostLimitBudgetType: %v", v)
-	}
-}
-
 // AICostLimitBudgetWindow - The budget window: the period the limit applies to, such as a calendar month. When one window ends, the next starts.
 type AICostLimitBudgetWindow struct {
 	// The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchor`.
-	Type AICostLimitBudgetType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"fixed" json:"type"`
 	// The length of each budget window, as an ISO 8601 duration such as `P1M` for a month or `P1D` for a day.
 	Interval string `json:"interval"`
 	// A time when a budget window starts. Windows start a whole number of intervals before or after it. The intervals count in the local time of the anchor's time zone, so calendar units such as months stay aligned to the calendar. A window that would start on a day its month doesn't have, such as the 31st, starts on the month's last day.
@@ -91,11 +66,8 @@ func (a *AICostLimitBudgetWindow) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AICostLimitBudgetWindow) GetType() AICostLimitBudgetType {
-	if a == nil {
-		return AICostLimitBudgetType("")
-	}
-	return a.Type
+func (a *AICostLimitBudgetWindow) GetType() string {
+	return "fixed"
 }
 
 func (a *AICostLimitBudgetWindow) GetInterval() string {

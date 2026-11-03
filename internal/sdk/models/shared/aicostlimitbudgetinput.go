@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -47,36 +45,13 @@ func (a *AICostLimitBudgetInputScope) GetEach() *string {
 	return a.Each
 }
 
-// AICostLimitBudgetInputType - The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchor`.
-type AICostLimitBudgetInputType string
-
-const (
-	AICostLimitBudgetInputTypeFixed AICostLimitBudgetInputType = "fixed"
-)
-
-func (e AICostLimitBudgetInputType) ToPointer() *AICostLimitBudgetInputType {
-	return &e
-}
-func (e *AICostLimitBudgetInputType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "fixed":
-		*e = AICostLimitBudgetInputType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AICostLimitBudgetInputType: %v", v)
-	}
-}
-
 // Window - The budget window: the period the limit applies to, such as a calendar month. When one window ends, the next starts.
 //
 // A replacement can change it, which can move the current window's start and end.
 type Window struct {
 	// The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchor`.
-	Type AICostLimitBudgetInputType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"fixed" json:"type"`
 	// The length of each budget window, as an ISO 8601 duration such as `P1M` for a month or `P1D` for a day.
 	//
 	// From 1 second to 100 years, in whole milliseconds.
@@ -98,11 +73,8 @@ func (w *Window) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (w *Window) GetType() AICostLimitBudgetInputType {
-	if w == nil {
-		return AICostLimitBudgetInputType("")
-	}
-	return w.Type
+func (w *Window) GetType() string {
+	return "fixed"
 }
 
 func (w *Window) GetInterval() string {

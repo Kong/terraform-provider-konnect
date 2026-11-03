@@ -370,15 +370,6 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 									speakeasy_stringvalidators.NotNull(),
 								},
 							},
-							"type": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The kind of budget window. Always ` + "`" + `fixed` + "`" + `: windows of length ` + "`" + `interval` + "`" + ` follow each other, aligned to ` + "`" + `anchor` + "`" + `. Not Null; must be "fixed"`,
-								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
-									stringvalidator.OneOf("fixed"),
-								},
-							},
 						},
 						MarkdownDescription: `The budget window: the period the limit applies to, such as a calendar month. When one window ends, the next starts.` + "\n" +
 							`` + "\n" +

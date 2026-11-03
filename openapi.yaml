@@ -64452,8 +64452,7 @@ components:
             type:
               description: 'The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchor`.'
               type: string
-              enum:
-                - fixed
+              const: fixed
             interval:
               description: 'The length of each budget window, as an ISO 8601 duration such as `P1M` for a month or `P1D` for a day.'
               type: string
@@ -65708,8 +65707,7 @@ components:
             type:
               description: 'The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchor`.'
               type: string
-              enum:
-                - fixed
+              const: fixed
             interval:
               description: |-
                 The length of each budget window, as an ISO 8601 duration such as `P1M` for a month or `P1D` for a day.
