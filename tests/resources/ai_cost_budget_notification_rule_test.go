@@ -16,10 +16,8 @@ const (
 			limit = {
 				name = "tf-test-rule-budget"
 
-				limit = {
-					currency = "USD"
-					value    = "1000"
-				}
+				currency = "USD"
+				value    = "1000"
 
 				window = {
 					interval = "P1M"
@@ -40,9 +38,7 @@ const (
 			email = {
 				name = "tf-test-rule-channel"
 
-				email = {
-					recipients = ["finops@example.com"]
-				}
+				recipients = ["finops@example.com"]
 			}
 		}
 	`
@@ -54,9 +50,7 @@ const (
 			slack = {
 				name = "tf-test-rule-slack-channel"
 
-				slack = {
-					webhook_url = "https://hooks.slack.com/services/T0000000/B0000000/XXXXXXXXXXXXXXXXXXXXXXXX"
-				}
+				webhook_url = "https://hooks.slack.com/services/T0000000/B0000000/XXXXXXXXXXXXXXXXXXXXXXXX"
 			}
 		}
 	`

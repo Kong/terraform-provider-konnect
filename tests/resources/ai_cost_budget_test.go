@@ -18,10 +18,8 @@ const (
 				posture  = "advisory"
 				priority = 50
 
-				limit = {
-					currency = "USD"
-					value    = "5000"
-				}
+				currency = "USD"
+				value    = "5000"
 
 				window = {
 					interval = "P1M"
@@ -38,8 +36,8 @@ const (
 		}
 	`
 
-	// The same budget after an update. `scope` and `window` can't change on a
-	// replacement, so every step repeats them exactly.
+	// The same budget after an update. `scope` and `window` change in place, so the
+	// update sends them again and the budget keeps its identifier.
 	aiCostLimitBudgetUpdated = `
 		resource "konnect_ai_cost_budget" "test_limit_budget" {
 			limit = {
@@ -47,10 +45,8 @@ const (
 				posture  = "enforce"
 				priority = 25
 
-				limit = {
-					currency = "USD"
-					value    = "7500"
-				}
+				currency = "USD"
+				value    = "7500"
 
 				window = {
 					interval = "P1M"
@@ -67,9 +63,8 @@ const (
 		}
 	`
 
-	// A change to `window` forces a replacement: the API refuses it on an existing
-	// budget. Without the `x-speakeasy-param-force-new` annotation the provider would
-	// send an update and the API would answer 400.
+	// A change to `window` updates the budget in place and moves the current window's
+	// start and end. Only an export schedule's `cadence` and `time_zone` replace.
 	aiCostLimitBudgetRewindowed = `
 		resource "konnect_ai_cost_budget" "test_limit_budget" {
 			limit = {
@@ -77,10 +72,8 @@ const (
 				posture  = "enforce"
 				priority = 25
 
-				limit = {
-					currency = "USD"
-					value    = "7500"
-				}
+				currency = "USD"
+				value    = "7500"
 
 				window = {
 					interval = "P1D"
@@ -178,8 +171,8 @@ func TestAICostBudget(t *testing.T) {
 						resource.TestCheckResourceAttr(address, "limit.name", "tf-test-limit-budget"),
 						resource.TestCheckResourceAttr(address, "limit.posture", "advisory"),
 						resource.TestCheckResourceAttr(address, "limit.priority", "50"),
-						resource.TestCheckResourceAttr(address, "limit.limit.currency", "USD"),
-						resource.TestCheckResourceAttr(address, "limit.limit.value", "5000"),
+						resource.TestCheckResourceAttr(address, "limit.currency", "USD"),
+						resource.TestCheckResourceAttr(address, "limit.value", "5000"),
 						resource.TestCheckResourceAttr(address, "limit.scope.each", "model"),
 						resource.TestCheckResourceAttr(address, "limit.window.interval", "P1M"),
 					),
@@ -208,22 +201,32 @@ func TestAICostBudget(t *testing.T) {
 						resource.TestCheckResourceAttr(address, "limit.name", "tf-test-limit-budget-updated"),
 						resource.TestCheckResourceAttr(address, "limit.posture", "enforce"),
 						resource.TestCheckResourceAttr(address, "limit.priority", "25"),
-						resource.TestCheckResourceAttr(address, "limit.limit.value", "7500"),
+						resource.TestCheckResourceAttr(address, "limit.value", "7500"),
 					),
 				},
 				{
-					// `window` is immutable once the budget exists, so this has to
-					// destroy and create rather than update.
+					// `window` changes in place, so the provider sends an update and the
+					// budget keeps its identifier.
 					Config: newConfig(t, aiCostLimitBudgetRewindowed),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction(address, plancheck.ResourceActionReplace),
+							plancheck.ExpectResourceAction(address, plancheck.ResourceActionUpdate),
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr(address, "limit.window.interval", "P1D"),
 						resource.TestCheckResourceAttr(address, "limit.name", "tf-test-limit-budget-daily"),
 					),
+				},
+				{
+					// The in-place rewindow has to converge too: a window the API
+					// normalises on read would diff on every plan from here on.
+					Config: newConfig(t, aiCostLimitBudgetRewindowed),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
 				},
 			},
 		})

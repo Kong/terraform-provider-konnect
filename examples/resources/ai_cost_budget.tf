@@ -1,16 +1,14 @@
 # A limit budget caps spend for the usage its scope selects, per window. `scope`
-# and `window` cannot change after creation, so a change to either replaces the
-# budget.
+# and `window` change in place, and a change applies to the whole current budget
+# window.
 resource "konnect_ai_cost_budget" "team_models" {
   limit = {
     name     = "team-models-monthly"
     priority = 10
     posture  = "enforce"
 
-    limit = {
-      currency = "USD"
-      value    = "5000"
-    }
+    currency = "USD"
+    value    = "5000"
 
     window = {
       interval = "P1M"

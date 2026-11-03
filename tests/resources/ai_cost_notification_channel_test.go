@@ -16,12 +16,10 @@ const (
 			email = {
 				name = "tf-test-email-channel"
 
-				email = {
-					recipients = [
-						"finops@example.com",
-						"platform-team@example.com",
-					]
-				}
+				recipients = [
+					"finops@example.com",
+					"platform-team@example.com",
+				]
 
 				labels = {
 					team = "finops"
@@ -35,12 +33,10 @@ const (
 			email = {
 				name = "tf-test-email-channel-updated"
 
-				email = {
-					recipients = [
-						"finops@example.com",
-						"platform-team@example.com",
-					]
-				}
+				recipients = [
+					"finops@example.com",
+					"platform-team@example.com",
+				]
 
 				labels = {
 					team = "finops"
@@ -54,9 +50,7 @@ const (
 			slack = {
 				name = "tf-test-slack-channel"
 
-				slack = {
-					webhook_url = "https://hooks.slack.com/services/T0000000/B0000000/XXXXXXXXXXXXXXXXXXXXXXXX"
-				}
+				webhook_url = "https://hooks.slack.com/services/T0000000/B0000000/XXXXXXXXXXXXXXXXXXXXXXXX"
 			}
 		}
 	`
@@ -66,9 +60,7 @@ const (
 			slack = {
 				name = "tf-test-slack-channel-updated"
 
-				slack = {
-					webhook_url = "https://hooks.slack.com/services/T0000000/B0000000/XXXXXXXXXXXXXXXXXXXXXXXX"
-				}
+				webhook_url = "https://hooks.slack.com/services/T0000000/B0000000/XXXXXXXXXXXXXXXXXXXXXXXX"
 			}
 		}
 	`
@@ -110,8 +102,8 @@ func TestAICostNotificationChannel(t *testing.T) {
 						resource.TestCheckResourceAttrSet(address, "id"),
 						resource.TestCheckResourceAttr(address, "name", "tf-test-email-channel"),
 						resource.TestCheckResourceAttr(address, "email.name", "tf-test-email-channel"),
-						resource.TestCheckResourceAttr(address, "email.email.recipients.#", "2"),
-						resource.TestCheckResourceAttr(address, "email.email.recipients.0", "finops@example.com"),
+						resource.TestCheckResourceAttr(address, "email.recipients.#", "2"),
+						resource.TestCheckResourceAttr(address, "email.recipients.0", "finops@example.com"),
 						resource.TestCheckResourceAttr(address, "email.labels.team", "finops"),
 					),
 				},
@@ -157,7 +149,7 @@ func TestAICostNotificationChannel(t *testing.T) {
 						resource.TestCheckResourceAttrSet(address, "id"),
 						resource.TestCheckResourceAttr(address, "name", "tf-test-slack-channel"),
 						resource.TestCheckResourceAttr(address, "slack.name", "tf-test-slack-channel"),
-						resource.TestCheckResourceAttrSet(address, "slack.slack.webhook_url"),
+						resource.TestCheckResourceAttrSet(address, "slack.webhook_url"),
 					),
 				},
 				{
@@ -171,7 +163,7 @@ func TestAICostNotificationChannel(t *testing.T) {
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr(address, "slack.slack.webhook_url", "https://hooks.slack.com/services/T0000000/B0000000/XXXXXXXXXXXXXXXXXXXXXXXX"),
+						resource.TestCheckResourceAttr(address, "slack.webhook_url", "https://hooks.slack.com/services/T0000000/B0000000/XXXXXXXXXXXXXXXXXXXXXXXX"),
 					),
 				},
 				{
