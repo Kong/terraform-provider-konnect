@@ -84,6 +84,7 @@ func (s *KongPrincipalCredential) CreatePrincipalKey(ctx context.Context, reques
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "create-principal-key")
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -2329,6 +2330,7 @@ func (s *KongPrincipalCredential) CreatePassword(ctx context.Context, request op
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "createPassword")
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -2891,6 +2893,7 @@ func (s *KongPrincipalCredential) ReplacePassword(ctx context.Context, request o
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "replacePassword")
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)

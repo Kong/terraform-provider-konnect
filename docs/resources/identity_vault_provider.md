@@ -19,7 +19,7 @@ resource "konnect_identity_vault_provider" "my_identityvaultprovider" {
   client_secret          = "...my_client_secret..."
   credential_type        = "user"
   dcr_enabled            = true
-  directory_id           = "173dc6ab-64d2-421e-8996-5b031e080289"
+  directory_id           = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   name                   = "...my_name..."
   pkce_enabled           = true
   refresh_buffer_seconds = 0
@@ -39,13 +39,13 @@ resource "konnect_identity_vault_provider" "my_identityvaultprovider" {
 
 - `directory_id` (String) ID of the directory
 - `name` (String)
-- `template_name` (String) The static name of the vault provider template to base this provider on (e.g. "github"). For static_secret, provide only name and credential_type ("shared"); the credential is provisioned separately via the vault provider credentials API, and client_id/client_secret are rejected. possible known values include one of ["github", "slack", "static_secret", "atlassian", "snowflake", "google", "databricks", "atlassian-rovo", "datadog", "custom-oauth", "miro"]
+- `template_name` (String) The static name of the vault provider template to base this provider on (e.g. "github"). For static_secret, provide only name and credential_type ("shared"); the credential is provisioned separately via the vault provider credentials API, and client_id/client_secret are rejected. possible known values include one of ["github", "slack", "static_secret", "google", "atlassian-rovo", "datadog", "custom-oauth", "miro"]
 
 ### Optional
 
 - `authorization_endpoint` (String) Overrides the template authorization endpoint.
 - `client_id` (String) OAuth client identifier. Applies only to OAuth templates (authorization_code). Rejected with 400 for static_secret templates.
-- `client_secret` (String) OAuth client secret. Applies only to OAuth templates. Rejected with 400 for static_secret templates. Write-only; never returned in read APIs.
+- `client_secret` (String, Sensitive) OAuth client secret. Applies only to OAuth templates. Rejected with 400 for static_secret templates. Write-only; never returned in read APIs.
 - `credential_type` (String) Credential scope. Defaults to "user" for authorization_code templates when omitted; static_secret templates require "shared".
 - `dcr_enabled` (Boolean) When true, requests Dynamic Client Registration (RFC 7591) instead of a static client_id. Requires a resolvable registration_endpoint (provider override or template default) and that client_id is omitted. Each principal using this provider is registered its own upstream OAuth client lazily, on first use. Templates that ship their own registration endpoint (e.g. datadog) are DCR-based: dcr_enabled defaults to true when neither dcr_enabled nor client_id is supplied, and supplying a client_id selects a static client. Requires replacement if changed.
 - `pkce_enabled` (Boolean) Use PKCE (S256) on the authorization-code flow. Templates whose authorization server mandates PKCE (pkce_required, e.g. datadog) imply true when this field is omitted; setting it explicitly to false is rejected with 400.
@@ -60,7 +60,7 @@ resource "konnect_identity_vault_provider" "my_identityvaultprovider" {
 - `bearer_methods_supported` (List of String)
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `enabled` (Boolean) Defines if the provider is enabled or not
-- `id` (String) The ID of this resource.
+- `id` (String) Contains a unique identifier used for this resource.
 - `registration_endpoint_effective` (String) Resolved DCR registration endpoint (provider override or template default).
 - `token_endpoint_effective` (String) Resolved token endpoint (provider override or template default).
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.

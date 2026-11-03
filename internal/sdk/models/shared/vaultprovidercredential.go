@@ -32,6 +32,7 @@ func (e *VaultProviderCredentialStatus) IsExact() bool {
 
 // VaultProviderCredential - Shared credential metadata (never includes the value)
 type VaultProviderCredential struct {
+	// Contains a unique identifier used for this resource.
 	ID        *string    `json:"id,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`

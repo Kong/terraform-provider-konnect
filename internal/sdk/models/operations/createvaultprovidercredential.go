@@ -61,7 +61,7 @@ type CreateVaultProviderCredentialResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Shared credential metadata (never includes the value)
-	VaultProviderCredential *shared.VaultProviderCredential
+	VaultProviderCredentialShared *shared.VaultProviderCredentialShared
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -106,11 +106,11 @@ func (c *CreateVaultProviderCredentialResponse) GetRawResponse() *http.Response 
 	return c.RawResponse
 }
 
-func (c *CreateVaultProviderCredentialResponse) GetVaultProviderCredential() *shared.VaultProviderCredential {
+func (c *CreateVaultProviderCredentialResponse) GetVaultProviderCredentialShared() *shared.VaultProviderCredentialShared {
 	if c == nil {
 		return nil
 	}
-	return c.VaultProviderCredential
+	return c.VaultProviderCredentialShared
 }
 
 func (c *CreateVaultProviderCredentialResponse) GetBadRequestError() *shared.BadRequestError {

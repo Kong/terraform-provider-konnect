@@ -8,6 +8,7 @@ import (
 
 // KongGroupMemberInput - Identifies a single member (principal or group) of a group.
 type KongGroupMemberInput struct {
+	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// Classifies the kind of member referenced by a group membership entry.
 	//

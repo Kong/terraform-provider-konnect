@@ -31,7 +31,7 @@ resource "konnect_event_gateway_static_key" "my_eventgatewaystatickey" {
 
 - `gateway_id` (String) The UUID of your Gateway. Requires replacement if changed.
 - `name` (String) The unique name of the static key. Requires replacement if changed.
-- `value` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+- `value` (String, Sensitive) A sensitive value containing the secret or a reference to a secret as a template string expression.
 If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
 If provided as an expression, the expression itself is stored and returned by the API.
 Requires replacement if changed.

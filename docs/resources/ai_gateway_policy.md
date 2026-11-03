@@ -23,8 +23,11 @@ resource "konnect_ai_gateway_policy" "my_aigatewaypolicy" {
   ]
   display_name = "My Cool AI PII Sanitizer Policy"
   enabled      = true
-  gateway_id   = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
-  global       = false
+  expressions = {
+    key = jsonencode("value")
+  }
+  gateway_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+  global     = false
   labels = {
     key = "value"
   }
@@ -58,6 +61,9 @@ Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and
 **Requires a minimum runtime version of `2.1`**.
 - `datastores` (Attributes List) Names of the Datastores this policy references. (see [below for nested schema](#nestedatt--datastores))
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
+- `expressions` (Map of String) Policy config expressions
+
+**Requires a minimum runtime version of `2.3`**.
 - `global` (Boolean) Whether the policy is globally applied to all resources. Default: false
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 

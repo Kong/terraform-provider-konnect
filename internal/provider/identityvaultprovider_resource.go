@@ -90,6 +90,7 @@ func (r *IdentityVaultProviderResource) Schema(ctx context.Context, req resource
 			},
 			"client_secret": schema.StringAttribute{
 				Optional:    true,
+				Sensitive:   true,
 				Description: `OAuth client secret. Applies only to OAuth templates. Rejected with 400 for static_secret templates. Write-only; never returned in read APIs.`,
 			},
 			"created_at": schema.StringAttribute{
@@ -113,7 +114,10 @@ func (r *IdentityVaultProviderResource) Schema(ctx context.Context, req resource
 				Description: `When true, requests Dynamic Client Registration (RFC 7591) instead of a static client_id. Requires a resolvable registration_endpoint (provider override or template default) and that client_id is omitted. Each principal using this provider is registered its own upstream OAuth client lazily, on first use. Templates that ship their own registration endpoint (e.g. datadog) are DCR-based: dcr_enabled defaults to true when neither dcr_enabled nor client_id is supplied, and supplying a client_id selects a static client. Requires replacement if changed.`,
 			},
 			"directory_id": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `ID of the directory`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -125,6 +129,7 @@ func (r *IdentityVaultProviderResource) Schema(ctx context.Context, req resource
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
+				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"name": schema.StringAttribute{
 				Required: true,
@@ -165,7 +170,7 @@ func (r *IdentityVaultProviderResource) Schema(ctx context.Context, req resource
 			},
 			"template_name": schema.StringAttribute{
 				Required:    true,
-				Description: `The static name of the vault provider template to base this provider on (e.g. "github"). For static_secret, provide only name and credential_type ("shared"); the credential is provisioned separately via the vault provider credentials API, and client_id/client_secret are rejected. possible known values include one of ["github", "slack", "static_secret", "atlassian", "snowflake", "google", "databricks", "atlassian-rovo", "datadog", "custom-oauth", "miro"]`,
+				Description: `The static name of the vault provider template to base this provider on (e.g. "github"). For static_secret, provide only name and credential_type ("shared"); the credential is provisioned separately via the vault provider credentials API, and client_id/client_secret are rejected. possible known values include one of ["github", "slack", "static_secret", "google", "atlassian-rovo", "datadog", "custom-oauth", "miro"]`,
 			},
 			"token_endpoint": schema.StringAttribute{
 				Optional:    true,
@@ -223,6 +228,8 @@ func (r *IdentityVaultProviderResource) Create(ctx context.Context, req resource
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
 
 	request, requestDiags := data.ToOperationsCreateVaultProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -284,6 +291,8 @@ func (r *IdentityVaultProviderResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetVaultProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -337,6 +346,8 @@ func (r *IdentityVaultProviderResource) Update(ctx context.Context, req resource
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
 
 	request, requestDiags := data.ToOperationsReplaceVaultProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -397,6 +408,8 @@ func (r *IdentityVaultProviderResource) Delete(ctx context.Context, req resource
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.State)
 
 	request, requestDiags := data.ToOperationsDeleteVaultProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)

@@ -14,7 +14,7 @@ IdentityVaultKey Resource
 
 ```terraform
 resource "konnect_identity_vault_key" "my_identityvaultkey" {
-  directory_id = "3174b4e7-6a5d-4e3a-9ddb-9ee7251436da"
+  directory_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   name         = "...my_name..."
   public_key   = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...\n-----END PUBLIC KEY-----"
 }
@@ -33,7 +33,7 @@ resource "konnect_identity_vault_key" "my_identityvaultkey" {
 
 - `algorithm` (String) The asymmetric algorithm of the vault key.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `id` (String) The ID of this resource.
+- `id` (String) Contains a unique identifier used for this resource.
 - `key_size` (Number) Size of the key in bits (for example 2048 for RSA, 256 for EC P-256).
 - `kid` (String) RFC 7638 JWK thumbprint (base64url-encoded SHA-256 digest) of the public key.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.

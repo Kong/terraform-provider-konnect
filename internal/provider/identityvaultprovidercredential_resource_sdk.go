@@ -27,6 +27,22 @@ func (r *IdentityVaultProviderCredentialResourceModel) RefreshFromSharedVaultPro
 	return diags
 }
 
+func (r *IdentityVaultProviderCredentialResourceModel) RefreshFromSharedVaultProviderCredentialShared(ctx context.Context, resp *shared.VaultProviderCredentialShared) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.EnrollmentURL = types.StringPointerValue(resp.EnrollmentURL)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Priority = types.Int64PointerValue(resp.Priority)
+		r.Selector = types.StringPointerValue(resp.Selector)
+		r.Status = types.StringValue(string(resp.Status))
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
 func (r *IdentityVaultProviderCredentialResourceModel) ToOperationsCreateVaultProviderCredentialRequest(ctx context.Context) (*operations.CreateVaultProviderCredentialRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

@@ -23484,7 +23484,7 @@ paths:
         $ref: '#/components/requestBodies/CreateVaultProviderCredentialRequest'
       responses:
         '201':
-          $ref: '#/components/responses/VaultProviderCredentialResponse'
+          $ref: '#/components/responses/VaultProviderCredentialSharedResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -23543,7 +23543,7 @@ paths:
         $ref: '#/components/requestBodies/UpdateVaultProviderCredentialRequest'
       responses:
         '200':
-          $ref: '#/components/responses/VaultProviderCredentialResponse'
+          $ref: '#/components/responses/VaultProviderCredentialSharedResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -29257,7 +29257,6 @@ components:
         - instance
         - detail
         - invalid_parameters
-      title: Error
     UnauthorizedError:
       description: standard error
       type: object
@@ -29311,7 +29310,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     ForbiddenError:
       description: standard error
       type: object
@@ -29365,7 +29363,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     InternalError:
       description: standard error
       type: object
@@ -29415,7 +29412,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     ConflictError:
       description: standard error
       type: object
@@ -29469,7 +29465,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     NotFoundError:
       description: standard error
       type: object
@@ -29523,7 +29518,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     NotImplementedError:
       description: standard error
       type: object
@@ -29575,7 +29569,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     CreatedAt:
       description: An ISO-8601 timestamp representation of entity creation date.
       type: string
@@ -29639,7 +29632,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     ManagedBy:
       description: |
         Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
@@ -29691,7 +29683,6 @@ components:
           example: ERROR_TYPE_FIELD
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
-      title: Error Detail
     KonnectCPLegacyBadRequestError:
       description: standard error
       type: object
@@ -29720,7 +29711,6 @@ components:
             $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
-      title: Error
     KonnectCPLegacyUnauthorizedError:
       description: standard error
       type: object
@@ -29749,7 +29739,6 @@ components:
             $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
-      title: Error
     KonnectCPLegacyForbiddenError:
       description: standard error
       type: object
@@ -29778,7 +29767,6 @@ components:
             $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
-      title: Error
     KonnectCPLegacyNotFoundError:
       description: standard error
       type: object
@@ -29807,7 +29795,6 @@ components:
             $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
-      title: Error
     KonnectCPLegacyConflictError:
       description: standard error
       type: object
@@ -29836,7 +29823,6 @@ components:
             $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
-      title: Error
     ControlPlaneId:
       description: ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI.
       type: string
@@ -33563,7 +33549,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     LabelsUpdate:
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -38671,7 +38656,7 @@ components:
           nullable: false
           properties:
             name:
-              description: 'The theme name to apply to this portal. Supported names are ''ocean'', ''mesa'', and ''grove''. If another name is provided or this property is omitted, the portal uses the default ''ocean'' theme.'
+              description: 'The theme name to apply to this portal. Supported names are ''mesa'', ''grove'', ''pebble'', or ''ocean''. If another name is provided or this property is omitted, the portal uses the default ''ocean'' theme.'
               type: string
               default: ocean
               nullable: false
@@ -47010,6 +46995,7 @@ components:
         fields:
           - vault
       x-sensitive: true
+      x-speakeasy-param-sensitive: true
     CreateSecretPayload:
       type: object
       properties:
@@ -48684,6 +48670,8 @@ components:
           nullable: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
       additionalProperties: false
       required:
         - display_name
@@ -48723,6 +48711,8 @@ components:
           nullable: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
       additionalProperties: false
       required:
         - display_name
@@ -48758,6 +48748,8 @@ components:
           nullable: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
         id:
           $ref: '#/components/schemas/UUID'
         min_runtime_version:
@@ -56283,6 +56275,16 @@ components:
           nullable: true
           x-min-runtime-version: '2.1'
           x-speakeasy-param-computed: false
+        expressions:
+          description: |-
+            Policy config expressions
+
+            **Requires a minimum runtime version of `2.3`**.
+          type: object
+          additionalProperties: true
+          nullable: true
+          x-min-runtime-version: '2.3'
+          x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
@@ -56354,6 +56356,16 @@ components:
           nullable: true
           x-min-runtime-version: '2.1'
           x-speakeasy-param-computed: false
+        expressions:
+          description: |-
+            Policy config expressions
+
+            **Requires a minimum runtime version of `2.3`**.
+          type: object
+          additionalProperties: true
+          nullable: true
+          x-min-runtime-version: '2.3'
+          x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
@@ -56424,6 +56436,16 @@ components:
           maxLength: 1024
           nullable: true
           x-min-runtime-version: '2.1'
+          x-speakeasy-param-computed: false
+        expressions:
+          description: |-
+            Policy config expressions
+
+            **Requires a minimum runtime version of `2.3`**.
+          type: object
+          additionalProperties: true
+          nullable: true
+          x-min-runtime-version: '2.3'
           x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
@@ -61926,7 +61948,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     KongIdentityAllowedControlPlanes:
       description: |
         List of control plane IDs authorized to make authentication requests to this directory.
@@ -62101,8 +62122,7 @@ components:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: '#/components/schemas/UUID_RW'
         type:
           $ref: '#/components/schemas/KongGroupMembershipType'
         display_name:
@@ -62138,8 +62158,10 @@ components:
           maxLength: 255
           minLength: 1
           nullable: true
+          writeOnly: true
           x-sensitive: true
           x-speakeasy-param-computed: false
+          x-speakeasy-param-sensitive: true
         expires_at:
           $ref: '#/components/schemas/ExpiresAtWritable'
         managed_by:
@@ -62191,8 +62213,10 @@ components:
           maxLength: 255
           minLength: 1
           nullable: true
+          writeOnly: true
           x-sensitive: true
           x-speakeasy-param-computed: false
+          x-speakeasy-param-sensitive: true
         expires_at:
           $ref: '#/components/schemas/ExpiresAtWritable'
         managed_by:
@@ -62205,7 +62229,9 @@ components:
           type: string
           maxLength: 255
           minLength: 1
+          writeOnly: true
           x-sensitive: true
+          x-speakeasy-param-sensitive: true
         expires_at:
           $ref: '#/components/schemas/ExpiresAtWritable'
         managed_by:
@@ -62272,6 +62298,7 @@ components:
             and cannot be retrieved again later.
           type: string
           x-sensitive: true
+          x-speakeasy-param-sensitive: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -62345,6 +62372,7 @@ components:
             and cannot be retrieved again later.
           type: string
           x-sensitive: true
+          x-speakeasy-param-sensitive: true
       required:
         - id
         - name
@@ -62864,13 +62892,9 @@ components:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
+          $ref: '#/components/schemas/UUID'
         directory_id:
-          type: string
-          format: uuid
+          $ref: '#/components/schemas/UUID'
         name:
           type: string
           pattern: '^[a-zA-Z0-9_-]+$'
@@ -62955,11 +62979,9 @@ components:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: '#/components/schemas/UUID'
         directory_id:
-          type: string
-          format: uuid
+          $ref: '#/components/schemas/UUID'
         name:
           type: string
           pattern: '^[a-zA-Z0-9_-]+$'
@@ -63034,7 +63056,9 @@ components:
           default: null
           nullable: true
           writeOnly: true
+          x-sensitive: true
           x-speakeasy-param-computed: false
+          x-speakeasy-param-sensitive: true
         selector:
           $ref: '#/components/schemas/VaultCredentialSelector'
         priority:
@@ -63051,10 +63075,7 @@ components:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
+          $ref: '#/components/schemas/UUID'
         created_at:
           type: string
           format: date-time
@@ -63109,8 +63130,10 @@ components:
             OAuth client secret. Applies only to OAuth templates. Rejected with 400 for static_secret templates. Write-only; never returned in read APIs.
           type: string
           nullable: true
+          writeOnly: true
           x-sensitive: true
           x-speakeasy-param-computed: false
+          x-speakeasy-param-sensitive: true
         token_endpoint:
           description: Overrides the template token endpoint.
           type: string
@@ -63165,10 +63188,7 @@ components:
         - github
         - slack
         - static_secret
-        - atlassian
-        - snowflake
         - google
-        - databricks
         - atlassian-rovo
         - datadog
         - custom-oauth
@@ -63190,8 +63210,10 @@ components:
           description: OAuth client secret. Write-only; never returned in read APIs.
           type: string
           nullable: true
+          writeOnly: true
           x-sensitive: true
           x-speakeasy-param-computed: false
+          x-speakeasy-param-sensitive: true
         enabled:
           $ref: '#/components/schemas/VaultProviderEnabled'
         token_endpoint:
@@ -114517,6 +114539,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/VaultProviderCredential'
+    VaultProviderCredentialSharedResponse:
+      description: Shared credential metadata (never includes the value)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VaultProviderCredentialShared'
     TrustedIdpResponse:
       description: A trusted IdP
       content:

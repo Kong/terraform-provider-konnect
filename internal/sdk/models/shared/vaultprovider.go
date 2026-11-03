@@ -9,7 +9,9 @@ import (
 
 // VaultProvider - An credential provider configuration for a token-vault enabled directory.
 type VaultProvider struct {
-	ID          string `json:"id"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// Contains a unique identifier used for this resource.
 	DirectoryID string `json:"directory_id"`
 	Name        string `json:"name"`
 	// The static name of the vault provider template to base this provider on (e.g. "github"). For static_secret, provide only name and credential_type ("shared"); the credential is provisioned separately via the vault provider credentials API, and client_id/client_secret are rejected.

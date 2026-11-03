@@ -10,7 +10,9 @@ import (
 // VaultKey - A PEM-encoded RSA or EC public key registered to encrypt token vault data for a
 // token-vault enabled directory.
 type VaultKey struct {
-	ID          string `json:"id"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// Contains a unique identifier used for this resource.
 	DirectoryID string `json:"directory_id"`
 	Name        string `json:"name"`
 	// The PEM-encoded public key.

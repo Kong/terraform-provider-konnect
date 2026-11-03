@@ -102,7 +102,8 @@ func (r *IdentityPrincipalAPIKeyResource) Schema(ctx context.Context, req resour
 				Description: `Unique identifier of the principal (UUID format)`,
 			},
 			"secret": schema.StringAttribute{
-				Optional: true,
+				Optional:  true,
+				Sensitive: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
@@ -166,6 +167,8 @@ func (r *IdentityPrincipalAPIKeyResource) Create(ctx context.Context, req resour
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
 
 	request, requestDiags := data.ToOperationsCreatePrincipalKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -234,6 +237,8 @@ func (r *IdentityPrincipalAPIKeyResource) Read(ctx context.Context, req resource
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetIdentityKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -287,6 +292,8 @@ func (r *IdentityPrincipalAPIKeyResource) Update(ctx context.Context, req resour
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
 
 	request, requestDiags := data.ToOperationsUpdatePrincipalKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -347,6 +354,8 @@ func (r *IdentityPrincipalAPIKeyResource) Delete(ctx context.Context, req resour
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.State)
 
 	request, requestDiags := data.ToOperationsDeletePrincipalKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)

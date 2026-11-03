@@ -51,6 +51,7 @@ type AIGatewayResourceModel struct {
 	ID                 types.String                `tfsdk:"id"`
 	KonnectManaged     types.Bool                  `tfsdk:"konnect_managed"`
 	Labels             map[string]types.String     `tfsdk:"labels"`
+	ManagedBy          map[string]types.String     `tfsdk:"managed_by"`
 	MinRuntimeVersion  types.String                `tfsdk:"min_runtime_version"`
 	Name               types.String                `tfsdk:"name"`
 	ProxyUrls          []tfTypes.AIGatewayProxyURL `tfsdk:"proxy_urls"`
@@ -150,6 +151,14 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 					`Public labels are intended to store **PUBLIC** metadata. ` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+			},
+			"managed_by": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
+					`` + "\n" +
+					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
 			},
 			"min_runtime_version": schema.StringAttribute{
 				Computed: true,

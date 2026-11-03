@@ -33,18 +33,25 @@ func (r *AIGatewayPolicyResourceModel) RefreshFromSharedAIGatewayPolicy(ctx cont
 		}
 		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		if resp.Expressions != nil {
+			r.Expressions = make(map[string]jsontypes.Normalized, len(resp.Expressions))
+			for key, value := range resp.Expressions {
+				result, _ := json.Marshal(value)
+				r.Expressions[key] = jsontypes.NewNormalizedValue(string(result))
+			}
+		}
 		r.Global = types.BoolPointerValue(resp.Global)
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringValue(value)
+			for key1, value1 := range resp.Labels {
+				r.Labels[key1] = types.StringValue(value1)
 			}
 		}
 		if len(resp.ManagedBy) > 0 {
 			r.ManagedBy = make(map[string]types.String, len(resp.ManagedBy))
-			for key1, value1 := range resp.ManagedBy {
-				r.ManagedBy[key1] = types.StringValue(value1)
+			for key2, value2 := range resp.ManagedBy {
+				r.ManagedBy[key2] = types.StringValue(value2)
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
@@ -167,6 +174,15 @@ func (r *AIGatewayPolicyResourceModel) ToSharedCreateAIGatewayPolicyRequest(ctx 
 	} else {
 		condition = nil
 	}
+	var expressions map[string]interface{}
+	if r.Expressions != nil {
+		expressions = make(map[string]interface{})
+		for expressionsKey := range r.Expressions {
+			var expressionsInst interface{}
+			_ = json.Unmarshal([]byte(r.Expressions[expressionsKey].ValueString()), &expressionsInst)
+			expressions[expressionsKey] = expressionsInst
+		}
+	}
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {
 		var labelsInst string
@@ -198,6 +214,7 @@ func (r *AIGatewayPolicyResourceModel) ToSharedCreateAIGatewayPolicyRequest(ctx 
 		Global:      global,
 		Config:      config,
 		Condition:   condition,
+		Expressions: expressions,
 		Labels:      labels,
 		ManagedBy:   managedBy,
 		Datastores:  datastores,
@@ -238,6 +255,15 @@ func (r *AIGatewayPolicyResourceModel) ToSharedUpdateAIGatewayPolicyRequest(ctx 
 	} else {
 		condition = nil
 	}
+	var expressions map[string]interface{}
+	if r.Expressions != nil {
+		expressions = make(map[string]interface{})
+		for expressionsKey := range r.Expressions {
+			var expressionsInst interface{}
+			_ = json.Unmarshal([]byte(r.Expressions[expressionsKey].ValueString()), &expressionsInst)
+			expressions[expressionsKey] = expressionsInst
+		}
+	}
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {
 		var labelsInst string
@@ -269,6 +295,7 @@ func (r *AIGatewayPolicyResourceModel) ToSharedUpdateAIGatewayPolicyRequest(ctx 
 		Global:      global,
 		Config:      config,
 		Condition:   condition,
+		Expressions: expressions,
 		Labels:      labels,
 		ManagedBy:   managedBy,
 		Datastores:  datastores,

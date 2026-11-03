@@ -82,6 +82,7 @@ func (s *TokenVaultProviders) CreateVaultProvider(ctx context.Context, request o
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "createVaultProvider")
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -645,6 +646,7 @@ func (s *TokenVaultProviders) ReplaceVaultProvider(ctx context.Context, request 
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "replaceVaultProvider")
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -1185,6 +1187,7 @@ func (s *TokenVaultProviders) CreateVaultProviderCredential(ctx context.Context,
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "createVaultProviderCredential")
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -1320,12 +1323,12 @@ func (s *TokenVaultProviders) CreateVaultProviderCredential(ctx context.Context,
 				return nil, err
 			}
 
-			var out shared.VaultProviderCredential
+			var out shared.VaultProviderCredentialShared
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.VaultProviderCredential = &out
+			res.VaultProviderCredentialShared = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -1774,6 +1777,7 @@ func (s *TokenVaultProviders) UpdateVaultProviderCredential(ctx context.Context,
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "updateVaultProviderCredential")
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -1909,12 +1913,12 @@ func (s *TokenVaultProviders) UpdateVaultProviderCredential(ctx context.Context,
 				return nil, err
 			}
 
-			var out shared.VaultProviderCredential
+			var out shared.VaultProviderCredentialShared
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.VaultProviderCredential = &out
+			res.VaultProviderCredentialShared = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

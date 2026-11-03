@@ -17,7 +17,7 @@ resource "konnect_identity_group_membership" "my_identitygroupmembership" {
   directory_id = "8a58fdbf-43c1-44f4-a374-04256712d369"
   group_id     = "7f2a67a4-2de2-4271-86de-6be741d5ce51"
   member = {
-    id   = "826e1ccc-16d8-4aad-9610-665b8f97b28c"
+    id   = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
     type = "principal"
   }
 }
@@ -42,7 +42,7 @@ resource "konnect_identity_group_membership" "my_identitygroupmembership" {
 
 Required:
 
-- `id` (String) Requires replacement if changed.
+- `id` (String) Contains a unique identifier used for this resource. Requires replacement if changed.
 - `type` (String) Classifies the kind of member referenced by a group membership entry. possible known values include one of ["principal", "group"]; Requires replacement if changed.
 
 Read-Only:

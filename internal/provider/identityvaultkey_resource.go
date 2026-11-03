@@ -68,11 +68,18 @@ func (r *IdentityVaultKeyResource) Schema(ctx context.Context, req resource.Sche
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"directory_id": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `ID of the directory`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"key_size": schema.Int64Attribute{
 				Computed:    true,

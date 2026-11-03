@@ -42,7 +42,7 @@ resource "konnect_identity_group_api_key" "my_identitygroupapikey" {
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
 - `name` (String) Human-readable name of the API key. `null` if the key has no name.
-- `secret` (String) Required if `type` is `imported`. Requires replacement if changed.
+- `secret` (String, Sensitive) Required if `type` is `imported`. Requires replacement if changed.
 
 ### Read-Only
 

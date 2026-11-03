@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -20,6 +21,7 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 	"regexp"
@@ -47,6 +49,7 @@ type AIGatewayPolicyResourceModel struct {
 	Datastores  []tfTypes.AIGatewayDatastoreRef `tfsdk:"datastores"`
 	DisplayName types.String                    `tfsdk:"display_name"`
 	Enabled     types.Bool                      `tfsdk:"enabled"`
+	Expressions map[string]jsontypes.Normalized `tfsdk:"expressions"`
 	GatewayID   types.String                    `tfsdk:"gateway_id"`
 	Global      types.Bool                      `tfsdk:"global"`
 	ID          types.String                    `tfsdk:"id"`
@@ -122,6 +125,16 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 				Optional:    true,
 				Default:     booldefault.StaticBool(true),
 				Description: `Whether the policy is enabled. Default: true`,
+			},
+			"expressions": schema.MapAttribute{
+				Optional:    true,
+				ElementType: jsontypes.NormalizedType{},
+				MarkdownDescription: `Policy config expressions` + "\n" +
+					`` + "\n" +
+					`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+				Validators: []validator.Map{
+					mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+				},
 			},
 			"gateway_id": schema.StringAttribute{
 				Required:    true,

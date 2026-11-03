@@ -71,6 +71,7 @@ func (r *IdentityVaultProviderCredentialResource) Schema(ctx context.Context, re
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
+				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"priority": schema.Int64Attribute{
 				Computed:    true,
@@ -86,6 +87,7 @@ func (r *IdentityVaultProviderCredentialResource) Schema(ctx context.Context, re
 			},
 			"secret": schema.StringAttribute{
 				Optional:    true,
+				Sensitive:   true,
 				Description: `Pre-issued static credential (API key, PAT, etc.). Stored encrypted, never returned in read APIs.`,
 			},
 			"selector": schema.StringAttribute{
@@ -142,6 +144,8 @@ func (r *IdentityVaultProviderCredentialResource) Create(ctx context.Context, re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateVaultProviderCredentialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -171,11 +175,11 @@ func (r *IdentityVaultProviderCredentialResource) Create(ctx context.Context, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.VaultProviderCredential != nil) {
+	if !(res.VaultProviderCredentialShared != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedVaultProviderCredential(ctx, res.VaultProviderCredential)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedVaultProviderCredentialShared(ctx, res.VaultProviderCredentialShared)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -208,6 +212,8 @@ func (r *IdentityVaultProviderCredentialResource) Read(ctx context.Context, req 
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.State)
 
 	request, requestDiags := data.ToOperationsGetVaultProviderCredentialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -263,6 +269,8 @@ func (r *IdentityVaultProviderCredentialResource) Update(ctx context.Context, re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateVaultProviderCredentialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -285,11 +293,11 @@ func (r *IdentityVaultProviderCredentialResource) Update(ctx context.Context, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.VaultProviderCredential != nil) {
+	if !(res.VaultProviderCredentialShared != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedVaultProviderCredential(ctx, res.VaultProviderCredential)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedVaultProviderCredentialShared(ctx, res.VaultProviderCredentialShared)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -322,6 +330,8 @@ func (r *IdentityVaultProviderCredentialResource) Delete(ctx context.Context, re
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.State)
 
 	request, requestDiags := data.ToOperationsDeleteVaultProviderCredentialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)

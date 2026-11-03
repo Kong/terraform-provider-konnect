@@ -33,14 +33,14 @@ resource "konnect_identity_vault_provider_credential" "my_identityvaultproviderc
 ### Optional
 
 - `priority` (Number) Order in which this credential is considered, lowest first. Required with a selector, and must be omitted without one.
-- `secret` (String) Pre-issued static credential (API key, PAT, etc.). Stored encrypted, never returned in read APIs.
+- `secret` (String, Sensitive) Pre-issued static credential (API key, PAT, etc.). Stored encrypted, never returned in read APIs.
 - `selector` (String) CEL expression deciding which callers this credential applies to. Omit to make it the provider's default, which applies to every caller and is considered after all the others.
 
 ### Read-Only
 
 - `created_at` (String)
 - `enrollment_url` (String) URL to complete OAuth consent. Fresh on every get-by-id call; set on create for a shared authorization_code provider. Omitted from list responses.
-- `id` (String) The ID of this resource.
+- `id` (String) Contains a unique identifier used for this resource.
 - `status` (String) "pending" until admin enrollment completes; "active" once the secret exists.
 - `updated_at` (String)
 

@@ -40,7 +40,7 @@ resource "konnect_identity_principal_basic_auth_password" "my_identityprincipalb
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
-- `secret` (String) The password secret value. This is only returned when the password is first created
+- `secret` (String, Sensitive) The password secret value. This is only returned when the password is first created
 and cannot be retrieved again later.
 
 ### Read-Only

@@ -100,7 +100,7 @@ func (r *IdentityGroupMembershipResource) Schema(ctx context.Context, req resour
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `Requires replacement if changed.`,
+						Description: `Contains a unique identifier used for this resource. Requires replacement if changed.`,
 					},
 					"type": schema.StringAttribute{
 						Required: true,

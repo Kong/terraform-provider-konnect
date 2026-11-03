@@ -9,10 +9,7 @@ const (
 	ProviderTemplateNameGithub        ProviderTemplateName = "github"
 	ProviderTemplateNameSlack         ProviderTemplateName = "slack"
 	ProviderTemplateNameStaticSecret  ProviderTemplateName = "static_secret"
-	ProviderTemplateNameAtlassian     ProviderTemplateName = "atlassian"
-	ProviderTemplateNameSnowflake     ProviderTemplateName = "snowflake"
 	ProviderTemplateNameGoogle        ProviderTemplateName = "google"
-	ProviderTemplateNameDatabricks    ProviderTemplateName = "databricks"
 	ProviderTemplateNameAtlassianRovo ProviderTemplateName = "atlassian-rovo"
 	ProviderTemplateNameDatadog       ProviderTemplateName = "datadog"
 	ProviderTemplateNameCustomOauth   ProviderTemplateName = "custom-oauth"
@@ -27,7 +24,7 @@ func (e ProviderTemplateName) ToPointer() *ProviderTemplateName {
 func (e *ProviderTemplateName) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "github", "slack", "static_secret", "atlassian", "snowflake", "google", "databricks", "atlassian-rovo", "datadog", "custom-oauth", "miro":
+		case "github", "slack", "static_secret", "google", "atlassian-rovo", "datadog", "custom-oauth", "miro":
 			return true
 		}
 	}

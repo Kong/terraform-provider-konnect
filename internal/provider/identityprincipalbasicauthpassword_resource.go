@@ -97,7 +97,8 @@ func (r *IdentityPrincipalBasicAuthPasswordResource) Schema(ctx context.Context,
 				Description: `Unique identifier of the principal (UUID format)`,
 			},
 			"secret": schema.StringAttribute{
-				Optional: true,
+				Optional:  true,
+				Sensitive: true,
 				MarkdownDescription: `The password secret value. This is only returned when the password is first created` + "\n" +
 					`and cannot be retrieved again later.`,
 				Validators: []validator.String{
@@ -152,6 +153,8 @@ func (r *IdentityPrincipalBasicAuthPasswordResource) Create(ctx context.Context,
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
 
 	request, requestDiags := data.ToOperationsCreatePasswordRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -220,6 +223,8 @@ func (r *IdentityPrincipalBasicAuthPasswordResource) Read(ctx context.Context, r
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetPasswordRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -273,6 +278,8 @@ func (r *IdentityPrincipalBasicAuthPasswordResource) Update(ctx context.Context,
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
 
 	request, requestDiags := data.ToOperationsReplacePasswordRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -333,6 +340,8 @@ func (r *IdentityPrincipalBasicAuthPasswordResource) Delete(ctx context.Context,
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.State)
 
 	request, requestDiags := data.ToOperationsDeletePasswordRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)

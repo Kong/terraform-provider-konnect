@@ -28,6 +28,10 @@ type CreateAIGatewayPolicyRequest struct {
 	//
 	// **Requires a minimum runtime version of `2.1`**.
 	Condition *string `json:"condition,omitempty"`
+	// Policy config expressions
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Expressions map[string]any `json:"expressions,omitempty"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
 	//
 	// Public labels are intended to store **PUBLIC** metadata.
@@ -102,6 +106,13 @@ func (c *CreateAIGatewayPolicyRequest) GetCondition() *string {
 		return nil
 	}
 	return c.Condition
+}
+
+func (c *CreateAIGatewayPolicyRequest) GetExpressions() map[string]any {
+	if c == nil {
+		return nil
+	}
+	return c.Expressions
 }
 
 func (c *CreateAIGatewayPolicyRequest) GetLabels() map[string]string {

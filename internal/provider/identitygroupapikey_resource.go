@@ -102,7 +102,8 @@ func (r *IdentityGroupAPIKeyResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"secret": schema.StringAttribute{
-				Optional: true,
+				Optional:  true,
+				Sensitive: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
@@ -166,6 +167,8 @@ func (r *IdentityGroupAPIKeyResource) Create(ctx context.Context, req resource.C
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
 
 	request, requestDiags := data.ToOperationsCreateGroupKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -234,6 +237,8 @@ func (r *IdentityGroupAPIKeyResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetGroupKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -287,6 +292,8 @@ func (r *IdentityGroupAPIKeyResource) Update(ctx context.Context, req resource.U
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
 
 	request, requestDiags := data.ToOperationsUpdateGroupKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -347,6 +354,8 @@ func (r *IdentityGroupAPIKeyResource) Delete(ctx context.Context, req resource.D
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.State)
 
 	request, requestDiags := data.ToOperationsDeleteGroupKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)

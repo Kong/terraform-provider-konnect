@@ -36,6 +36,12 @@ func (r *AIGatewayResourceModel) RefreshFromSharedAIGateway(ctx context.Context,
 				r.Labels[key] = types.StringValue(value)
 			}
 		}
+		if len(resp.ManagedBy) > 0 {
+			r.ManagedBy = make(map[string]types.String, len(resp.ManagedBy))
+			for key1, value1 := range resp.ManagedBy {
+				r.ManagedBy[key1] = types.StringValue(value1)
+			}
+		}
 		r.MinRuntimeVersion = types.StringPointerValue(resp.MinRuntimeVersion)
 		r.Name = types.StringValue(resp.Name)
 		r.ProxyUrls = []tfTypes.AIGatewayProxyURL{}
@@ -160,6 +166,13 @@ func (r *AIGatewayResourceModel) ToSharedCreateAIGatewayRequest(ctx context.Cont
 
 		labels[labelsKey] = labelsInst
 	}
+	managedBy := make(map[string]string)
+	for managedByKey := range r.ManagedBy {
+		var managedByInst string
+		managedByInst = r.ManagedBy[managedByKey].ValueString()
+
+		managedBy[managedByKey] = managedByInst
+	}
 	out := shared.CreateAIGatewayRequest{
 		DeploymentType:     deploymentType,
 		MinRuntimeVersion:  minRuntimeVersion,
@@ -169,6 +182,7 @@ func (r *AIGatewayResourceModel) ToSharedCreateAIGatewayRequest(ctx context.Cont
 		Description:        description,
 		ProxyUrls:          proxyUrls,
 		Labels:             labels,
+		ManagedBy:          managedBy,
 	}
 
 	return &out, diags
@@ -225,6 +239,13 @@ func (r *AIGatewayResourceModel) ToSharedUpdateAIGatewayRequest(ctx context.Cont
 
 		labels[labelsKey] = labelsInst
 	}
+	managedBy := make(map[string]string)
+	for managedByKey := range r.ManagedBy {
+		var managedByInst string
+		managedByInst = r.ManagedBy[managedByKey].ValueString()
+
+		managedBy[managedByKey] = managedByInst
+	}
 	out := shared.UpdateAIGatewayRequest{
 		MinRuntimeVersion:  minRuntimeVersion,
 		RuntimeAutoUpgrade: runtimeAutoUpgrade,
@@ -233,6 +254,7 @@ func (r *AIGatewayResourceModel) ToSharedUpdateAIGatewayRequest(ctx context.Cont
 		Description:        description,
 		ProxyUrls:          proxyUrls,
 		Labels:             labels,
+		ManagedBy:          managedBy,
 	}
 
 	return &out, diags
