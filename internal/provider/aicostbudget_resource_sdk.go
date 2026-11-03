@@ -79,6 +79,7 @@ func (r *AICostBudgetResourceModel) RefreshFromSharedAICostBudget(ctx context.Co
 			r.Limit.Window = &tfTypes.Window{}
 			r.Limit.Window.Anchor = types.StringValue(resp.AICostLimitBudget.Window.Anchor)
 			r.Limit.Window.Interval = types.StringValue(resp.AICostLimitBudget.Window.Interval)
+			r.Limit.Window.Type = types.StringValue(string(resp.AICostLimitBudget.Window.Type))
 		}
 	}
 
@@ -122,6 +123,7 @@ func (r *AICostBudgetResourceModel) ToOperationsCreateBudgetRequestBody(ctx cont
 			Filters: filters,
 			Each:    each,
 		}
+		typeVar := shared.AICostLimitBudgetInputType(r.Limit.Window.Type.ValueString())
 		var interval string
 		interval = r.Limit.Window.Interval.ValueString()
 
@@ -129,6 +131,7 @@ func (r *AICostBudgetResourceModel) ToOperationsCreateBudgetRequestBody(ctx cont
 		anchor = r.Limit.Window.Anchor.ValueString()
 
 		window := shared.Window{
+			Type:     typeVar,
 			Interval: interval,
 			Anchor:   anchor,
 		}
@@ -305,6 +308,7 @@ func (r *AICostBudgetResourceModel) ToOperationsReplaceBudgetRequestBody(ctx con
 			Filters: filters,
 			Each:    each,
 		}
+		typeVar := shared.AICostLimitBudgetInputType(r.Limit.Window.Type.ValueString())
 		var interval string
 		interval = r.Limit.Window.Interval.ValueString()
 
@@ -312,6 +316,7 @@ func (r *AICostBudgetResourceModel) ToOperationsReplaceBudgetRequestBody(ctx con
 		anchor = r.Limit.Window.Anchor.ValueString()
 
 		window := shared.Window{
+			Type:     typeVar,
 			Interval: interval,
 			Anchor:   anchor,
 		}

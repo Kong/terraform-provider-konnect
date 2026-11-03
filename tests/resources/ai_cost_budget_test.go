@@ -22,6 +22,7 @@ const (
 				value    = "5000"
 
 				window = {
+					type     = "fixed"
 					interval = "P1M"
 					anchor   = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
 				}
@@ -49,6 +50,7 @@ const (
 				value    = "7500"
 
 				window = {
+					type     = "fixed"
 					interval = "P1M"
 					anchor   = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
 				}
@@ -76,6 +78,7 @@ const (
 				value    = "7500"
 
 				window = {
+					type     = "fixed"
 					interval = "P1D"
 					anchor   = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
 				}
@@ -175,6 +178,7 @@ func TestAICostBudget(t *testing.T) {
 						resource.TestCheckResourceAttr(address, "limit.value", "5000"),
 						resource.TestCheckResourceAttr(address, "limit.scope.each", "model"),
 						resource.TestCheckResourceAttr(address, "limit.window.interval", "P1M"),
+						resource.TestCheckResourceAttr(address, "limit.window.type", "fixed"),
 					),
 				},
 				{
@@ -215,6 +219,7 @@ func TestAICostBudget(t *testing.T) {
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr(address, "limit.window.interval", "P1D"),
+						resource.TestCheckResourceAttr(address, "limit.window.type", "fixed"),
 						resource.TestCheckResourceAttr(address, "limit.name", "tf-test-limit-budget-daily"),
 					),
 				},

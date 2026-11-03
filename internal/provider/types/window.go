@@ -9,4 +9,5 @@ import (
 type Window struct {
 	Anchor   types.String `tfsdk:"anchor"`
 	Interval types.String `tfsdk:"interval"`
+	Type     types.String `tfsdk:"type"`
 }

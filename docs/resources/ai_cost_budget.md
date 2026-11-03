@@ -179,6 +179,7 @@ Not Null
 
 From 1 second to 100 years, in whole milliseconds.
 Not Null
+- `type` (String) The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchor`. Not Null; must be "fixed"
 
 ## Import
 
