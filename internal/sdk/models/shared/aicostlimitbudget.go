@@ -111,7 +111,7 @@ func (e *AICostLimitBudgetPosture) IsExact() bool {
 type AICostLimitBudget struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
-	// A human-readable name for the budget, unique within the organization.
+	// A human-readable name for the budget.
 	Name string `json:"name"`
 	// Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.
 	Labels map[string]*string `json:"labels"`
@@ -130,8 +130,6 @@ type AICostLimitBudget struct {
 	// Always `limit` for a limit budget, which carries its settings in `limit`, `window`, and `posture`.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	effect string `const:"limit" json:"effect"`
-	// The spending limit for each budget window. With `each`, every derived budget gets this limit.
-	Limit AICostMoney `json:"limit"`
 	// The budget window: the period the limit applies to, such as a calendar month. When one window ends, the next starts.
 	Window AICostLimitBudgetWindow `json:"window"`
 	// What the budget declares should happen when spend reaches the limit. Nothing enforces it.
@@ -139,6 +137,10 @@ type AICostLimitBudget struct {
 	// Always `null`, because only an exemption has `validity`.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	validity *string `const:"null" json:"validity"`
+	// The amount in major units of `currency`, as a canonical decimal string such as `4125.5` or `0.004372`: at most 9 fractional digits, no trailing fractional zeros, no exponent, and a leading `-` only when the amount is negative.
+	Value string `json:"value"`
+	// The currency of `value`.
+	Currency AICostCurrency `json:"currency"`
 }
 
 func (a AICostLimitBudget) MarshalJSON() ([]byte, error) {
@@ -146,7 +148,12 @@ func (a AICostLimitBudget) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AICostLimitBudget) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "labels", "scope", "priority", "created_at", "updated_at", "effect", "limit", "window", "posture"}); err != nil {
+	if out, err := utils.RunJQBytes(data, ". + { value: .limit.value, currency: .limit.currency } | del(.limit)"); err != nil {
+		return err
+	} else {
+		data = out
+	}
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "labels", "scope", "priority", "created_at", "updated_at", "effect", "window", "posture", "value", "currency"}); err != nil {
 		return err
 	}
 	return nil
@@ -212,13 +219,6 @@ func (a *AICostLimitBudget) GetEffect() string {
 	return "limit"
 }
 
-func (a *AICostLimitBudget) GetLimit() AICostMoney {
-	if a == nil {
-		return AICostMoney{}
-	}
-	return a.Limit
-}
-
 func (a *AICostLimitBudget) GetWindow() AICostLimitBudgetWindow {
 	if a == nil {
 		return AICostLimitBudgetWindow{}
@@ -235,4 +235,18 @@ func (a *AICostLimitBudget) GetPosture() AICostLimitBudgetPosture {
 
 func (a *AICostLimitBudget) GetValidity() *string {
 	return nil
+}
+
+func (a *AICostLimitBudget) GetValue() string {
+	if a == nil {
+		return ""
+	}
+	return a.Value
+}
+
+func (a *AICostLimitBudget) GetCurrency() AICostCurrency {
+	if a == nil {
+		return AICostCurrency("")
+	}
+	return a.Currency
 }

@@ -7,10 +7,10 @@ import (
 )
 
 type AICostSlackNotificationChannel struct {
-	CreatedAt types.String            `tfsdk:"created_at"`
-	ID        types.String            `tfsdk:"id"`
-	Labels    map[string]types.String `tfsdk:"labels"`
-	Name      types.String            `tfsdk:"name"`
-	Slack     *Slack                  `tfsdk:"slack"`
-	UpdatedAt types.String            `tfsdk:"updated_at"`
+	CreatedAt  types.String            `tfsdk:"created_at"`
+	ID         types.String            `tfsdk:"id"`
+	Labels     map[string]types.String `tfsdk:"labels"`
+	Name       types.String            `tfsdk:"name"`
+	UpdatedAt  types.String            `tfsdk:"updated_at"`
+	WebhookURL types.String            `tfsdk:"webhook_url"`
 }

@@ -47,7 +47,7 @@ resource "konnect_ai_cost_budget" "my_aicostbudget" {
 
 `null` for a budget created before the service recorded creators.
 - `id` (String) Contains a unique identifier used for this resource.
-- `name` (String) A human-readable name for the budget, unique within the organization.
+- `name` (String) A human-readable name for the budget.
 - `posture` (String) What the budget declares should happen when spend reaches the limit. Nothing enforces it.
 - `priority` (Number) The budget's priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don't use it.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
@@ -58,7 +58,7 @@ resource "konnect_ai_cost_budget" "my_aicostbudget" {
 Optional:
 
 - `labels` (Map of String) Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.
-- `name` (String) A human-readable name for the budget, unique within the organization.
+- `name` (String) A human-readable name for the budget.
 
 1 to 255 characters.
 Not Null
@@ -68,8 +68,8 @@ Defaults to `100`.
 Default: 100
 - `scope` (Attributes) The usage the exemption covers.
 
-A replacement can't change it and must repeat it exactly: reordered filters or values count as a change.
-Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--exempt--scope))
+A replacement can change it.
+Not Null (see [below for nested schema](#nestedatt--exempt--scope))
 - `validity` (Attributes) The period the exemption covers, from `from` until `until`. Not Null (see [below for nested schema](#nestedatt--exempt--validity))
 
 Read-Only:
@@ -116,9 +116,9 @@ Not Null
 
 Optional:
 
+- `currency` (String) The currency of `value`. Not Null; must be "USD"
 - `labels` (Map of String) Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.
-- `limit` (Attributes) The spending limit for each budget window. With `each`, every derived budget gets this limit. Not Null (see [below for nested schema](#nestedatt--limit--limit))
-- `name` (String) A human-readable name for the budget, unique within the organization.
+- `name` (String) A human-readable name for the budget.
 
 1 to 255 characters.
 Not Null
@@ -132,12 +132,16 @@ Defaults to `100`.
 Default: 100
 - `scope` (Attributes) The usage the budget covers.
 
-A replacement can't change it and must repeat it exactly: reordered filters or values count as a change.
-Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--limit--scope))
+A replacement can change it, and the change applies to the whole current budget window.
+Not Null (see [below for nested schema](#nestedatt--limit--scope))
+- `value` (String) The amount of the limit in major units of `currency`, as a decimal string such as `5000` or `0.2`.
+
+At most 9 fractional digits, with no sign, exponent, or leading zeros. The service removes trailing fractional zeros, so `12.50` is stored and returned as `12.5`.
+Not Null
 - `window` (Attributes) The budget window: the period the limit applies to, such as a calendar month. When one window ends, the next starts.
 
-A replacement can't change it.
-Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--limit--window))
+A replacement can change it, which can move the current window's start and end.
+Not Null (see [below for nested schema](#nestedatt--limit--window))
 
 Read-Only:
 
@@ -147,18 +151,6 @@ Read-Only:
 `null` for a budget created before the service recorded creators.
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--limit--limit"></a>
-### Nested Schema for `limit.limit`
-
-Optional:
-
-- `currency` (String) The currency of `value`. Not Null; must be "USD"
-- `value` (String) The amount of the limit in major units of `currency`, as a decimal string such as `5000` or `0.2`.
-
-At most 9 fractional digits, with no sign, exponent, or leading zeros. The service removes trailing fractional zeros, so `12.50` is stored and returned as `12.5`.
-Not Null
-
 
 <a id="nestedatt--limit--scope"></a>
 ### Nested Schema for `limit.scope`

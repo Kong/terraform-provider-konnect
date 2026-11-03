@@ -163,7 +163,6 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 	return []func() resource.Resource{
 		NewAICostBudgetResource,
 		NewAICostBudgetNotificationRuleResource,
-		NewAICostExportResource,
 		NewAICostExportScheduleResource,
 		NewAICostNotificationChannelResource,
 		NewAIGatewayResource,

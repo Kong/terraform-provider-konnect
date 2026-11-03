@@ -20,7 +20,6 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/listvalidators"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 	"regexp"
 )
@@ -74,31 +73,6 @@ func (r *AICostNotificationChannelResource) Schema(ctx context.Context, req reso
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
-					"email": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"recipients": schema.ListAttribute{
-								Computed:    true,
-								Optional:    true,
-								ElementType: types.StringType,
-								MarkdownDescription: `The email addresses that receive the channel's messages.` + "\n" +
-									`` + "\n" +
-									`1 to 10 addresses, each an RFC 5322 address of at most 254 characters. Each address can appear only once, ignoring case.` + "\n" +
-									`Not Null`,
-								Validators: []validator.List{
-									speakeasy_listvalidators.NotNull(),
-									listvalidator.SizeAtLeast(1),
-									listvalidator.SizeAtMost(10),
-									listvalidator.UniqueValues(),
-								},
-							},
-						},
-						Description: `Who receives the channel's messages by email. Not Null`,
-						Validators: []validator.Object{
-							speakeasy_objectvalidators.NotNull(),
-						},
-					},
 					"id": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -122,6 +96,21 @@ func (r *AICostNotificationChannelResource) Schema(ctx context.Context, req reso
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 100),
+						},
+					},
+					"recipients": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `The email addresses that receive the channel's messages.` + "\n" +
+							`` + "\n" +
+							`1 to 10 addresses, each an RFC 5322 address of at most 254 characters. Each address can appear only once, ignoring case.` + "\n" +
+							`Not Null`,
+						Validators: []validator.List{
+							speakeasy_listvalidators.NotNull(),
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(10),
+							listvalidator.UniqueValues(),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -188,30 +177,6 @@ func (r *AICostNotificationChannelResource) Schema(ctx context.Context, req reso
 							stringvalidator.UTF8LengthBetween(1, 100),
 						},
 					},
-					"slack": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"webhook_url": schema.StringAttribute{
-								Optional: true,
-								MarkdownDescription: `The Slack incoming webhook URL that receives the channel's messages. The organization creates the webhook in its own Slack workspace.` + "\n" +
-									`` + "\n" +
-									`The URL has the form ` + "`" + `https://hooks.slack.com/services/<workspace ID>/<webhook ID>/<token>` + "`" + `. Each of the 3 parts is nonempty and contains only ASCII letters, digits, ` + "`" + `_` + "`" + `, or ` + "`" + `-` + "`" + `. It has no credentials, port, query, or fragment and is at most 2048 characters long. Slack workflow trigger URLs, under ` + "`" + `/workflows/` + "`" + ` or ` + "`" + `/triggers/` + "`" + `, aren't accepted.` + "\n" +
-									`` + "\n" +
-									`The service never logs the URL. Reads return it with ` + "`" + `<token>` + "`" + ` replaced by ` + "`" + `…` + "`" + `.` + "\n" +
-									`Not Null`,
-								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
-									stringvalidator.UTF8LengthAtMost(2048),
-									stringvalidator.RegexMatches(regexp.MustCompile(`^https://hooks\.slack\.com/services/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+$`), "must match pattern "+regexp.MustCompile(`^https://hooks\.slack\.com/services/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+$`).String()),
-								},
-							},
-						},
-						Description: `The Slack incoming webhook that the channel posts its messages to. Not Null`,
-						Validators: []validator.Object{
-							speakeasy_objectvalidators.NotNull(),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -219,8 +184,23 @@ func (r *AICostNotificationChannelResource) Schema(ctx context.Context, req reso
 						},
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
+					"webhook_url": schema.StringAttribute{
+						Optional:  true,
+						Sensitive: true,
+						MarkdownDescription: `The Slack incoming webhook URL that receives the channel's messages. The organization creates the webhook in its own Slack workspace.` + "\n" +
+							`` + "\n" +
+							`The URL has the form ` + "`" + `https://hooks.slack.com/services/<workspace ID>/<webhook ID>/<token>` + "`" + `. Each of the 3 parts is nonempty and contains only ASCII letters, digits, ` + "`" + `_` + "`" + `, or ` + "`" + `-` + "`" + `. It has no credentials, port, query, or fragment and is at most 2048 characters long. Slack workflow trigger URLs, under ` + "`" + `/workflows/` + "`" + ` or ` + "`" + `/triggers/` + "`" + `, aren't accepted.` + "\n" +
+							`` + "\n" +
+							`The service never logs the URL. Reads return it with ` + "`" + `<token>` + "`" + ` replaced by ` + "`" + `…` + "`" + `.` + "\n" +
+							`Not Null`,
+						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
+							stringvalidator.UTF8LengthAtMost(2048),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^https://hooks\.slack\.com/services/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+$`), "must match pattern "+regexp.MustCompile(`^https://hooks\.slack\.com/services/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+$`).String()),
+						},
+					},
 				},
-				Description: `The body of a request that replaces a Slack channel. Unlike creation, it can omit ` + "`" + `slack.webhook_url` + "`" + ` to keep the stored URL.`,
+				Description: `The body of a request that replaces a Slack channel.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("email"),
@@ -275,6 +255,8 @@ func (r *AICostNotificationChannelResource) Create(ctx context.Context, req reso
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
 
 	request, requestDiags := data.ToOperationsCreateCostNotificationChannelRequestBody(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -336,6 +318,8 @@ func (r *AICostNotificationChannelResource) Read(ctx context.Context, req resour
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetCostNotificationChannelRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -389,6 +373,8 @@ func (r *AICostNotificationChannelResource) Update(ctx context.Context, req reso
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
 
 	request, requestDiags := data.ToOperationsReplaceCostNotificationChannelRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -449,6 +435,8 @@ func (r *AICostNotificationChannelResource) Delete(ctx context.Context, req reso
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.State)
 
 	request, requestDiags := data.ToOperationsDeleteCostNotificationChannelRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)

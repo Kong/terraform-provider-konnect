@@ -42,7 +42,6 @@ func newBudgets(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 //
 // - If the body is invalid, the request fails with `400`.
 // - For a caller whose access covers only particular principals or groups, a `scope` that doesn't lie within those principals and groups fails with `400`, and `invalid_parameters` names `scope`.
-// - If another budget of the organization already has this `name`, the request fails with `409`.
 func (s *Budgets) CreateBudget(ctx context.Context, request operations.CreateBudgetRequestBody, opts ...operations.Option) (*operations.CreateBudgetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -297,27 +296,6 @@ func (s *Budgets) CreateBudget(ctx context.Context, request operations.CreateBud
 			}
 
 			res.ForbiddenError = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	case httpRes.StatusCode == 409:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out shared.ConflictError
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.ConflictError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -612,13 +590,14 @@ func (s *Budgets) GetBudget(ctx context.Context, request operations.GetBudgetReq
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
-// Replaces a budget's `name`, `labels`, and `priority`, with `limit` and `posture` on a limit budget or `validity` on an exemption, and returns the result. The request carries the full budget.
+// Replaces a budget's `name`, `labels`, `priority`, and `scope`, with `limit`, `window`, and `posture` on a limit budget or `validity` on an exemption, and returns the result. The request carries the full budget. The budget keeps its identifier, notification rule, and recorded firings.
 //
 // - An omitted `labels`, `priority`, or `posture` resets to its default.
-// - `effect`, `scope`, and `window` can't change. If the request changes one, it fails with `400` naming the field. Reordered `scope` filters or values count as a change. Redefining them takes a delete and a create.
-// - Every replacement evaluates the budget's notification rule against the stored limit. A threshold that spend in the current budget window has reached fires at once, unless it already fired for that limit. A changed limit therefore lets the thresholds fire again. The evaluation runs after the budget is stored, so if it fails, retrying the same request completes it.
-// - A caller whose access covers only particular principals or groups replaces a budget that lies within its groups alone, or one within its principals and groups that it created. Replacing any other budget it can see fails with `403`.
-// - If another budget of the organization already has this `name`, the request fails with `409`.
+// - `effect` can't change. If the request changes it, it fails with `400` naming `effect`.
+// - A changed `limit`, `scope`, or `window` applies to the whole current budget window.
+// - Removing `scope.each` while the notification rule's message uses `{{entity.field}}` or `{{entity.value}}` fails with `400` naming `scope.each`. Change the message first.
+// - Every replacement evaluates the budget's notification rule against the stored budget. A threshold that spend in the current budget window has reached fires at once, unless it already fired for that window and limit. A changed limit, or a changed window that moves the current window's start, therefore lets the thresholds fire again. A changed scope doesn't, but a changed `each` can fire for derived values new to the window. The evaluation runs after the budget is stored, so if it fails, retrying the same request completes it.
+// - A caller whose access covers only particular principals or groups replaces a budget that lies within its groups alone, or one within its principals and groups that it created. Replacing any other budget it can see fails with `403`. The replacement's `scope` must keep the budget replaceable by the caller, or the request fails with `400` naming `scope`.
 // - The server assigns identifiers, so if the organization has no budget with this identifier that the caller can see, or the identifier isn't a valid UUID, the request fails with `404` and doesn't create one.
 func (s *Budgets) ReplaceBudget(ctx context.Context, request operations.ReplaceBudgetRequest, opts ...operations.Option) (*operations.ReplaceBudgetResponse, error) {
 	o := operations.Options{}
@@ -895,27 +874,6 @@ func (s *Budgets) ReplaceBudget(ctx context.Context, request operations.ReplaceB
 			}
 
 			res.NotFoundError = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	case httpRes.StatusCode == 409:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out shared.ConflictError
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.ConflictError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

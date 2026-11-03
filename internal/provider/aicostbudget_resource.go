@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -112,7 +111,7 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `A human-readable name for the budget, unique within the organization.` + "\n" +
+						MarkdownDescription: `A human-readable name for the budget.` + "\n" +
 							`` + "\n" +
 							`1 to 255 characters.` + "\n" +
 							`Not Null`,
@@ -140,9 +139,6 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 					"scope": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-						},
 						Attributes: map[string]schema.Attribute{
 							"each": schema.StringAttribute{
 								Optional: true,
@@ -150,7 +146,7 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 									`` + "\n" +
 									`A fixed usage field or ` + "`" + `tags.<key>` + "`" + `, or ` + "`" + `null` + "`" + ` for a pooled budget, whose limit applies to all its usage together. An exemption can't use ` + "`" + `each` + "`" + `. If the filters rule out every value of the field, or every branch fixes it to the same value with ` + "`" + `eq` + "`" + `, the request fails with ` + "`" + `400` + "`" + `, because the budget would have nothing to split. Defaults to ` + "`" + `null` + "`" + `.`,
 								Validators: []validator.String{
-									stringvalidator.RegexMatches(regexp.MustCompile(`^(subject_type|subject|subject_id|group|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$`), "must match pattern "+regexp.MustCompile(`^(subject_type|subject|subject_id|group|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$`).String()),
+									stringvalidator.RegexMatches(regexp.MustCompile(`^(subject_type|subject|subject_id|group|team|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$`), "must match pattern "+regexp.MustCompile(`^(subject_type|subject|subject_id|group|team|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$`).String()),
 								},
 							},
 							"filters": schema.StringAttribute{
@@ -168,8 +164,8 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 						},
 						MarkdownDescription: `The usage the exemption covers.` + "\n" +
 							`` + "\n" +
-							`A replacement can't change it and must repeat it exactly: reordered filters or values count as a change.` + "\n" +
-							`Not Null; Requires replacement if changed.`,
+							`A replacement can change it.` + "\n" +
+							`Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -239,6 +235,15 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 							`` + "\n" +
 							`` + "`" + `null` + "`" + ` for a budget created before the service recorded creators.`,
 					},
+					"currency": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The currency of ` + "`" + `value` + "`" + `. Not Null; must be "USD"`,
+						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
+							stringvalidator.OneOf("USD"),
+						},
+					},
 					"id": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -252,41 +257,10 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 						ElementType: types.StringType,
 						Description: `Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.`,
 					},
-					"limit": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"currency": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The currency of ` + "`" + `value` + "`" + `. Not Null; must be "USD"`,
-								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
-									stringvalidator.OneOf("USD"),
-								},
-							},
-							"value": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-								MarkdownDescription: `The amount of the limit in major units of ` + "`" + `currency` + "`" + `, as a decimal string such as ` + "`" + `5000` + "`" + ` or ` + "`" + `0.2` + "`" + `.` + "\n" +
-									`` + "\n" +
-									`At most 9 fractional digits, with no sign, exponent, or leading zeros. The service removes trailing fractional zeros, so ` + "`" + `12.50` + "`" + ` is stored and returned as ` + "`" + `12.5` + "`" + `.` + "\n" +
-									`Not Null`,
-								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
-									stringvalidator.RegexMatches(regexp.MustCompile(`(((((^(0|[1-9]\d*)(\.\d{1,9})?$|^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$)|^(0|[1-9]\d*)(\.\d{1,9})?$)|^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$)|^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$)|^(0|[1-9]\d*)(\.\d{1,9})?$)`), "must match pattern "+regexp.MustCompile(`(((((^(0|[1-9]\d*)(\.\d{1,9})?$|^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$)|^(0|[1-9]\d*)(\.\d{1,9})?$)|^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$)|^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$)|^(0|[1-9]\d*)(\.\d{1,9})?$)`).String()),
-								},
-							},
-						},
-						Description: `The spending limit for each budget window. With ` + "`" + `each` + "`" + `, every derived budget gets this limit. Not Null`,
-						Validators: []validator.Object{
-							speakeasy_objectvalidators.NotNull(),
-						},
-					},
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `A human-readable name for the budget, unique within the organization.` + "\n" +
+						MarkdownDescription: `A human-readable name for the budget.` + "\n" +
 							`` + "\n" +
 							`1 to 255 characters.` + "\n" +
 							`Not Null`,
@@ -319,9 +293,6 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 					"scope": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-						},
 						Attributes: map[string]schema.Attribute{
 							"each": schema.StringAttribute{
 								Optional: true,
@@ -329,7 +300,7 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 									`` + "\n" +
 									`A fixed usage field or ` + "`" + `tags.<key>` + "`" + `, or ` + "`" + `null` + "`" + ` for a pooled budget, whose limit applies to all its usage together. An exemption can't use ` + "`" + `each` + "`" + `. If the filters rule out every value of the field, or every branch fixes it to the same value with ` + "`" + `eq` + "`" + `, the request fails with ` + "`" + `400` + "`" + `, because the budget would have nothing to split. Defaults to ` + "`" + `null` + "`" + `.`,
 								Validators: []validator.String{
-									stringvalidator.RegexMatches(regexp.MustCompile(`^(subject_type|subject|subject_id|group|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$`), "must match pattern "+regexp.MustCompile(`^(subject_type|subject|subject_id|group|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$`).String()),
+									stringvalidator.RegexMatches(regexp.MustCompile(`^(subject_type|subject|subject_id|group|team|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$`), "must match pattern "+regexp.MustCompile(`^(subject_type|subject|subject_id|group|team|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$`).String()),
 								},
 							},
 							"filters": schema.StringAttribute{
@@ -347,8 +318,8 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 						},
 						MarkdownDescription: `The usage the budget covers.` + "\n" +
 							`` + "\n" +
-							`A replacement can't change it and must repeat it exactly: reordered filters or values count as a change.` + "\n" +
-							`Not Null; Requires replacement if changed.`,
+							`A replacement can change it, and the change applies to the whole current budget window.` + "\n" +
+							`Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -360,12 +331,21 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 						},
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
+					"value": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `The amount of the limit in major units of ` + "`" + `currency` + "`" + `, as a decimal string such as ` + "`" + `5000` + "`" + ` or ` + "`" + `0.2` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`At most 9 fractional digits, with no sign, exponent, or leading zeros. The service removes trailing fractional zeros, so ` + "`" + `12.50` + "`" + ` is stored and returned as ` + "`" + `12.5` + "`" + `.` + "\n" +
+							`Not Null`,
+						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
+							stringvalidator.RegexMatches(regexp.MustCompile(`(((((^(0|[1-9]\d*)(\.\d{1,9})?$|^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$)|^(0|[1-9]\d*)(\.\d{1,9})?$)|^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$)|^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$)|^(0|[1-9]\d*)(\.\d{1,9})?$)`), "must match pattern "+regexp.MustCompile(`(((((^(0|[1-9]\d*)(\.\d{1,9})?$|^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$)|^(0|[1-9]\d*)(\.\d{1,9})?$)|^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$)|^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$)|^(0|[1-9]\d*)(\.\d{1,9})?$)`).String()),
+						},
+					},
 					"window": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-						},
 						Attributes: map[string]schema.Attribute{
 							"anchor": schema.StringAttribute{
 								Computed: true,
@@ -393,8 +373,8 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 						},
 						MarkdownDescription: `The budget window: the period the limit applies to, such as a calendar month. When one window ends, the next starts.` + "\n" +
 							`` + "\n" +
-							`A replacement can't change it.` + "\n" +
-							`Not Null; Requires replacement if changed.`,
+							`A replacement can change it, which can move the current window's start and end.` + "\n" +
+							`Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -412,7 +392,7 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("limit"), FieldPath: path.Root("limit").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("exempt"), FieldPath: path.Root("exempt").AtName("name")}}),
 				},
-				Description: `A human-readable name for the budget, unique within the organization.`,
+				Description: `A human-readable name for the budget.`,
 			},
 			"posture": schema.StringAttribute{
 				Computed: true,
@@ -493,13 +473,6 @@ func (r *AICostBudgetResource) Create(ctx context.Context, req resource.CreateRe
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 409 {
-		resp.Diagnostics.AddError(
-			"Resource Already Exists",
-			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
-		)
 		return
 	}
 	if res.StatusCode != 201 {

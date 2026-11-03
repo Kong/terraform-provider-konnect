@@ -8,7 +8,7 @@ import (
 
 // AICostLimitBudgetInputScope - The usage the budget covers.
 //
-// A replacement can't change it and must repeat it exactly: reordered filters or values count as a change.
+// A replacement can change it, and the change applies to the whole current budget window.
 type AICostLimitBudgetInputScope struct {
 	// The filters that select the usage the budget counts. Usage must match every filter. An empty list covers all of the organization's usage.
 	//
@@ -45,44 +45,9 @@ func (a *AICostLimitBudgetInputScope) GetEach() *string {
 	return a.Each
 }
 
-// Limit - The spending limit for each budget window. With `each`, every derived budget gets this limit.
-type Limit struct {
-	// The amount of the limit in major units of `currency`, as a decimal string such as `5000` or `0.2`.
-	//
-	// At most 9 fractional digits, with no sign, exponent, or leading zeros. The service removes trailing fractional zeros, so `12.50` is stored and returned as `12.5`.
-	Value string `json:"value"`
-	// The currency of `value`.
-	Currency AICostCurrency `json:"currency"`
-}
-
-func (l Limit) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(l, "", false)
-}
-
-func (l *Limit) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"value", "currency"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (l *Limit) GetValue() string {
-	if l == nil {
-		return ""
-	}
-	return l.Value
-}
-
-func (l *Limit) GetCurrency() AICostCurrency {
-	if l == nil {
-		return AICostCurrency("")
-	}
-	return l.Currency
-}
-
 // Window - The budget window: the period the limit applies to, such as a calendar month. When one window ends, the next starts.
 //
-// A replacement can't change it.
+// A replacement can change it, which can move the current window's start and end.
 type Window struct {
 	// The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchor`.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
@@ -153,7 +118,7 @@ func (e *Posture) IsExact() bool {
 
 // AICostLimitBudgetInput - The body of a request that creates or replaces a limit budget.
 type AICostLimitBudgetInput struct {
-	// A human-readable name for the budget, unique within the organization.
+	// A human-readable name for the budget.
 	//
 	// 1 to 255 characters.
 	Name   string             `json:"name"`
@@ -164,31 +129,43 @@ type AICostLimitBudgetInput struct {
 	Priority *int64 `default:"100" json:"priority"`
 	// The usage the budget covers.
 	//
-	// A replacement can't change it and must repeat it exactly: reordered filters or values count as a change.
+	// A replacement can change it, and the change applies to the whole current budget window.
 	Scope AICostLimitBudgetInputScope `json:"scope"`
 	// Always `limit` for a limit budget, which carries its settings in `limit`, `window`, and `posture`.
 	//
 	// A replacement can't change it.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	effect string `const:"limit" json:"effect"`
-	// The spending limit for each budget window. With `each`, every derived budget gets this limit.
-	Limit Limit `json:"limit"`
 	// The budget window: the period the limit applies to, such as a calendar month. When one window ends, the next starts.
 	//
-	// A replacement can't change it.
+	// A replacement can change it, which can move the current window's start and end.
 	Window Window `json:"window"`
 	// What the budget declares should happen when spend reaches the limit. Nothing enforces it.
 	//
 	// Defaults to `advisory`.
 	Posture *Posture `default:"advisory" json:"posture"`
+	// The amount of the limit in major units of `currency`, as a decimal string such as `5000` or `0.2`.
+	//
+	// At most 9 fractional digits, with no sign, exponent, or leading zeros. The service removes trailing fractional zeros, so `12.50` is stored and returned as `12.5`.
+	Value string `json:"value"`
+	// The currency of `value`.
+	Currency AICostCurrency `json:"currency"`
 }
 
 func (a AICostLimitBudgetInput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, ".limit = { value: .value, currency: .currency } | del(.value, .currency)")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (a *AICostLimitBudgetInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "scope", "effect", "limit", "window"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "scope", "effect", "window", "value", "currency"}); err != nil {
 		return err
 	}
 	return nil
@@ -226,13 +203,6 @@ func (a *AICostLimitBudgetInput) GetEffect() string {
 	return "limit"
 }
 
-func (a *AICostLimitBudgetInput) GetLimit() Limit {
-	if a == nil {
-		return Limit{}
-	}
-	return a.Limit
-}
-
 func (a *AICostLimitBudgetInput) GetWindow() Window {
 	if a == nil {
 		return Window{}
@@ -245,4 +215,18 @@ func (a *AICostLimitBudgetInput) GetPosture() *Posture {
 		return nil
 	}
 	return a.Posture
+}
+
+func (a *AICostLimitBudgetInput) GetValue() string {
+	if a == nil {
+		return ""
+	}
+	return a.Value
+}
+
+func (a *AICostLimitBudgetInput) GetCurrency() AICostCurrency {
+	if a == nil {
+		return AICostCurrency("")
+	}
+	return a.Currency
 }

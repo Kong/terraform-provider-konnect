@@ -8,7 +8,7 @@ import (
 
 // AICostExemptBudgetInputScope - The usage the exemption covers.
 //
-// A replacement can't change it and must repeat it exactly: reordered filters or values count as a change.
+// A replacement can change it.
 type AICostExemptBudgetInputScope struct {
 	// The filters that select the usage the budget counts. Usage must match every filter. An empty list covers all of the organization's usage.
 	//
@@ -84,7 +84,7 @@ func (v *Validity) GetUntil() string {
 
 // AICostExemptBudgetInput - The body of a request that creates or replaces an exemption.
 type AICostExemptBudgetInput struct {
-	// A human-readable name for the budget, unique within the organization.
+	// A human-readable name for the budget.
 	//
 	// 1 to 255 characters.
 	Name   string             `json:"name"`
@@ -95,7 +95,7 @@ type AICostExemptBudgetInput struct {
 	Priority *int64 `default:"100" json:"priority"`
 	// The usage the exemption covers.
 	//
-	// A replacement can't change it and must repeat it exactly: reordered filters or values count as a change.
+	// A replacement can change it.
 	Scope AICostExemptBudgetInputScope `json:"scope"`
 	// Always `exempt` for an exemption, which carries the period it covers in `validity`.
 	//

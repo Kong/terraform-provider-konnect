@@ -6,32 +6,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// Email - Who receives the channel's messages by email.
-type Email struct {
-	// The email addresses that receive the channel's messages.
-	//
-	// 1 to 10 addresses, each an RFC 5322 address of at most 254 characters. Each address can appear only once, ignoring case.
-	Recipients []string `json:"recipients"`
-}
-
-func (e Email) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(e, "", false)
-}
-
-func (e *Email) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"recipients"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (e *Email) GetRecipients() []string {
-	if e == nil {
-		return []string{}
-	}
-	return e.Recipients
-}
-
 // AICostEmailNotificationChannelInput - The body of a request that creates or replaces an email channel.
 type AICostEmailNotificationChannelInput struct {
 	// A human-readable name for the channel.
@@ -42,16 +16,26 @@ type AICostEmailNotificationChannelInput struct {
 	// Always `email` for an email channel, which carries its settings in `email`.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"email" json:"type"`
-	// Who receives the channel's messages by email.
-	Email Email `json:"email"`
+	// The email addresses that receive the channel's messages.
+	//
+	// 1 to 10 addresses, each an RFC 5322 address of at most 254 characters. Each address can appear only once, ignoring case.
+	Recipients []string `json:"recipients"`
 }
 
 func (a AICostEmailNotificationChannelInput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, ".email = { recipients: .recipients } | del(.recipients)")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (a *AICostEmailNotificationChannelInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "type", "email"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "type", "recipients"}); err != nil {
 		return err
 	}
 	return nil
@@ -75,9 +59,9 @@ func (a *AICostEmailNotificationChannelInput) GetType() string {
 	return "email"
 }
 
-func (a *AICostEmailNotificationChannelInput) GetEmail() Email {
+func (a *AICostEmailNotificationChannelInput) GetRecipients() []string {
 	if a == nil {
-		return Email{}
+		return []string{}
 	}
-	return a.Email
+	return a.Recipients
 }

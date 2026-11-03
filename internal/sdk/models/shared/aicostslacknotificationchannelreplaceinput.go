@@ -6,35 +6,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// AICostSlackNotificationChannelReplaceInputSlack - The Slack incoming webhook that the channel posts its messages to.
-type AICostSlackNotificationChannelReplaceInputSlack struct {
-	// The Slack incoming webhook URL that receives the channel's messages. Because reads never return the full URL, a replacement can omit it, and the channel then keeps its stored URL.
-	//
-	// The URL has the form `https://hooks.slack.com/services/<workspace ID>/<webhook ID>/<token>`. Each of the 3 parts is nonempty and contains only ASCII letters, digits, `_`, or `-`. It has no credentials, port, query, or fragment and is at most 2048 characters long. Slack workflow trigger URLs, under `/workflows/` or `/triggers/`, aren't accepted.
-	//
-	// The service never logs the URL. Reads return it with `<token>` replaced by `…`.
-	WebhookURL *string `default:"null" json:"webhook_url"`
-}
-
-func (a AICostSlackNotificationChannelReplaceInputSlack) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AICostSlackNotificationChannelReplaceInputSlack) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AICostSlackNotificationChannelReplaceInputSlack) GetWebhookURL() *string {
-	if a == nil {
-		return nil
-	}
-	return a.WebhookURL
-}
-
-// AICostSlackNotificationChannelReplaceInput - The body of a request that replaces a Slack channel. Unlike creation, it can omit `slack.webhook_url` to keep the stored URL.
+// AICostSlackNotificationChannelReplaceInput - The body of a request that replaces a Slack channel.
 type AICostSlackNotificationChannelReplaceInput struct {
 	// A human-readable name for the channel.
 	//
@@ -44,16 +16,28 @@ type AICostSlackNotificationChannelReplaceInput struct {
 	// Always `slack` for a Slack channel, which carries its settings in `slack`.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"slack" json:"type"`
-	// The Slack incoming webhook that the channel posts its messages to.
-	Slack AICostSlackNotificationChannelReplaceInputSlack `json:"slack"`
+	// The Slack incoming webhook URL that receives the channel's messages. Because reads never return the full URL, a replacement can omit it, and the channel then keeps its stored URL.
+	//
+	// The URL has the form `https://hooks.slack.com/services/<workspace ID>/<webhook ID>/<token>`. Each of the 3 parts is nonempty and contains only ASCII letters, digits, `_`, or `-`. It has no credentials, port, query, or fragment and is at most 2048 characters long. Slack workflow trigger URLs, under `/workflows/` or `/triggers/`, aren't accepted.
+	//
+	// The service never logs the URL. Reads return it with `<token>` replaced by `…`.
+	WebhookURL *string `default:"null" json:"webhook_url"`
 }
 
 func (a AICostSlackNotificationChannelReplaceInput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, ".slack = ({ webhook_url: .webhook_url } | with_entries(select(.value != null))) | del(.webhook_url)")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (a *AICostSlackNotificationChannelReplaceInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "type", "slack"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "type"}); err != nil {
 		return err
 	}
 	return nil
@@ -77,9 +61,9 @@ func (a *AICostSlackNotificationChannelReplaceInput) GetType() string {
 	return "slack"
 }
 
-func (a *AICostSlackNotificationChannelReplaceInput) GetSlack() AICostSlackNotificationChannelReplaceInputSlack {
+func (a *AICostSlackNotificationChannelReplaceInput) GetWebhookURL() *string {
 	if a == nil {
-		return AICostSlackNotificationChannelReplaceInputSlack{}
+		return nil
 	}
-	return a.Slack
+	return a.WebhookURL
 }

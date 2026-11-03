@@ -7,10 +7,10 @@ import (
 )
 
 type AICostEmailNotificationChannel struct {
-	CreatedAt types.String            `tfsdk:"created_at"`
-	Email     *Email                  `tfsdk:"email"`
-	ID        types.String            `tfsdk:"id"`
-	Labels    map[string]types.String `tfsdk:"labels"`
-	Name      types.String            `tfsdk:"name"`
-	UpdatedAt types.String            `tfsdk:"updated_at"`
+	CreatedAt  types.String            `tfsdk:"created_at"`
+	ID         types.String            `tfsdk:"id"`
+	Labels     map[string]types.String `tfsdk:"labels"`
+	Name       types.String            `tfsdk:"name"`
+	Recipients []types.String          `tfsdk:"recipients"`
+	UpdatedAt  types.String            `tfsdk:"updated_at"`
 }

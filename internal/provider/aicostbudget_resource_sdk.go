@@ -54,6 +54,7 @@ func (r *AICostBudgetResourceModel) RefreshFromSharedAICostBudget(ctx context.Co
 			r.CreatedAt = r.Limit.CreatedAt
 			r.Limit.CreatedBy = types.StringPointerValue(resp.AICostLimitBudget.CreatedBy)
 			r.CreatedBy = r.Limit.CreatedBy
+			r.Limit.Currency = types.StringValue(string(resp.AICostLimitBudget.Currency))
 			r.Limit.ID = types.StringValue(resp.AICostLimitBudget.ID)
 			r.ID = r.Limit.ID
 			if len(resp.AICostLimitBudget.Labels) > 0 {
@@ -62,9 +63,6 @@ func (r *AICostBudgetResourceModel) RefreshFromSharedAICostBudget(ctx context.Co
 					r.Limit.Labels[key1] = types.StringPointerValue(value1)
 				}
 			}
-			r.Limit.Limit = &tfTypes.Limit{}
-			r.Limit.Limit.Currency = types.StringValue(string(resp.AICostLimitBudget.Limit.Currency))
-			r.Limit.Limit.Value = types.StringValue(resp.AICostLimitBudget.Limit.Value)
 			r.Limit.Name = types.StringValue(resp.AICostLimitBudget.Name)
 			r.Name = r.Limit.Name
 			r.Limit.Posture = types.StringValue(string(resp.AICostLimitBudget.Posture))
@@ -77,6 +75,7 @@ func (r *AICostBudgetResourceModel) RefreshFromSharedAICostBudget(ctx context.Co
 			r.Limit.Scope.Filters = jsontypes.NewNormalizedValue(string(filtersResult1))
 			r.Limit.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AICostLimitBudget.UpdatedAt))
 			r.UpdatedAt = r.Limit.UpdatedAt
+			r.Limit.Value = types.StringValue(resp.AICostLimitBudget.Value)
 			r.Limit.Window = &tfTypes.Window{}
 			r.Limit.Window.Anchor = types.StringValue(resp.AICostLimitBudget.Window.Anchor)
 			r.Limit.Window.Interval = types.StringValue(resp.AICostLimitBudget.Window.Interval)
@@ -123,14 +122,6 @@ func (r *AICostBudgetResourceModel) ToOperationsCreateBudgetRequestBody(ctx cont
 			Filters: filters,
 			Each:    each,
 		}
-		var value string
-		value = r.Limit.Limit.Value.ValueString()
-
-		currency := shared.AICostCurrency(r.Limit.Limit.Currency.ValueString())
-		limit := shared.Limit{
-			Value:    value,
-			Currency: currency,
-		}
 		var interval string
 		interval = r.Limit.Window.Interval.ValueString()
 
@@ -147,14 +138,19 @@ func (r *AICostBudgetResourceModel) ToOperationsCreateBudgetRequestBody(ctx cont
 		} else {
 			posture = nil
 		}
+		var value string
+		value = r.Limit.Value.ValueString()
+
+		currency := shared.AICostCurrency(r.Limit.Currency.ValueString())
 		aiCostLimitBudgetInput = &shared.AICostLimitBudgetInput{
 			Name:     name,
 			Labels:   labels,
 			Priority: priority,
 			Scope:    scope,
-			Limit:    limit,
 			Window:   window,
 			Posture:  posture,
+			Value:    value,
+			Currency: currency,
 		}
 	}
 	if aiCostLimitBudgetInput != nil {
@@ -309,14 +305,6 @@ func (r *AICostBudgetResourceModel) ToOperationsReplaceBudgetRequestBody(ctx con
 			Filters: filters,
 			Each:    each,
 		}
-		var value string
-		value = r.Limit.Limit.Value.ValueString()
-
-		currency := shared.AICostCurrency(r.Limit.Limit.Currency.ValueString())
-		limit := shared.Limit{
-			Value:    value,
-			Currency: currency,
-		}
 		var interval string
 		interval = r.Limit.Window.Interval.ValueString()
 
@@ -333,14 +321,19 @@ func (r *AICostBudgetResourceModel) ToOperationsReplaceBudgetRequestBody(ctx con
 		} else {
 			posture = nil
 		}
+		var value string
+		value = r.Limit.Value.ValueString()
+
+		currency := shared.AICostCurrency(r.Limit.Currency.ValueString())
 		aiCostLimitBudgetInput = &shared.AICostLimitBudgetInput{
 			Name:     name,
 			Labels:   labels,
 			Priority: priority,
 			Scope:    scope,
-			Limit:    limit,
 			Window:   window,
 			Posture:  posture,
+			Value:    value,
+			Currency: currency,
 		}
 	}
 	if aiCostLimitBudgetInput != nil {

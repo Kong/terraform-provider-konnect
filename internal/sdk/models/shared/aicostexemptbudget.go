@@ -81,7 +81,7 @@ func (a *AICostExemptBudgetValidity) GetUntil() string {
 type AICostExemptBudget struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
-	// A human-readable name for the budget, unique within the organization.
+	// A human-readable name for the budget.
 	Name string `json:"name"`
 	// Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.
 	Labels map[string]*string `json:"labels"`

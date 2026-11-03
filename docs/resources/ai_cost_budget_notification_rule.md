@@ -14,7 +14,7 @@ AICostBudgetNotificationRule Resource
 
 ```terraform
 resource "konnect_ai_cost_budget_notification_rule" "my_aicostbudgetnotificationrule" {
-  budget_id = "fc085564-33b2-47d5-9bc0-a0a7d4deb834"
+  budget_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   channels = [
     {
       id = "8c219a7a-8116-4d1a-a1d5-98945f0141e4"
@@ -64,7 +64,7 @@ At most 10 channels, each listed once. Reads return them ordered by channel name
 - `{{period.end}}`: when the budget window ends and the budget resets.
 - `{{period.remaining}}`: how long is left in the budget window when the alert is sent, in its largest whole unit, such as `8 days` or `12 minutes`. Under a minute, it's `less than a minute`, and after the window ends, `no time`.
 - `{{entity.field}}`: the `each` field as a noun, such as `group`, `user` for `subject`, or `env tag` for `tags.env`.
-- `{{entity.value}}`: the value whose derived budget crossed the threshold. A Kong Identity principal or a consumer shows as its display name when the service can resolve it. Any other value shows as it is.
+- `{{entity.value}}`: the value whose derived budget crossed the threshold. A Kong Identity principal or a consumer shows as its display name when the service can resolve it. Any other value, such as a Kong Identity group or team, shows as it is.
 
 `{{entity.field}}` and `{{entity.value}}` work only on a budget with `each`. Defaults to `null`. (see [below for nested schema](#nestedatt--message))
 
@@ -122,12 +122,12 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 ```terraform
 import {
   to = konnect_ai_cost_budget_notification_rule.my_konnect_ai_cost_budget_notification_rule
-  id = "..."
+  id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
 }
 ```
 
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_ai_cost_budget_notification_rule.my_konnect_ai_cost_budget_notification_rule "..."
+terraform import konnect_ai_cost_budget_notification_rule.my_konnect_ai_cost_budget_notification_rule "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
 ```

@@ -7,32 +7,6 @@ import (
 	"time"
 )
 
-// AICostEmailNotificationChannelEmail - Who receives the channel's messages by email.
-type AICostEmailNotificationChannelEmail struct {
-	// The email addresses that receive the channel's messages.
-	//
-	// 1 to 10 addresses, each an RFC 5322 address of at most 254 characters. Each address can appear only once, ignoring case.
-	Recipients []string `json:"recipients"`
-}
-
-func (a AICostEmailNotificationChannelEmail) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AICostEmailNotificationChannelEmail) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"recipients"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AICostEmailNotificationChannelEmail) GetRecipients() []string {
-	if a == nil {
-		return []string{}
-	}
-	return a.Recipients
-}
-
 // AICostEmailNotificationChannel - A notification channel that emails each message to its recipients through Konnect's email service.
 type AICostEmailNotificationChannel struct {
 	// Contains a unique identifier used for this resource.
@@ -48,8 +22,10 @@ type AICostEmailNotificationChannel struct {
 	// Always `email` for an email channel, which carries its settings in `email`.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"email" json:"type"`
-	// Who receives the channel's messages by email.
-	Email AICostEmailNotificationChannelEmail `json:"email"`
+	// The email addresses that receive the channel's messages.
+	//
+	// 1 to 10 addresses, each an RFC 5322 address of at most 254 characters. Each address can appear only once, ignoring case.
+	Recipients []string `json:"recipients"`
 }
 
 func (a AICostEmailNotificationChannel) MarshalJSON() ([]byte, error) {
@@ -57,7 +33,12 @@ func (a AICostEmailNotificationChannel) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AICostEmailNotificationChannel) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "labels", "created_at", "updated_at", "type", "email"}); err != nil {
+	if out, err := utils.RunJQBytes(data, ". + { recipients: .email.recipients } | del(.email)"); err != nil {
+		return err
+	} else {
+		data = out
+	}
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "labels", "created_at", "updated_at", "type", "recipients"}); err != nil {
 		return err
 	}
 	return nil
@@ -102,9 +83,9 @@ func (a *AICostEmailNotificationChannel) GetType() string {
 	return "email"
 }
 
-func (a *AICostEmailNotificationChannel) GetEmail() AICostEmailNotificationChannelEmail {
+func (a *AICostEmailNotificationChannel) GetRecipients() []string {
 	if a == nil {
-		return AICostEmailNotificationChannelEmail{}
+		return []string{}
 	}
-	return a.Email
+	return a.Recipients
 }

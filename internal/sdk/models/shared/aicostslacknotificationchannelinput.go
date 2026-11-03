@@ -6,34 +6,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// The Slack incoming webhook that the channel posts its messages to.
-type Slack struct {
-	// The Slack incoming webhook URL that receives the channel's messages. The organization creates the webhook in its own Slack workspace.
-	//
-	// The URL has the form `https://hooks.slack.com/services/<workspace ID>/<webhook ID>/<token>`. Each of the 3 parts is nonempty and contains only ASCII letters, digits, `_`, or `-`. It has no credentials, port, query, or fragment and is at most 2048 characters long. Slack workflow trigger URLs, under `/workflows/` or `/triggers/`, aren't accepted.
-	//
-	// The service never logs the URL. Reads return it with `<token>` replaced by `…`.
-	WebhookURL string `json:"webhook_url"`
-}
-
-func (s Slack) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
-}
-
-func (s *Slack) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"webhook_url"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (s *Slack) GetWebhookURL() string {
-	if s == nil {
-		return ""
-	}
-	return s.WebhookURL
-}
-
 // AICostSlackNotificationChannelInput - The body of a request that creates a Slack channel.
 type AICostSlackNotificationChannelInput struct {
 	// A human-readable name for the channel.
@@ -44,16 +16,28 @@ type AICostSlackNotificationChannelInput struct {
 	// Always `slack` for a Slack channel, which carries its settings in `slack`.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"slack" json:"type"`
-	// The Slack incoming webhook that the channel posts its messages to.
-	Slack Slack `json:"slack"`
+	// The Slack incoming webhook URL that receives the channel's messages. The organization creates the webhook in its own Slack workspace.
+	//
+	// The URL has the form `https://hooks.slack.com/services/<workspace ID>/<webhook ID>/<token>`. Each of the 3 parts is nonempty and contains only ASCII letters, digits, `_`, or `-`. It has no credentials, port, query, or fragment and is at most 2048 characters long. Slack workflow trigger URLs, under `/workflows/` or `/triggers/`, aren't accepted.
+	//
+	// The service never logs the URL. Reads return it with `<token>` replaced by `…`.
+	WebhookURL string `json:"webhook_url"`
 }
 
 func (a AICostSlackNotificationChannelInput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, ".slack = ({ webhook_url: .webhook_url } | with_entries(select(.value != null))) | del(.webhook_url)")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (a *AICostSlackNotificationChannelInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "type", "slack"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "type", "webhook_url"}); err != nil {
 		return err
 	}
 	return nil
@@ -77,9 +61,9 @@ func (a *AICostSlackNotificationChannelInput) GetType() string {
 	return "slack"
 }
 
-func (a *AICostSlackNotificationChannelInput) GetSlack() Slack {
+func (a *AICostSlackNotificationChannelInput) GetWebhookURL() string {
 	if a == nil {
-		return Slack{}
+		return ""
 	}
-	return a.Slack
+	return a.WebhookURL
 }

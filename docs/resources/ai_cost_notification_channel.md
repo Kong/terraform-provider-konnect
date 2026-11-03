@@ -18,10 +18,8 @@ resource "konnect_ai_cost_notification_channel" "my_aicostnotificationchannel" {
     labels = {
       key = "value"
     }
-    name = "...my_name..."
-    slack = {
-      webhook_url = "https://blue-smog.biz"
-    }
+    name        = "...my_name..."
+    webhook_url = "https://hooks.slack.com/services/T0000000/B0000000/XXXXXXXXXXXXXXXXXXXXXXXX"
   }
 }
 ```
@@ -32,7 +30,7 @@ resource "konnect_ai_cost_notification_channel" "my_aicostnotificationchannel" {
 ### Optional
 
 - `email` (Attributes) The body of a request that creates or replaces an email channel. (see [below for nested schema](#nestedatt--email))
-- `slack` (Attributes) The body of a request that replaces a Slack channel. Unlike creation, it can omit `slack.webhook_url` to keep the stored URL. (see [below for nested schema](#nestedatt--slack))
+- `slack` (Attributes) The body of a request that replaces a Slack channel. (see [below for nested schema](#nestedatt--slack))
 
 ### Read-Only
 
@@ -46,11 +44,14 @@ resource "konnect_ai_cost_notification_channel" "my_aicostnotificationchannel" {
 
 Optional:
 
-- `email` (Attributes) Who receives the channel's messages by email. Not Null (see [below for nested schema](#nestedatt--email--email))
 - `labels` (Map of String) Key-value metadata on the channel. The channel list can filter by label.
 - `name` (String) A human-readable name for the channel.
 
 1 to 100 characters after the server removes leading and trailing whitespace. Several channels can share a name.
+Not Null
+- `recipients` (List of String) The email addresses that receive the channel's messages.
+
+1 to 10 addresses, each an RFC 5322 address of at most 254 characters. Each address can appear only once, ignoring case.
 Not Null
 
 Read-Only:
@@ -58,17 +59,6 @@ Read-Only:
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--email--email"></a>
-### Nested Schema for `email.email`
-
-Optional:
-
-- `recipients` (List of String) The email addresses that receive the channel's messages.
-
-1 to 10 addresses, each an RFC 5322 address of at most 254 characters. Each address can appear only once, ignoring case.
-Not Null
-
 
 
 <a id="nestedatt--slack"></a>
@@ -81,25 +71,18 @@ Optional:
 
 1 to 100 characters after the server removes leading and trailing whitespace. Several channels can share a name.
 Not Null
-- `slack` (Attributes) The Slack incoming webhook that the channel posts its messages to. Not Null (see [below for nested schema](#nestedatt--slack--slack))
+- `webhook_url` (String, Sensitive) The Slack incoming webhook URL that receives the channel's messages. The organization creates the webhook in its own Slack workspace.
+
+The URL has the form `https://hooks.slack.com/services/<workspace ID>/<webhook ID>/<token>`. Each of the 3 parts is nonempty and contains only ASCII letters, digits, `_`, or `-`. It has no credentials, port, query, or fragment and is at most 2048 characters long. Slack workflow trigger URLs, under `/workflows/` or `/triggers/`, aren't accepted.
+
+The service never logs the URL. Reads return it with `<token>` replaced by `…`.
+Not Null
 
 Read-Only:
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--slack--slack"></a>
-### Nested Schema for `slack.slack`
-
-Optional:
-
-- `webhook_url` (String) The Slack incoming webhook URL that receives the channel's messages. The organization creates the webhook in its own Slack workspace.
-
-The URL has the form `https://hooks.slack.com/services/<workspace ID>/<webhook ID>/<token>`. Each of the 3 parts is nonempty and contains only ASCII letters, digits, `_`, or `-`. It has no credentials, port, query, or fragment and is at most 2048 characters long. Slack workflow trigger URLs, under `/workflows/` or `/triggers/`, aren't accepted.
-
-The service never logs the URL. Reads return it with `<token>` replaced by `…`.
-Not Null
 
 ## Import
 

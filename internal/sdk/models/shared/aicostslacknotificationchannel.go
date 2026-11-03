@@ -7,21 +7,6 @@ import (
 	"time"
 )
 
-// AICostSlackNotificationChannelSlack - The Slack incoming webhook that the channel posts its messages to.
-type AICostSlackNotificationChannelSlack struct {
-}
-
-func (a AICostSlackNotificationChannelSlack) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AICostSlackNotificationChannelSlack) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
 // AICostSlackNotificationChannel - A notification channel that posts each message to a Slack incoming webhook the organization created in its own workspace.
 type AICostSlackNotificationChannel struct {
 	// Contains a unique identifier used for this resource.
@@ -37,8 +22,6 @@ type AICostSlackNotificationChannel struct {
 	// Always `slack` for a Slack channel, which carries its settings in `slack`.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"slack" json:"type"`
-	// The Slack incoming webhook that the channel posts its messages to.
-	Slack AICostSlackNotificationChannelSlack `json:"slack"`
 }
 
 func (a AICostSlackNotificationChannel) MarshalJSON() ([]byte, error) {
@@ -46,7 +29,7 @@ func (a AICostSlackNotificationChannel) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AICostSlackNotificationChannel) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "labels", "created_at", "updated_at", "type", "slack"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "labels", "created_at", "updated_at", "type"}); err != nil {
 		return err
 	}
 	return nil
@@ -89,11 +72,4 @@ func (a *AICostSlackNotificationChannel) GetUpdatedAt() time.Time {
 
 func (a *AICostSlackNotificationChannel) GetType() string {
 	return "slack"
-}
-
-func (a *AICostSlackNotificationChannel) GetSlack() AICostSlackNotificationChannelSlack {
-	if a == nil {
-		return AICostSlackNotificationChannelSlack{}
-	}
-	return a.Slack
 }

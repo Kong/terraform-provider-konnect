@@ -20,11 +20,6 @@ func (r *AICostNotificationChannelResourceModel) RefreshFromSharedAICostNotifica
 			r.Email = &tfTypes.AICostEmailNotificationChannel{}
 			r.Email.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AICostEmailNotificationChannel.CreatedAt))
 			r.CreatedAt = r.Email.CreatedAt
-			r.Email.Email = &tfTypes.Email{}
-			r.Email.Email.Recipients = make([]types.String, 0, len(resp.AICostEmailNotificationChannel.Email.Recipients))
-			for _, v := range resp.AICostEmailNotificationChannel.Email.Recipients {
-				r.Email.Email.Recipients = append(r.Email.Email.Recipients, types.StringValue(v))
-			}
 			r.Email.ID = types.StringValue(resp.AICostEmailNotificationChannel.ID)
 			r.ID = r.Email.ID
 			if len(resp.AICostEmailNotificationChannel.Labels) > 0 {
@@ -35,6 +30,10 @@ func (r *AICostNotificationChannelResourceModel) RefreshFromSharedAICostNotifica
 			}
 			r.Email.Name = types.StringValue(resp.AICostEmailNotificationChannel.Name)
 			r.Name = r.Email.Name
+			r.Email.Recipients = make([]types.String, 0, len(resp.AICostEmailNotificationChannel.Recipients))
+			for _, v := range resp.AICostEmailNotificationChannel.Recipients {
+				r.Email.Recipients = append(r.Email.Recipients, types.StringValue(v))
+			}
 			r.Email.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AICostEmailNotificationChannel.UpdatedAt))
 			r.UpdatedAt = r.Email.UpdatedAt
 		}
@@ -53,16 +52,11 @@ func (r *AICostNotificationChannelResourceModel) RefreshFromSharedAICostNotifica
 			}
 			r.Slack.Name = types.StringValue(resp.AICostSlackNotificationChannel.Name)
 			r.Name = r.Slack.Name
-			var slackPriorData1 *tfTypes.Slack
-			if slackPriorData != nil {
-				slackPriorData1 = slackPriorData.Slack
-			}
-			r.Slack.Slack = &tfTypes.Slack{}
-			if slackPriorData1 != nil {
-				r.Slack.Slack.WebhookURL = slackPriorData1.WebhookURL
-			}
 			r.Slack.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AICostSlackNotificationChannel.UpdatedAt))
 			r.UpdatedAt = r.Slack.UpdatedAt
+			if slackPriorData != nil {
+				r.Slack.WebhookURL = slackPriorData.WebhookURL
+			}
 		}
 	}
 
@@ -88,17 +82,14 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsCreateCostNotificat
 			}
 			labels[labelsKey] = labelsInst
 		}
-		recipients := make([]string, 0, len(r.Email.Email.Recipients))
-		for recipientsIndex := range r.Email.Email.Recipients {
-			recipients = append(recipients, r.Email.Email.Recipients[recipientsIndex].ValueString())
-		}
-		email := shared.Email{
-			Recipients: recipients,
+		recipients := make([]string, 0, len(r.Email.Recipients))
+		for recipientsIndex := range r.Email.Recipients {
+			recipients = append(recipients, r.Email.Recipients[recipientsIndex].ValueString())
 		}
 		aiCostEmailNotificationChannelInput = &shared.AICostEmailNotificationChannelInput{
-			Name:   name,
-			Labels: labels,
-			Email:  email,
+			Name:       name,
+			Labels:     labels,
+			Recipients: recipients,
 		}
 	}
 	if aiCostEmailNotificationChannelInput != nil {
@@ -122,15 +113,12 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsCreateCostNotificat
 			labels1[labelsKey1] = labelsInst1
 		}
 		var webhookURL string
-		webhookURL = r.Slack.Slack.WebhookURL.ValueString()
+		webhookURL = r.Slack.WebhookURL.ValueString()
 
-		slack := shared.Slack{
-			WebhookURL: webhookURL,
-		}
 		aiCostSlackNotificationChannelInput = &shared.AICostSlackNotificationChannelInput{
-			Name:   name1,
-			Labels: labels1,
-			Slack:  slack,
+			Name:       name1,
+			Labels:     labels1,
+			WebhookURL: webhookURL,
 		}
 	}
 	if aiCostSlackNotificationChannelInput != nil {
@@ -208,17 +196,14 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsReplaceCostNotifica
 			}
 			labels[labelsKey] = labelsInst
 		}
-		recipients := make([]string, 0, len(r.Email.Email.Recipients))
-		for recipientsIndex := range r.Email.Email.Recipients {
-			recipients = append(recipients, r.Email.Email.Recipients[recipientsIndex].ValueString())
-		}
-		email := shared.Email{
-			Recipients: recipients,
+		recipients := make([]string, 0, len(r.Email.Recipients))
+		for recipientsIndex := range r.Email.Recipients {
+			recipients = append(recipients, r.Email.Recipients[recipientsIndex].ValueString())
 		}
 		aiCostEmailNotificationChannelInput = &shared.AICostEmailNotificationChannelInput{
-			Name:   name,
-			Labels: labels,
-			Email:  email,
+			Name:       name,
+			Labels:     labels,
+			Recipients: recipients,
 		}
 	}
 	if aiCostEmailNotificationChannelInput != nil {
@@ -242,18 +227,15 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsReplaceCostNotifica
 			labels1[labelsKey1] = labelsInst1
 		}
 		webhookURL := new(string)
-		if !r.Slack.Slack.WebhookURL.IsUnknown() && !r.Slack.Slack.WebhookURL.IsNull() {
-			*webhookURL = r.Slack.Slack.WebhookURL.ValueString()
+		if !r.Slack.WebhookURL.IsUnknown() && !r.Slack.WebhookURL.IsNull() {
+			*webhookURL = r.Slack.WebhookURL.ValueString()
 		} else {
 			webhookURL = nil
 		}
-		slack := shared.AICostSlackNotificationChannelReplaceInputSlack{
-			WebhookURL: webhookURL,
-		}
 		aiCostSlackNotificationChannelReplaceInput = &shared.AICostSlackNotificationChannelReplaceInput{
-			Name:   name1,
-			Labels: labels1,
-			Slack:  slack,
+			Name:       name1,
+			Labels:     labels1,
+			WebhookURL: webhookURL,
 		}
 	}
 	if aiCostSlackNotificationChannelReplaceInput != nil {

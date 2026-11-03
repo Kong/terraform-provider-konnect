@@ -48,7 +48,7 @@ func (c *Channels) GetID() string {
 // - `{{period.end}}`: when the budget window ends and the budget resets.
 // - `{{period.remaining}}`: how long is left in the budget window when the alert is sent, in its largest whole unit, such as `8 days` or `12 minutes`. Under a minute, it's `less than a minute`, and after the window ends, `no time`.
 // - `{{entity.field}}`: the `each` field as a noun, such as `group`, `user` for `subject`, or `env tag` for `tags.env`.
-// - `{{entity.value}}`: the value whose derived budget crossed the threshold. A Kong Identity principal or a consumer shows as its display name when the service can resolve it. Any other value shows as it is.
+// - `{{entity.value}}`: the value whose derived budget crossed the threshold. A Kong Identity principal or a consumer shows as its display name when the service can resolve it. Any other value, such as a Kong Identity group or team, shows as it is.
 //
 // `{{entity.field}}` and `{{entity.value}}` work only on a budget with `each`. Defaults to `null`.
 type Message struct {
@@ -113,7 +113,7 @@ type ReplaceNotificationRuleRequestBody struct {
 	// - `{{period.end}}`: when the budget window ends and the budget resets.
 	// - `{{period.remaining}}`: how long is left in the budget window when the alert is sent, in its largest whole unit, such as `8 days` or `12 minutes`. Under a minute, it's `less than a minute`, and after the window ends, `no time`.
 	// - `{{entity.field}}`: the `each` field as a noun, such as `group`, `user` for `subject`, or `env tag` for `tags.env`.
-	// - `{{entity.value}}`: the value whose derived budget crossed the threshold. A Kong Identity principal or a consumer shows as its display name when the service can resolve it. Any other value shows as it is.
+	// - `{{entity.value}}`: the value whose derived budget crossed the threshold. A Kong Identity principal or a consumer shows as its display name when the service can resolve it. Any other value, such as a Kong Identity group or team, shows as it is.
 	//
 	// `{{entity.field}}` and `{{entity.value}}` work only on a budget with `each`. Defaults to `null`.
 	Message *Message `json:"message"`

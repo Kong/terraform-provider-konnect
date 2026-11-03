@@ -145,7 +145,7 @@ type ReplaceBudgetResponse struct {
 	RawResponse *http.Response
 	// The budget after the replacement.
 	AICostBudget *shared.AICostBudget
-	// The request body is invalid. `invalid_parameters` names each invalid field. A change to `effect`, `scope`, or `window` counts as invalid.
+	// The request body is invalid. `invalid_parameters` names each invalid field. A change to `effect`, or a scoped caller's `scope` outside what it manages, counts as invalid.
 	BadRequestError *shared.BadRequestError
 	// The request has no valid access token. The token is missing, malformed, or expired, or it fails another check, and the response doesn't say which.
 	UnauthorizedError *shared.UnauthorizedError
@@ -153,8 +153,6 @@ type ReplaceBudgetResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// The organization has no budget with this identifier that the caller can see.
 	NotFoundError *shared.NotFoundError
-	// Another budget of the organization already has this `name`.
-	ConflictError *shared.ConflictError
 }
 
 func (r ReplaceBudgetResponse) MarshalJSON() ([]byte, error) {
@@ -236,11 +234,4 @@ func (r *ReplaceBudgetResponse) GetNotFoundError() *shared.NotFoundError {
 		return nil
 	}
 	return r.NotFoundError
-}
-
-func (r *ReplaceBudgetResponse) GetConflictError() *shared.ConflictError {
-	if r == nil {
-		return nil
-	}
-	return r.ConflictError
 }

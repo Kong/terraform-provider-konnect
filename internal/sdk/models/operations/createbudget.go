@@ -112,8 +112,6 @@ type CreateBudgetResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// The access token is valid, but its principal lacks the permission this operation requires. For an operation on one resource, the response doesn't reveal whether that resource exists.
 	ForbiddenError *shared.ForbiddenError
-	// Another budget of the organization already has this `name`.
-	ConflictError *shared.ConflictError
 }
 
 func (c CreateBudgetResponse) MarshalJSON() ([]byte, error) {
@@ -188,11 +186,4 @@ func (c *CreateBudgetResponse) GetForbiddenError() *shared.ForbiddenError {
 		return nil
 	}
 	return c.ForbiddenError
-}
-
-func (c *CreateBudgetResponse) GetConflictError() *shared.ConflictError {
-	if c == nil {
-		return nil
-	}
-	return c.ConflictError
 }

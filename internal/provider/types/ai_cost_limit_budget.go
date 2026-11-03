@@ -9,13 +9,14 @@ import (
 type AICostLimitBudget struct {
 	CreatedAt types.String                  `tfsdk:"created_at"`
 	CreatedBy types.String                  `tfsdk:"created_by"`
+	Currency  types.String                  `tfsdk:"currency"`
 	ID        types.String                  `tfsdk:"id"`
 	Labels    map[string]types.String       `tfsdk:"labels"`
-	Limit     *Limit                        `tfsdk:"limit"`
 	Name      types.String                  `tfsdk:"name"`
 	Posture   types.String                  `tfsdk:"posture"`
 	Priority  types.Int64                   `tfsdk:"priority"`
 	Scope     *AICostExemptBudgetInputScope `tfsdk:"scope"`
 	UpdatedAt types.String                  `tfsdk:"updated_at"`
+	Value     types.String                  `tfsdk:"value"`
 	Window    *Window                       `tfsdk:"window"`
 }
