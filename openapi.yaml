@@ -183,7 +183,6 @@ paths:
 
         - If the body is invalid, the request fails with `400`.
         - For a caller whose access covers only particular principals or groups, a `scope` that doesn't lie within those principals and groups fails with `400`, and `invalid_parameters` names `scope`.
-        - If another budget of the organization already has this `name`, the request fails with `409`.
       requestBody:
         required: true
         content:
@@ -222,12 +221,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ForbiddenError'
-        '409':
-          description: Another budget of the organization already has this `name`.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ConflictError'
       tags:
         - budgets
   '/v1/ai-cost-management/budgets/{budgetId}':
@@ -288,13 +281,14 @@ paths:
         **Pre-release Endpoint**
         This endpoint is currently in beta and is subject to change.
 
-        Replaces a budget's `name`, `labels`, and `priority`, with `limit` and `posture` on a limit budget or `validity` on an exemption, and returns the result. The request carries the full budget.
+        Replaces a budget's `name`, `labels`, `priority`, and `scope`, with `limit`, `window`, and `posture` on a limit budget or `validity` on an exemption, and returns the result. The request carries the full budget. The budget keeps its identifier, notification rule, and recorded firings.
 
         - An omitted `labels`, `priority`, or `posture` resets to its default.
-        - `effect`, `scope`, and `window` can't change. If the request changes one, it fails with `400` naming the field. Reordered `scope` filters or values count as a change. Redefining them takes a delete and a create.
-        - Every replacement evaluates the budget's notification rule against the stored limit. A threshold that spend in the current budget window has reached fires at once, unless it already fired for that limit. A changed limit therefore lets the thresholds fire again. The evaluation runs after the budget is stored, so if it fails, retrying the same request completes it.
-        - A caller whose access covers only particular principals or groups replaces a budget that lies within its groups alone, or one within its principals and groups that it created. Replacing any other budget it can see fails with `403`.
-        - If another budget of the organization already has this `name`, the request fails with `409`.
+        - `effect` can't change. If the request changes it, it fails with `400` naming `effect`.
+        - A changed `limit`, `scope`, or `window` applies to the whole current budget window.
+        - Removing `scope.each` while the notification rule's message uses `{{entity.field}}` or `{{entity.value}}` fails with `400` naming `scope.each`. Change the message first.
+        - Every replacement evaluates the budget's notification rule against the stored budget. A threshold that spend in the current budget window has reached fires at once, unless it already fired for that window and limit. A changed limit, or a changed window that moves the current window's start, therefore lets the thresholds fire again. A changed scope doesn't, but a changed `each` can fire for derived values new to the window. The evaluation runs after the budget is stored, so if it fails, retrying the same request completes it.
+        - A caller whose access covers only particular principals or groups replaces a budget that lies within its groups alone, or one within its principals and groups that it created. Replacing any other budget it can see fails with `403`. The replacement's `scope` must keep the budget replaceable by the caller, or the request fails with `400` naming `scope`.
         - The server assigns identifiers, so if the organization has no budget with this identifier that the caller can see, or the identifier isn't a valid UUID, the request fails with `404` and doesn't create one.
       parameters:
         - name: budgetId
@@ -326,7 +320,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/AICostBudget'
         '400':
-          description: 'The request body is invalid. `invalid_parameters` names each invalid field. A change to `effect`, `scope`, or `window` counts as invalid.'
+          description: 'The request body is invalid. `invalid_parameters` names each invalid field. A change to `effect`, or a scoped caller''s `scope` outside what it manages, counts as invalid.'
           content:
             application/problem+json:
               schema:
@@ -349,12 +343,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/NotFoundError'
-        '409':
-          description: Another budget of the organization already has this `name`.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ConflictError'
       tags:
         - budgets
     delete:
@@ -424,6 +412,7 @@ paths:
           schema:
             type: string
             format: uuid
+          example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
           x-speakeasy-param-force-new: true
       responses:
         '200':
@@ -484,6 +473,7 @@ paths:
           schema:
             type: string
             format: uuid
+          example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
           x-speakeasy-param-force-new: true
       requestBody:
         required: true
@@ -543,7 +533,7 @@ paths:
                     - `{{period.end}}`: when the budget window ends and the budget resets.
                     - `{{period.remaining}}`: how long is left in the budget window when the alert is sent, in its largest whole unit, such as `8 days` or `12 minutes`. Under a minute, it's `less than a minute`, and after the window ends, `no time`.
                     - `{{entity.field}}`: the `each` field as a noun, such as `group`, `user` for `subject`, or `env tag` for `tags.env`.
-                    - `{{entity.value}}`: the value whose derived budget crossed the threshold. A Kong Identity principal or a consumer shows as its display name when the service can resolve it. Any other value shows as it is.
+                    - `{{entity.value}}`: the value whose derived budget crossed the threshold. A Kong Identity principal or a consumer shows as its display name when the service can resolve it. Any other value, such as a Kong Identity group or team, shows as it is.
 
                     `{{entity.field}}` and `{{entity.value}}` work only on a budget with `each`. Defaults to `null`.
                   type: object
@@ -667,6 +657,7 @@ paths:
           schema:
             type: string
             format: uuid
+          example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
           x-speakeasy-param-force-new: true
       responses:
         '204':
@@ -905,156 +896,6 @@ paths:
                 $ref: '#/components/schemas/ForbiddenError'
         '404':
           description: The organization has no export schedule with this identifier.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-      tags:
-        - exports
-  /v1/ai-cost-management/exports:
-    post:
-      x-speakeasy-entity-operation:
-        terraform-resource: AICostExport#create
-        terraform-datasource: null
-      operationId: create-export
-      summary: Create an export
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Queues a one-time export and returns it with `status` set to `pending`. The server assigns the identifier.
-
-        The export runs asynchronously. A client reads it again with `GET /v1/ai-cost-management/exports/{exportId}` to follow its progress. Once it succeeds, the client requests a download URL for one file at a time with `POST /v1/ai-cost-management/exports/{exportId}/downloads`.
-
-        If the body is invalid, the request fails with `400`, including when `to` is later than the end of the day in progress in `time_zone`. That check on `to` runs last: a body with other errors gets those errors first, and the corrected body then gets the error on `to`.
-
-        If the organization already has 20 `pending` one-time exports, the request fails with `409`. Exports that a schedule creates don't count toward that limit.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AICostExportInput'
-      responses:
-        '202':
-          description: 'The queued export, with `status` set to `pending`.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AICostExport'
-        '400':
-          description: The request body is invalid. `invalid_parameters` names each invalid field.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-        '401':
-          description: 'The request has no valid access token. The token is missing, malformed, or expired, or it fails another check, and the response doesn''t say which.'
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '403':
-          description: 'The access token is valid, but its principal lacks the permission this operation requires. For an operation on one resource, the response doesn''t reveal whether that resource exists.'
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ForbiddenError'
-        '409':
-          description: The organization already has 20 `pending` one-time exports. Another can be created once one of them starts or is deleted.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ConflictError'
-      tags:
-        - exports
-  '/v1/ai-cost-management/exports/{exportId}':
-    get:
-      x-speakeasy-entity-operation:
-        terraform-resource: AICostExport#read
-        terraform-datasource: null
-      operationId: get-export
-      summary: Get an export
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Returns one of the organization's exports. If the organization has no export with this identifier, or the identifier isn't a valid UUID, the request fails with `404`.
-      parameters:
-        - name: exportId
-          in: path
-          description: The `id` of the export.
-          required: true
-          schema:
-            type: string
-            format: uuid
-          x-speakeasy-match: id
-      responses:
-        '200':
-          description: The export.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AICostExport'
-        '401':
-          description: 'The request has no valid access token. The token is missing, malformed, or expired, or it fails another check, and the response doesn''t say which.'
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '403':
-          description: 'The access token is valid, but its principal lacks the permission this operation requires. For an operation on one resource, the response doesn''t reveal whether that resource exists.'
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ForbiddenError'
-        '404':
-          description: The organization has no export with this identifier.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-      tags:
-        - exports
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-resource: AICostExport#delete
-        terraform-datasource: null
-      operationId: delete-export
-      summary: Delete an export
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Deletes an export and its files before it responds, so the files can't be downloaded afterwards. Deleting a `pending` or `running` export cancels it.
-
-        If the files can't be removed, the request fails with `500` and the export remains, so a retry deletes both. If the organization has no export with this identifier, or the identifier isn't a valid UUID, the request fails with `404`. This includes deleting the same export again.
-      parameters:
-        - name: exportId
-          in: path
-          description: The `id` of the export.
-          required: true
-          schema:
-            type: string
-            format: uuid
-          x-speakeasy-match: id
-      responses:
-        '204':
-          description: The export and its files were deleted.
-        '401':
-          description: 'The request has no valid access token. The token is missing, malformed, or expired, or it fails another check, and the response doesn''t say which.'
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '403':
-          description: 'The access token is valid, but its principal lacks the permission this operation requires. For an operation on one resource, the response doesn''t reveal whether that resource exists.'
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ForbiddenError'
-        '404':
-          description: The organization has no export with this identifier.
           content:
             application/problem+json:
               schema:
@@ -59465,6 +59306,34 @@ components:
       title: AIGatewayTokenVaultEnrollmentProtection
       x-min-runtime-version: '2.3'
       x-speakeasy-param-computed: false
+    AIGatewayTokenVaultCredentialManager:
+      description: |-
+        Serves the self-service enrollment UI through which end users authorize the upstream providers
+        this auth strategy authenticates against. Omit `token_vault` entirely to serve no such UI.
+
+        Requires a `token-vault` Datastore reference in `datastores`; enabling the credential manager
+        without one is rejected.
+
+        **Requires a minimum runtime version of `2.3`**.
+      type: object
+      properties:
+        enable_credential_manager:
+          description: Whether the self-service enrollment UI is served for this auth strategy.
+          type: boolean
+          default: false
+        storage:
+          description: |
+            Read-only. The directory and encryption key versions this entity's credentials are stored
+            with, resolved from the `token-vault` Datastore referenced in `datastores`; change them on
+            the Datastore.
+          allOf:
+            - $ref: '#/components/schemas/TokenVaultDatastoreConfig'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      title: AIGatewayTokenVaultCredentialManager
+      x-min-runtime-version: '2.3'
+      x-speakeasy-param-computed: false
     AIGatewayRedisAWSAuthentication:
       description: AWS specific configs for connecting to a Cloud Provider's redis instance.
       type: object
@@ -64480,24 +64349,23 @@ components:
       maxProperties: 5
       title: ManagedByUpdate
       writeOnly: true
-    AICostMoney:
-      description: |-
-        An amount of money, such as `{"value": "0.004372", "currency": "USD"}`.
-
-        `value` is a decimal string so that it stays exact in JSON parsers that read numbers as floating point.
-      type: object
-      properties:
-        value:
-          description: 'The amount in major units of `currency`, as a canonical decimal string such as `4125.5` or `0.004372`: at most 9 fractional digits, no trailing fractional zeros, no exponent, and a leading `-` only when the amount is negative.'
-          type: string
-          pattern: '^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$'
-        currency:
-          description: The currency of `value`.
-          allOf:
-            - $ref: '#/components/schemas/AICostCurrency'
-      required:
-        - value
-        - currency
+    ExpiresAtNullable:
+      description: An ISO-8601 timestamp representation of entity expiration date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      default: null
+      nullable: true
+      x-speakeasy-param-computed: false
+    ExpiresAtWritable:
+      description: An ISO-8601 timestamp representation of entity expiration date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      default: null
+      nullable: true
+      title: ExpiresAt
+      x-speakeasy-param-computed: false
     AICostCurrency:
       description: An ISO 4217 currency code. `USD` is the only supported currency.
       type: string
@@ -64523,7 +64391,7 @@ components:
         id:
           $ref: '#/components/schemas/UUID'
         name:
-          description: 'A human-readable name for the budget, unique within the organization.'
+          description: A human-readable name for the budget.
           type: string
         labels:
           description: Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.
@@ -64548,7 +64416,7 @@ components:
               type: string
               default: null
               nullable: true
-              pattern: '^(subject_type|subject|subject_id|group|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$'
+              pattern: '^(subject_type|subject|subject_id|group|team|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$'
               x-speakeasy-param-computed: false
           required:
             - filters
@@ -64576,10 +64444,6 @@ components:
           description: 'Always `limit` for a limit budget, which carries its settings in `limit`, `window`, and `posture`.'
           type: string
           const: limit
-        limit:
-          description: 'The spending limit for each budget window. With `each`, every derived budget gets this limit.'
-          allOf:
-            - $ref: '#/components/schemas/AICostMoney'
         window:
           description: 'The budget window: the period the limit applies to, such as a calendar month. When one window ends, the next starts.'
           type: object
@@ -64612,6 +64476,14 @@ components:
           enum:
             - null
           nullable: true
+        value:
+          description: 'The amount in major units of `currency`, as a canonical decimal string such as `4125.5` or `0.004372`: at most 9 fractional digits, no trailing fractional zeros, no exponent, and a leading `-` only when the amount is negative.'
+          type: string
+          pattern: '^(?:0|-?(?:[1-9]\d*(?:\.\d{0,8}[1-9])?|0\.\d{0,8}[1-9]))$'
+        currency:
+          description: The currency of `value`.
+          allOf:
+            - $ref: '#/components/schemas/AICostCurrency'
       required:
         - id
         - name
@@ -64622,10 +64494,13 @@ components:
         - created_at
         - updated_at
         - effect
-        - limit
+        - value
+        - currency
         - window
         - posture
         - validity
+      x-speakeasy-transform-from-api:
+        jq: '. + {value: .limit.value, currency: .limit.currency} | del(.limit)'
     AICostBudgetScopeFilter:
       description: 'One filter in a budget scope: a predicate on one usage field, or a group that combines filters with `and` or `or`.'
       discriminator:
@@ -64681,7 +64556,7 @@ components:
             - $ref: '#/components/schemas/AICostBudgetScopeValueOperator'
         value:
           description: |-
-            The value to compare the field with. For `subject` or `group`, a complete subject or group reference, such as `principal/{uuid}`.
+            The value to compare the field with. For `subject`, `group`, or `team`, a complete subject, group, or team reference, such as `principal/{uuid}`.
 
             Must not be empty.
           type: string
@@ -64699,6 +64574,7 @@ components:
         - `subject_id`: the subject's identifier without its type, which pools equal identifiers across identity systems.
         - `subject_type`: the subject's identity system: `principal`, `consumer`, or `oidc`.
         - `group`: the usage's group references. Usage can carry several groups. `eq` and `in` match when any of them matches. `neq` and `nin` match only usage with at least one group, and exclude it when any of its groups matches.
+        - `team`: the usage's Kong Identity team references, with the membership rules of `group`.
         - `model`: the model that the provider reports as served.
         - `provider`: the provider that served the invocation.
         - `request_mode`: how the invocation was served: `stream`, `oneshot`, or `realtime`.
@@ -64710,6 +64586,7 @@ components:
         - subject
         - subject_id
         - group
+        - team
         - model
         - provider
         - request_mode
@@ -64722,7 +64599,7 @@ components:
         - `neq`: the field has a value, and it isn't this one.
         - `contains`: the field's value contains this text, ignoring case.
 
-        `subject` and `group` don't take `contains`.
+        `subject`, `group`, and `team` don't take `contains`.
       type: string
       enum:
         - eq
@@ -64745,7 +64622,7 @@ components:
             - $ref: '#/components/schemas/AICostBudgetScopeListOperator'
         value:
           description: |-
-            The values to compare the field with. For `subject` or `group`, complete subject or group references, such as `principal/{uuid}`.
+            The values to compare the field with. For `subject`, `group`, or `team`, complete subject, group, or team references, such as `principal/{uuid}`.
 
             1 to 100 values, none of them empty.
           type: array
@@ -64767,7 +64644,7 @@ components:
         - `nin`: the field has a value, and it's none of these.
         - `ocontains`: the field's value contains any of these texts, ignoring case.
 
-        `subject` and `group` don't take `ocontains`.
+        `subject`, `group`, and `team` don't take `ocontains`.
       type: string
       enum:
         - in
@@ -64864,7 +64741,7 @@ components:
         id:
           $ref: '#/components/schemas/UUID'
         name:
-          description: 'A human-readable name for the budget, unique within the organization.'
+          description: A human-readable name for the budget.
           type: string
         labels:
           description: Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.
@@ -64889,7 +64766,7 @@ components:
               type: string
               default: null
               nullable: true
-              pattern: '^(subject_type|subject|subject_id|group|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$'
+              pattern: '^(subject_type|subject|subject_id|group|team|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$'
               x-speakeasy-param-computed: false
           required:
             - filters
@@ -64973,6 +64850,7 @@ components:
           description: 'The `id` of the budget, which the budget operations take as `budgetId`.'
           type: string
           format: uuid
+      additionalProperties: false
       required:
         - id
     AICostNotificationRule:
@@ -65086,26 +64964,19 @@ components:
           description: 'Always `email` for an email channel, which carries its settings in `email`.'
           type: string
           const: email
-        email:
-          description: Who receives the channel's messages by email.
-          type: object
-          additionalProperties: false
-          properties:
-            recipients:
-              description: |-
-                The email addresses that receive the channel's messages.
+        recipients:
+          description: |-
+            The email addresses that receive the channel's messages.
 
-                1 to 10 addresses, each an RFC 5322 address of at most 254 characters. Each address can appear only once, ignoring case.
-              type: array
-              items:
-                type: string
-                maxLength: 254
-                format: email
-              maxItems: 10
-              minItems: 1
-              uniqueItems: true
-          required:
-            - recipients
+            1 to 10 addresses, each an RFC 5322 address of at most 254 characters. Each address can appear only once, ignoring case.
+          type: array
+          items:
+            type: string
+            maxLength: 254
+            format: email
+          maxItems: 10
+          minItems: 1
+          uniqueItems: true
       additionalProperties: false
       required:
         - id
@@ -65114,7 +64985,9 @@ components:
         - created_at
         - updated_at
         - type
-        - email
+        - recipients
+      x-speakeasy-transform-from-api:
+        jq: '. + {recipients: .email.recipients} | del(.email)'
     AICostSlackNotificationChannel:
       description: A notification channel that posts each message to a Slack incoming webhook the organization created in its own workspace.
       type: object
@@ -65136,10 +65009,6 @@ components:
           description: 'Always `slack` for a Slack channel, which carries its settings in `slack`.'
           type: string
           const: slack
-        slack:
-          description: The Slack incoming webhook that the channel posts its messages to.
-          type: object
-          additionalProperties: false
       additionalProperties: false
       required:
         - id
@@ -65148,191 +65017,11 @@ components:
         - created_at
         - updated_at
         - type
-        - slack
-    AICostExport:
-      allOf:
-        - type: object
-          properties:
-            id:
-              $ref: '#/components/schemas/UUID'
-            dataset:
-              description: The data the export holds.
-              allOf:
-                - $ref: '#/components/schemas/AICostExportDataset'
-            focus:
-              description: |-
-                The FOCUS options of the export, with defaults applied.
-
-                `null` unless `dataset` is `focus`.
-              allOf:
-                - $ref: '#/components/schemas/AICostFocusOptions'
-            format:
-              description: The file format of the export's data files.
-              allOf:
-                - $ref: '#/components/schemas/AICostExportFormat'
-            compression:
-              description: 'How the export''s data files are compressed. Together with `format`, it sets the files'' extension and content type.'
-              allOf:
-                - $ref: '#/components/schemas/AICostExportCompression'
-            from:
-              description: 'The start of the range, inclusive, as an RFC 3339 timestamp in UTC. The export holds the events whose `time` is at or after `from`.'
-              type: string
-              format: date-time
-            to:
-              description: 'The end of the range, exclusive, as an RFC 3339 timestamp in UTC. The export holds the events whose `time` is before `to`.'
-              type: string
-              format: date-time
-            time_zone:
-              description: 'The IANA time zone that decides where each file''s period starts: a day for a `usage_events` export, or a calendar month for a `focus` export. For a `focus` export, it also decides where the charge and billing periods start.'
-              type: string
-              format: iana-time-zone
-            filters:
-              description: 'The filters that select the exported events. `{}` for none.'
-              type: object
-              additionalProperties: {}
-              x-speakeasy-type-override: any
-            schedule:
-              description: |-
-                The schedule that created the export.
-
-                `null` for a one-time export, and once the schedule is deleted.
-              type: object
-              default: null
-              nullable: true
-              properties:
-                id:
-                  description: 'The identifier of the schedule that created the export, which the export schedule operations take as `scheduleId`.'
-                  type: string
-                  format: uuid
-              required:
-                - id
-              x-speakeasy-param-computed: false
-            labels:
-              description: 'Key-value metadata on the export, set when it''s created, or copied from the schedule that created it. The export list can filter by label. Labels don''t change which events the export holds.'
-              allOf:
-                - $ref: '#/components/schemas/Labels'
-            status:
-              description: 'Where the export is in its lifecycle. A client reads the export again with `GET /v1/ai-cost-management/exports/{exportId}` to follow its progress.'
-              allOf:
-                - $ref: '#/components/schemas/AICostExportStatus'
-            failure_reason:
-              description: |-
-                Why the export failed. `query_limit_exceeded` means that reading the events took more time or memory than one export may use, so an export with a shorter range or narrower filters can succeed, and a `focus` export can also name fewer `tag_keys` or use `day` for `charge_period`. `attempts_exhausted` means that every attempt failed for a reason that a later attempt could overcome, such as an outage, so the same export created later can succeed. A schedule doesn't create a failed export again.
-
-                The set of reasons can grow, so a client treats a reason it doesn't know as a general failure. `null` unless `status` is `failed`.
-              type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            record_count:
-              description: |-
-                The number of records across all data files.
-
-                `null` until the export succeeds.
-              type: integer
-              default: null
-              minimum: 0
-              nullable: true
-              x-speakeasy-param-computed: false
-            data_read_at:
-              description: |-
-                When the successful attempt began reading the stored events, as an RFC 3339 timestamp in UTC. An event stored after this time can be missing from the files. Comparing the `data_read_at` and `record_count` of 2 exports of the same range and filters shows whether they differ.
-
-                `null` until the export succeeds.
-              type: string
-              format: date-time
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            files:
-              description: |-
-                The data files, in date order. A `usage_events` export has one file for each day of the range in `time_zone`, and a `focus` export has one for each calendar month. The first and last files can cover part of their period, and a period without matching events still has a file, with no records. The list doesn't include `manifest.json`.
-
-                `[]` until the export succeeds.
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    description: 'The file''s name, which the download operation takes as `file`. A `usage_events` file is named by its day as `YYYY-MM-DD`, and a `focus` file by its month as `YYYY-MM`, both in the export''s `time_zone`. The extension that `format` and `compression` set follows, as in `2026-09-01.parquet` or `2026-09.csv.gz`.'
-                    type: string
-                  record_count:
-                    description: The number of records in the file.
-                    type: integer
-                    minimum: 0
-                  size_bytes:
-                    description: 'The size of the file as downloaded, in bytes.'
-                    type: integer
-                    minimum: 0
-                  sha256:
-                    description: |-
-                      The SHA-256 digest of the file as downloaded. A client checks a download by comparing its size and digest with `size_bytes` and `sha256`.
-
-                      64 lowercase hexadecimal digits.
-                    type: string
-                    pattern: '^[0-9a-f]{64}$'
-                required:
-                  - name
-                  - record_count
-                  - size_bytes
-                  - sha256
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-            started_at:
-              description: |-
-                When the first attempt started, as an RFC 3339 timestamp in UTC.
-
-                `null` while the export is `pending`.
-              type: string
-              format: date-time
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            finished_at:
-              description: |-
-                When the export succeeded or failed, as an RFC 3339 timestamp in UTC.
-
-                `null` until then.
-              type: string
-              format: date-time
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            expires_at:
-              $ref: '#/components/schemas/ExpiresAtNullable'
-          required:
-            - id
-            - dataset
-            - focus
-            - format
-            - compression
-            - from
-            - to
-            - time_zone
-            - filters
-            - schedule
-            - labels
-            - status
-            - failure_reason
-            - record_count
-            - data_read_at
-            - files
-            - created_at
-            - updated_at
-            - started_at
-            - finished_at
-            - expires_at
-          description: |-
-            An export copies the organization's stored usage events in a time range into files to download. It runs asynchronously: `status` follows its progress, and once it succeeds, `files` lists the data files, which can be downloaded until `expires_at`.
-
-            After creation, only an export's status and results change. A client creates a one-time export, and an export schedule creates one export of each of its periods.
     AICostExportDataset:
       description: |-
         The data an export holds, which also decides how its files divide the range.
 
-        `usage_events` has one row per stored usage event, with the fields that `GET /v1/ai-cost-management/events` returns for an event, and one file for each day of the range. `focus` holds the AI usage as FinOps FOCUS cost-and-usage data, with one file for each calendar month. Each `focus` row sums the events of one charge period that share a provider, model, region, subject, application, list of groups, and values of the named tag keys.
+        `usage_events` has one row per stored usage event, with the fields that `GET /v1/ai-cost-management/events` returns for an event, and one file for each day of the range. `focus` holds the AI usage as FinOps FOCUS cost-and-usage data, with one file for each calendar month. Each `focus` row sums the events of one charge period that share a provider, model, region, subject, application, list of groups, list of teams, and values of the named tag keys.
       type: string
       enum:
         - usage_events
@@ -65413,23 +65102,6 @@ components:
         - none
         - gzip
         - zstd
-      x-speakeasy-unknown-values: allow
-    AICostExportStatus:
-      description: |-
-        Where an export is in its lifecycle. An export moves from `pending` to `running`, and then to `succeeded` or `failed`:
-
-        - `pending`: the export waits to run. Only one export per organization runs at a time, and the others wait as `pending`.
-        - `running`: an attempt has started, and the export hasn't finished. When an attempt fails and another follows, the export stays `running` in between.
-        - `succeeded`: the files can be downloaded until `expires_at`, 30 days after the export finishes.
-        - `failed`: the export stopped without files, and `failure_reason` says why.
-        - `expired`: the export succeeded, but `expires_at` has passed, so its files can't be downloaded. The export keeps its `files` list and its other results.
-      type: string
-      enum:
-        - pending
-        - running
-        - succeeded
-        - failed
-        - expired
       x-speakeasy-unknown-values: allow
     AICostExportSchedule:
       allOf:
@@ -65641,7 +65313,7 @@ components:
       description: |-
         A condition on one usage field. `op` selects the comparison and the shape of `value`.
 
-        Usage without a value for the field matches only `nexists`. A `subject` or `group` predicate takes only `eq`, `neq`, `in`, `nin`, `exists`, and `nexists`. Its values are complete references: a subject is `principal/{uuid}`, `consumer/{uuid}`, or `oidc/{sub}`, and a group is `principal/{uuid}`, `consumer_group/{uuid}`, or `oidc/{group}`. `subject_id` matches a subject's identifier without its type.
+        Usage without a value for the field matches only `nexists`. A `subject`, `group`, or `team` predicate takes only `eq`, `neq`, `in`, `nin`, `exists`, and `nexists`. Its values are complete references: a subject is `principal/{uuid}`, `consumer/{uuid}`, or `oidc/{sub}`, a group is `principal/{uuid}`, `consumer_group/{uuid}`, or `oidc/{group}`, and a team is `principal/{uuid}`. `subject_id` matches a subject's identifier without its type.
       discriminator:
         propertyName: op
         mapping:
@@ -65674,7 +65346,7 @@ components:
             - $ref: '#/components/schemas/AICostBudgetScopeListOperator'
         value:
           description: |-
-            The values to compare the field with. For `subject` or `group`, complete subject or group references, such as `principal/{uuid}`.
+            The values to compare the field with. For `subject`, `group`, or `team`, complete subject, group, or team references, such as `principal/{uuid}`.
 
             1 to 100 values, none of them empty.
           type: array
@@ -65704,7 +65376,7 @@ components:
             - $ref: '#/components/schemas/AICostBudgetScopeValueOperator'
         value:
           description: |-
-            The value to compare the field with. For `subject` or `group`, a complete subject or group reference, such as `principal/{uuid}`.
+            The value to compare the field with. For `subject`, `group`, or `team`, a complete subject, group, or team reference, such as `principal/{uuid}`.
 
             Must not be empty.
           type: string
@@ -65734,39 +65406,34 @@ components:
           description: 'Always `email` for an email channel, which carries its settings in `email`.'
           type: string
           const: email
-        email:
-          description: Who receives the channel's messages by email.
-          type: object
-          additionalProperties: false
-          properties:
-            recipients:
-              description: |-
-                The email addresses that receive the channel's messages.
+        recipients:
+          description: |-
+            The email addresses that receive the channel's messages.
 
-                1 to 10 addresses, each an RFC 5322 address of at most 254 characters. Each address can appear only once, ignoring case.
-              type: array
-              items:
-                type: string
-                maxLength: 254
-                format: email
-                pattern: '^(?:[A-Za-z0-9_''+\-]+\.)*[A-Za-z0-9_''+\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$'
-              maxItems: 10
-              minItems: 1
-              uniqueItems: true
-          required:
-            - recipients
+            1 to 10 addresses, each an RFC 5322 address of at most 254 characters. Each address can appear only once, ignoring case.
+          type: array
+          items:
+            type: string
+            maxLength: 254
+            format: email
+            pattern: '^(?:[A-Za-z0-9_''+\-]+\.)*[A-Za-z0-9_''+\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$'
+          maxItems: 10
+          minItems: 1
+          uniqueItems: true
       additionalProperties: false
       required:
         - name
         - type
-        - email
+        - recipients
+      x-speakeasy-transform-to-api:
+        jq: '.email = {recipients: .recipients} | del(.recipients)'
     AICostExemptBudgetInput:
       description: The body of a request that creates or replaces an exemption.
       type: object
       properties:
         name:
           description: |-
-            A human-readable name for the budget, unique within the organization.
+            A human-readable name for the budget.
 
             1 to 255 characters.
           type: string
@@ -65789,7 +65456,7 @@ components:
           description: |-
             The usage the exemption covers.
 
-            A replacement can't change it and must repeat it exactly: reordered filters or values count as a change.
+            A replacement can change it.
           type: object
           additionalProperties: false
           properties:
@@ -65813,11 +65480,10 @@ components:
               type: string
               default: null
               nullable: true
-              pattern: '^(subject_type|subject|subject_id|group|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$'
+              pattern: '^(subject_type|subject|subject_id|group|team|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$'
               x-speakeasy-param-computed: false
           required:
             - filters
-          x-speakeasy-param-force-new: true
         effect:
           description: |-
             Always `exempt` for an exemption, which carries the period it covers in `validity`.
@@ -65853,81 +65519,6 @@ components:
         - scope
         - effect
         - validity
-    AICostExportInput:
-      allOf:
-        - type: object
-          properties:
-            dataset:
-              description: The data the export holds.
-              allOf:
-                - $ref: '#/components/schemas/AICostExportDataset'
-            focus:
-              description: |-
-                The FOCUS options of a `focus` export.
-
-                Required when `dataset` is `focus`, and isn't accepted for any other dataset.
-              allOf:
-                - $ref: '#/components/schemas/AICostFocusOptionsInput'
-            format:
-              description: The file format of the data files.
-              allOf:
-                - $ref: '#/components/schemas/AICostExportFormat'
-            compression:
-              description: |-
-                How the data files are compressed.
-
-                `none` or `gzip` for `csv`, and `zstd` for `parquet`.
-              allOf:
-                - $ref: '#/components/schemas/AICostExportCompression'
-            from:
-              description: |-
-                The start of the range, inclusive, as an RFC 3339 timestamp. The export holds the events whose `time` is at or after `from`.
-
-                At most 9 fractional-second digits.
-              type: string
-              format: date-time
-              pattern: '^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$'
-            to:
-              description: |-
-                The end of the range, exclusive, as an RFC 3339 timestamp. The export holds the events whose `time` is before `to`.
-
-                At most 9 fractional-second digits. It must be:
-
-                - after `from`.
-                - at most 13 calendar months after `from`, counted in `time_zone`.
-                - no later than the end of the day in progress in `time_zone` when the request arrives, so a range can include the day in progress.
-              type: string
-              format: date-time
-              pattern: '^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$'
-            time_zone:
-              description: |-
-                The IANA time zone that decides where each file's period starts: a day for a `usage_events` export, or a calendar month for a `focus` export. For a `focus` export, it also decides where the charge and billing periods start.
-
-                An IANA time zone name as the time zone database spells it, such as `Europe/Budapest`. Offsets such as `+02:00` aren't accepted. Defaults to `UTC`.
-              type: string
-              format: iana-time-zone
-              default: UTC
-            filters:
-              description: |-
-                Filters that select the events to export, with the same fields, operators, and shape as the `filters` of `POST /v1/ai-cost-management/events/query`. Every filter must match.
-
-                Defaults to `{}`.
-              type: object
-              default: {}
-              additionalProperties: {}
-              x-speakeasy-type-override: any
-            labels:
-              default: {}
-              allOf:
-                - $ref: '#/components/schemas/Labels'
-          required:
-            - dataset
-            - format
-            - compression
-            - from
-            - to
-          additionalProperties: false
-          description: 'The body of a request that creates a one-time export: the dataset, the file format and compression, the time range, and optional filters and labels. The labels can''t change after creation.'
     AICostExportScheduleInput:
       allOf:
         - type: object
@@ -66047,7 +65638,7 @@ components:
       properties:
         name:
           description: |-
-            A human-readable name for the budget, unique within the organization.
+            A human-readable name for the budget.
 
             1 to 255 characters.
           type: string
@@ -66070,7 +65661,7 @@ components:
           description: |-
             The usage the budget covers.
 
-            A replacement can't change it and must repeat it exactly: reordered filters or values count as a change.
+            A replacement can change it, and the change applies to the whole current budget window.
           type: object
           additionalProperties: false
           properties:
@@ -66094,11 +65685,10 @@ components:
               type: string
               default: null
               nullable: true
-              pattern: '^(subject_type|subject|subject_id|group|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$'
+              pattern: '^(subject_type|subject|subject_id|group|team|model|provider|request_mode|tags\.[a-z0-9._-]{1,128})$'
               x-speakeasy-param-computed: false
           required:
             - filters
-          x-speakeasy-param-force-new: true
         effect:
           description: |-
             Always `limit` for a limit budget, which carries its settings in `limit`, `window`, and `posture`.
@@ -66106,30 +65696,11 @@ components:
             A replacement can't change it.
           type: string
           const: limit
-        limit:
-          description: 'The spending limit for each budget window. With `each`, every derived budget gets this limit.'
-          type: object
-          additionalProperties: false
-          properties:
-            value:
-              description: |-
-                The amount of the limit in major units of `currency`, as a decimal string such as `5000` or `0.2`.
-
-                At most 9 fractional digits, with no sign, exponent, or leading zeros. The service removes trailing fractional zeros, so `12.50` is stored and returned as `12.5`.
-              type: string
-              pattern: '^(0|[1-9]\d*)(\.\d{1,9})?$'
-            currency:
-              description: The currency of `value`.
-              allOf:
-                - $ref: '#/components/schemas/AICostCurrency'
-          required:
-            - value
-            - currency
         window:
           description: |-
             The budget window: the period the limit applies to, such as a calendar month. When one window ends, the next starts.
 
-            A replacement can't change it.
+            A replacement can change it, which can move the current window's start and end.
           type: object
           additionalProperties: false
           properties:
@@ -66154,7 +65725,6 @@ components:
             - type
             - interval
             - anchor
-          x-speakeasy-param-force-new: true
         posture:
           description: |-
             What the budget declares should happen when spend reaches the limit. Nothing enforces it.
@@ -66166,13 +65736,27 @@ components:
             - advisory
             - enforce
           x-speakeasy-unknown-values: allow
+        value:
+          description: |-
+            The amount of the limit in major units of `currency`, as a decimal string such as `5000` or `0.2`.
+
+            At most 9 fractional digits, with no sign, exponent, or leading zeros. The service removes trailing fractional zeros, so `12.50` is stored and returned as `12.5`.
+          type: string
+          pattern: '^(0|[1-9]\d*)(\.\d{1,9})?$'
+        currency:
+          description: The currency of `value`.
+          allOf:
+            - $ref: '#/components/schemas/AICostCurrency'
       additionalProperties: false
       required:
         - name
         - scope
         - effect
-        - limit
+        - value
+        - currency
         - window
+      x-speakeasy-transform-to-api:
+        jq: '.limit = {value: .value, currency: .currency} | del(.value, .currency)'
     AICostSlackNotificationChannelInput:
       description: The body of a request that creates a Slack channel.
       type: object
@@ -66193,31 +65777,29 @@ components:
           description: 'Always `slack` for a Slack channel, which carries its settings in `slack`.'
           type: string
           const: slack
-        slack:
-          description: The Slack incoming webhook that the channel posts its messages to.
-          type: object
-          additionalProperties: false
-          properties:
-            webhook_url:
-              description: |-
-                The Slack incoming webhook URL that receives the channel's messages. The organization creates the webhook in its own Slack workspace.
+        webhook_url:
+          description: |-
+            The Slack incoming webhook URL that receives the channel's messages. The organization creates the webhook in its own Slack workspace.
 
-                The URL has the form `https://hooks.slack.com/services/<workspace ID>/<webhook ID>/<token>`. Each of the 3 parts is nonempty and contains only ASCII letters, digits, `_`, or `-`. It has no credentials, port, query, or fragment and is at most 2048 characters long. Slack workflow trigger URLs, under `/workflows/` or `/triggers/`, aren't accepted.
+            The URL has the form `https://hooks.slack.com/services/<workspace ID>/<webhook ID>/<token>`. Each of the 3 parts is nonempty and contains only ASCII letters, digits, `_`, or `-`. It has no credentials, port, query, or fragment and is at most 2048 characters long. Slack workflow trigger URLs, under `/workflows/` or `/triggers/`, aren't accepted.
 
-                The service never logs the URL. Reads return it with `<token>` replaced by `…`.
-              type: string
-              format: uri
-              maxLength: 2048
-              pattern: '^https://hooks\.slack\.com/services/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+$'
-          required:
-            - webhook_url
+            The service never logs the URL. Reads return it with `<token>` replaced by `…`.
+          type: string
+          format: uri
+          example: 'https://hooks.slack.com/services/T0000000/B0000000/XXXXXXXXXXXXXXXXXXXXXXXX'
+          maxLength: 2048
+          pattern: '^https://hooks\.slack\.com/services/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+$'
+          writeOnly: true
+          x-speakeasy-param-sensitive: true
       additionalProperties: false
       required:
         - name
         - type
-        - slack
+        - webhook_url
+      x-speakeasy-transform-to-api:
+        jq: '.slack = ({webhook_url: .webhook_url} | with_entries(select(.value != null))) | del(.webhook_url)'
     AICostSlackNotificationChannelReplaceInput:
-      description: 'The body of a request that replaces a Slack channel. Unlike creation, it can omit `slack.webhook_url` to keep the stored URL.'
+      description: The body of a request that replaces a Slack channel.
       type: object
       properties:
         name:
@@ -66236,47 +65818,29 @@ components:
           description: 'Always `slack` for a Slack channel, which carries its settings in `slack`.'
           type: string
           const: slack
-        slack:
-          description: The Slack incoming webhook that the channel posts its messages to.
-          type: object
-          additionalProperties: false
-          properties:
-            webhook_url:
-              description: |-
-                The Slack incoming webhook URL that receives the channel's messages. Because reads never return the full URL, a replacement can omit it, and the channel then keeps its stored URL.
+        webhook_url:
+          description: |-
+            The Slack incoming webhook URL that receives the channel's messages. Because reads never return the full URL, a replacement can omit it, and the channel then keeps its stored URL.
 
-                The URL has the form `https://hooks.slack.com/services/<workspace ID>/<webhook ID>/<token>`. Each of the 3 parts is nonempty and contains only ASCII letters, digits, `_`, or `-`. It has no credentials, port, query, or fragment and is at most 2048 characters long. Slack workflow trigger URLs, under `/workflows/` or `/triggers/`, aren't accepted.
+            The URL has the form `https://hooks.slack.com/services/<workspace ID>/<webhook ID>/<token>`. Each of the 3 parts is nonempty and contains only ASCII letters, digits, `_`, or `-`. It has no credentials, port, query, or fragment and is at most 2048 characters long. Slack workflow trigger URLs, under `/workflows/` or `/triggers/`, aren't accepted.
 
-                The service never logs the URL. Reads return it with `<token>` replaced by `…`.
-              type: string
-              format: uri
-              default: null
-              maxLength: 2048
-              nullable: true
-              pattern: '^https://hooks\.slack\.com/services/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+$'
-              x-speakeasy-param-computed: false
+            The service never logs the URL. Reads return it with `<token>` replaced by `…`.
+          type: string
+          format: uri
+          example: 'https://hooks.slack.com/services/T0000000/B0000000/XXXXXXXXXXXXXXXXXXXXXXXX'
+          default: null
+          maxLength: 2048
+          nullable: true
+          pattern: '^https://hooks\.slack\.com/services/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+$'
+          writeOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-sensitive: true
       additionalProperties: false
       required:
         - name
         - type
-        - slack
-    ExpiresAtNullable:
-      description: An ISO-8601 timestamp representation of entity expiration date.
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      default: null
-      nullable: true
-      x-speakeasy-param-computed: false
-    ExpiresAtWritable:
-      description: An ISO-8601 timestamp representation of entity expiration date.
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      default: null
-      nullable: true
-      title: ExpiresAt
-      x-speakeasy-param-computed: false
+      x-speakeasy-transform-to-api:
+        jq: '.slack = ({webhook_url: .webhook_url} | with_entries(select(.value != null))) | del(.webhook_url)'
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
