@@ -99,8 +99,8 @@ Optional:
 
 Optional:
 
-- `ai_search` (Attributes) AI Search config. Not Null (see [below for nested schema](#nestedatt--ai--features--ai_search))
-- `mcp_server` (Attributes) AI Features config. Not Null (see [below for nested schema](#nestedatt--ai--features--mcp_server))
+- `ai_search` (Attributes) AI Search config (see [below for nested schema](#nestedatt--ai--features--ai_search))
+- `mcp_server` (Attributes) AI Features config (see [below for nested schema](#nestedatt--ai--features--mcp_server))
 
 <a id="nestedatt--ai--features--ai_search"></a>
 ### Nested Schema for `ai.features.ai_search`

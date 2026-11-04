@@ -87,7 +87,7 @@ type CreatePortal struct {
 	// When enabled, portal registration notifications include the registering developer's identifying information (such as name and email).
 	NotificationsDeveloperPiiVisibilityEnabled *bool `default:"false" json:"notifications_developer_pii_visibility_enabled"`
 	// Name of the theme to use for the default content created upon creation of this portal. Must match an available theme name; if omitted or unrecognized, the default theme is used. Only applies when `create_default_content` is true.
-	ThemeName *string `default:"null" json:"theme_name"`
+	ThemeName *string `json:"theme_name,omitempty"`
 }
 
 func (c CreatePortal) MarshalJSON() ([]byte, error) {

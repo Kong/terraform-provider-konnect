@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 1e4d47de37849f1cdacfec3e49ab3e7d
+  docChecksum: de805c7d28591631c3e1a65a6430831e
   docVersion: 2.0.0
   speakeasyVersion: 1.804.0
   generationVersion: 2.952.5
   releaseVersion: 3.27.0
   configChecksum: 052ca05f0b36687546ebd197a70d07d0
 persistentEdits:
-  generation_id: 74bb153d-6c2f-4e39-beff-26b10c1a3ec3
-  pristine_commit_hash: ddd9f438a8ee27e2d744c76cd9f4b1bca1eb5e01
-  pristine_tree_hash: 3a98a95ff9ded681edff37ac87a87638cf5a597f
+  generation_id: 3065e0d5-2b30-43c4-9b70-4fd1b4049386
+  pristine_commit_hash: c488967d64804985132b13155979f4e5220bedfd
+  pristine_tree_hash: 67d262b439574c8fe7a55c1ee6c2500b8547007d
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -5601,16 +5601,16 @@ trackedFiles:
     pristine_git_object: 952793b550e9a655e37d3ae18497e459b3b0ce26
   internal/provider/portal_data_source_sdk.go:
     id: f58c406cdd45
-    last_write_checksum: sha1:7e93676651e853a64e464ab47bd0ee51ee9daa83
-    pristine_git_object: d792783902d46263cdb716c44df8ebbc4b494859
+    last_write_checksum: sha1:2fa88e3cb15ece644e2037cbbc5035bed73074ec
+    pristine_git_object: 1020e2ef907ff65918382baeca42bcbd010cd30e
   internal/provider/portal_resource.go:
     id: a15e85b54f08
-    last_write_checksum: sha1:ea75ea523384a017b063afc94e2326d7ea1850dd
-    pristine_git_object: 8a47f3f64ff55ac71fde0f2441be49a1e24d612b
+    last_write_checksum: sha1:775eb1550e5228afae81cc39519328ce0ac2b547
+    pristine_git_object: 727c71c69e54c47d815cb6e57fd4a158d98fc6d7
   internal/provider/portal_resource_sdk.go:
     id: 6dd876308f89
-    last_write_checksum: sha1:49f4b2d89bfff00ac98fc942fd8d5c17c0d6b5a8
-    pristine_git_object: 483a9d5d5a482c21fdd7c61da55ecfaa6e8554a0
+    last_write_checksum: sha1:67629be350f85785915a8b70e6e780f3f9b112cd
+    pristine_git_object: b77fd5dc67d94c38f76e4812adfdb3ea5f59101d
   internal/provider/portalappearance_resource.go:
     id: b2b030386ed0
     last_write_checksum: sha1:27710ca11ce2c6108f20f9b12a3fff418ebbc4fb
@@ -14877,8 +14877,8 @@ trackedFiles:
     pristine_git_object: a41256d9fbd39022ac8f70515ca5d7917062c590
   internal/sdk/models/shared/aisettingsfeatures.go:
     id: 2d783e2601af
-    last_write_checksum: sha1:824dde0534bdd8ed14c7df3ab305483fd39c8f75
-    pristine_git_object: f1be1e8cb9cc883e7377961a35d174b6d8f75b4c
+    last_write_checksum: sha1:916a0247ad6d3301a2d878f4481c7d2e11be6c43
+    pristine_git_object: 03ec9544cd00cdfa04245ab54b71750954ca5b7e
   internal/sdk/models/shared/algorithm.go:
     id: 298195d3f065
     last_write_checksum: sha1:26ea30d6469b264807ab63949ab0cc638b4d4f3c
@@ -15885,8 +15885,8 @@ trackedFiles:
     pristine_git_object: 9444be85eb36b9402cb4f9afbc8a5ad3425a8a05
   internal/sdk/models/shared/createportal.go:
     id: bf2eaac1fec1
-    last_write_checksum: sha1:8202c8dc8b7cb8e696dc618b33432bb4f9b1d9c8
-    pristine_git_object: 660ea53f173c340d259d6472db2371a4d595570c
+    last_write_checksum: sha1:0fc45fc991143f8b9639357ae7757eb35dd1f0ef
+    pristine_git_object: 87161c5264d46d6d329d6a148e9f8aea70622ae4
   internal/sdk/models/shared/createportalcustomdomainrequest.go:
     id: 7ee9af576694
     last_write_checksum: sha1:3ed92763ea85a23f289ca6a9a5ffeb9cb855d4a9
@@ -29187,7 +29187,7 @@ examples:
   create-portal:
     speakeasy-default-create-portal:
       requestBody:
-        application/json: {"name": "DevPortal", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false, "theme_name": null}
+        application/json: {"name": "DevPortal", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
       responses:
         "201":
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "insistent-elevator.org", "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}

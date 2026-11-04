@@ -66,9 +66,9 @@ func (m *McpServer) GetWriteOperationsEnabled() *bool {
 // AISettingsFeatures - AI features configuration. When top-level `enabled` is false, every feature toggle here is automatically reset to false.
 type AISettingsFeatures struct {
 	// AI Search config
-	AiSearch AiSearch `json:"ai_search"`
+	AiSearch *AiSearch `json:"ai_search,omitempty"`
 	// AI Features config
-	McpServer McpServer `json:"mcp_server"`
+	McpServer *McpServer `json:"mcp_server,omitempty"`
 }
 
 func (a AISettingsFeatures) MarshalJSON() ([]byte, error) {
@@ -76,22 +76,22 @@ func (a AISettingsFeatures) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AISettingsFeatures) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"ai_search", "mcp_server"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AISettingsFeatures) GetAiSearch() AiSearch {
+func (a *AISettingsFeatures) GetAiSearch() *AiSearch {
 	if a == nil {
-		return AiSearch{}
+		return nil
 	}
 	return a.AiSearch
 }
 
-func (a *AISettingsFeatures) GetMcpServer() McpServer {
+func (a *AISettingsFeatures) GetMcpServer() *McpServer {
 	if a == nil {
-		return McpServer{}
+		return nil
 	}
 	return a.McpServer
 }
