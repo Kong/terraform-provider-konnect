@@ -83,6 +83,7 @@ func (s *EventGatewayStaticKeys) CreateEventGatewayStaticKey(ctx context.Context
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "create-event-gateway-static-key")
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -375,6 +376,7 @@ func (s *EventGatewayStaticKeys) GetEventGatewayStaticKey(ctx context.Context, r
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "get-event-gateway-static-key")
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)

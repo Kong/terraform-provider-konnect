@@ -381,8 +381,9 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 										},
 										Attributes: map[string]schema.Attribute{
 											"password": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
+												Computed:  true,
+												Optional:  true,
+												Sensitive: true,
 												MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
 													`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
 													`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
@@ -850,6 +851,8 @@ func (r *EventGatewayVirtualClusterResource) Create(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateEventGatewayVirtualClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -910,6 +913,8 @@ func (r *EventGatewayVirtualClusterResource) Read(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetEventGatewayVirtualClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -963,6 +968,8 @@ func (r *EventGatewayVirtualClusterResource) Update(ctx context.Context, req res
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
 
 	request, requestDiags := data.ToOperationsUpdateEventGatewayVirtualClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -1023,6 +1030,8 @@ func (r *EventGatewayVirtualClusterResource) Delete(ctx context.Context, req res
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.State)
 
 	request, requestDiags := data.ToOperationsDeleteEventGatewayVirtualClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)

@@ -16,6 +16,7 @@
     * Add a `konnect_gateway_workspace` resource to manage workspaces in a control plane and a `konnect_gateway_workspace` data source to list them
     * Add support for `workspace` in 133 `konnect_gateway_*` resources, using which users can manage entities in a workspace other than `default`. The value defaults to `default` and a change of this value replaces the resource. The import ID accepts `workspace`
     * Existing state needs no manual change. A state upgrade adds `workspace = "default"` to the `konnect_gateway_*` resources that have no workspace in state
+* Add support for new Identity resources `konnect_identity_directory`, `konnect_identity_group`, `konnect_identity_group_api_key`, `konnect_identity_group_membership`, `konnect_identity_principal`, `konnect_identity_principal_api_key`, `konnect_identity_principal_basic_auth`, `konnect_identity_principal_basic_auth_password`, `konnect_identity_principal_identity`, `konnect_identity_trusted_idp`, `konnect_identity_vault_key`, `konnect_identity_vault_provider` and `konnect_identity_vault_provider_credential`
 
 # BREAKING CHANGES
 * NA
