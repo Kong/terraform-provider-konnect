@@ -1868,8 +1868,8 @@ func (p *ProofOfPossessionMtlsFromHeader) GetSslVerify() *bool {
 	return p.SslVerify
 }
 
-// ProtectedResourceMetadata - When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.
-type ProtectedResourceMetadata struct {
+// OpenidConnectPluginProtectedResourceMetadata - When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.
+type OpenidConnectPluginProtectedResourceMetadata struct {
 	// List of authorization server issuer URIs to advertise in the RFC 9728 metadata document.
 	AuthorizationServers []string `json:"authorization_servers"`
 	// Override the well-known metadata endpoint path. Defaults to the path component of resource with /.well-known/oauth-protected-resource appended.
@@ -1880,43 +1880,43 @@ type ProtectedResourceMetadata struct {
 	ScopesSupported []string `json:"scopes_supported"`
 }
 
-func (p ProtectedResourceMetadata) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
+func (o OpenidConnectPluginProtectedResourceMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
 }
 
-func (p *ProtectedResourceMetadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"authorization_servers", "resource"}); err != nil {
+func (o *OpenidConnectPluginProtectedResourceMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"authorization_servers", "resource"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *ProtectedResourceMetadata) GetAuthorizationServers() []string {
-	if p == nil {
+func (o *OpenidConnectPluginProtectedResourceMetadata) GetAuthorizationServers() []string {
+	if o == nil {
 		return []string{}
 	}
-	return p.AuthorizationServers
+	return o.AuthorizationServers
 }
 
-func (p *ProtectedResourceMetadata) GetMetadataEndpoint() *string {
-	if p == nil {
+func (o *OpenidConnectPluginProtectedResourceMetadata) GetMetadataEndpoint() *string {
+	if o == nil {
 		return nil
 	}
-	return p.MetadataEndpoint
+	return o.MetadataEndpoint
 }
 
-func (p *ProtectedResourceMetadata) GetResource() string {
-	if p == nil {
+func (o *OpenidConnectPluginProtectedResourceMetadata) GetResource() string {
+	if o == nil {
 		return ""
 	}
-	return p.Resource
+	return o.Resource
 }
 
-func (p *ProtectedResourceMetadata) GetScopesSupported() []string {
-	if p == nil {
+func (o *OpenidConnectPluginProtectedResourceMetadata) GetScopesSupported() []string {
+	if o == nil {
 		return nil
 	}
-	return p.ScopesSupported
+	return o.ScopesSupported
 }
 
 // OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod - The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -2945,20 +2945,20 @@ func (e *OpenidConnectPluginGrantType) IsExact() bool {
 	return false
 }
 
-// MapIdentitiesFrom - Which token's claims to use for consumer, consumer group, and principal mapping. Only takes effect when token exchange is configured. `exchanged_tokens` (default) uses the token(s) returned by the exchange or tokens derived from it, as today. `subject_token` uses the original, pre-exchange bearer token's claims instead.
-type MapIdentitiesFrom string
+// OpenidConnectPluginMapIdentitiesFrom - Which token's claims to use for consumer, consumer group, and principal mapping. Only takes effect when token exchange is configured. `exchanged_tokens` (default) uses the token(s) returned by the exchange or tokens derived from it, as today. `subject_token` uses the original, pre-exchange bearer token's claims instead.
+type OpenidConnectPluginMapIdentitiesFrom string
 
 const (
-	MapIdentitiesFromExchangedTokens MapIdentitiesFrom = "exchanged_tokens"
-	MapIdentitiesFromSubjectToken    MapIdentitiesFrom = "subject_token"
+	OpenidConnectPluginMapIdentitiesFromExchangedTokens OpenidConnectPluginMapIdentitiesFrom = "exchanged_tokens"
+	OpenidConnectPluginMapIdentitiesFromSubjectToken    OpenidConnectPluginMapIdentitiesFrom = "subject_token"
 )
 
-func (e MapIdentitiesFrom) ToPointer() *MapIdentitiesFrom {
+func (e OpenidConnectPluginMapIdentitiesFrom) ToPointer() *OpenidConnectPluginMapIdentitiesFrom {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *MapIdentitiesFrom) IsExact() bool {
+func (e *OpenidConnectPluginMapIdentitiesFrom) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "exchanged_tokens", "subject_token":
@@ -3015,8 +3015,8 @@ func (e *OpenidConnectPluginSource) IsExact() bool {
 	return false
 }
 
-// ActorToken - How to obtain the actor token to include in the token exchange request. Represents the identity of the party acting on behalf of the subject.
-type ActorToken struct {
+// OpenidConnectPluginActorToken - How to obtain the actor token to include in the token exchange request. Represents the identity of the party acting on behalf of the subject.
+type OpenidConnectPluginActorToken struct {
 	// Header name containing the actor token. Required when `source` is `header`.
 	HeaderName *string `default:"null" json:"header_name"`
 	// Where to obtain the actor token. `header` reads it from a request header. `config` uses a fixed value. `none` disables actor token support.
@@ -3027,49 +3027,49 @@ type ActorToken struct {
 	Type *string `default:"urn:ietf:params:oauth:token-type:access_token" json:"type"`
 }
 
-func (a ActorToken) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+func (o OpenidConnectPluginActorToken) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
 }
 
-func (a *ActorToken) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+func (o *OpenidConnectPluginActorToken) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *ActorToken) GetHeaderName() *string {
-	if a == nil {
+func (o *OpenidConnectPluginActorToken) GetHeaderName() *string {
+	if o == nil {
 		return nil
 	}
-	return a.HeaderName
+	return o.HeaderName
 }
 
-func (a *ActorToken) GetSource() *OpenidConnectPluginSource {
-	if a == nil {
+func (o *OpenidConnectPluginActorToken) GetSource() *OpenidConnectPluginSource {
+	if o == nil {
 		return nil
 	}
-	return a.Source
+	return o.Source
 }
 
-func (a *ActorToken) GetStaticToken() *string {
-	if a == nil {
+func (o *OpenidConnectPluginActorToken) GetStaticToken() *string {
+	if o == nil {
 		return nil
 	}
-	return a.StaticToken
+	return o.StaticToken
 }
 
-func (a *ActorToken) GetType() *string {
-	if a == nil {
+func (o *OpenidConnectPluginActorToken) GetType() *string {
+	if o == nil {
 		return nil
 	}
-	return a.Type
+	return o.Type
 }
 
 // OpenidConnectPluginRequest - Parameters used in the token exchange request.
 type OpenidConnectPluginRequest struct {
 	// How to obtain the actor token to include in the token exchange request. Represents the identity of the party acting on behalf of the subject.
-	ActorToken *ActorToken `json:"actor_token"`
+	ActorToken *OpenidConnectPluginActorToken `json:"actor_token"`
 	// Audiences used in the token exchange request. Values defined here override those defined in `config.audience`.
 	Audience []string `json:"audience"`
 	// Use empty audiences. Use this field to remove audiences defined in `config.audience`.
@@ -3103,7 +3103,7 @@ func (o *OpenidConnectPluginRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *OpenidConnectPluginRequest) GetActorToken() *ActorToken {
+func (o *OpenidConnectPluginRequest) GetActorToken() *OpenidConnectPluginActorToken {
 	if o == nil {
 		return nil
 	}
@@ -3288,7 +3288,7 @@ type OpenidConnectPluginTokenExchange struct {
 	// The token exchange grant. `token_exchange` (default) uses the OAuth 2.0 Token Exchange grant (RFC 8693). `jwt_bearer` uses the JWT Bearer authorization-grant flow (RFC 7523); see `token_exchange.provider` for provider-specific defaults in this mode.
 	GrantType *OpenidConnectPluginGrantType `default:"token_exchange" json:"grant_type"`
 	// Which token's claims to use for consumer, consumer group, and principal mapping. Only takes effect when token exchange is configured. `exchanged_tokens` (default) uses the token(s) returned by the exchange or tokens derived from it, as today. `subject_token` uses the original, pre-exchange bearer token's claims instead.
-	MapIdentitiesFrom *MapIdentitiesFrom `default:"exchanged_tokens" json:"map_identities_from"`
+	MapIdentitiesFrom *OpenidConnectPluginMapIdentitiesFrom `default:"exchanged_tokens" json:"map_identities_from"`
 	// Identity provider used with `grant_type = jwt_bearer`; not allowed with `grant_type = token_exchange`. `standard` (default) adds no provider-specific parameter. `microsoft` adds the required `requested_token_use=on_behalf_of`, which is fixed and cannot be overridden via `post_args_names/values`.
 	Provider *OpenidConnectPluginProvider `default:"standard" json:"provider"`
 	// Parameters used in the token exchange request.
@@ -3322,7 +3322,7 @@ func (o *OpenidConnectPluginTokenExchange) GetGrantType() *OpenidConnectPluginGr
 	return o.GrantType
 }
 
-func (o *OpenidConnectPluginTokenExchange) GetMapIdentitiesFrom() *MapIdentitiesFrom {
+func (o *OpenidConnectPluginTokenExchange) GetMapIdentitiesFrom() *OpenidConnectPluginMapIdentitiesFrom {
 	if o == nil {
 		return nil
 	}
@@ -3696,7 +3696,7 @@ type OpenidConnectPluginConfig struct {
 	// Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
 	ProofOfPossessionMtlsFromHeader *ProofOfPossessionMtlsFromHeader `json:"proof_of_possession_mtls_from_header"`
 	// When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.
-	ProtectedResourceMetadata *ProtectedResourceMetadata `json:"protected_resource_metadata"`
+	ProtectedResourceMetadata *OpenidConnectPluginProtectedResourceMetadata `json:"protected_resource_metadata"`
 	// The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
 	PushedAuthorizationRequestEndpoint *string `default:"null" json:"pushed_authorization_request_endpoint"`
 	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -4839,7 +4839,7 @@ func (o *OpenidConnectPluginConfig) GetProofOfPossessionMtlsFromHeader() *ProofO
 	return o.ProofOfPossessionMtlsFromHeader
 }
 
-func (o *OpenidConnectPluginConfig) GetProtectedResourceMetadata() *ProtectedResourceMetadata {
+func (o *OpenidConnectPluginConfig) GetProtectedResourceMetadata() *OpenidConnectPluginProtectedResourceMetadata {
 	if o == nil {
 		return nil
 	}

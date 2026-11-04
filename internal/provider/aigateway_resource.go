@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
@@ -48,7 +49,9 @@ type AIGatewayResourceModel struct {
 	DisplayName        types.String                `tfsdk:"display_name"`
 	Endpoints          *tfTypes.Endpoints          `tfsdk:"endpoints"`
 	ID                 types.String                `tfsdk:"id"`
+	KonnectManaged     types.Bool                  `tfsdk:"konnect_managed"`
 	Labels             map[string]types.String     `tfsdk:"labels"`
+	ManagedBy          map[string]types.String     `tfsdk:"managed_by"`
 	MinRuntimeVersion  types.String                `tfsdk:"min_runtime_version"`
 	Name               types.String                `tfsdk:"name"`
 	ProxyUrls          []tfTypes.AIGatewayProxyURL `tfsdk:"proxy_urls"`
@@ -132,6 +135,13 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
+			"konnect_managed": schema.BoolAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+				},
+				Description: `An immutable read-only flag to identify resource managed by Konnect services.`,
+			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -141,6 +151,14 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 					`Public labels are intended to store **PUBLIC** metadata. ` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+			},
+			"managed_by": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
+					`` + "\n" +
+					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
 			},
 			"min_runtime_version": schema.StringAttribute{
 				Computed: true,

@@ -37,6 +37,7 @@ func (r *TeamDataSourceModel) RefreshFromSharedTeamResponse(ctx context.Context,
 	r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 	r.Description = types.StringPointerValue(resp.Description)
 	r.ID = types.StringValue(resp.ID)
+	r.KonnectManaged = types.BoolPointerValue(resp.KonnectManaged)
 	if len(resp.Labels) > 0 {
 		r.Labels = make(map[string]types.String, len(resp.Labels))
 		for key, value := range resp.Labels {
@@ -101,9 +102,16 @@ func (r *TeamDataSourceModel) ToOperationsListTeamsRequest(ctx context.Context) 
 			}
 			labels[labelsKey] = labelsInst
 		}
+		konnectManaged := new(bool)
+		if !r.Filter.KonnectManaged.IsUnknown() && !r.Filter.KonnectManaged.IsNull() {
+			*konnectManaged = r.Filter.KonnectManaged.ValueBool()
+		} else {
+			konnectManaged = nil
+		}
 		filter = &operations.ListTeamsQueryParamFilter{
-			Name:   name,
-			Labels: labels,
+			Name:           name,
+			Labels:         labels,
+			KonnectManaged: konnectManaged,
 		}
 	}
 	out := operations.ListTeamsRequest{

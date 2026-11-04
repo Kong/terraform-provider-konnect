@@ -28,6 +28,10 @@ type CreateAIGatewayPolicyRequest struct {
 	//
 	// **Requires a minimum runtime version of `2.1`**.
 	Condition *string `json:"condition,omitempty"`
+	// Policy config expressions
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Expressions map[string]any `json:"expressions,omitempty"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
 	//
 	// Public labels are intended to store **PUBLIC** metadata.
@@ -40,6 +44,8 @@ type CreateAIGatewayPolicyRequest struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Names of the Datastores this policy references.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
 }
 
 func (c CreateAIGatewayPolicyRequest) MarshalJSON() ([]byte, error) {
@@ -102,6 +108,13 @@ func (c *CreateAIGatewayPolicyRequest) GetCondition() *string {
 	return c.Condition
 }
 
+func (c *CreateAIGatewayPolicyRequest) GetExpressions() map[string]any {
+	if c == nil {
+		return nil
+	}
+	return c.Expressions
+}
+
 func (c *CreateAIGatewayPolicyRequest) GetLabels() map[string]string {
 	if c == nil {
 		return nil
@@ -114,4 +127,11 @@ func (c *CreateAIGatewayPolicyRequest) GetManagedBy() map[string]string {
 		return nil
 	}
 	return c.ManagedBy
+}
+
+func (c *CreateAIGatewayPolicyRequest) GetDatastores() []AIGatewayDatastoreRef {
+	if c == nil {
+		return nil
+	}
+	return c.Datastores
 }

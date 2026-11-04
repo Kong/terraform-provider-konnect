@@ -4,6 +4,7 @@
 > Released 2026/10/??
 
 # Features
+* Add support for AI Gateway 2.3, including support for baseten model provider, and token vault through `konnect_ai_gateway_datastores` resource
 * Add support for Event Gateway v1.3
     * Add support for new resources `konnect_event_gateway_cluster_policy_request_rule_validator`, `konnect_event_gateway_consume_policy_mask_fields`, `konnect_event_gateway_produce_policy_mask_fields`, `konnect_event_gateway_consume_policy_transcode` and `konnect_event_gateway_produce_policy_transcode`
     * Add support for `sasl_aws_iam` authentication in `konnect_event_gateway_backend_cluster` using which users can connect to Amazon MSK with AWS IAM-based OAUTHBEARER authentication, using either the AWS default credentials provider chain or an assumed role

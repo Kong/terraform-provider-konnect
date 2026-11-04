@@ -6,17 +6,52 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
+// AIGatewayModelBalancerRoundRobinConfigFailoverCriteria - **`http_400` requires a minimum runtime version of `2.3`**.
+//
+// **`http_401` requires a minimum runtime version of `2.3`**.
+//
+// **`http_402` requires a minimum runtime version of `2.3`**.
+//
+// **`http_405` requires a minimum runtime version of `2.3`**.
+//
+// **`http_408` requires a minimum runtime version of `2.3`**.
+//
+// **`http_409` requires a minimum runtime version of `2.3`**.
+//
+// **`http_413` requires a minimum runtime version of `2.3`**.
+//
+// **`http_415` requires a minimum runtime version of `2.3`**.
+//
+// **`http_422` requires a minimum runtime version of `2.3`**.
+//
+// **`http_522` requires a minimum runtime version of `2.3`**.
+//
+// **`http_529` requires a minimum runtime version of `2.3`**.
+//
+// **`http_5xx` requires a minimum runtime version of `2.3`**.
 type AIGatewayModelBalancerRoundRobinConfigFailoverCriteria string
 
 const (
 	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaError         AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "error"
+	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp400       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_400"
+	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp401       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_401"
+	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp402       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_402"
 	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp403       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_403"
 	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp404       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_404"
+	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp405       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_405"
+	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp408       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_408"
+	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp409       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_409"
+	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp413       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_413"
+	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp415       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_415"
+	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp422       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_422"
 	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp429       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_429"
 	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp500       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_500"
 	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp502       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_502"
 	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp503       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_503"
 	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp504       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_504"
+	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp522       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_522"
+	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp529       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_529"
+	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaHttp5xx       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "http_5xx"
 	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaInvalidHeader AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "invalid_header"
 	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaNonIdempotent AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "non_idempotent"
 	AIGatewayModelBalancerRoundRobinConfigFailoverCriteriaTimeout       AIGatewayModelBalancerRoundRobinConfigFailoverCriteria = "timeout"
@@ -30,7 +65,7 @@ func (e AIGatewayModelBalancerRoundRobinConfigFailoverCriteria) ToPointer() *AIG
 func (e *AIGatewayModelBalancerRoundRobinConfigFailoverCriteria) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "error", "http_403", "http_404", "http_429", "http_500", "http_502", "http_503", "http_504", "invalid_header", "non_idempotent", "timeout":
+		case "error", "http_400", "http_401", "http_402", "http_403", "http_404", "http_405", "http_408", "http_409", "http_413", "http_415", "http_422", "http_429", "http_500", "http_502", "http_503", "http_504", "http_522", "http_529", "http_5xx", "invalid_header", "non_idempotent", "timeout":
 			return true
 		}
 	}

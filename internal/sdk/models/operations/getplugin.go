@@ -15,6 +15,8 @@ type GetPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// The name of the workspace
 	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	// Expand partials for the plugin.
+	ExpandPartials *bool `queryParam:"style=form,explode=true,name=expand_partials"`
 }
 
 func (g GetPluginRequest) MarshalJSON() ([]byte, error) {
@@ -47,6 +49,13 @@ func (g *GetPluginRequest) GetWorkspace() string {
 		return ""
 	}
 	return g.Workspace
+}
+
+func (g *GetPluginRequest) GetExpandPartials() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.ExpandPartials
 }
 
 type GetPluginResponse struct {

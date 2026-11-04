@@ -102,10 +102,10 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 					}
 					r.Config.RateLimiting.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.RateLimiting.Redis.ClusterMaxRedirections)
 					if resp.Config.RateLimiting.Redis.ClusterNodes != nil {
-						r.Config.RateLimiting.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+						r.Config.RateLimiting.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 						for _, clusterNodesItem := range resp.Config.RateLimiting.Redis.ClusterNodes {
-							var clusterNodes tfTypes.ClusterNodes
+							var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 							clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 							clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -127,10 +127,10 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 					r.Config.RateLimiting.Redis.SendTimeout = types.Int64PointerValue(resp.Config.RateLimiting.Redis.SendTimeout)
 					r.Config.RateLimiting.Redis.SentinelMaster = types.StringPointerValue(resp.Config.RateLimiting.Redis.SentinelMaster)
 					if resp.Config.RateLimiting.Redis.SentinelNodes != nil {
-						r.Config.RateLimiting.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+						r.Config.RateLimiting.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 						for _, sentinelNodesItem := range resp.Config.RateLimiting.Redis.SentinelNodes {
-							var sentinelNodes tfTypes.SentinelNodes
+							var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 							sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 							sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)

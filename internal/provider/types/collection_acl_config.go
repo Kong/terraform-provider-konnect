@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGatewayMCPACLs struct {
+type CollectionACLConfig struct {
 	Allow []types.String `tfsdk:"allow"`
 	Deny  []types.String `tfsdk:"deny"`
 }

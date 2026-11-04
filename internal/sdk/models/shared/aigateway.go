@@ -81,6 +81,11 @@ type AIGateway struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// The minimum AI Gateway runtime version supported by this AI Gateway. This is the lowest data plane version that may receive configuration from it, and it controls which features the API accepts.
@@ -108,6 +113,8 @@ type AIGateway struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
+	// An immutable read-only flag to identify resource managed by Konnect services.
+	KonnectManaged *bool `json:"konnect_managed,omitempty"`
 }
 
 func (a AIGateway) MarshalJSON() ([]byte, error) {
@@ -154,6 +161,13 @@ func (a *AIGateway) GetLabels() map[string]string {
 		return nil
 	}
 	return a.Labels
+}
+
+func (a *AIGateway) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
 }
 
 func (a *AIGateway) GetID() string {
@@ -210,4 +224,11 @@ func (a *AIGateway) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return a.UpdatedAt
+}
+
+func (a *AIGateway) GetKonnectManaged() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.KonnectManaged
 }

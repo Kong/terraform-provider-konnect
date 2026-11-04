@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGatewayTargetCerebrasConfig struct {
+type AIGatewayTargetBasetenConfig struct {
 	CacheReadCost        types.Float64                  `tfsdk:"cache_read_cost"`
 	CacheReadCostList    []AIGatewayModalCostList       `tfsdk:"cache_read_cost_list"`
 	CacheWriteCost       types.Float64                  `tfsdk:"cache_write_cost"`

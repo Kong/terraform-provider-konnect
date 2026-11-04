@@ -10,6 +10,7 @@ type AIGatewayMCPServerListener struct {
 	Access      *AIGatewayMCPServerListenerAccess                               `tfsdk:"access"`
 	Config      *AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig `tfsdk:"config"`
 	CreatedAt   types.String                                                    `tfsdk:"created_at"`
+	Datastores  []AIGatewayDatastoreRef                                         `tfsdk:"datastores"`
 	DisplayName types.String                                                    `tfsdk:"display_name"`
 	Enabled     types.Bool                                                      `tfsdk:"enabled"`
 	ID          types.String                                                    `tfsdk:"id"`
@@ -18,5 +19,6 @@ type AIGatewayMCPServerListener struct {
 	Name        types.String                                                    `tfsdk:"name"`
 	Policies    []types.String                                                  `tfsdk:"policies"`
 	Sources     []types.String                                                  `tfsdk:"sources"`
+	TokenVault  *AIGatewayTokenVault                                            `tfsdk:"token_vault"`
 	UpdatedAt   types.String                                                    `tfsdk:"updated_at"`
 }

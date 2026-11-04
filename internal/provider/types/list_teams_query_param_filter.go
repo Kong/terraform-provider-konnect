@@ -2,7 +2,12 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type ListTeamsQueryParamFilter struct {
-	Labels map[string]LegacyStringFieldFilterWithExists `queryParam:"name=labels" tfsdk:"labels"`
-	Name   *WorkspaceFilterParametersName               `queryParam:"name=name" tfsdk:"name"`
+	KonnectManaged types.Bool                                   `queryParam:"name=konnect_managed" tfsdk:"konnect_managed"`
+	Labels         map[string]LegacyStringFieldFilterWithExists `queryParam:"name=labels" tfsdk:"labels"`
+	Name           *WorkspaceFilterParametersName               `queryParam:"name=name" tfsdk:"name"`
 }

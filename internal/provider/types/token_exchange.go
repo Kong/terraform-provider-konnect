@@ -2,8 +2,15 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type TokenExchange struct {
-	Cache               *Cache                `tfsdk:"cache"`
-	Request             *Request              `tfsdk:"request"`
-	SubjectTokenIssuers []SubjectTokenIssuers `tfsdk:"subject_token_issuers"`
+	Cache               *AIGWOpenIDConnectGeneratedConfigCache `tfsdk:"cache"`
+	GrantType           types.String                           `tfsdk:"grant_type"`
+	MapIdentitiesFrom   types.String                           `tfsdk:"map_identities_from"`
+	Provider            types.String                           `tfsdk:"provider"`
+	Request             *Request                               `tfsdk:"request"`
+	SubjectTokenIssuers []SubjectTokenIssuers                  `tfsdk:"subject_token_issuers"`
 }

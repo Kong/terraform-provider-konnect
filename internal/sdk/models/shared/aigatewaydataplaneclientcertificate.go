@@ -149,6 +149,8 @@ type AIGatewayDataPlaneClientCertificate struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
+	// An immutable read-only flag to identify resource managed by Konnect services.
+	KonnectManaged *bool `json:"konnect_managed,omitempty"`
 	// Metadata extracted from the certificate.
 	Metadata *Metadata `json:"metadata,omitempty"`
 }
@@ -218,6 +220,13 @@ func (a *AIGatewayDataPlaneClientCertificate) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return a.UpdatedAt
+}
+
+func (a *AIGatewayDataPlaneClientCertificate) GetKonnectManaged() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.KonnectManaged
 }
 
 func (a *AIGatewayDataPlaneClientCertificate) GetMetadata() *Metadata {

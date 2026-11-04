@@ -7,16 +7,19 @@ import (
 )
 
 type AIGatewayMCPServerPassthroughListener struct {
-	Access      *AIGatewayMCPServerListenerAccess     `tfsdk:"access"`
-	Config      *AIGatewayMCPServerWithUpstreamConfig `tfsdk:"config"`
-	CreatedAt   types.String                          `tfsdk:"created_at"`
-	DisplayName types.String                          `tfsdk:"display_name"`
-	Enabled     types.Bool                            `tfsdk:"enabled"`
-	ID          types.String                          `tfsdk:"id"`
-	Labels      map[string]types.String               `tfsdk:"labels"`
-	ManagedBy   map[string]types.String               `tfsdk:"managed_by"`
-	Name        types.String                          `tfsdk:"name"`
-	Policies    []types.String                        `tfsdk:"policies"`
-	Tools       []AIGatewayMCPPassthroughTool         `tfsdk:"tools"`
-	UpdatedAt   types.String                          `tfsdk:"updated_at"`
+	Access       *AIGatewayMCPServerListenerAccess     `tfsdk:"access"`
+	Config       *AIGatewayMCPServerWithUpstreamConfig `tfsdk:"config"`
+	CreatedAt    types.String                          `tfsdk:"created_at"`
+	Datastores   []AIGatewayDatastoreRef               `tfsdk:"datastores"`
+	DisplayName  types.String                          `tfsdk:"display_name"`
+	Enabled      types.Bool                            `tfsdk:"enabled"`
+	ID           types.String                          `tfsdk:"id"`
+	Labels       map[string]types.String               `tfsdk:"labels"`
+	ManagedBy    map[string]types.String               `tfsdk:"managed_by"`
+	Name         types.String                          `tfsdk:"name"`
+	Policies     []types.String                        `tfsdk:"policies"`
+	RateLimiting *AIGatewayMCPServerRateLimiting       `tfsdk:"rate_limiting"`
+	TokenVault   *AIGatewayTokenVault                  `tfsdk:"token_vault"`
+	Tools        []AIGatewayMCPPassthroughTool         `tfsdk:"tools"`
+	UpdatedAt    types.String                          `tfsdk:"updated_at"`
 }

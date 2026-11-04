@@ -990,7 +990,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			UpstreamURL:          upstreamURL,
 		}
 	}
-	provider := shared.Provider(r.Config.Model.Provider.ValueString())
+	provider := shared.AiProxyPluginProvider(r.Config.Model.Provider.ValueString())
 	model := shared.AiProxyPluginModel{
 		ModelAlias: modelAlias,
 		Name:       name1,

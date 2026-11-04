@@ -275,10 +275,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			}
 			r.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ClusterMaxRedirections)
 			if resp.Config.ClusterCacheRedis.ClusterNodes != nil {
-				r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
+				r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 				for _, clusterNodesItem := range resp.Config.ClusterCacheRedis.ClusterNodes {
-					var clusterNodes tfTypes.ClusterNodes
+					var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -300,10 +300,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.SendTimeout)
 			r.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelMaster)
 			if resp.Config.ClusterCacheRedis.SentinelNodes != nil {
-				r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
+				r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 				for _, sentinelNodesItem := range resp.Config.ClusterCacheRedis.SentinelNodes {
-					var sentinelNodes tfTypes.SentinelNodes
+					var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -633,7 +633,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.Principals == nil {
 			r.Config.Principals = nil
 		} else {
-			r.Config.Principals = &tfTypes.AIGWOpenIDConnectGeneratedConfigPrincipals{}
+			r.Config.Principals = &tfTypes.OpenidConnectPluginPrincipals{}
 			r.Config.Principals.Directory = types.StringPointerValue(resp.Config.Principals.Directory)
 			r.Config.Principals.Enabled = types.BoolPointerValue(resp.Config.Principals.Enabled)
 			r.Config.Principals.ErrorOnMiss = types.BoolPointerValue(resp.Config.Principals.ErrorOnMiss)
@@ -794,10 +794,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 			if resp.Config.Redis.ClusterNodes != nil {
-				r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+				r.Config.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 				for _, clusterNodesItem1 := range resp.Config.Redis.ClusterNodes {
-					var clusterNodes1 tfTypes.ClusterNodes
+					var clusterNodes1 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 					clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
 					clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
@@ -820,10 +820,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
 			if resp.Config.Redis.SentinelNodes != nil {
-				r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+				r.Config.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 				for _, sentinelNodesItem1 := range resp.Config.Redis.SentinelNodes {
-					var sentinelNodes1 tfTypes.SentinelNodes
+					var sentinelNodes1 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 					sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
 					sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
@@ -984,7 +984,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			if resp.Config.TokenExchange.Cache == nil {
 				r.Config.TokenExchange.Cache = nil
 			} else {
-				r.Config.TokenExchange.Cache = &tfTypes.Cache{}
+				r.Config.TokenExchange.Cache = &tfTypes.AIGWOpenIDConnectGeneratedConfigCache{}
 				r.Config.TokenExchange.Cache.Enabled = types.BoolPointerValue(resp.Config.TokenExchange.Cache.Enabled)
 				r.Config.TokenExchange.Cache.TTL = types.Int64PointerValue(resp.Config.TokenExchange.Cache.TTL)
 			}
@@ -3081,7 +3081,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			SslVerify:               sslVerify2,
 		}
 	}
-	var protectedResourceMetadata *shared.ProtectedResourceMetadata
+	var protectedResourceMetadata *shared.OpenidConnectPluginProtectedResourceMetadata
 	if r.Config.ProtectedResourceMetadata != nil {
 		authorizationServers := make([]string, 0, len(r.Config.ProtectedResourceMetadata.AuthorizationServers))
 		for authorizationServersIndex := range r.Config.ProtectedResourceMetadata.AuthorizationServers {
@@ -3103,7 +3103,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 				scopesSupported = append(scopesSupported, r.Config.ProtectedResourceMetadata.ScopesSupported[scopesSupportedIndex].ValueString())
 			}
 		}
-		protectedResourceMetadata = &shared.ProtectedResourceMetadata{
+		protectedResourceMetadata = &shared.OpenidConnectPluginProtectedResourceMetadata{
 			AuthorizationServers: authorizationServers,
 			MetadataEndpoint:     metadataEndpoint,
 			Resource:             resource,
@@ -3901,9 +3901,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			grantType2 = nil
 		}
-		mapIdentitiesFrom := new(shared.MapIdentitiesFrom)
+		mapIdentitiesFrom := new(shared.OpenidConnectPluginMapIdentitiesFrom)
 		if !r.Config.TokenExchange.MapIdentitiesFrom.IsUnknown() && !r.Config.TokenExchange.MapIdentitiesFrom.IsNull() {
-			*mapIdentitiesFrom = shared.MapIdentitiesFrom(r.Config.TokenExchange.MapIdentitiesFrom.ValueString())
+			*mapIdentitiesFrom = shared.OpenidConnectPluginMapIdentitiesFrom(r.Config.TokenExchange.MapIdentitiesFrom.ValueString())
 		} else {
 			mapIdentitiesFrom = nil
 		}
@@ -3915,7 +3915,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		}
 		var request *shared.OpenidConnectPluginRequest
 		if r.Config.TokenExchange.Request != nil {
-			var actorToken *shared.ActorToken
+			var actorToken *shared.OpenidConnectPluginActorToken
 			if r.Config.TokenExchange.Request.ActorToken != nil {
 				headerName := new(string)
 				if !r.Config.TokenExchange.Request.ActorToken.HeaderName.IsUnknown() && !r.Config.TokenExchange.Request.ActorToken.HeaderName.IsNull() {
@@ -3941,7 +3941,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 				} else {
 					typeVar = nil
 				}
-				actorToken = &shared.ActorToken{
+				actorToken = &shared.OpenidConnectPluginActorToken{
 					HeaderName:  headerName,
 					Source:      source,
 					StaticToken: staticToken,

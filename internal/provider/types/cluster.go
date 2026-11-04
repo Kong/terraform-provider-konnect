@@ -7,6 +7,6 @@ import (
 )
 
 type Cluster struct {
-	MaxRedirections types.Int64    `tfsdk:"max_redirections"`
-	Nodes           []ClusterNodes `tfsdk:"nodes"`
+	MaxRedirections types.Int64                                                     `tfsdk:"max_redirections"`
+	Nodes           []AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes `tfsdk:"nodes"`
 }

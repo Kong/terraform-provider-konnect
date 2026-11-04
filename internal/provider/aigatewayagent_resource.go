@@ -132,6 +132,37 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
+					"ca_certificates": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `CA certificates used to verify the TLS certificate of the upstream agent endpoint,` + "\n" +
+							`referenced by name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI CA Certificate on the` + "\n" +
+							`same AI Gateway.` + "\n" +
+							`` + "\n" +
+							`The CA certificates build the trust store (` + "`" + `ca_certificates` + "`" + `) of the Kong Gateway Service` + "\n" +
+							`generated for this Agent, which proxies requests to ` + "`" + `config.url` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`If unset, the default trust store is used to verify the upstream's TLS certificate.`,
+					},
+					"certificates": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Client certificates used for mutual TLS (mTLS) authentication with the upstream agent` + "\n" +
+							`endpoint, referenced by name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI Certificate` + "\n" +
+							`on the same AI Gateway.` + "\n" +
+							`` + "\n" +
+							`The certificates are applied to the Kong Gateway Service generated for this Agent, which` + "\n" +
+							`proxies requests to ` + "`" + `config.url` + "`" + `. The generated Service presents a single client` + "\n" +
+							`certificate (` + "`" + `client_certificate` + "`" + `) during the TLS handshake with the upstream, so at most` + "\n" +
+							`one certificate may be configured.` + "\n" +
+							`` + "\n" +
+							`If unset, no client certificate is presented to the upstream.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"logging": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,

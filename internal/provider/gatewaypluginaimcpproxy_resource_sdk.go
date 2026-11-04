@@ -165,10 +165,10 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					}
 					r.Config.Server.Session.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Server.Session.Redis.ClusterMaxRedirections)
 					if resp.Config.Server.Session.Redis.ClusterNodes != nil {
-						r.Config.Server.Session.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+						r.Config.Server.Session.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 						for _, clusterNodesItem := range resp.Config.Server.Session.Redis.ClusterNodes {
-							var clusterNodes tfTypes.ClusterNodes
+							var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 							clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 							clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -190,10 +190,10 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					r.Config.Server.Session.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Server.Session.Redis.SendTimeout)
 					r.Config.Server.Session.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Server.Session.Redis.SentinelMaster)
 					if resp.Config.Server.Session.Redis.SentinelNodes != nil {
-						r.Config.Server.Session.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+						r.Config.Server.Session.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 						for _, sentinelNodesItem := range resp.Config.Server.Session.Redis.SentinelNodes {
-							var sentinelNodes tfTypes.SentinelNodes
+							var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 							sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 							sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)

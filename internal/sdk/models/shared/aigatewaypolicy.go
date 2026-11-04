@@ -30,6 +30,10 @@ type AIGatewayPolicy struct {
 	//
 	// **Requires a minimum runtime version of `2.1`**.
 	Condition *string `json:"condition,omitempty"`
+	// Policy config expressions
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Expressions map[string]any `json:"expressions,omitempty"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
 	//
 	// Public labels are intended to store **PUBLIC** metadata.
@@ -42,6 +46,8 @@ type AIGatewayPolicy struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Names of the Datastores this policy references.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -110,6 +116,13 @@ func (a *AIGatewayPolicy) GetCondition() *string {
 	return a.Condition
 }
 
+func (a *AIGatewayPolicy) GetExpressions() map[string]any {
+	if a == nil {
+		return nil
+	}
+	return a.Expressions
+}
+
 func (a *AIGatewayPolicy) GetLabels() map[string]string {
 	if a == nil {
 		return nil
@@ -122,6 +135,13 @@ func (a *AIGatewayPolicy) GetManagedBy() map[string]string {
 		return nil
 	}
 	return a.ManagedBy
+}
+
+func (a *AIGatewayPolicy) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
 }
 
 func (a *AIGatewayPolicy) GetID() string {

@@ -6,17 +6,52 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
+// AIGatewayModelBalancerLowestUsageConfigFailoverCriteria - **`http_400` requires a minimum runtime version of `2.3`**.
+//
+// **`http_401` requires a minimum runtime version of `2.3`**.
+//
+// **`http_402` requires a minimum runtime version of `2.3`**.
+//
+// **`http_405` requires a minimum runtime version of `2.3`**.
+//
+// **`http_408` requires a minimum runtime version of `2.3`**.
+//
+// **`http_409` requires a minimum runtime version of `2.3`**.
+//
+// **`http_413` requires a minimum runtime version of `2.3`**.
+//
+// **`http_415` requires a minimum runtime version of `2.3`**.
+//
+// **`http_422` requires a minimum runtime version of `2.3`**.
+//
+// **`http_522` requires a minimum runtime version of `2.3`**.
+//
+// **`http_529` requires a minimum runtime version of `2.3`**.
+//
+// **`http_5xx` requires a minimum runtime version of `2.3`**.
 type AIGatewayModelBalancerLowestUsageConfigFailoverCriteria string
 
 const (
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaError         AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "error"
+	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp400       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_400"
+	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp401       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_401"
+	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp402       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_402"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp403       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_403"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp404       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_404"
+	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp405       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_405"
+	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp408       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_408"
+	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp409       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_409"
+	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp413       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_413"
+	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp415       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_415"
+	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp422       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_422"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp429       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_429"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp500       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_500"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp502       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_502"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp503       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_503"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp504       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_504"
+	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp522       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_522"
+	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp529       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_529"
+	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaHttp5xx       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "http_5xx"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaInvalidHeader AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "invalid_header"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaNonIdempotent AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "non_idempotent"
 	AIGatewayModelBalancerLowestUsageConfigFailoverCriteriaTimeout       AIGatewayModelBalancerLowestUsageConfigFailoverCriteria = "timeout"
@@ -30,7 +65,7 @@ func (e AIGatewayModelBalancerLowestUsageConfigFailoverCriteria) ToPointer() *AI
 func (e *AIGatewayModelBalancerLowestUsageConfigFailoverCriteria) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "error", "http_403", "http_404", "http_429", "http_500", "http_502", "http_503", "http_504", "invalid_header", "non_idempotent", "timeout":
+		case "error", "http_400", "http_401", "http_402", "http_403", "http_404", "http_405", "http_408", "http_409", "http_413", "http_415", "http_422", "http_429", "http_500", "http_502", "http_503", "http_504", "http_522", "http_529", "http_5xx", "invalid_header", "non_idempotent", "timeout":
 			return true
 		}
 	}

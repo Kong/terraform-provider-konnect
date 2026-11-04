@@ -24,9 +24,32 @@ type AIGatewayAuthStrategyOpenIDConnect struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_  string                            `const:"openid-connect" json:"type"`
-	Config *AIGWOpenIDConnectGeneratedConfig `json:"config,omitempty"`
+	type_ string `const:"openid-connect" json:"type"`
+	// Enables enrollment protection for the Token Vault datastore linked to this auth strategy.
+	// Users of the linked Token Vault will need to authenticate using this OIDC auth strategy
+	// before completing enrollment with upstream providers. Enrollment links always store upstream
+	// credentials in the Token Vault belonging to the principal who requested the link. Enrollment
+	// protection ensures that other principals cannot use an enrollment link to unknowingly
+	// authorize the storage of their upstream credentials in another principal's Token Vault.
+	//
+	// Note that the auth strategy used to protect upstream resources such as MCP servers need not
+	// be the same auth strategy used for enrollment protection. Omit `token_vault` entirely to
+	// enforce no such enrollment protection.
+	//
+	// Requires a `token-vault` Datastore reference in `datastores`; enabling enrollment protection
+	// without one is rejected.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultEnrollmentProtectionInput `json:"token_vault,omitempty"`
+	Config     *AIGWOpenIDConnectGeneratedConfig             `json:"config,omitempty"`
 }
 
 func (a AIGatewayAuthStrategyOpenIDConnect) MarshalJSON() ([]byte, error) {
@@ -68,8 +91,22 @@ func (a *AIGatewayAuthStrategyOpenIDConnect) GetManagedBy() map[string]string {
 	return a.ManagedBy
 }
 
+func (a *AIGatewayAuthStrategyOpenIDConnect) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
 func (a *AIGatewayAuthStrategyOpenIDConnect) GetType() string {
 	return "openid-connect"
+}
+
+func (a *AIGatewayAuthStrategyOpenIDConnect) GetTokenVault() *AIGatewayTokenVaultEnrollmentProtectionInput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
 }
 
 func (a *AIGatewayAuthStrategyOpenIDConnect) GetConfig() *AIGWOpenIDConnectGeneratedConfig {

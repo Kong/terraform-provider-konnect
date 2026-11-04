@@ -10,6 +10,7 @@ type AIGWOpenIDConnectGeneratedConfigPrincipals struct {
 	Directory           types.String   `tfsdk:"directory"`
 	Enabled             types.Bool     `tfsdk:"enabled"`
 	ErrorOnMiss         types.Bool     `tfsdk:"error_on_miss"`
+	Jit                 *Jit           `tfsdk:"jit"`
 	MatchConsumer       types.Bool     `tfsdk:"match_consumer"`
 	MatchConsumerGroups types.Bool     `tfsdk:"match_consumer_groups"`
 	PrincipalBy         types.String   `tfsdk:"principal_by"`

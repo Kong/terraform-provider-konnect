@@ -8,7 +8,9 @@ import (
 
 type AIGatewayMCPServerKongListenerConfig struct {
 	AllowedVersions    []types.String                               `tfsdk:"allowed_versions"`
+	CaCertificates     []types.String                               `tfsdk:"ca_certificates"`
 	Cache              *AIGatewayMCPServerConversionListenerCache   `tfsdk:"cache"`
+	Certificates       []types.String                               `tfsdk:"certificates"`
 	Logging            *AIGatewayMCPServerConversionListenerLogging `tfsdk:"logging"`
 	MaxRequestBodySize types.Int64                                  `tfsdk:"max_request_body_size"`
 	Route              *AIGatewayRouteConfig                        `tfsdk:"route"`

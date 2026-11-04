@@ -6,17 +6,52 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
+// AIGatewayModelBalancerPriorityConfigFailoverCriteria - **`http_400` requires a minimum runtime version of `2.3`**.
+//
+// **`http_401` requires a minimum runtime version of `2.3`**.
+//
+// **`http_402` requires a minimum runtime version of `2.3`**.
+//
+// **`http_405` requires a minimum runtime version of `2.3`**.
+//
+// **`http_408` requires a minimum runtime version of `2.3`**.
+//
+// **`http_409` requires a minimum runtime version of `2.3`**.
+//
+// **`http_413` requires a minimum runtime version of `2.3`**.
+//
+// **`http_415` requires a minimum runtime version of `2.3`**.
+//
+// **`http_422` requires a minimum runtime version of `2.3`**.
+//
+// **`http_522` requires a minimum runtime version of `2.3`**.
+//
+// **`http_529` requires a minimum runtime version of `2.3`**.
+//
+// **`http_5xx` requires a minimum runtime version of `2.3`**.
 type AIGatewayModelBalancerPriorityConfigFailoverCriteria string
 
 const (
 	AIGatewayModelBalancerPriorityConfigFailoverCriteriaError         AIGatewayModelBalancerPriorityConfigFailoverCriteria = "error"
+	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp400       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_400"
+	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp401       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_401"
+	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp402       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_402"
 	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp403       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_403"
 	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp404       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_404"
+	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp405       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_405"
+	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp408       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_408"
+	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp409       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_409"
+	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp413       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_413"
+	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp415       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_415"
+	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp422       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_422"
 	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp429       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_429"
 	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp500       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_500"
 	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp502       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_502"
 	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp503       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_503"
 	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp504       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_504"
+	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp522       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_522"
+	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp529       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_529"
+	AIGatewayModelBalancerPriorityConfigFailoverCriteriaHttp5xx       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "http_5xx"
 	AIGatewayModelBalancerPriorityConfigFailoverCriteriaInvalidHeader AIGatewayModelBalancerPriorityConfigFailoverCriteria = "invalid_header"
 	AIGatewayModelBalancerPriorityConfigFailoverCriteriaNonIdempotent AIGatewayModelBalancerPriorityConfigFailoverCriteria = "non_idempotent"
 	AIGatewayModelBalancerPriorityConfigFailoverCriteriaTimeout       AIGatewayModelBalancerPriorityConfigFailoverCriteria = "timeout"
@@ -30,7 +65,7 @@ func (e AIGatewayModelBalancerPriorityConfigFailoverCriteria) ToPointer() *AIGat
 func (e *AIGatewayModelBalancerPriorityConfigFailoverCriteria) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "error", "http_403", "http_404", "http_429", "http_500", "http_502", "http_503", "http_504", "invalid_header", "non_idempotent", "timeout":
+		case "error", "http_400", "http_401", "http_402", "http_403", "http_404", "http_405", "http_408", "http_409", "http_413", "http_415", "http_422", "http_429", "http_500", "http_502", "http_503", "http_504", "http_522", "http_529", "http_5xx", "invalid_header", "non_idempotent", "timeout":
 			return true
 		}
 	}
