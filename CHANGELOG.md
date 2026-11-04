@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.28.0
-> Released 2026/10/??
+> Released 2026/10/06
 
 # Features
 * Add support for AI Gateway 2.3, including support for baseten model provider, and token vault through `konnect_ai_gateway_datastores` resource
