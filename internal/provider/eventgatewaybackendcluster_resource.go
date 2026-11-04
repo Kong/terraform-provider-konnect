@@ -145,8 +145,9 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"password": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:  true,
+								Optional:  true,
+								Sensitive: true,
 								MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
 									`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
 									`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
@@ -189,8 +190,9 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:  true,
+								Optional:  true,
+								Sensitive: true,
 								MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
 									`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
 									`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
@@ -314,7 +316,8 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 								},
 							},
 							"key": schema.StringAttribute{
-								Required: true,
+								Required:  true,
+								Sensitive: true,
 								MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
 									`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
 									`If provided as an expression, the expression itself is stored and returned by the API.`,
@@ -398,6 +401,8 @@ func (r *EventGatewayBackendClusterResource) Create(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateEventGatewayBackendClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -458,6 +463,8 @@ func (r *EventGatewayBackendClusterResource) Read(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetEventGatewayBackendClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -511,6 +518,8 @@ func (r *EventGatewayBackendClusterResource) Update(ctx context.Context, req res
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
 
 	request, requestDiags := data.ToOperationsUpdateEventGatewayBackendClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -571,6 +580,8 @@ func (r *EventGatewayBackendClusterResource) Delete(ctx context.Context, req res
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.State)
 
 	request, requestDiags := data.ToOperationsDeleteEventGatewayBackendClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)

@@ -82,7 +82,8 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 									},
 								},
 								"key": schema.StringAttribute{
-									Required: true,
+									Required:  true,
+									Sensitive: true,
 									MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
 										`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
 										`If provided as an expression, the expression itself is stored and returned by the API.`,
@@ -266,6 +267,8 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Create(ctx context.Context
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateEventGatewayListenerPolicyTLSServerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -326,6 +329,8 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Read(ctx context.Context, 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetEventGatewayListenerPolicyTLSServerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -379,6 +384,8 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Update(ctx context.Context
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
 
 	request, requestDiags := data.ToOperationsUpdateEventGatewayListenerPolicyTLSServerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
@@ -439,6 +446,8 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Delete(ctx context.Context
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	ctx = withSensitiveValues(ctx, req.State)
 
 	request, requestDiags := data.ToOperationsDeleteEventGatewayListenerPolicyTLSServerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)

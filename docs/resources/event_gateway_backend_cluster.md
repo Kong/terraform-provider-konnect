@@ -136,7 +136,7 @@ role user ARN, queryable as `arn:aws:sts::<account-id>:assumed-role/<role-name>/
 
 Optional:
 
-- `password` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+- `password` (String, Sensitive) A sensitive value containing the secret or a reference to a secret as a template string expression.
 If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
 If provided as an expression, the expression itself is stored and returned by the API.
 Not Null
@@ -151,7 +151,7 @@ Not Null
 Optional:
 
 - `algorithm` (String) The algorithm used for SASL/SCRAM authentication. possible known values include one of ["sha256", "sha512"]; Not Null
-- `password` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+- `password` (String, Sensitive) A sensitive value containing the secret or a reference to a secret as a template string expression.
 If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
 If provided as an expression, the expression itself is stored and returned by the API.
 Not Null
@@ -185,7 +185,7 @@ Required:
 
 - `certificate` (String) A literal value or a reference to an existing secret as a template string expression.
 The value is stored and returned by the API as-is, not treated as sensitive information.
-- `key` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+- `key` (String, Sensitive) A sensitive value containing the secret or a reference to a secret as a template string expression.
 If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
 If provided as an expression, the expression itself is stored and returned by the API.
 

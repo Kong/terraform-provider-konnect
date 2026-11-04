@@ -83,6 +83,7 @@ func (s *EventGatewayVirtualClusters) CreateEventGatewayVirtualCluster(ctx conte
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "create-event-gateway-virtual-cluster")
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -354,6 +355,7 @@ func (s *EventGatewayVirtualClusters) GetEventGatewayVirtualCluster(ctx context.
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "get-event-gateway-virtual-cluster")
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -626,6 +628,7 @@ func (s *EventGatewayVirtualClusters) UpdateEventGatewayVirtualCluster(ctx conte
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "update-event-gateway-virtual-cluster")
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)

@@ -83,6 +83,7 @@ func (s *EventGatewaySchemaRegistries) CreateEventGatewaySchemaRegistry(ctx cont
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "create-event-gateway-schema-registry")
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -626,6 +627,7 @@ func (s *EventGatewaySchemaRegistries) UpdateEventGatewaySchemaRegistry(ctx cont
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "update-event-gateway-schema-registry")
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
