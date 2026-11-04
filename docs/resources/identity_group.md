@@ -34,7 +34,7 @@ resource "konnect_identity_group" "my_identitygroup" {
 ### Required
 
 - `directory_id` (String) ID of the directory
-- `name` (String) Human-readable name of the group. Must be alphanumeric, with no spaces.
+- `name` (String) Human-readable name of the group. Must start and end with a letter or a digit. Letters, digits, and hyphens are allowed in between.
 
 ### Optional
 

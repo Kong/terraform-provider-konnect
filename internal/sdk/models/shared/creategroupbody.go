@@ -31,7 +31,7 @@ func (e *CreateGroupBodyType) IsExact() bool {
 
 // CreateGroupBody - Group to be created
 type CreateGroupBody struct {
-	// Human-readable name of the group. Must be alphanumeric, with no spaces.
+	// Human-readable name of the group. Must start and end with a letter or a digit. Letters, digits, and hyphens are allowed in between.
 	//
 	Name string `json:"name"`
 	// Optional description providing additional context about the group's purpose.

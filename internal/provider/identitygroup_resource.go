@@ -114,10 +114,10 @@ func (r *IdentityGroupResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
-				Description: `Human-readable name of the group. Must be alphanumeric, with no spaces.`,
+				Description: `Human-readable name of the group. Must start and end with a letter or a digit. Letters, digits, and hyphens are allowed in between.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(255),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9]+$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$`).String()),
 				},
 			},
 			"provisioned_by": schema.StringAttribute{

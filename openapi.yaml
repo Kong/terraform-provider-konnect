@@ -62453,10 +62453,10 @@ components:
       x-speakeasy-param-computed: false
     KongGroupName:
       description: |
-        Human-readable name of the group. Must be alphanumeric, with no spaces.
+        Human-readable name of the group. Must start and end with a letter or a digit. Letters, digits, and hyphens are allowed in between.
       type: string
       maxLength: 255
-      pattern: '^[A-Za-z0-9]+$'
+      pattern: '^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$'
     KongGroupDescription:
       description: |
         Optional description providing additional context about the group's purpose.
