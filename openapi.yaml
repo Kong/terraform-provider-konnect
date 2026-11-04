@@ -39506,6 +39506,7 @@ components:
               default: false
           required:
             - enabled
+          x-speakeasy-param-computed: true
         mcp_server:
           description: AI Features config
           type: object
@@ -39522,10 +39523,8 @@ components:
           required:
             - enabled
             - write_operations_enabled
+          x-speakeasy-param-computed: true
       additionalProperties: false
-      required:
-        - mcp_server
-        - ai_search
     AISettings:
       type: object
       properties:
@@ -113288,8 +113287,6 @@ components:
               theme_name:
                 description: 'Name of the theme to use for the default content created upon creation of this portal. Must match an available theme name; if omitted or unrecognized, the default theme is used. Only applies when `create_default_content` is true.'
                 type: string
-                default: null
-                nullable: true
                 x-speakeasy-param-computed: false
             additionalProperties: false
             required:
