@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -154,9 +155,13 @@ func (r *IdentityGroupResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `The manager of a team, set through the team's ` + "`" + `team_manager` + "`" + ` custom identity. Always null for plain groups, and for teams without a manager.`,
 			},
 			"type": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `Type of the group. Immutable after creation. possible known values include one of ["group", "team"]`,
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `Type of the group. Immutable after creation. possible known values include one of ["group", "team"]; Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

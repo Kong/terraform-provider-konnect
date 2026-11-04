@@ -9,7 +9,7 @@ import (
 
 // CreatePasswordBody - Password to be created
 type CreatePasswordBody struct {
-	Secret *string `default:"null" json:"secret"`
+	Secret *string `json:"secret,omitempty"`
 	// An ISO-8601 timestamp representation of entity expiration date.
 	ExpiresAt *time.Time `default:"null" json:"expires_at"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).

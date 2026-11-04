@@ -101,6 +101,7 @@ func (r *IdentityVaultProviderResource) Schema(ctx context.Context, req resource
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"credential_type": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `Credential scope. Defaults to "user" for authorization_code templates when omitted; static_secret templates require "shared".`,
 			},

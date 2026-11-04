@@ -61987,6 +61987,7 @@ components:
             Type of the group. Immutable after creation.
           allOf:
             - $ref: '#/components/schemas/KongGroupType'
+          x-speakeasy-param-force-new: true
         metadata:
           $ref: '#/components/schemas/KongIdentityMetadata'
         labels:
@@ -62007,6 +62008,7 @@ components:
             Type of the group. Immutable after creation.
           allOf:
             - $ref: '#/components/schemas/KongGroupType'
+          x-speakeasy-param-force-new: true
         metadata:
           $ref: '#/components/schemas/KongIdentityMetadata'
         labels:
@@ -62116,13 +62118,11 @@ components:
       properties:
         secret:
           type: string
-          default: null
           maxLength: 255
           minLength: 1
-          nullable: true
           writeOnly: true
           x-sensitive: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
           x-speakeasy-param-sensitive: true
         expires_at:
           $ref: '#/components/schemas/ExpiresAtWritable'
@@ -62960,17 +62960,16 @@ components:
         secret:
           description: 'Pre-issued static credential (API key, PAT, etc.). Stored encrypted, never returned in read APIs.'
           type: string
-          default: null
-          nullable: true
+          nullable: false
           writeOnly: true
           x-sensitive: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-sensitive: true
         selector:
           $ref: '#/components/schemas/VaultCredentialSelector'
         priority:
           $ref: '#/components/schemas/VaultCredentialPriority'
       nullable: false
+      x-terraform-no-default-null: true
     VaultCredentialSelector:
       description: 'CEL expression deciding which callers this credential applies to. Omit to make it the provider''s default, which applies to every caller and is considered after all the others.'
       type: string
@@ -63071,8 +63070,7 @@ components:
           description: |
             Credential scope. Defaults to "user" for authorization_code templates when omitted; static_secret templates require "shared".
           type: string
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         pkce_enabled:
           description: |
             Use PKCE (S256) on the authorization-code flow. Templates whose authorization server mandates PKCE (pkce_required, e.g. datadog) imply true when this field is omitted; setting it explicitly to false is rejected with 400.
@@ -63142,6 +63140,7 @@ components:
         credential_type:
           type: string
           default: user
+          x-speakeasy-param-computed: true
         pkce_enabled:
           description: |
             Use PKCE (S256) on the authorization-code flow. Templates whose authorization server mandates PKCE (pkce_required, e.g. datadog) imply true when this field is omitted; setting it explicitly to false is rejected with 400.

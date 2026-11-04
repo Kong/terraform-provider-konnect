@@ -9,7 +9,7 @@ import (
 // SetVaultProviderCredentialBody - The secret to store. Required and used verbatim for a static_secret provider. Must be omitted for a shared authorization_code provider, where the response instead carries an enrollment_url for an admin to complete OAuth consent.
 type SetVaultProviderCredentialBody struct {
 	// Pre-issued static credential (API key, PAT, etc.). Stored encrypted, never returned in read APIs.
-	Secret *string `default:"null" json:"secret"`
+	Secret *string `json:"secret,omitempty"`
 	// CEL expression deciding which callers this credential applies to. Omit to make it the provider's default, which applies to every caller and is considered after all the others.
 	Selector *string `json:"selector,omitempty"`
 	// Order in which this credential is considered, lowest first. Required with a selector, and must be omitted without one.

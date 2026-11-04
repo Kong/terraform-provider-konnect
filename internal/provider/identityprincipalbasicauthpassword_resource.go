@@ -97,6 +97,7 @@ func (r *IdentityPrincipalBasicAuthPasswordResource) Schema(ctx context.Context,
 				Description: `Unique identifier of the principal (UUID format)`,
 			},
 			"secret": schema.StringAttribute{
+				Computed:  true,
 				Optional:  true,
 				Sensitive: true,
 				MarkdownDescription: `The password secret value. This is only returned when the password is first created` + "\n" +
