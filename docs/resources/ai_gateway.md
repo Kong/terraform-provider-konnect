@@ -20,6 +20,9 @@ resource "konnect_ai_gateway" "my_aigateway" {
   labels = {
     key = "value"
   }
+  managed_by = {
+    key = "value"
+  }
   min_runtime_version = "2.0"
   name                = "my-ai-gateway"
   proxy_urls = [
@@ -50,6 +53,9 @@ resource "konnect_ai_gateway" "my_aigateway" {
 Public labels are intended to store **PUBLIC** metadata. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+Keys must be 1–63 characters long and start with an alphanumeric character.
 - `min_runtime_version` (String) The minimum AI Gateway runtime version supported by this AI Gateway. This is the lowest data plane version that may receive configuration from it, and it controls which features the API accepts.
 
 Data planes older than this version still connect for topology visibility.

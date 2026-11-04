@@ -1400,12 +1400,8 @@ Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
 - `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
-
-**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
 - `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
-
-**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--conversion_listener--access--consumer--default_tool_acls"></a>
@@ -1469,12 +1465,8 @@ Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
 - `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
-
-**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
 - `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
-
-**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--conversion_listener--access--oauth_access_token--default_tool_acls"></a>
@@ -2664,12 +2656,8 @@ Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
 - `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
-
-**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
 - `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
-
-**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--listener--access--consumer--default_tool_acls"></a>
@@ -2733,12 +2721,8 @@ Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
 - `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
-
-**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
 - `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
-
-**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--listener--access--oauth_access_token--default_tool_acls"></a>
@@ -3335,12 +3319,8 @@ Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
 - `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
-
-**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
 - `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
-
-**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--passthrough_listener--access--consumer--default_tool_acls"></a>
@@ -3404,12 +3384,8 @@ Optional:
 
 - `allow` (List of String) List of consumer groups that are permitted access.
 - `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
-
-**Requires a minimum runtime version of `2.3`**.
 - `deny` (List of String) List of consumer groups that are denied access.
 - `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
-
-**Requires a minimum runtime version of `2.3`**.
 
 
 <a id="nestedatt--passthrough_listener--access--oauth_access_token--default_tool_acls"></a>

@@ -7,9 +7,9 @@ import (
 )
 
 type AIGatewayTokenVault struct {
-	Cache            *Cache                                                         `tfsdk:"cache"`
-	Credential       *AIGatewayTokenVaultCredential                                 `tfsdk:"credential"`
-	Provider         types.String                                                   `tfsdk:"provider"`
-	Storage          *AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig `tfsdk:"storage"`
-	SubjectTokenType types.String                                                   `tfsdk:"subject_token_type"`
+	Cache            *Cache                                                            `tfsdk:"cache"`
+	Credential       *AIGatewayTokenVaultCredential                                    `tfsdk:"credential"`
+	Provider         types.String                                                      `tfsdk:"provider"`
+	Storage          *AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig `tfsdk:"storage"`
+	SubjectTokenType types.String                                                      `tfsdk:"subject_token_type"`
 }

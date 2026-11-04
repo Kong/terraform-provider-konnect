@@ -101,9 +101,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											"allow_when": schema.ListAttribute{
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
-													`` + "\n" +
-													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
@@ -114,9 +112,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											"deny_when": schema.ListAttribute{
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
-													`` + "\n" +
-													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 										},
 										MarkdownDescription: `Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
@@ -248,9 +244,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											"allow_when": schema.ListAttribute{
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
-													`` + "\n" +
-													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
@@ -261,9 +255,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											"deny_when": schema.ListAttribute{
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
-													`` + "\n" +
-													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 										},
 										MarkdownDescription: `Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
@@ -2918,9 +2910,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											"allow_when": schema.ListAttribute{
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
-													`` + "\n" +
-													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
@@ -2931,9 +2921,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											"deny_when": schema.ListAttribute{
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
-													`` + "\n" +
-													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 										},
 										MarkdownDescription: `Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
@@ -3065,9 +3053,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											"allow_when": schema.ListAttribute{
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
-													`` + "\n" +
-													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
@@ -3078,9 +3064,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											"deny_when": schema.ListAttribute{
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
-													`` + "\n" +
-													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 										},
 										MarkdownDescription: `Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
@@ -4381,9 +4365,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											"allow_when": schema.ListAttribute{
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
-													`` + "\n" +
-													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
@@ -4394,9 +4376,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											"deny_when": schema.ListAttribute{
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
-													`` + "\n" +
-													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 										},
 										MarkdownDescription: `Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
@@ -4528,9 +4508,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											"allow_when": schema.ListAttribute{
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
-													`` + "\n" +
-													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
@@ -4541,9 +4519,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											"deny_when": schema.ListAttribute{
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
-													`` + "\n" +
-													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
 											},
 										},
 										MarkdownDescription: `Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +

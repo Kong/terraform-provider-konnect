@@ -7,14 +7,14 @@ import (
 )
 
 type TokenVaultDatastore struct {
-	Config         *AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig `tfsdk:"config"`
-	CreatedAt      types.String                                                   `tfsdk:"created_at"`
-	Description    types.String                                                   `tfsdk:"description"`
-	DisplayName    types.String                                                   `tfsdk:"display_name"`
-	ID             types.String                                                   `tfsdk:"id"`
-	KonnectManaged types.Bool                                                     `tfsdk:"konnect_managed"`
-	Labels         map[string]types.String                                        `tfsdk:"labels"`
-	ManagedBy      map[string]types.String                                        `tfsdk:"managed_by"`
-	Name           types.String                                                   `tfsdk:"name"`
-	UpdatedAt      types.String                                                   `tfsdk:"updated_at"`
+	Config         *AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig `tfsdk:"config"`
+	CreatedAt      types.String                                                      `tfsdk:"created_at"`
+	Description    types.String                                                      `tfsdk:"description"`
+	DisplayName    types.String                                                      `tfsdk:"display_name"`
+	ID             types.String                                                      `tfsdk:"id"`
+	KonnectManaged types.Bool                                                        `tfsdk:"konnect_managed"`
+	Labels         map[string]types.String                                           `tfsdk:"labels"`
+	ManagedBy      map[string]types.String                                           `tfsdk:"managed_by"`
+	Name           types.String                                                      `tfsdk:"name"`
+	UpdatedAt      types.String                                                      `tfsdk:"updated_at"`
 }

@@ -22,7 +22,7 @@ type AIGatewayMCPServerListenerOauth struct {
 	// `tools/call`) is allowed, and before any tool-level `default_tool_acls` or per-tool
 	// `access.acls` check is evaluated.
 	//
-	Acls *AIGatewayMCPACLs `json:"acls,omitempty"`
+	Acls *AIGatewayMCPServerACLs `json:"acls,omitempty"`
 	// Default per-tool access control rules for allowing or denying callers access to tools,
 	// evaluated against the value of the configured `access_token_claim_field`. Evaluated only
 	// for callers that already passed the server-level `acls` check above. Applies to every tool
@@ -68,7 +68,7 @@ func (a *AIGatewayMCPServerListenerOauth) GetAccessTokenClaimField() string {
 	return a.AccessTokenClaimField
 }
 
-func (a *AIGatewayMCPServerListenerOauth) GetAcls() *AIGatewayMCPACLs {
+func (a *AIGatewayMCPServerListenerOauth) GetAcls() *AIGatewayMCPServerACLs {
 	if a == nil {
 		return nil
 	}

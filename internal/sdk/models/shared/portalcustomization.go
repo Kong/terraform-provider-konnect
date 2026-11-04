@@ -54,7 +54,7 @@ func (c *Colors) GetPrimary() *string {
 
 // Theme - The theme settings for this portal.
 type Theme struct {
-	// The theme name to apply to this portal. Supported names are 'ocean', 'mesa', and 'grove'. If another name is provided or this property is omitted, the portal uses the default 'ocean' theme.
+	// The theme name to apply to this portal. Supported names are 'mesa', 'grove', 'pebble', or 'ocean'. If another name is provided or this property is omitted, the portal uses the default 'ocean' theme.
 	Name   *string                  `default:"ocean" json:"name"`
 	Mode   *PortalCustomizationMode `json:"mode,omitempty"`
 	Colors *Colors                  `json:"colors,omitempty"`

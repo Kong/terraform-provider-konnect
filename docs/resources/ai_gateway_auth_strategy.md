@@ -807,10 +807,18 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 Keys must be 1–63 characters long and start with an alphanumeric character.
 - `name` (String) A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
-- `token_vault` (Attributes) Serves the self-service enrollment UI through which end users authorize the upstream providers
-this auth strategy authenticates against. Omit `token_vault` entirely to serve no such UI.
+- `token_vault` (Attributes) Enables enrollment protection for the Token Vault datastore linked to this auth strategy.
+Users of the linked Token Vault will need to authenticate using this OIDC auth strategy
+before completing enrollment with upstream providers. Enrollment links always store upstream
+credentials in the Token Vault belonging to the principal who requested the link. Enrollment
+protection ensures that other principals cannot use an enrollment link to unknowingly
+authorize the storage of their upstream credentials in another principal's Token Vault.
 
-Requires a `token-vault` Datastore reference in `datastores`; enabling the credential manager
+Note that the auth strategy used to protect upstream resources such as MCP servers need not
+be the same auth strategy used for enrollment protection. Omit `token_vault` entirely to
+enforce no such enrollment protection.
+
+Requires a `token-vault` Datastore reference in `datastores`; enabling enrollment protection
 without one is rejected.
 
 **Requires a minimum runtime version of `2.3`**. (see [below for nested schema](#nestedatt--openid_connect--token_vault))
@@ -1413,7 +1421,16 @@ Optional:
 
 Optional:
 
-- `enable_credential_manager` (Boolean) Whether the self-service enrollment UI is served for this auth strategy. Default: false
+- `enable_credential_manager` (Boolean) Enables the self-service credential manager UI through which end users authorize
+upstream providers for Token Vault datastore linked to this auth strategy. This OIDC
+auth strategy is used to authenticate access to the self-service UI, but need not
+necessarily be the same auth strategy that is used to authenticate access to upstream
+Token Vault providers.
+
+Requires a `token-vault` Datastore reference in `datastores`; enabling the credential
+manager without one is rejected. The credential manager cannot be used without
+enrollment protection.
+Default: false
 
 Read-Only:
 

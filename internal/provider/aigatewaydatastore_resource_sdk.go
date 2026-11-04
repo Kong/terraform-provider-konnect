@@ -230,7 +230,7 @@ func (r *AIGatewayDatastoreResourceModel) RefreshFromSharedAIGatewayDatastore(ct
 		}
 		if resp.AIGatewayDatastoreTokenVaultDatastore != nil {
 			r.TokenVault = &tfTypes.TokenVaultDatastore{}
-			r.TokenVault.Config = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+			r.TokenVault.Config = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 			r.TokenVault.Config.CurrentVersion = types.StringValue(resp.AIGatewayDatastoreTokenVaultDatastore.Config.CurrentVersion)
 			r.TokenVault.Config.Directory = types.StringValue(resp.AIGatewayDatastoreTokenVaultDatastore.Config.Directory)
 			r.TokenVault.Config.Keys = []tfTypes.TokenVaultDatastoreKey{}

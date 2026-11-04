@@ -272,7 +272,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.TokenVault.Storage == nil {
 					r.Anthropic.TokenVault.Storage = nil
 				} else {
-					r.Anthropic.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Anthropic.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Anthropic.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.TokenVault.Storage.CurrentVersion)
 					r.Anthropic.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.TokenVault.Storage.Directory)
 					r.Anthropic.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -583,7 +583,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderAzure.TokenVault.Storage == nil {
 					r.Azure.TokenVault.Storage = nil
 				} else {
-					r.Azure.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Azure.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Azure.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.TokenVault.Storage.CurrentVersion)
 					r.Azure.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.TokenVault.Storage.Directory)
 					r.Azure.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -862,7 +862,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.TokenVault.Storage == nil {
 					r.Baseten.TokenVault.Storage = nil
 				} else {
-					r.Baseten.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Baseten.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Baseten.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.TokenVault.Storage.CurrentVersion)
 					r.Baseten.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.TokenVault.Storage.Directory)
 					r.Baseten.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -1163,7 +1163,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.TokenVault.Storage == nil {
 					r.Bedrock.TokenVault.Storage = nil
 				} else {
-					r.Bedrock.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Bedrock.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Bedrock.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.TokenVault.Storage.CurrentVersion)
 					r.Bedrock.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.TokenVault.Storage.Directory)
 					r.Bedrock.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -1442,7 +1442,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.TokenVault.Storage == nil {
 					r.Cerebras.TokenVault.Storage = nil
 				} else {
-					r.Cerebras.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Cerebras.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Cerebras.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.TokenVault.Storage.CurrentVersion)
 					r.Cerebras.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.TokenVault.Storage.Directory)
 					r.Cerebras.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -1721,7 +1721,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderCohere.TokenVault.Storage == nil {
 					r.Cohere.TokenVault.Storage = nil
 				} else {
-					r.Cohere.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Cohere.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Cohere.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.TokenVault.Storage.CurrentVersion)
 					r.Cohere.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.TokenVault.Storage.Directory)
 					r.Cohere.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -2000,7 +2000,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.TokenVault.Storage == nil {
 					r.Dashscope.TokenVault.Storage = nil
 				} else {
-					r.Dashscope.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Dashscope.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Dashscope.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.TokenVault.Storage.CurrentVersion)
 					r.Dashscope.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.TokenVault.Storage.Directory)
 					r.Dashscope.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -2279,7 +2279,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.TokenVault.Storage == nil {
 					r.Databricks.TokenVault.Storage = nil
 				} else {
-					r.Databricks.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Databricks.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Databricks.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.TokenVault.Storage.CurrentVersion)
 					r.Databricks.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.TokenVault.Storage.Directory)
 					r.Databricks.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -2558,7 +2558,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.TokenVault.Storage == nil {
 					r.Deepseek.TokenVault.Storage = nil
 				} else {
-					r.Deepseek.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Deepseek.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Deepseek.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.TokenVault.Storage.CurrentVersion)
 					r.Deepseek.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.TokenVault.Storage.Directory)
 					r.Deepseek.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -2889,7 +2889,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderGemini.TokenVault.Storage == nil {
 					r.Gemini.TokenVault.Storage = nil
 				} else {
-					r.Gemini.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Gemini.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Gemini.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.TokenVault.Storage.CurrentVersion)
 					r.Gemini.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.TokenVault.Storage.Directory)
 					r.Gemini.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -3168,7 +3168,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.TokenVault.Storage == nil {
 					r.Huggingface.TokenVault.Storage = nil
 				} else {
-					r.Huggingface.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Huggingface.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Huggingface.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.TokenVault.Storage.CurrentVersion)
 					r.Huggingface.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.TokenVault.Storage.Directory)
 					r.Huggingface.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -3447,7 +3447,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderKimi.TokenVault.Storage == nil {
 					r.Kimi.TokenVault.Storage = nil
 				} else {
-					r.Kimi.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Kimi.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Kimi.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.TokenVault.Storage.CurrentVersion)
 					r.Kimi.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.TokenVault.Storage.Directory)
 					r.Kimi.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -3726,7 +3726,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.TokenVault.Storage == nil {
 					r.Llama2.TokenVault.Storage = nil
 				} else {
-					r.Llama2.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Llama2.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Llama2.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.TokenVault.Storage.CurrentVersion)
 					r.Llama2.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.TokenVault.Storage.Directory)
 					r.Llama2.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -4005,7 +4005,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderMistral.TokenVault.Storage == nil {
 					r.Mistral.TokenVault.Storage = nil
 				} else {
-					r.Mistral.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Mistral.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Mistral.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.TokenVault.Storage.CurrentVersion)
 					r.Mistral.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.TokenVault.Storage.Directory)
 					r.Mistral.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -4284,7 +4284,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderOllama.TokenVault.Storage == nil {
 					r.Ollama.TokenVault.Storage = nil
 				} else {
-					r.Ollama.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Ollama.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Ollama.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.TokenVault.Storage.CurrentVersion)
 					r.Ollama.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.TokenVault.Storage.Directory)
 					r.Ollama.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -4563,7 +4563,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.TokenVault.Storage == nil {
 					r.Openai.TokenVault.Storage = nil
 				} else {
-					r.Openai.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Openai.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Openai.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.TokenVault.Storage.CurrentVersion)
 					r.Openai.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.TokenVault.Storage.Directory)
 					r.Openai.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -4870,7 +4870,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.TokenVault.Storage == nil {
 					r.Sagemaker.TokenVault.Storage = nil
 				} else {
-					r.Sagemaker.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Sagemaker.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Sagemaker.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.TokenVault.Storage.CurrentVersion)
 					r.Sagemaker.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.TokenVault.Storage.Directory)
 					r.Sagemaker.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -5149,7 +5149,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.TokenVault.Storage == nil {
 					r.Typesafe.TokenVault.Storage = nil
 				} else {
-					r.Typesafe.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Typesafe.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Typesafe.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.TokenVault.Storage.CurrentVersion)
 					r.Typesafe.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.TokenVault.Storage.Directory)
 					r.Typesafe.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -5428,7 +5428,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderVercel.TokenVault.Storage == nil {
 					r.Vercel.TokenVault.Storage = nil
 				} else {
-					r.Vercel.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Vercel.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Vercel.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.TokenVault.Storage.CurrentVersion)
 					r.Vercel.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.TokenVault.Storage.Directory)
 					r.Vercel.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -5707,7 +5707,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderVllm.TokenVault.Storage == nil {
 					r.Vllm.TokenVault.Storage = nil
 				} else {
-					r.Vllm.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Vllm.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Vllm.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.TokenVault.Storage.CurrentVersion)
 					r.Vllm.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.TokenVault.Storage.Directory)
 					r.Vllm.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -5986,7 +5986,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 				if resp.AIGatewayModelProviderAIGatewayModelProviderXai.TokenVault.Storage == nil {
 					r.Xai.TokenVault.Storage = nil
 				} else {
-					r.Xai.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Xai.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Xai.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderXai.TokenVault.Storage.CurrentVersion)
 					r.Xai.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayModelProviderAIGatewayModelProviderXai.TokenVault.Storage.Directory)
 					r.Xai.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}

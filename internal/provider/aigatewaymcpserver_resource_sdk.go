@@ -699,7 +699,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				if resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Storage == nil {
 					r.ConversionListener.TokenVault.Storage = nil
 				} else {
-					r.ConversionListener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.ConversionListener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.ConversionListener.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Storage.CurrentVersion)
 					r.ConversionListener.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerConversionListenerResponse.TokenVault.Storage.Directory)
 					r.ConversionListener.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -1125,7 +1125,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				if resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Storage == nil {
 					r.ConversionOnly.TokenVault.Storage = nil
 				} else {
-					r.ConversionOnly.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.ConversionOnly.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.ConversionOnly.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Storage.CurrentVersion)
 					r.ConversionOnly.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerConversionOnlyResponse.TokenVault.Storage.Directory)
 					r.ConversionOnly.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -1883,7 +1883,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				if resp.AIGatewayMCPServerListenerResponse.TokenVault.Storage == nil {
 					r.Listener.TokenVault.Storage = nil
 				} else {
-					r.Listener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.Listener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.Listener.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Storage.CurrentVersion)
 					r.Listener.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerListenerResponse.TokenVault.Storage.Directory)
 					r.Listener.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -2594,7 +2594,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				if resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Storage == nil {
 					r.PassthroughListener.TokenVault.Storage = nil
 				} else {
-					r.PassthroughListener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.PassthroughListener.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.PassthroughListener.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Storage.CurrentVersion)
 					r.PassthroughListener.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerPassthroughListenerResponse.TokenVault.Storage.Directory)
 					r.PassthroughListener.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -3143,7 +3143,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				if resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Storage == nil {
 					r.UpstreamServer.TokenVault.Storage = nil
 				} else {
-					r.UpstreamServer.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.UpstreamServer.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.UpstreamServer.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Storage.CurrentVersion)
 					r.UpstreamServer.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayMCPServerUpstreamServerResponse.TokenVault.Storage.Directory)
 					r.UpstreamServer.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -4934,7 +4934,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		if r.ConversionListener.Access != nil {
 			var aiGatewayMCPServerListenerConsumer *shared.AIGatewayMCPServerListenerConsumer
 			if r.ConversionListener.Access.Consumer != nil {
-				var acls2 *shared.AIGatewayMCPACLs
+				var acls2 *shared.AIGatewayMCPServerACLs
 				if r.ConversionListener.Access.Consumer.Acls != nil {
 					allow2 := make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.Allow))
 					for allowIndex2 := range r.ConversionListener.Access.Consumer.Acls.Allow {
@@ -4958,7 +4958,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 							denyWhen2 = append(denyWhen2, r.ConversionListener.Access.Consumer.Acls.DenyWhen[denyWhenIndex2].ValueString())
 						}
 					}
-					acls2 = &shared.AIGatewayMCPACLs{
+					acls2 = &shared.AIGatewayMCPServerACLs{
 						Allow:     allow2,
 						Deny:      deny2,
 						AllowWhen: allowWhen2,
@@ -5058,7 +5058,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				var accessTokenClaimField string
 				accessTokenClaimField = r.ConversionListener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
-				var acls3 *shared.AIGatewayMCPACLs
+				var acls3 *shared.AIGatewayMCPServerACLs
 				if r.ConversionListener.Access.OauthAccessToken.Acls != nil {
 					allow4 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.Allow))
 					for allowIndex4 := range r.ConversionListener.Access.OauthAccessToken.Acls.Allow {
@@ -5082,7 +5082,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 							denyWhen4 = append(denyWhen4, r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex4].ValueString())
 						}
 					}
-					acls3 = &shared.AIGatewayMCPACLs{
+					acls3 = &shared.AIGatewayMCPServerACLs{
 						Allow:     allow4,
 						Deny:      deny4,
 						AllowWhen: allowWhen4,
@@ -6216,7 +6216,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		if r.Listener.Access != nil {
 			var aiGatewayMCPServerListenerConsumer1 *shared.AIGatewayMCPServerListenerConsumer
 			if r.Listener.Access.Consumer != nil {
-				var acls4 *shared.AIGatewayMCPACLs
+				var acls4 *shared.AIGatewayMCPServerACLs
 				if r.Listener.Access.Consumer.Acls != nil {
 					allow6 := make([]string, 0, len(r.Listener.Access.Consumer.Acls.Allow))
 					for allowIndex6 := range r.Listener.Access.Consumer.Acls.Allow {
@@ -6240,7 +6240,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 							denyWhen6 = append(denyWhen6, r.Listener.Access.Consumer.Acls.DenyWhen[denyWhenIndex6].ValueString())
 						}
 					}
-					acls4 = &shared.AIGatewayMCPACLs{
+					acls4 = &shared.AIGatewayMCPServerACLs{
 						Allow:     allow6,
 						Deny:      deny6,
 						AllowWhen: allowWhen6,
@@ -6340,7 +6340,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				var accessTokenClaimField1 string
 				accessTokenClaimField1 = r.Listener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
-				var acls5 *shared.AIGatewayMCPACLs
+				var acls5 *shared.AIGatewayMCPServerACLs
 				if r.Listener.Access.OauthAccessToken.Acls != nil {
 					allow8 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.Allow))
 					for allowIndex8 := range r.Listener.Access.OauthAccessToken.Acls.Allow {
@@ -6364,7 +6364,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 							denyWhen8 = append(denyWhen8, r.Listener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex8].ValueString())
 						}
 					}
-					acls5 = &shared.AIGatewayMCPACLs{
+					acls5 = &shared.AIGatewayMCPServerACLs{
 						Allow:     allow8,
 						Deny:      deny8,
 						AllowWhen: allowWhen8,
@@ -7615,7 +7615,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		if r.PassthroughListener.Access != nil {
 			var aiGatewayMCPServerListenerConsumer2 *shared.AIGatewayMCPServerListenerConsumer
 			if r.PassthroughListener.Access.Consumer != nil {
-				var acls7 *shared.AIGatewayMCPACLs
+				var acls7 *shared.AIGatewayMCPServerACLs
 				if r.PassthroughListener.Access.Consumer.Acls != nil {
 					allow11 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.Allow))
 					for allowIndex11 := range r.PassthroughListener.Access.Consumer.Acls.Allow {
@@ -7639,7 +7639,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 							denyWhen11 = append(denyWhen11, r.PassthroughListener.Access.Consumer.Acls.DenyWhen[denyWhenIndex11].ValueString())
 						}
 					}
-					acls7 = &shared.AIGatewayMCPACLs{
+					acls7 = &shared.AIGatewayMCPServerACLs{
 						Allow:     allow11,
 						Deny:      deny11,
 						AllowWhen: allowWhen11,
@@ -7739,7 +7739,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				var accessTokenClaimField2 string
 				accessTokenClaimField2 = r.PassthroughListener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
-				var acls8 *shared.AIGatewayMCPACLs
+				var acls8 *shared.AIGatewayMCPServerACLs
 				if r.PassthroughListener.Access.OauthAccessToken.Acls != nil {
 					allow13 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.Allow))
 					for allowIndex13 := range r.PassthroughListener.Access.OauthAccessToken.Acls.Allow {
@@ -7763,7 +7763,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 							denyWhen13 = append(denyWhen13, r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex13].ValueString())
 						}
 					}
-					acls8 = &shared.AIGatewayMCPACLs{
+					acls8 = &shared.AIGatewayMCPServerACLs{
 						Allow:     allow13,
 						Deny:      deny13,
 						AllowWhen: allowWhen13,
@@ -11199,7 +11199,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		if r.ConversionListener.Access != nil {
 			var aiGatewayMCPServerListenerConsumer *shared.AIGatewayMCPServerListenerConsumer
 			if r.ConversionListener.Access.Consumer != nil {
-				var acls2 *shared.AIGatewayMCPACLs
+				var acls2 *shared.AIGatewayMCPServerACLs
 				if r.ConversionListener.Access.Consumer.Acls != nil {
 					allow2 := make([]string, 0, len(r.ConversionListener.Access.Consumer.Acls.Allow))
 					for allowIndex2 := range r.ConversionListener.Access.Consumer.Acls.Allow {
@@ -11223,7 +11223,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 							denyWhen2 = append(denyWhen2, r.ConversionListener.Access.Consumer.Acls.DenyWhen[denyWhenIndex2].ValueString())
 						}
 					}
-					acls2 = &shared.AIGatewayMCPACLs{
+					acls2 = &shared.AIGatewayMCPServerACLs{
 						Allow:     allow2,
 						Deny:      deny2,
 						AllowWhen: allowWhen2,
@@ -11323,7 +11323,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				var accessTokenClaimField string
 				accessTokenClaimField = r.ConversionListener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
-				var acls3 *shared.AIGatewayMCPACLs
+				var acls3 *shared.AIGatewayMCPServerACLs
 				if r.ConversionListener.Access.OauthAccessToken.Acls != nil {
 					allow4 := make([]string, 0, len(r.ConversionListener.Access.OauthAccessToken.Acls.Allow))
 					for allowIndex4 := range r.ConversionListener.Access.OauthAccessToken.Acls.Allow {
@@ -11347,7 +11347,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 							denyWhen4 = append(denyWhen4, r.ConversionListener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex4].ValueString())
 						}
 					}
-					acls3 = &shared.AIGatewayMCPACLs{
+					acls3 = &shared.AIGatewayMCPServerACLs{
 						Allow:     allow4,
 						Deny:      deny4,
 						AllowWhen: allowWhen4,
@@ -12481,7 +12481,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		if r.Listener.Access != nil {
 			var aiGatewayMCPServerListenerConsumer1 *shared.AIGatewayMCPServerListenerConsumer
 			if r.Listener.Access.Consumer != nil {
-				var acls4 *shared.AIGatewayMCPACLs
+				var acls4 *shared.AIGatewayMCPServerACLs
 				if r.Listener.Access.Consumer.Acls != nil {
 					allow6 := make([]string, 0, len(r.Listener.Access.Consumer.Acls.Allow))
 					for allowIndex6 := range r.Listener.Access.Consumer.Acls.Allow {
@@ -12505,7 +12505,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 							denyWhen6 = append(denyWhen6, r.Listener.Access.Consumer.Acls.DenyWhen[denyWhenIndex6].ValueString())
 						}
 					}
-					acls4 = &shared.AIGatewayMCPACLs{
+					acls4 = &shared.AIGatewayMCPServerACLs{
 						Allow:     allow6,
 						Deny:      deny6,
 						AllowWhen: allowWhen6,
@@ -12605,7 +12605,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				var accessTokenClaimField1 string
 				accessTokenClaimField1 = r.Listener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
-				var acls5 *shared.AIGatewayMCPACLs
+				var acls5 *shared.AIGatewayMCPServerACLs
 				if r.Listener.Access.OauthAccessToken.Acls != nil {
 					allow8 := make([]string, 0, len(r.Listener.Access.OauthAccessToken.Acls.Allow))
 					for allowIndex8 := range r.Listener.Access.OauthAccessToken.Acls.Allow {
@@ -12629,7 +12629,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 							denyWhen8 = append(denyWhen8, r.Listener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex8].ValueString())
 						}
 					}
-					acls5 = &shared.AIGatewayMCPACLs{
+					acls5 = &shared.AIGatewayMCPServerACLs{
 						Allow:     allow8,
 						Deny:      deny8,
 						AllowWhen: allowWhen8,
@@ -13880,7 +13880,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		if r.PassthroughListener.Access != nil {
 			var aiGatewayMCPServerListenerConsumer2 *shared.AIGatewayMCPServerListenerConsumer
 			if r.PassthroughListener.Access.Consumer != nil {
-				var acls7 *shared.AIGatewayMCPACLs
+				var acls7 *shared.AIGatewayMCPServerACLs
 				if r.PassthroughListener.Access.Consumer.Acls != nil {
 					allow11 := make([]string, 0, len(r.PassthroughListener.Access.Consumer.Acls.Allow))
 					for allowIndex11 := range r.PassthroughListener.Access.Consumer.Acls.Allow {
@@ -13904,7 +13904,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 							denyWhen11 = append(denyWhen11, r.PassthroughListener.Access.Consumer.Acls.DenyWhen[denyWhenIndex11].ValueString())
 						}
 					}
-					acls7 = &shared.AIGatewayMCPACLs{
+					acls7 = &shared.AIGatewayMCPServerACLs{
 						Allow:     allow11,
 						Deny:      deny11,
 						AllowWhen: allowWhen11,
@@ -14004,7 +14004,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				var accessTokenClaimField2 string
 				accessTokenClaimField2 = r.PassthroughListener.Access.OauthAccessToken.AccessTokenClaimField.ValueString()
 
-				var acls8 *shared.AIGatewayMCPACLs
+				var acls8 *shared.AIGatewayMCPServerACLs
 				if r.PassthroughListener.Access.OauthAccessToken.Acls != nil {
 					allow13 := make([]string, 0, len(r.PassthroughListener.Access.OauthAccessToken.Acls.Allow))
 					for allowIndex13 := range r.PassthroughListener.Access.OauthAccessToken.Acls.Allow {
@@ -14028,7 +14028,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 							denyWhen13 = append(denyWhen13, r.PassthroughListener.Access.OauthAccessToken.Acls.DenyWhen[denyWhenIndex13].ValueString())
 						}
 					}
-					acls8 = &shared.AIGatewayMCPACLs{
+					acls8 = &shared.AIGatewayMCPServerACLs{
 						Allow:     allow13,
 						Deny:      deny13,
 						AllowWhen: allowWhen13,

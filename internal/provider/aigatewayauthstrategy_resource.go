@@ -2569,10 +2569,19 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"enable_credential_manager": schema.BoolAttribute{
-								Computed:    true,
-								Optional:    true,
-								Default:     booldefault.StaticBool(false),
-								Description: `Whether the self-service enrollment UI is served for this auth strategy. Default: false`,
+								Computed: true,
+								Optional: true,
+								Default:  booldefault.StaticBool(false),
+								MarkdownDescription: `Enables the self-service credential manager UI through which end users authorize` + "\n" +
+									`upstream providers for Token Vault datastore linked to this auth strategy. This OIDC` + "\n" +
+									`auth strategy is used to authenticate access to the self-service UI, but need not` + "\n" +
+									`necessarily be the same auth strategy that is used to authenticate access to upstream` + "\n" +
+									`Token Vault providers.` + "\n" +
+									`` + "\n" +
+									`Requires a ` + "`" + `token-vault` + "`" + ` Datastore reference in ` + "`" + `datastores` + "`" + `; enabling the credential` + "\n" +
+									`manager without one is rejected. The credential manager cannot be used without` + "\n" +
+									`enrollment protection.` + "\n" +
+									`Default: false`,
 							},
 							"storage": schema.SingleNestedAttribute{
 								Computed: true,
@@ -2625,10 +2634,18 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 									`the Datastore.`,
 							},
 						},
-						MarkdownDescription: `Serves the self-service enrollment UI through which end users authorize the upstream providers` + "\n" +
-							`this auth strategy authenticates against. Omit ` + "`" + `token_vault` + "`" + ` entirely to serve no such UI.` + "\n" +
+						MarkdownDescription: `Enables enrollment protection for the Token Vault datastore linked to this auth strategy.` + "\n" +
+							`Users of the linked Token Vault will need to authenticate using this OIDC auth strategy` + "\n" +
+							`before completing enrollment with upstream providers. Enrollment links always store upstream` + "\n" +
+							`credentials in the Token Vault belonging to the principal who requested the link. Enrollment` + "\n" +
+							`protection ensures that other principals cannot use an enrollment link to unknowingly` + "\n" +
+							`authorize the storage of their upstream credentials in another principal's Token Vault.` + "\n" +
 							`` + "\n" +
-							`Requires a ` + "`" + `token-vault` + "`" + ` Datastore reference in ` + "`" + `datastores` + "`" + `; enabling the credential manager` + "\n" +
+							`Note that the auth strategy used to protect upstream resources such as MCP servers need not` + "\n" +
+							`be the same auth strategy used for enrollment protection. Omit ` + "`" + `token_vault` + "`" + ` entirely to` + "\n" +
+							`enforce no such enrollment protection.` + "\n" +
+							`` + "\n" +
+							`Requires a ` + "`" + `token-vault` + "`" + ` Datastore reference in ` + "`" + `datastores` + "`" + `; enabling enrollment protection` + "\n" +
 							`without one is rejected.` + "\n" +
 							`` + "\n" +
 							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,

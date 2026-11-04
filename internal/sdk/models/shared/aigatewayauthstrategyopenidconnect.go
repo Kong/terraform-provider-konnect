@@ -33,15 +33,23 @@ type AIGatewayAuthStrategyOpenIDConnect struct {
 	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"openid-connect" json:"type"`
-	// Serves the self-service enrollment UI through which end users authorize the upstream providers
-	// this auth strategy authenticates against. Omit `token_vault` entirely to serve no such UI.
+	// Enables enrollment protection for the Token Vault datastore linked to this auth strategy.
+	// Users of the linked Token Vault will need to authenticate using this OIDC auth strategy
+	// before completing enrollment with upstream providers. Enrollment links always store upstream
+	// credentials in the Token Vault belonging to the principal who requested the link. Enrollment
+	// protection ensures that other principals cannot use an enrollment link to unknowingly
+	// authorize the storage of their upstream credentials in another principal's Token Vault.
 	//
-	// Requires a `token-vault` Datastore reference in `datastores`; enabling the credential manager
+	// Note that the auth strategy used to protect upstream resources such as MCP servers need not
+	// be the same auth strategy used for enrollment protection. Omit `token_vault` entirely to
+	// enforce no such enrollment protection.
+	//
+	// Requires a `token-vault` Datastore reference in `datastores`; enabling enrollment protection
 	// without one is rejected.
 	//
 	// **Requires a minimum runtime version of `2.3`**.
-	TokenVault *AIGatewayTokenVaultCredentialManagerInput `json:"token_vault,omitempty"`
-	Config     *AIGWOpenIDConnectGeneratedConfig          `json:"config,omitempty"`
+	TokenVault *AIGatewayTokenVaultEnrollmentProtectionInput `json:"token_vault,omitempty"`
+	Config     *AIGWOpenIDConnectGeneratedConfig             `json:"config,omitempty"`
 }
 
 func (a AIGatewayAuthStrategyOpenIDConnect) MarshalJSON() ([]byte, error) {
@@ -94,7 +102,7 @@ func (a *AIGatewayAuthStrategyOpenIDConnect) GetType() string {
 	return "openid-connect"
 }
 
-func (a *AIGatewayAuthStrategyOpenIDConnect) GetTokenVault() *AIGatewayTokenVaultCredentialManagerInput {
+func (a *AIGatewayAuthStrategyOpenIDConnect) GetTokenVault() *AIGatewayTokenVaultEnrollmentProtectionInput {
 	if a == nil {
 		return nil
 	}

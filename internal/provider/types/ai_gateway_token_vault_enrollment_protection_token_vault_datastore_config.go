@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig struct {
+type AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig struct {
 	CurrentVersion types.String             `tfsdk:"current_version"`
 	Directory      types.String             `tfsdk:"directory"`
 	Keys           []TokenVaultDatastoreKey `tfsdk:"keys"`

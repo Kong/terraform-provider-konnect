@@ -1324,12 +1324,12 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 			if resp.AIGatewayAuthStrategyOpenIDConnectResponse.TokenVault == nil {
 				r.OpenidConnect.TokenVault = nil
 			} else {
-				r.OpenidConnect.TokenVault = &tfTypes.AIGatewayTokenVaultCredentialManager{}
+				r.OpenidConnect.TokenVault = &tfTypes.AIGatewayTokenVaultEnrollmentProtection{}
 				r.OpenidConnect.TokenVault.EnableCredentialManager = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.TokenVault.EnableCredentialManager)
 				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.TokenVault.Storage == nil {
 					r.OpenidConnect.TokenVault.Storage = nil
 				} else {
-					r.OpenidConnect.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultCredentialManagerTokenVaultDatastoreConfig{}
+					r.OpenidConnect.TokenVault.Storage = &tfTypes.AIGatewayTokenVaultEnrollmentProtectionTokenVaultDatastoreConfig{}
 					r.OpenidConnect.TokenVault.Storage.CurrentVersion = types.StringValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.TokenVault.Storage.CurrentVersion)
 					r.OpenidConnect.TokenVault.Storage.Directory = types.StringValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.TokenVault.Storage.Directory)
 					r.OpenidConnect.TokenVault.Storage.Keys = []tfTypes.TokenVaultDatastoreKey{}
@@ -1634,7 +1634,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				})
 			}
 		}
-		var tokenVault *shared.AIGatewayTokenVaultCredentialManagerInput
+		var tokenVault *shared.AIGatewayTokenVaultEnrollmentProtectionInput
 		if r.OpenidConnect.TokenVault != nil {
 			enableCredentialManager := new(bool)
 			if !r.OpenidConnect.TokenVault.EnableCredentialManager.IsUnknown() && !r.OpenidConnect.TokenVault.EnableCredentialManager.IsNull() {
@@ -1642,7 +1642,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				enableCredentialManager = nil
 			}
-			tokenVault = &shared.AIGatewayTokenVaultCredentialManagerInput{
+			tokenVault = &shared.AIGatewayTokenVaultEnrollmentProtectionInput{
 				EnableCredentialManager: enableCredentialManager,
 			}
 		}
@@ -4599,7 +4599,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				})
 			}
 		}
-		var tokenVault *shared.AIGatewayTokenVaultCredentialManagerInput
+		var tokenVault *shared.AIGatewayTokenVaultEnrollmentProtectionInput
 		if r.OpenidConnect.TokenVault != nil {
 			enableCredentialManager := new(bool)
 			if !r.OpenidConnect.TokenVault.EnableCredentialManager.IsUnknown() && !r.OpenidConnect.TokenVault.EnableCredentialManager.IsNull() {
@@ -4607,7 +4607,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				enableCredentialManager = nil
 			}
-			tokenVault = &shared.AIGatewayTokenVaultCredentialManagerInput{
+			tokenVault = &shared.AIGatewayTokenVaultEnrollmentProtectionInput{
 				EnableCredentialManager: enableCredentialManager,
 			}
 		}
