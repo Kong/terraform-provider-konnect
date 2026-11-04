@@ -25,8 +25,8 @@ resource "konnect_ai_cost_budget" "my_aicostbudget" {
       filters = "{ \"see\": \"documentation\" }"
     }
     validity = {
-      from  = "...my_from..."
-      until = "...my_until..."
+      ends_at   = "...my_ends_at..."
+      starts_at = "...my_starts_at..."
     }
   }
 }
@@ -70,7 +70,7 @@ Default: 100
 
 A replacement can change it.
 Not Null (see [below for nested schema](#nestedatt--exempt--scope))
-- `validity` (Attributes) The period the exemption covers, from `from` until `until`. Not Null (see [below for nested schema](#nestedatt--exempt--validity))
+- `validity` (Attributes) The period the exemption covers, from `starts_at` until `ends_at`. Not Null (see [below for nested schema](#nestedatt--exempt--validity))
 
 Read-Only:
 
@@ -101,13 +101,13 @@ Not Null; Parsed as JSON.
 
 Optional:
 
-- `from` (String) When the exemption starts, as an RFC 3339 timestamp or as a date-time with a UTC offset and an IANA time zone in brackets, such as `2026-08-16T00:00:00+02:00[Europe/Budapest]`.
+- `ends_at` (String) When the exemption ends, in the same formats as `starts_at`, which the service normalizes the same way.
+
+Must be later than `starts_at`.
+Not Null
+- `starts_at` (String) When the exemption starts, as an RFC 3339 timestamp or as a date-time with a UTC offset and an IANA time zone in brackets, such as `2026-08-16T00:00:00+02:00[Europe/Budapest]`.
 
 The service converts an RFC 3339 timestamp to UTC and keeps a date-time's IANA time zone. Defaults to the budget's `created_at`, also when a replacement omits it.
-- `until` (String) When the exemption ends, in the same formats as `from`, which the service normalizes the same way.
-
-Must be later than `from`.
-Not Null
 
 
 
@@ -171,7 +171,7 @@ Not Null; Parsed as JSON.
 
 Optional:
 
-- `anchor` (String) A time when a budget window starts. Windows start a whole number of intervals before or after it. The intervals count in the local time of the anchor's time zone, so calendar units such as months stay aligned to the calendar. A window that would start on a day its month doesn't have, such as the 31st, starts on the month's last day.
+- `anchored_at` (String) A time when a budget window starts. Windows start a whole number of intervals before or after it. The intervals count in the local time of its time zone, so calendar units such as months stay aligned to the calendar. A window that would start on a day its month doesn't have, such as the 31st, starts on the month's last day.
 
 A date-time with a UTC offset and an IANA time zone in brackets, such as `2026-01-01T00:00:00+01:00[Europe/Budapest]`, in a year from 1970 to 2200.
 Not Null

@@ -87,7 +87,7 @@ func (m *Message) GetBody() string {
 	return m.Body
 }
 
-type ReplaceNotificationRuleRequestBody struct {
+type UpsertCostNotificationRuleRequestBody struct {
 	// The shares of the limit at which the rule fires. Each threshold fires at most once per budget window, derived budget, and limit, and changing the limit lets the thresholds fire again.
 	//
 	// 1 to 10 thresholds, each with a different `percent`.
@@ -119,70 +119,70 @@ type ReplaceNotificationRuleRequestBody struct {
 	Message *Message `json:"message"`
 }
 
-func (r ReplaceNotificationRuleRequestBody) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
+func (u UpsertCostNotificationRuleRequestBody) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
 }
 
-func (r *ReplaceNotificationRuleRequestBody) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"thresholds"}); err != nil {
+func (u *UpsertCostNotificationRuleRequestBody) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"thresholds"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *ReplaceNotificationRuleRequestBody) GetThresholds() []shared.AICostNotificationThreshold {
-	if r == nil {
+func (u *UpsertCostNotificationRuleRequestBody) GetThresholds() []shared.AICostNotificationThreshold {
+	if u == nil {
 		return []shared.AICostNotificationThreshold{}
 	}
-	return r.Thresholds
+	return u.Thresholds
 }
 
-func (r *ReplaceNotificationRuleRequestBody) GetChannels() []Channels {
-	if r == nil {
+func (u *UpsertCostNotificationRuleRequestBody) GetChannels() []Channels {
+	if u == nil {
 		return nil
 	}
-	return r.Channels
+	return u.Channels
 }
 
-func (r *ReplaceNotificationRuleRequestBody) GetMessage() *Message {
-	if r == nil {
+func (u *UpsertCostNotificationRuleRequestBody) GetMessage() *Message {
+	if u == nil {
 		return nil
 	}
-	return r.Message
+	return u.Message
 }
 
-type ReplaceNotificationRuleRequest struct {
+type UpsertCostNotificationRuleRequest struct {
 	// The `id` of the budget.
-	BudgetID    string                             `pathParam:"style=simple,explode=false,name=budgetId"`
-	RequestBody ReplaceNotificationRuleRequestBody `request:"mediaType=application/json"`
+	BudgetID    string                                `pathParam:"style=simple,explode=false,name=budgetId"`
+	RequestBody UpsertCostNotificationRuleRequestBody `request:"mediaType=application/json"`
 }
 
-func (r ReplaceNotificationRuleRequest) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
+func (u UpsertCostNotificationRuleRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
 }
 
-func (r *ReplaceNotificationRuleRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"budgetId", "RequestBody"}); err != nil {
+func (u *UpsertCostNotificationRuleRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"budgetId", "RequestBody"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *ReplaceNotificationRuleRequest) GetBudgetID() string {
-	if r == nil {
+func (u *UpsertCostNotificationRuleRequest) GetBudgetID() string {
+	if u == nil {
 		return ""
 	}
-	return r.BudgetID
+	return u.BudgetID
 }
 
-func (r *ReplaceNotificationRuleRequest) GetRequestBody() ReplaceNotificationRuleRequestBody {
-	if r == nil {
-		return ReplaceNotificationRuleRequestBody{}
+func (u *UpsertCostNotificationRuleRequest) GetRequestBody() UpsertCostNotificationRuleRequestBody {
+	if u == nil {
+		return UpsertCostNotificationRuleRequestBody{}
 	}
-	return r.RequestBody
+	return u.RequestBody
 }
 
-type ReplaceNotificationRuleResponse struct {
+type UpsertCostNotificationRuleResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
@@ -201,69 +201,69 @@ type ReplaceNotificationRuleResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (r ReplaceNotificationRuleResponse) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
+func (u UpsertCostNotificationRuleResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
 }
 
-func (r *ReplaceNotificationRuleResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+func (u *UpsertCostNotificationRuleResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *ReplaceNotificationRuleResponse) GetContentType() string {
-	if r == nil {
+func (u *UpsertCostNotificationRuleResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return r.ContentType
+	return u.ContentType
 }
 
-func (r *ReplaceNotificationRuleResponse) GetStatusCode() int {
-	if r == nil {
+func (u *UpsertCostNotificationRuleResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return r.StatusCode
+	return u.StatusCode
 }
 
-func (r *ReplaceNotificationRuleResponse) GetRawResponse() *http.Response {
-	if r == nil {
+func (u *UpsertCostNotificationRuleResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return r.RawResponse
+	return u.RawResponse
 }
 
-func (r *ReplaceNotificationRuleResponse) GetAICostNotificationRule() *shared.AICostNotificationRule {
-	if r == nil {
+func (u *UpsertCostNotificationRuleResponse) GetAICostNotificationRule() *shared.AICostNotificationRule {
+	if u == nil {
 		return nil
 	}
-	return r.AICostNotificationRule
+	return u.AICostNotificationRule
 }
 
-func (r *ReplaceNotificationRuleResponse) GetBadRequestError() *shared.BadRequestError {
-	if r == nil {
+func (u *UpsertCostNotificationRuleResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return r.BadRequestError
+	return u.BadRequestError
 }
 
-func (r *ReplaceNotificationRuleResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if r == nil {
+func (u *UpsertCostNotificationRuleResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return r.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (r *ReplaceNotificationRuleResponse) GetForbiddenError() *shared.ForbiddenError {
-	if r == nil {
+func (u *UpsertCostNotificationRuleResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return r.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (r *ReplaceNotificationRuleResponse) GetNotFoundError() *shared.NotFoundError {
-	if r == nil {
+func (u *UpsertCostNotificationRuleResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return r.NotFoundError
+	return u.NotFoundError
 }

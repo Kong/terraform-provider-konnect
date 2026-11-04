@@ -50,46 +50,46 @@ func (r *AICostBudgetNotificationRuleResourceModel) RefreshFromSharedAICostNotif
 	return diags
 }
 
-func (r *AICostBudgetNotificationRuleResourceModel) ToOperationsDeleteNotificationRuleRequest(ctx context.Context) (*operations.DeleteNotificationRuleRequest, diag.Diagnostics) {
+func (r *AICostBudgetNotificationRuleResourceModel) ToOperationsDeleteCostNotificationRuleRequest(ctx context.Context) (*operations.DeleteCostNotificationRuleRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var budgetID string
 	budgetID = r.BudgetID.ValueString()
 
-	out := operations.DeleteNotificationRuleRequest{
+	out := operations.DeleteCostNotificationRuleRequest{
 		BudgetID: budgetID,
 	}
 
 	return &out, diags
 }
 
-func (r *AICostBudgetNotificationRuleResourceModel) ToOperationsGetNotificationRuleRequest(ctx context.Context) (*operations.GetNotificationRuleRequest, diag.Diagnostics) {
+func (r *AICostBudgetNotificationRuleResourceModel) ToOperationsGetCostNotificationRuleRequest(ctx context.Context) (*operations.GetCostNotificationRuleRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var budgetID string
 	budgetID = r.BudgetID.ValueString()
 
-	out := operations.GetNotificationRuleRequest{
+	out := operations.GetCostNotificationRuleRequest{
 		BudgetID: budgetID,
 	}
 
 	return &out, diags
 }
 
-func (r *AICostBudgetNotificationRuleResourceModel) ToOperationsReplaceNotificationRuleRequest(ctx context.Context) (*operations.ReplaceNotificationRuleRequest, diag.Diagnostics) {
+func (r *AICostBudgetNotificationRuleResourceModel) ToOperationsUpsertCostNotificationRuleRequest(ctx context.Context) (*operations.UpsertCostNotificationRuleRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var budgetID string
 	budgetID = r.BudgetID.ValueString()
 
-	requestBody, requestBodyDiags := r.ToOperationsReplaceNotificationRuleRequestBody(ctx)
+	requestBody, requestBodyDiags := r.ToOperationsUpsertCostNotificationRuleRequestBody(ctx)
 	diags.Append(requestBodyDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
-	out := operations.ReplaceNotificationRuleRequest{
+	out := operations.UpsertCostNotificationRuleRequest{
 		BudgetID:    budgetID,
 		RequestBody: *requestBody,
 	}
@@ -97,7 +97,7 @@ func (r *AICostBudgetNotificationRuleResourceModel) ToOperationsReplaceNotificat
 	return &out, diags
 }
 
-func (r *AICostBudgetNotificationRuleResourceModel) ToOperationsReplaceNotificationRuleRequestBody(ctx context.Context) (*operations.ReplaceNotificationRuleRequestBody, diag.Diagnostics) {
+func (r *AICostBudgetNotificationRuleResourceModel) ToOperationsUpsertCostNotificationRuleRequestBody(ctx context.Context) (*operations.UpsertCostNotificationRuleRequestBody, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	thresholds := make([]shared.AICostNotificationThreshold, 0, len(r.Thresholds))
@@ -131,7 +131,7 @@ func (r *AICostBudgetNotificationRuleResourceModel) ToOperationsReplaceNotificat
 			Body:    body,
 		}
 	}
-	out := operations.ReplaceNotificationRuleRequestBody{
+	out := operations.UpsertCostNotificationRuleRequestBody{
 		Thresholds: thresholds,
 		Channels:   channels,
 		Message:    message,

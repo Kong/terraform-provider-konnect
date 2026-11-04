@@ -8,91 +8,100 @@ import (
 	"net/http"
 )
 
-type DeleteBudgetRequest struct {
+type DeleteCostNotificationRuleRequest struct {
 	// The `id` of the budget.
 	BudgetID string `pathParam:"style=simple,explode=false,name=budgetId"`
 }
 
-func (d DeleteBudgetRequest) MarshalJSON() ([]byte, error) {
+func (d DeleteCostNotificationRuleRequest) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(d, "", false)
 }
 
-func (d *DeleteBudgetRequest) UnmarshalJSON(data []byte) error {
+func (d *DeleteCostNotificationRuleRequest) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"budgetId"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DeleteBudgetRequest) GetBudgetID() string {
+func (d *DeleteCostNotificationRuleRequest) GetBudgetID() string {
 	if d == nil {
 		return ""
 	}
 	return d.BudgetID
 }
 
-type DeleteBudgetResponse struct {
+type DeleteCostNotificationRuleResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The budget is an exemption, which has no notification rule. `invalid_parameters` names `budgetId`.
+	BadRequestError *shared.BadRequestError
 	// The request has no valid access token. The token is missing, malformed, or expired, or it fails another check, and the response doesn't say which.
 	UnauthorizedError *shared.UnauthorizedError
 	// The access token is valid, but its principal lacks the permission this operation requires. For an operation on one resource, the response doesn't reveal whether that resource exists.
 	ForbiddenError *shared.ForbiddenError
-	// The organization has no budget with this identifier that the caller can see.
+	// The organization has no budget with this identifier that the caller can see, or the budget has no notification rule.
 	NotFoundError *shared.NotFoundError
 }
 
-func (d DeleteBudgetResponse) MarshalJSON() ([]byte, error) {
+func (d DeleteCostNotificationRuleResponse) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(d, "", false)
 }
 
-func (d *DeleteBudgetResponse) UnmarshalJSON(data []byte) error {
+func (d *DeleteCostNotificationRuleResponse) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DeleteBudgetResponse) GetContentType() string {
+func (d *DeleteCostNotificationRuleResponse) GetContentType() string {
 	if d == nil {
 		return ""
 	}
 	return d.ContentType
 }
 
-func (d *DeleteBudgetResponse) GetStatusCode() int {
+func (d *DeleteCostNotificationRuleResponse) GetStatusCode() int {
 	if d == nil {
 		return 0
 	}
 	return d.StatusCode
 }
 
-func (d *DeleteBudgetResponse) GetRawResponse() *http.Response {
+func (d *DeleteCostNotificationRuleResponse) GetRawResponse() *http.Response {
 	if d == nil {
 		return nil
 	}
 	return d.RawResponse
 }
 
-func (d *DeleteBudgetResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (d *DeleteCostNotificationRuleResponse) GetBadRequestError() *shared.BadRequestError {
+	if d == nil {
+		return nil
+	}
+	return d.BadRequestError
+}
+
+func (d *DeleteCostNotificationRuleResponse) GetUnauthorizedError() *shared.UnauthorizedError {
 	if d == nil {
 		return nil
 	}
 	return d.UnauthorizedError
 }
 
-func (d *DeleteBudgetResponse) GetForbiddenError() *shared.ForbiddenError {
+func (d *DeleteCostNotificationRuleResponse) GetForbiddenError() *shared.ForbiddenError {
 	if d == nil {
 		return nil
 	}
 	return d.ForbiddenError
 }
 
-func (d *DeleteBudgetResponse) GetNotFoundError() *shared.NotFoundError {
+func (d *DeleteCostNotificationRuleResponse) GetNotFoundError() *shared.NotFoundError {
 	if d == nil {
 		return nil
 	}

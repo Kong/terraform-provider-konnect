@@ -584,7 +584,7 @@ func (s *NotificationChannels) GetCostNotificationChannel(ctx context.Context, r
 
 }
 
-// ReplaceCostNotificationChannel - Replace a notification channel
+// UpsertCostNotificationChannel - Replace a notification channel
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
@@ -594,7 +594,7 @@ func (s *NotificationChannels) GetCostNotificationChannel(ctx context.Context, r
 // - A Slack channel keeps its stored webhook URL when the request omits `slack.webhook_url`. This is the only exception to full replacement, because reads never return the full URL.
 // - If `type` differs from the stored type, the request fails with `400`, and `invalid_parameters` names `type`.
 // - If the organization has no notification channel with this identifier, or the identifier isn't a valid UUID, the request fails with `404`. The request never creates a channel.
-func (s *NotificationChannels) ReplaceCostNotificationChannel(ctx context.Context, request operations.ReplaceCostNotificationChannelRequest, opts ...operations.Option) (*operations.ReplaceCostNotificationChannelResponse, error) {
+func (s *NotificationChannels) UpsertCostNotificationChannel(ctx context.Context, request operations.UpsertCostNotificationChannelRequest, opts ...operations.Option) (*operations.UpsertCostNotificationChannelResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -624,7 +624,7 @@ func (s *NotificationChannels) ReplaceCostNotificationChannel(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "replace-cost-notification-channel",
+		OperationID:      "upsert-cost-notification-channel",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -644,7 +644,7 @@ func (s *NotificationChannels) ReplaceCostNotificationChannel(ctx context.Contex
 		defer cancel()
 	}
 
-	ctx = utils.WithOperation(ctx, "replace-cost-notification-channel")
+	ctx = utils.WithOperation(ctx, "upsert-cost-notification-channel")
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -765,7 +765,7 @@ func (s *NotificationChannels) ReplaceCostNotificationChannel(ctx context.Contex
 		}
 	}
 
-	res := &operations.ReplaceCostNotificationChannelResponse{
+	res := &operations.UpsertCostNotificationChannelResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

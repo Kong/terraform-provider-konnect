@@ -12,7 +12,7 @@ resource "konnect_ai_cost_budget" "team_models" {
 
     window = {
       interval = "P1M"
-      anchor   = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
+      anchored_at = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
     }
 
     scope = {
@@ -45,8 +45,8 @@ resource "konnect_ai_cost_budget" "free_tier" {
     }
 
     validity = {
-      from  = "2026-01-01T00:00:00Z"
-      until = "2026-12-31T23:59:59Z"
+      starts_at = "2026-01-01T00:00:00Z"
+      ends_at   = "2026-12-31T23:59:59Z"
     }
   }
 }

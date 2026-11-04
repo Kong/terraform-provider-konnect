@@ -45,16 +45,16 @@ func (a *AICostExemptBudgetInputScope) GetEach() *string {
 	return a.Each
 }
 
-// Validity - The period the exemption covers, from `from` until `until`.
+// Validity - The period the exemption covers, from `starts_at` until `ends_at`.
 type Validity struct {
 	// When the exemption starts, as an RFC 3339 timestamp or as a date-time with a UTC offset and an IANA time zone in brackets, such as `2026-08-16T00:00:00+02:00[Europe/Budapest]`.
 	//
 	// The service converts an RFC 3339 timestamp to UTC and keeps a date-time's IANA time zone. Defaults to the budget's `created_at`, also when a replacement omits it.
-	From *string `default:"null" json:"from"`
-	// When the exemption ends, in the same formats as `from`, which the service normalizes the same way.
+	StartsAt *string `default:"null" json:"starts_at"`
+	// When the exemption ends, in the same formats as `starts_at`, which the service normalizes the same way.
 	//
-	// Must be later than `from`.
-	Until string `json:"until"`
+	// Must be later than `starts_at`.
+	EndsAt string `json:"ends_at"`
 }
 
 func (v Validity) MarshalJSON() ([]byte, error) {
@@ -62,24 +62,24 @@ func (v Validity) MarshalJSON() ([]byte, error) {
 }
 
 func (v *Validity) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"until"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"ends_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *Validity) GetFrom() *string {
+func (v *Validity) GetStartsAt() *string {
 	if v == nil {
 		return nil
 	}
-	return v.From
+	return v.StartsAt
 }
 
-func (v *Validity) GetUntil() string {
+func (v *Validity) GetEndsAt() string {
 	if v == nil {
 		return ""
 	}
-	return v.Until
+	return v.EndsAt
 }
 
 // AICostExemptBudgetInput - The body of a request that creates or replaces an exemption.
@@ -102,7 +102,7 @@ type AICostExemptBudgetInput struct {
 	// A replacement can't change it.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	effect string `const:"exempt" json:"effect"`
-	// The period the exemption covers, from `from` until `until`.
+	// The period the exemption covers, from `starts_at` until `ends_at`.
 	Validity Validity `json:"validity"`
 }
 

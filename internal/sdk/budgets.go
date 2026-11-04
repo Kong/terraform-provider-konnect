@@ -32,7 +32,7 @@ func newBudgets(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 	}
 }
 
-// CreateBudget - Create a budget
+// CreateCostBudget - Create a budget
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
@@ -42,7 +42,7 @@ func newBudgets(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 //
 // - If the body is invalid, the request fails with `400`.
 // - For a caller whose access covers only particular principals or groups, a `scope` that doesn't lie within those principals and groups fails with `400`, and `invalid_parameters` names `scope`.
-func (s *Budgets) CreateBudget(ctx context.Context, request operations.CreateBudgetRequestBody, opts ...operations.Option) (*operations.CreateBudgetResponse, error) {
+func (s *Budgets) CreateCostBudget(ctx context.Context, request operations.CreateCostBudgetRequestBody, opts ...operations.Option) (*operations.CreateCostBudgetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -72,7 +72,7 @@ func (s *Budgets) CreateBudget(ctx context.Context, request operations.CreateBud
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-budget",
+		OperationID:      "create-cost-budget",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -212,7 +212,7 @@ func (s *Budgets) CreateBudget(ctx context.Context, request operations.CreateBud
 		}
 	}
 
-	res := &operations.CreateBudgetResponse{
+	res := &operations.CreateCostBudgetResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -315,12 +315,12 @@ func (s *Budgets) CreateBudget(ctx context.Context, request operations.CreateBud
 
 }
 
-// GetBudget - Get a budget
+// GetCostBudget - Get a budget
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
 // Returns one of the organization's budgets. If the organization has no budget with this identifier that the caller can see, or the identifier isn't a valid UUID, the request fails with `404`.
-func (s *Budgets) GetBudget(ctx context.Context, request operations.GetBudgetRequest, opts ...operations.Option) (*operations.GetBudgetResponse, error) {
+func (s *Budgets) GetCostBudget(ctx context.Context, request operations.GetCostBudgetRequest, opts ...operations.Option) (*operations.GetCostBudgetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -350,7 +350,7 @@ func (s *Budgets) GetBudget(ctx context.Context, request operations.GetBudgetReq
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-budget",
+		OperationID:      "get-cost-budget",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -483,7 +483,7 @@ func (s *Budgets) GetBudget(ctx context.Context, request operations.GetBudgetReq
 		}
 	}
 
-	res := &operations.GetBudgetResponse{
+	res := &operations.GetCostBudgetResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -586,7 +586,7 @@ func (s *Budgets) GetBudget(ctx context.Context, request operations.GetBudgetReq
 
 }
 
-// ReplaceBudget - Replace a budget's updatable fields
+// UpsertCostBudget - Replace a budget's updatable fields
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
@@ -599,7 +599,7 @@ func (s *Budgets) GetBudget(ctx context.Context, request operations.GetBudgetReq
 // - Every replacement evaluates the budget's notification rule against the stored budget. A threshold that spend in the current budget window has reached fires at once, unless it already fired for that window and limit. A changed limit, or a changed window that moves the current window's start, therefore lets the thresholds fire again. A changed scope doesn't, but a changed `each` can fire for derived values new to the window. The evaluation runs after the budget is stored, so if it fails, retrying the same request completes it.
 // - A caller whose access covers only particular principals or groups replaces a budget that lies within its groups alone, or one within its principals and groups that it created. Replacing any other budget it can see fails with `403`. The replacement's `scope` must keep the budget replaceable by the caller, or the request fails with `400` naming `scope`.
 // - The server assigns identifiers, so if the organization has no budget with this identifier that the caller can see, or the identifier isn't a valid UUID, the request fails with `404` and doesn't create one.
-func (s *Budgets) ReplaceBudget(ctx context.Context, request operations.ReplaceBudgetRequest, opts ...operations.Option) (*operations.ReplaceBudgetResponse, error) {
+func (s *Budgets) UpsertCostBudget(ctx context.Context, request operations.UpsertCostBudgetRequest, opts ...operations.Option) (*operations.UpsertCostBudgetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -629,7 +629,7 @@ func (s *Budgets) ReplaceBudget(ctx context.Context, request operations.ReplaceB
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "replace-budget",
+		OperationID:      "upsert-cost-budget",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -769,7 +769,7 @@ func (s *Budgets) ReplaceBudget(ctx context.Context, request operations.ReplaceB
 		}
 	}
 
-	res := &operations.ReplaceBudgetResponse{
+	res := &operations.UpsertCostBudgetResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -893,14 +893,14 @@ func (s *Budgets) ReplaceBudget(ctx context.Context, request operations.ReplaceB
 
 }
 
-// DeleteBudget - Delete a budget
+// DeleteCostBudget - Delete a budget
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
 // Deletes a budget, with its notification rule and the rule's firings and deliveries. Deleting the same budget again fails with `404`.
 //
 // A caller whose access covers only particular principals or groups deletes a budget that lies within its groups alone, or one within its principals and groups that it created. Deleting any other budget it can see fails with `403`. If the organization has no budget with this identifier that the caller can see, or the identifier isn't a valid UUID, the request fails with `404`.
-func (s *Budgets) DeleteBudget(ctx context.Context, request operations.DeleteBudgetRequest, opts ...operations.Option) (*operations.DeleteBudgetResponse, error) {
+func (s *Budgets) DeleteCostBudget(ctx context.Context, request operations.DeleteCostBudgetRequest, opts ...operations.Option) (*operations.DeleteCostBudgetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -929,7 +929,7 @@ func (s *Budgets) DeleteBudget(ctx context.Context, request operations.DeleteBud
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-budget",
+		OperationID:      "delete-cost-budget",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1057,7 +1057,7 @@ func (s *Budgets) DeleteBudget(ctx context.Context, request operations.DeleteBud
 		}
 	}
 
-	res := &operations.DeleteBudgetResponse{
+	res := &operations.DeleteCostBudgetResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1141,14 +1141,14 @@ func (s *Budgets) DeleteBudget(ctx context.Context, request operations.DeleteBud
 
 }
 
-// GetNotificationRule - Get a budget's notification rule
+// GetCostNotificationRule - Get a budget's notification rule
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
 // Returns a limit budget's notification rule: the thresholds at which it fires, the channels that receive the alerts, and the wording of its messages. A budget has at most one rule.
 //
 // If the budget has no rule, the organization has no budget with this identifier that the caller can see, or the identifier isn't a valid UUID, the request fails with `404`. An exemption has no rule, so if the budget is an exemption, the request fails with `400`.
-func (s *Budgets) GetNotificationRule(ctx context.Context, request operations.GetNotificationRuleRequest, opts ...operations.Option) (*operations.GetNotificationRuleResponse, error) {
+func (s *Budgets) GetCostNotificationRule(ctx context.Context, request operations.GetCostNotificationRuleRequest, opts ...operations.Option) (*operations.GetCostNotificationRuleResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1178,7 +1178,7 @@ func (s *Budgets) GetNotificationRule(ctx context.Context, request operations.Ge
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-notification-rule",
+		OperationID:      "get-cost-notification-rule",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1311,7 +1311,7 @@ func (s *Budgets) GetNotificationRule(ctx context.Context, request operations.Ge
 		}
 	}
 
-	res := &operations.GetNotificationRuleResponse{
+	res := &operations.GetCostNotificationRuleResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1435,7 +1435,7 @@ func (s *Budgets) GetNotificationRule(ctx context.Context, request operations.Ge
 
 }
 
-// ReplaceNotificationRule - Create or replace a notification rule
+// UpsertCostNotificationRule - Create or replace a notification rule
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
@@ -1447,7 +1447,7 @@ func (s *Budgets) GetNotificationRule(ctx context.Context, request operations.Ge
 // - If a listed channel doesn't exist in the organization, the request fails with `400`, and `invalid_parameters` names `channels[i].id` with the rule `missing_reference`.
 // - If `message` has an unknown placeholder or a `{{` without a closing `}}`, the request fails with `400`. It fails the same way when `message` uses `{{entity.field}}` or `{{entity.value}}` on a budget without `each`.
 // - If the budget is an exemption, the request fails with `400`. If the organization has no budget with this identifier that the caller can see, or the identifier isn't a valid UUID, the request fails with `404`.
-func (s *Budgets) ReplaceNotificationRule(ctx context.Context, request operations.ReplaceNotificationRuleRequest, opts ...operations.Option) (*operations.ReplaceNotificationRuleResponse, error) {
+func (s *Budgets) UpsertCostNotificationRule(ctx context.Context, request operations.UpsertCostNotificationRuleRequest, opts ...operations.Option) (*operations.UpsertCostNotificationRuleResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1477,7 +1477,7 @@ func (s *Budgets) ReplaceNotificationRule(ctx context.Context, request operation
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "replace-notification-rule",
+		OperationID:      "upsert-cost-notification-rule",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1617,7 +1617,7 @@ func (s *Budgets) ReplaceNotificationRule(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.ReplaceNotificationRuleResponse{
+	res := &operations.UpsertCostNotificationRuleResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1743,14 +1743,14 @@ func (s *Budgets) ReplaceNotificationRule(ctx context.Context, request operation
 
 }
 
-// DeleteNotificationRule - Delete a budget's notification rule
+// DeleteCostNotificationRule - Delete a budget's notification rule
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
 // Deletes a budget's notification rule, with its firings and their deliveries. The budget stays. Deleting the rule again fails with `404`.
 //
 // If the budget has no rule, the organization has no budget with this identifier that the caller can see, or the identifier isn't a valid UUID, the request fails with `404`. If the budget is an exemption, the request fails with `400`.
-func (s *Budgets) DeleteNotificationRule(ctx context.Context, request operations.DeleteNotificationRuleRequest, opts ...operations.Option) (*operations.DeleteNotificationRuleResponse, error) {
+func (s *Budgets) DeleteCostNotificationRule(ctx context.Context, request operations.DeleteCostNotificationRuleRequest, opts ...operations.Option) (*operations.DeleteCostNotificationRuleResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1779,7 +1779,7 @@ func (s *Budgets) DeleteNotificationRule(ctx context.Context, request operations
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-notification-rule",
+		OperationID:      "delete-cost-notification-rule",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1907,7 +1907,7 @@ func (s *Budgets) DeleteNotificationRule(ctx context.Context, request operations
 		}
 	}
 
-	res := &operations.DeleteNotificationRuleResponse{
+	res := &operations.DeleteCostNotificationRuleResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

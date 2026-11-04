@@ -7,6 +7,6 @@ import (
 )
 
 type Window struct {
-	Anchor   types.String `tfsdk:"anchor"`
-	Interval types.String `tfsdk:"interval"`
+	AnchoredAt types.String `tfsdk:"anchored_at"`
+	Interval   types.String `tfsdk:"interval"`
 }

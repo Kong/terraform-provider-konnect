@@ -7,6 +7,6 @@ import (
 )
 
 type Validity struct {
-	From  types.String `tfsdk:"from"`
-	Until types.String `tfsdk:"until"`
+	EndsAt   types.String `tfsdk:"ends_at"`
+	StartsAt types.String `tfsdk:"starts_at"`
 }

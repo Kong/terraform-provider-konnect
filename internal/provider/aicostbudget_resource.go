@@ -181,25 +181,25 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
-							"from": schema.StringAttribute{
-								Optional: true,
-								MarkdownDescription: `When the exemption starts, as an RFC 3339 timestamp or as a date-time with a UTC offset and an IANA time zone in brackets, such as ` + "`" + `2026-08-16T00:00:00+02:00[Europe/Budapest]` + "`" + `.` + "\n" +
-									`` + "\n" +
-									`The service converts an RFC 3339 timestamp to UTC and keeps a date-time's IANA time zone. Defaults to the budget's ` + "`" + `created_at` + "`" + `, also when a replacement omits it.`,
-							},
-							"until": schema.StringAttribute{
+							"ends_at": schema.StringAttribute{
 								Computed: true,
 								Optional: true,
-								MarkdownDescription: `When the exemption ends, in the same formats as ` + "`" + `from` + "`" + `, which the service normalizes the same way.` + "\n" +
+								MarkdownDescription: `When the exemption ends, in the same formats as ` + "`" + `starts_at` + "`" + `, which the service normalizes the same way.` + "\n" +
 									`` + "\n" +
-									`Must be later than ` + "`" + `from` + "`" + `.` + "\n" +
+									`Must be later than ` + "`" + `starts_at` + "`" + `.` + "\n" +
 									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
 							},
+							"starts_at": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `When the exemption starts, as an RFC 3339 timestamp or as a date-time with a UTC offset and an IANA time zone in brackets, such as ` + "`" + `2026-08-16T00:00:00+02:00[Europe/Budapest]` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`The service converts an RFC 3339 timestamp to UTC and keeps a date-time's IANA time zone. Defaults to the budget's ` + "`" + `created_at` + "`" + `, also when a replacement omits it.`,
+							},
 						},
-						Description: `The period the exemption covers, from ` + "`" + `from` + "`" + ` until ` + "`" + `until` + "`" + `. Not Null`,
+						Description: `The period the exemption covers, from ` + "`" + `starts_at` + "`" + ` until ` + "`" + `ends_at` + "`" + `. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -347,10 +347,10 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
-							"anchor": schema.StringAttribute{
+							"anchored_at": schema.StringAttribute{
 								Computed: true,
 								Optional: true,
-								MarkdownDescription: `A time when a budget window starts. Windows start a whole number of intervals before or after it. The intervals count in the local time of the anchor's time zone, so calendar units such as months stay aligned to the calendar. A window that would start on a day its month doesn't have, such as the 31st, starts on the month's last day.` + "\n" +
+								MarkdownDescription: `A time when a budget window starts. Windows start a whole number of intervals before or after it. The intervals count in the local time of its time zone, so calendar units such as months stay aligned to the calendar. A window that would start on a day its month doesn't have, such as the 31st, starts on the month's last day.` + "\n" +
 									`` + "\n" +
 									`A date-time with a UTC offset and an IANA time zone in brackets, such as ` + "`" + `2026-01-01T00:00:00+01:00[Europe/Budapest]` + "`" + `, in a year from 1970 to 2200.` + "\n" +
 									`Not Null`,
@@ -457,13 +457,13 @@ func (r *AICostBudgetResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateBudgetRequestBody(ctx)
+	request, requestDiags := data.ToOperationsCreateCostBudgetRequestBody(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Budgets.CreateBudget(ctx, *request)
+	res, err := r.client.Budgets.CreateCostBudget(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
@@ -517,13 +517,13 @@ func (r *AICostBudgetResource) Read(ctx context.Context, req resource.ReadReques
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetBudgetRequest(ctx)
+	request, requestDiags := data.ToOperationsGetCostBudgetRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Budgets.GetBudget(ctx, *request)
+	res, err := r.client.Budgets.GetCostBudget(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
@@ -571,13 +571,13 @@ func (r *AICostBudgetResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsReplaceBudgetRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertCostBudgetRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Budgets.ReplaceBudget(ctx, *request)
+	res, err := r.client.Budgets.UpsertCostBudget(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
@@ -631,13 +631,13 @@ func (r *AICostBudgetResource) Delete(ctx context.Context, req resource.DeleteRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteBudgetRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteCostBudgetRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Budgets.DeleteBudget(ctx, *request)
+	res, err := r.client.Budgets.DeleteCostBudget(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {

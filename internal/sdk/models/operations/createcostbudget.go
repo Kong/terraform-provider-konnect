@@ -11,41 +11,41 @@ import (
 	"net/http"
 )
 
-type CreateBudgetRequestBodyType string
+type CreateCostBudgetRequestBodyType string
 
 const (
-	CreateBudgetRequestBodyTypeLimit  CreateBudgetRequestBodyType = "limit"
-	CreateBudgetRequestBodyTypeExempt CreateBudgetRequestBodyType = "exempt"
+	CreateCostBudgetRequestBodyTypeLimit  CreateCostBudgetRequestBodyType = "limit"
+	CreateCostBudgetRequestBodyTypeExempt CreateCostBudgetRequestBodyType = "exempt"
 )
 
-type CreateBudgetRequestBody struct {
+type CreateCostBudgetRequestBody struct {
 	AICostLimitBudgetInput  *shared.AICostLimitBudgetInput  `queryParam:"inline" union:"member"`
 	AICostExemptBudgetInput *shared.AICostExemptBudgetInput `queryParam:"inline" union:"member"`
 
-	Type CreateBudgetRequestBodyType
+	Type CreateCostBudgetRequestBodyType
 }
 
-func CreateCreateBudgetRequestBodyLimit(limit shared.AICostLimitBudgetInput) CreateBudgetRequestBody {
-	typ := CreateBudgetRequestBodyTypeLimit
+func CreateCreateCostBudgetRequestBodyLimit(limit shared.AICostLimitBudgetInput) CreateCostBudgetRequestBody {
+	typ := CreateCostBudgetRequestBodyTypeLimit
 
-	return CreateBudgetRequestBody{
+	return CreateCostBudgetRequestBody{
 		AICostLimitBudgetInput: &limit,
 		Type:                   typ,
 	}
 }
 
-func CreateCreateBudgetRequestBodyExempt(exempt shared.AICostExemptBudgetInput) CreateBudgetRequestBody {
-	typ := CreateBudgetRequestBodyTypeExempt
+func CreateCreateCostBudgetRequestBodyExempt(exempt shared.AICostExemptBudgetInput) CreateCostBudgetRequestBody {
+	typ := CreateCostBudgetRequestBodyTypeExempt
 
-	return CreateBudgetRequestBody{
+	return CreateCostBudgetRequestBody{
 		AICostExemptBudgetInput: &exempt,
 		Type:                    typ,
 	}
 }
 
-func (u *CreateBudgetRequestBody) UnmarshalJSON(data []byte) (err error) {
+func (u *CreateCostBudgetRequestBody) UnmarshalJSON(data []byte) (err error) {
 	previous := *u
-	*u = CreateBudgetRequestBody{}
+	*u = CreateCostBudgetRequestBody{}
 	defer func() {
 		if err != nil {
 			*u = previous
@@ -65,27 +65,27 @@ func (u *CreateBudgetRequestBody) UnmarshalJSON(data []byte) (err error) {
 	case "limit":
 		aiCostLimitBudgetInput := new(shared.AICostLimitBudgetInput)
 		if err := utils.UnmarshalJSON(data, &aiCostLimitBudgetInput, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Effect == limit) type shared.AICostLimitBudgetInput within CreateBudgetRequestBody: %w", string(data), err)
+			return fmt.Errorf("could not unmarshal `%s` into expected (Effect == limit) type shared.AICostLimitBudgetInput within CreateCostBudgetRequestBody: %w", string(data), err)
 		}
 
 		u.AICostLimitBudgetInput = aiCostLimitBudgetInput
-		u.Type = CreateBudgetRequestBodyTypeLimit
+		u.Type = CreateCostBudgetRequestBodyTypeLimit
 		return nil
 	case "exempt":
 		aiCostExemptBudgetInput := new(shared.AICostExemptBudgetInput)
 		if err := utils.UnmarshalJSON(data, &aiCostExemptBudgetInput, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Effect == exempt) type shared.AICostExemptBudgetInput within CreateBudgetRequestBody: %w", string(data), err)
+			return fmt.Errorf("could not unmarshal `%s` into expected (Effect == exempt) type shared.AICostExemptBudgetInput within CreateCostBudgetRequestBody: %w", string(data), err)
 		}
 
 		u.AICostExemptBudgetInput = aiCostExemptBudgetInput
-		u.Type = CreateBudgetRequestBodyTypeExempt
+		u.Type = CreateCostBudgetRequestBodyTypeExempt
 		return nil
 	}
 
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreateBudgetRequestBody", string(data))
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreateCostBudgetRequestBody", string(data))
 }
 
-func (u CreateBudgetRequestBody) MarshalJSON() ([]byte, error) {
+func (u CreateCostBudgetRequestBody) MarshalJSON() ([]byte, error) {
 	if u.AICostLimitBudgetInput != nil {
 		return utils.MarshalJSON(u.AICostLimitBudgetInput, "", true)
 	}
@@ -94,10 +94,10 @@ func (u CreateBudgetRequestBody) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.AICostExemptBudgetInput, "", true)
 	}
 
-	return nil, errors.New("could not marshal union type CreateBudgetRequestBody: all fields are null")
+	return nil, errors.New("could not marshal union type CreateCostBudgetRequestBody: all fields are null")
 }
 
-type CreateBudgetResponse struct {
+type CreateCostBudgetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
@@ -114,74 +114,74 @@ type CreateBudgetResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (c CreateBudgetResponse) MarshalJSON() ([]byte, error) {
+func (c CreateCostBudgetResponse) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *CreateBudgetResponse) UnmarshalJSON(data []byte) error {
+func (c *CreateCostBudgetResponse) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CreateBudgetResponse) GetContentType() string {
+func (c *CreateCostBudgetResponse) GetContentType() string {
 	if c == nil {
 		return ""
 	}
 	return c.ContentType
 }
 
-func (c *CreateBudgetResponse) GetStatusCode() int {
+func (c *CreateCostBudgetResponse) GetStatusCode() int {
 	if c == nil {
 		return 0
 	}
 	return c.StatusCode
 }
 
-func (c *CreateBudgetResponse) GetRawResponse() *http.Response {
+func (c *CreateCostBudgetResponse) GetRawResponse() *http.Response {
 	if c == nil {
 		return nil
 	}
 	return c.RawResponse
 }
 
-func (c *CreateBudgetResponse) GetAICostBudget() *shared.AICostBudget {
+func (c *CreateCostBudgetResponse) GetAICostBudget() *shared.AICostBudget {
 	if c == nil {
 		return nil
 	}
 	return c.AICostBudget
 }
 
-func (c *CreateBudgetResponse) GetAICostBudgetLimit() *shared.AICostLimitBudget {
+func (c *CreateCostBudgetResponse) GetAICostBudgetLimit() *shared.AICostLimitBudget {
 	if v := c.GetAICostBudget(); v != nil {
 		return v.AICostLimitBudget
 	}
 	return nil
 }
 
-func (c *CreateBudgetResponse) GetAICostBudgetExempt() *shared.AICostExemptBudget {
+func (c *CreateCostBudgetResponse) GetAICostBudgetExempt() *shared.AICostExemptBudget {
 	if v := c.GetAICostBudget(); v != nil {
 		return v.AICostExemptBudget
 	}
 	return nil
 }
 
-func (c *CreateBudgetResponse) GetBadRequestError() *shared.BadRequestError {
+func (c *CreateCostBudgetResponse) GetBadRequestError() *shared.BadRequestError {
 	if c == nil {
 		return nil
 	}
 	return c.BadRequestError
 }
 
-func (c *CreateBudgetResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (c *CreateCostBudgetResponse) GetUnauthorizedError() *shared.UnauthorizedError {
 	if c == nil {
 		return nil
 	}
 	return c.UnauthorizedError
 }
 
-func (c *CreateBudgetResponse) GetForbiddenError() *shared.ForbiddenError {
+func (c *CreateCostBudgetResponse) GetForbiddenError() *shared.ForbiddenError {
 	if c == nil {
 		return nil
 	}

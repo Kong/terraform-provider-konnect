@@ -237,13 +237,13 @@ func (r *AICostBudgetNotificationRuleResource) Create(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsReplaceNotificationRuleRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertCostNotificationRuleRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Budgets.ReplaceNotificationRule(ctx, *request)
+	res, err := r.client.Budgets.UpsertCostNotificationRule(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
@@ -300,13 +300,13 @@ func (r *AICostBudgetNotificationRuleResource) Read(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetNotificationRuleRequest(ctx)
+	request, requestDiags := data.ToOperationsGetCostNotificationRuleRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Budgets.GetNotificationRule(ctx, *request)
+	res, err := r.client.Budgets.GetCostNotificationRule(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
@@ -354,13 +354,13 @@ func (r *AICostBudgetNotificationRuleResource) Update(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsReplaceNotificationRuleRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertCostNotificationRuleRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Budgets.ReplaceNotificationRule(ctx, *request)
+	res, err := r.client.Budgets.UpsertCostNotificationRule(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
@@ -417,13 +417,13 @@ func (r *AICostBudgetNotificationRuleResource) Delete(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteNotificationRuleRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteCostNotificationRuleRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Budgets.DeleteNotificationRule(ctx, *request)
+	res, err := r.client.Budgets.DeleteCostNotificationRule(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {

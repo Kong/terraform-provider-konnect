@@ -156,20 +156,20 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsGetCostNotification
 	return &out, diags
 }
 
-func (r *AICostNotificationChannelResourceModel) ToOperationsReplaceCostNotificationChannelRequest(ctx context.Context) (*operations.ReplaceCostNotificationChannelRequest, diag.Diagnostics) {
+func (r *AICostNotificationChannelResourceModel) ToOperationsUpsertCostNotificationChannelRequest(ctx context.Context) (*operations.UpsertCostNotificationChannelRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var channelID string
 	channelID = r.ID.ValueString()
 
-	requestBody, requestBodyDiags := r.ToOperationsReplaceCostNotificationChannelRequestBody(ctx)
+	requestBody, requestBodyDiags := r.ToOperationsUpsertCostNotificationChannelRequestBody(ctx)
 	diags.Append(requestBodyDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
-	out := operations.ReplaceCostNotificationChannelRequest{
+	out := operations.UpsertCostNotificationChannelRequest{
 		ChannelID:   channelID,
 		RequestBody: *requestBody,
 	}
@@ -177,10 +177,10 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsReplaceCostNotifica
 	return &out, diags
 }
 
-func (r *AICostNotificationChannelResourceModel) ToOperationsReplaceCostNotificationChannelRequestBody(ctx context.Context) (*operations.ReplaceCostNotificationChannelRequestBody, diag.Diagnostics) {
+func (r *AICostNotificationChannelResourceModel) ToOperationsUpsertCostNotificationChannelRequestBody(ctx context.Context) (*operations.UpsertCostNotificationChannelRequestBody, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var out operations.ReplaceCostNotificationChannelRequestBody
+	var out operations.UpsertCostNotificationChannelRequestBody
 	var aiCostEmailNotificationChannelInput *shared.AICostEmailNotificationChannelInput
 	if r.Email != nil {
 		var name string
@@ -207,7 +207,7 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsReplaceCostNotifica
 		}
 	}
 	if aiCostEmailNotificationChannelInput != nil {
-		out = operations.ReplaceCostNotificationChannelRequestBody{
+		out = operations.UpsertCostNotificationChannelRequestBody{
 			AICostEmailNotificationChannelInput: aiCostEmailNotificationChannelInput,
 		}
 	}
@@ -239,7 +239,7 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsReplaceCostNotifica
 		}
 	}
 	if aiCostSlackNotificationChannelReplaceInput != nil {
-		out = operations.ReplaceCostNotificationChannelRequestBody{
+		out = operations.UpsertCostNotificationChannelRequestBody{
 			AICostSlackNotificationChannelReplaceInput: aiCostSlackNotificationChannelReplaceInput,
 		}
 	}

@@ -45,8 +45,8 @@ func (r *AICostBudgetResourceModel) RefreshFromSharedAICostBudget(ctx context.Co
 			r.Exempt.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AICostExemptBudget.UpdatedAt))
 			r.UpdatedAt = r.Exempt.UpdatedAt
 			r.Exempt.Validity = &tfTypes.Validity{}
-			r.Exempt.Validity.From = types.StringValue(resp.AICostExemptBudget.Validity.From)
-			r.Exempt.Validity.Until = types.StringValue(resp.AICostExemptBudget.Validity.Until)
+			r.Exempt.Validity.EndsAt = types.StringValue(resp.AICostExemptBudget.Validity.EndsAt)
+			r.Exempt.Validity.StartsAt = types.StringValue(resp.AICostExemptBudget.Validity.StartsAt)
 		}
 		if resp.AICostLimitBudget != nil {
 			r.Limit = &tfTypes.AICostLimitBudget{}
@@ -77,7 +77,7 @@ func (r *AICostBudgetResourceModel) RefreshFromSharedAICostBudget(ctx context.Co
 			r.UpdatedAt = r.Limit.UpdatedAt
 			r.Limit.Value = types.StringValue(resp.AICostLimitBudget.Value)
 			r.Limit.Window = &tfTypes.Window{}
-			r.Limit.Window.Anchor = types.StringValue(resp.AICostLimitBudget.Window.Anchor)
+			r.Limit.Window.AnchoredAt = types.StringValue(resp.AICostLimitBudget.Window.AnchoredAt)
 			r.Limit.Window.Interval = types.StringValue(resp.AICostLimitBudget.Window.Interval)
 		}
 	}
@@ -85,10 +85,10 @@ func (r *AICostBudgetResourceModel) RefreshFromSharedAICostBudget(ctx context.Co
 	return diags
 }
 
-func (r *AICostBudgetResourceModel) ToOperationsCreateBudgetRequestBody(ctx context.Context) (*operations.CreateBudgetRequestBody, diag.Diagnostics) {
+func (r *AICostBudgetResourceModel) ToOperationsCreateCostBudgetRequestBody(ctx context.Context) (*operations.CreateCostBudgetRequestBody, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var out operations.CreateBudgetRequestBody
+	var out operations.CreateCostBudgetRequestBody
 	var aiCostLimitBudgetInput *shared.AICostLimitBudgetInput
 	if r.Limit != nil {
 		var name string
@@ -125,12 +125,12 @@ func (r *AICostBudgetResourceModel) ToOperationsCreateBudgetRequestBody(ctx cont
 		var interval string
 		interval = r.Limit.Window.Interval.ValueString()
 
-		var anchor string
-		anchor = r.Limit.Window.Anchor.ValueString()
+		var anchoredAt string
+		anchoredAt = r.Limit.Window.AnchoredAt.ValueString()
 
 		window := shared.Window{
-			Interval: interval,
-			Anchor:   anchor,
+			Interval:   interval,
+			AnchoredAt: anchoredAt,
 		}
 		posture := new(shared.Posture)
 		if !r.Limit.Posture.IsUnknown() && !r.Limit.Posture.IsNull() {
@@ -154,7 +154,7 @@ func (r *AICostBudgetResourceModel) ToOperationsCreateBudgetRequestBody(ctx cont
 		}
 	}
 	if aiCostLimitBudgetInput != nil {
-		out = operations.CreateBudgetRequestBody{
+		out = operations.CreateCostBudgetRequestBody{
 			AICostLimitBudgetInput: aiCostLimitBudgetInput,
 		}
 	}
@@ -191,18 +191,18 @@ func (r *AICostBudgetResourceModel) ToOperationsCreateBudgetRequestBody(ctx cont
 			Filters: filters1,
 			Each:    each1,
 		}
-		from := new(string)
-		if !r.Exempt.Validity.From.IsUnknown() && !r.Exempt.Validity.From.IsNull() {
-			*from = r.Exempt.Validity.From.ValueString()
+		startsAt := new(string)
+		if !r.Exempt.Validity.StartsAt.IsUnknown() && !r.Exempt.Validity.StartsAt.IsNull() {
+			*startsAt = r.Exempt.Validity.StartsAt.ValueString()
 		} else {
-			from = nil
+			startsAt = nil
 		}
-		var until string
-		until = r.Exempt.Validity.Until.ValueString()
+		var endsAt string
+		endsAt = r.Exempt.Validity.EndsAt.ValueString()
 
 		validity := shared.Validity{
-			From:  from,
-			Until: until,
+			StartsAt: startsAt,
+			EndsAt:   endsAt,
 		}
 		aiCostExemptBudgetInput = &shared.AICostExemptBudgetInput{
 			Name:     name1,
@@ -213,7 +213,7 @@ func (r *AICostBudgetResourceModel) ToOperationsCreateBudgetRequestBody(ctx cont
 		}
 	}
 	if aiCostExemptBudgetInput != nil {
-		out = operations.CreateBudgetRequestBody{
+		out = operations.CreateCostBudgetRequestBody{
 			AICostExemptBudgetInput: aiCostExemptBudgetInput,
 		}
 	}
@@ -221,46 +221,46 @@ func (r *AICostBudgetResourceModel) ToOperationsCreateBudgetRequestBody(ctx cont
 	return &out, diags
 }
 
-func (r *AICostBudgetResourceModel) ToOperationsDeleteBudgetRequest(ctx context.Context) (*operations.DeleteBudgetRequest, diag.Diagnostics) {
+func (r *AICostBudgetResourceModel) ToOperationsDeleteCostBudgetRequest(ctx context.Context) (*operations.DeleteCostBudgetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var budgetID string
 	budgetID = r.ID.ValueString()
 
-	out := operations.DeleteBudgetRequest{
+	out := operations.DeleteCostBudgetRequest{
 		BudgetID: budgetID,
 	}
 
 	return &out, diags
 }
 
-func (r *AICostBudgetResourceModel) ToOperationsGetBudgetRequest(ctx context.Context) (*operations.GetBudgetRequest, diag.Diagnostics) {
+func (r *AICostBudgetResourceModel) ToOperationsGetCostBudgetRequest(ctx context.Context) (*operations.GetCostBudgetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var budgetID string
 	budgetID = r.ID.ValueString()
 
-	out := operations.GetBudgetRequest{
+	out := operations.GetCostBudgetRequest{
 		BudgetID: budgetID,
 	}
 
 	return &out, diags
 }
 
-func (r *AICostBudgetResourceModel) ToOperationsReplaceBudgetRequest(ctx context.Context) (*operations.ReplaceBudgetRequest, diag.Diagnostics) {
+func (r *AICostBudgetResourceModel) ToOperationsUpsertCostBudgetRequest(ctx context.Context) (*operations.UpsertCostBudgetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var budgetID string
 	budgetID = r.ID.ValueString()
 
-	requestBody, requestBodyDiags := r.ToOperationsReplaceBudgetRequestBody(ctx)
+	requestBody, requestBodyDiags := r.ToOperationsUpsertCostBudgetRequestBody(ctx)
 	diags.Append(requestBodyDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
-	out := operations.ReplaceBudgetRequest{
+	out := operations.UpsertCostBudgetRequest{
 		BudgetID:    budgetID,
 		RequestBody: *requestBody,
 	}
@@ -268,10 +268,10 @@ func (r *AICostBudgetResourceModel) ToOperationsReplaceBudgetRequest(ctx context
 	return &out, diags
 }
 
-func (r *AICostBudgetResourceModel) ToOperationsReplaceBudgetRequestBody(ctx context.Context) (*operations.ReplaceBudgetRequestBody, diag.Diagnostics) {
+func (r *AICostBudgetResourceModel) ToOperationsUpsertCostBudgetRequestBody(ctx context.Context) (*operations.UpsertCostBudgetRequestBody, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var out operations.ReplaceBudgetRequestBody
+	var out operations.UpsertCostBudgetRequestBody
 	var aiCostLimitBudgetInput *shared.AICostLimitBudgetInput
 	if r.Limit != nil {
 		var name string
@@ -308,12 +308,12 @@ func (r *AICostBudgetResourceModel) ToOperationsReplaceBudgetRequestBody(ctx con
 		var interval string
 		interval = r.Limit.Window.Interval.ValueString()
 
-		var anchor string
-		anchor = r.Limit.Window.Anchor.ValueString()
+		var anchoredAt string
+		anchoredAt = r.Limit.Window.AnchoredAt.ValueString()
 
 		window := shared.Window{
-			Interval: interval,
-			Anchor:   anchor,
+			Interval:   interval,
+			AnchoredAt: anchoredAt,
 		}
 		posture := new(shared.Posture)
 		if !r.Limit.Posture.IsUnknown() && !r.Limit.Posture.IsNull() {
@@ -337,7 +337,7 @@ func (r *AICostBudgetResourceModel) ToOperationsReplaceBudgetRequestBody(ctx con
 		}
 	}
 	if aiCostLimitBudgetInput != nil {
-		out = operations.ReplaceBudgetRequestBody{
+		out = operations.UpsertCostBudgetRequestBody{
 			AICostLimitBudgetInput: aiCostLimitBudgetInput,
 		}
 	}
@@ -374,18 +374,18 @@ func (r *AICostBudgetResourceModel) ToOperationsReplaceBudgetRequestBody(ctx con
 			Filters: filters1,
 			Each:    each1,
 		}
-		from := new(string)
-		if !r.Exempt.Validity.From.IsUnknown() && !r.Exempt.Validity.From.IsNull() {
-			*from = r.Exempt.Validity.From.ValueString()
+		startsAt := new(string)
+		if !r.Exempt.Validity.StartsAt.IsUnknown() && !r.Exempt.Validity.StartsAt.IsNull() {
+			*startsAt = r.Exempt.Validity.StartsAt.ValueString()
 		} else {
-			from = nil
+			startsAt = nil
 		}
-		var until string
-		until = r.Exempt.Validity.Until.ValueString()
+		var endsAt string
+		endsAt = r.Exempt.Validity.EndsAt.ValueString()
 
 		validity := shared.Validity{
-			From:  from,
-			Until: until,
+			StartsAt: startsAt,
+			EndsAt:   endsAt,
 		}
 		aiCostExemptBudgetInput = &shared.AICostExemptBudgetInput{
 			Name:     name1,
@@ -396,7 +396,7 @@ func (r *AICostBudgetResourceModel) ToOperationsReplaceBudgetRequestBody(ctx con
 		}
 	}
 	if aiCostExemptBudgetInput != nil {
-		out = operations.ReplaceBudgetRequestBody{
+		out = operations.UpsertCostBudgetRequestBody{
 			AICostExemptBudgetInput: aiCostExemptBudgetInput,
 		}
 	}

@@ -49,17 +49,17 @@ func (a *AICostLimitBudgetInputScope) GetEach() *string {
 //
 // A replacement can change it, which can move the current window's start and end.
 type Window struct {
-	// The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchor`.
+	// The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchored_at`.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"fixed" json:"type"`
 	// The length of each budget window, as an ISO 8601 duration such as `P1M` for a month or `P1D` for a day.
 	//
 	// From 1 second to 100 years, in whole milliseconds.
 	Interval string `json:"interval"`
-	// A time when a budget window starts. Windows start a whole number of intervals before or after it. The intervals count in the local time of the anchor's time zone, so calendar units such as months stay aligned to the calendar. A window that would start on a day its month doesn't have, such as the 31st, starts on the month's last day.
+	// A time when a budget window starts. Windows start a whole number of intervals before or after it. The intervals count in the local time of its time zone, so calendar units such as months stay aligned to the calendar. A window that would start on a day its month doesn't have, such as the 31st, starts on the month's last day.
 	//
 	// A date-time with a UTC offset and an IANA time zone in brackets, such as `2026-01-01T00:00:00+01:00[Europe/Budapest]`, in a year from 1970 to 2200.
-	Anchor string `json:"anchor"`
+	AnchoredAt string `json:"anchored_at"`
 }
 
 func (w Window) MarshalJSON() ([]byte, error) {
@@ -67,7 +67,7 @@ func (w Window) MarshalJSON() ([]byte, error) {
 }
 
 func (w *Window) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &w, "", false, []string{"type", "interval", "anchor"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &w, "", false, []string{"type", "interval", "anchored_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -84,11 +84,11 @@ func (w *Window) GetInterval() string {
 	return w.Interval
 }
 
-func (w *Window) GetAnchor() string {
+func (w *Window) GetAnchoredAt() string {
 	if w == nil {
 		return ""
 	}
-	return w.Anchor
+	return w.AnchoredAt
 }
 
 // Posture - What the budget declares should happen when spend reaches the limit. Nothing enforces it.

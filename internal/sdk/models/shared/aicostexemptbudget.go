@@ -42,14 +42,14 @@ func (a *AICostExemptBudgetScope) GetEach() *string {
 	return a.Each
 }
 
-// AICostExemptBudgetValidity - The period the exemption covers, from `from` until `until`.
+// AICostExemptBudgetValidity - The period the exemption covers, from `starts_at` until `ends_at`.
 type AICostExemptBudgetValidity struct {
 	// When the exemption starts, as an RFC 3339 timestamp in UTC or as a date-time with a UTC offset and an IANA time zone in brackets, such as `2026-08-16T00:00:00+02:00[Europe/Budapest]`.
 	//
 	// If the request omitted it, the budget's `created_at`.
-	From string `json:"from"`
-	// When the exemption ends, in the same formats as `from`.
-	Until string `json:"until"`
+	StartsAt string `json:"starts_at"`
+	// When the exemption ends, in the same formats as `starts_at`.
+	EndsAt string `json:"ends_at"`
 }
 
 func (a AICostExemptBudgetValidity) MarshalJSON() ([]byte, error) {
@@ -57,24 +57,24 @@ func (a AICostExemptBudgetValidity) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AICostExemptBudgetValidity) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"from", "until"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"starts_at", "ends_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AICostExemptBudgetValidity) GetFrom() string {
+func (a *AICostExemptBudgetValidity) GetStartsAt() string {
 	if a == nil {
 		return ""
 	}
-	return a.From
+	return a.StartsAt
 }
 
-func (a *AICostExemptBudgetValidity) GetUntil() string {
+func (a *AICostExemptBudgetValidity) GetEndsAt() string {
 	if a == nil {
 		return ""
 	}
-	return a.Until
+	return a.EndsAt
 }
 
 // AICostExemptBudget - An exemption declares that the usage in its scope is exempt from limits for a limited time. It sets no limit. The service stores and lists exemptions, but they change no balance or notification.
@@ -108,7 +108,7 @@ type AICostExemptBudget struct {
 	window *string `const:"null" json:"window"`
 	// Always `null`, because an exemption has no posture.
 	Posture *string `default:"null" json:"posture"`
-	// The period the exemption covers, from `from` until `until`.
+	// The period the exemption covers, from `starts_at` until `ends_at`.
 	Validity AICostExemptBudgetValidity `json:"validity"`
 }
 

@@ -23,7 +23,7 @@ const (
 
 				window = {
 					interval = "P1M"
-					anchor   = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
+					anchored_at = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
 				}
 
 				scope = {
@@ -50,7 +50,7 @@ const (
 
 				window = {
 					interval = "P1M"
-					anchor   = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
+					anchored_at = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
 				}
 
 				scope = {
@@ -77,7 +77,7 @@ const (
 
 				window = {
 					interval = "P1D"
-					anchor   = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
+					anchored_at = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
 				}
 
 				scope = {
@@ -103,8 +103,8 @@ const (
 				}
 
 				validity = {
-					from  = "2026-01-01T00:00:00Z"
-					until = "2036-01-01T00:00:00Z"
+					starts_at = "2026-01-01T00:00:00Z"
+					ends_at   = "2036-01-01T00:00:00Z"
 				}
 			}
 		}
@@ -123,8 +123,8 @@ const (
 				}
 
 				validity = {
-					from  = "2026-01-01T00:00:00Z"
-					until = "2037-01-01T00:00:00Z"
+					starts_at = "2026-01-01T00:00:00Z"
+					ends_at   = "2037-01-01T00:00:00Z"
 				}
 			}
 		}
@@ -250,8 +250,8 @@ func TestAICostBudget(t *testing.T) {
 						resource.TestCheckResourceAttr(address, "name", "tf-test-exempt-budget"),
 						resource.TestCheckResourceAttr(address, "exempt.name", "tf-test-exempt-budget"),
 						resource.TestCheckResourceAttr(address, "exempt.priority", "30"),
-						resource.TestCheckResourceAttr(address, "exempt.validity.from", "2026-01-01T00:00:00Z"),
-						resource.TestCheckResourceAttr(address, "exempt.validity.until", "2036-01-01T00:00:00Z"),
+						resource.TestCheckResourceAttr(address, "exempt.validity.starts_at", "2026-01-01T00:00:00Z"),
+						resource.TestCheckResourceAttr(address, "exempt.validity.ends_at", "2036-01-01T00:00:00Z"),
 					),
 				},
 				{
@@ -275,7 +275,7 @@ func TestAICostBudget(t *testing.T) {
 						// do not refresh on update, so assert the nested attributes instead.
 						resource.TestCheckResourceAttr(address, "exempt.name", "tf-test-exempt-budget-updated"),
 						resource.TestCheckResourceAttr(address, "exempt.priority", "60"),
-						resource.TestCheckResourceAttr(address, "exempt.validity.until", "2037-01-01T00:00:00Z"),
+						resource.TestCheckResourceAttr(address, "exempt.validity.ends_at", "2037-01-01T00:00:00Z"),
 					),
 				},
 			},

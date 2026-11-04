@@ -14,7 +14,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *AICostExportScheduleResourceModel) RefreshFromOperationsCreateExportScheduleResponseBody(ctx context.Context, resp *operations.CreateExportScheduleResponseBody) diag.Diagnostics {
+func (r *AICostExportScheduleResourceModel) RefreshFromOperationsCreateCostExportScheduleResponseBody(ctx context.Context, resp *operations.CreateCostExportScheduleResponseBody) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -53,7 +53,7 @@ func (r *AICostExportScheduleResourceModel) RefreshFromOperationsCreateExportSch
 	return diags
 }
 
-func (r *AICostExportScheduleResourceModel) RefreshFromOperationsGetExportScheduleResponseBody(ctx context.Context, resp *operations.GetExportScheduleResponseBody) diag.Diagnostics {
+func (r *AICostExportScheduleResourceModel) RefreshFromOperationsGetCostExportScheduleResponseBody(ctx context.Context, resp *operations.GetCostExportScheduleResponseBody) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -92,7 +92,7 @@ func (r *AICostExportScheduleResourceModel) RefreshFromOperationsGetExportSchedu
 	return diags
 }
 
-func (r *AICostExportScheduleResourceModel) RefreshFromOperationsReplaceExportScheduleResponseBody(ctx context.Context, resp *operations.ReplaceExportScheduleResponseBody) diag.Diagnostics {
+func (r *AICostExportScheduleResourceModel) RefreshFromOperationsUpsertCostExportScheduleResponseBody(ctx context.Context, resp *operations.UpsertCostExportScheduleResponseBody) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -131,7 +131,7 @@ func (r *AICostExportScheduleResourceModel) RefreshFromOperationsReplaceExportSc
 	return diags
 }
 
-func (r *AICostExportScheduleResourceModel) ToOperationsCreateExportScheduleRequestBody(ctx context.Context) (*operations.CreateExportScheduleRequestBody, diag.Diagnostics) {
+func (r *AICostExportScheduleResourceModel) ToOperationsCreateCostExportScheduleRequestBody(ctx context.Context) (*operations.CreateCostExportScheduleRequestBody, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var name string
@@ -186,7 +186,7 @@ func (r *AICostExportScheduleResourceModel) ToOperationsCreateExportScheduleRequ
 		}
 		labels[labelsKey] = labelsInst
 	}
-	out := operations.CreateExportScheduleRequestBody{
+	out := operations.CreateCostExportScheduleRequestBody{
 		Name:        name,
 		Cadence:     cadence,
 		TimeZone:    timeZone,
@@ -202,46 +202,46 @@ func (r *AICostExportScheduleResourceModel) ToOperationsCreateExportScheduleRequ
 	return &out, diags
 }
 
-func (r *AICostExportScheduleResourceModel) ToOperationsDeleteExportScheduleRequest(ctx context.Context) (*operations.DeleteExportScheduleRequest, diag.Diagnostics) {
+func (r *AICostExportScheduleResourceModel) ToOperationsDeleteCostExportScheduleRequest(ctx context.Context) (*operations.DeleteCostExportScheduleRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var scheduleID string
 	scheduleID = r.ID.ValueString()
 
-	out := operations.DeleteExportScheduleRequest{
+	out := operations.DeleteCostExportScheduleRequest{
 		ScheduleID: scheduleID,
 	}
 
 	return &out, diags
 }
 
-func (r *AICostExportScheduleResourceModel) ToOperationsGetExportScheduleRequest(ctx context.Context) (*operations.GetExportScheduleRequest, diag.Diagnostics) {
+func (r *AICostExportScheduleResourceModel) ToOperationsGetCostExportScheduleRequest(ctx context.Context) (*operations.GetCostExportScheduleRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var scheduleID string
 	scheduleID = r.ID.ValueString()
 
-	out := operations.GetExportScheduleRequest{
+	out := operations.GetCostExportScheduleRequest{
 		ScheduleID: scheduleID,
 	}
 
 	return &out, diags
 }
 
-func (r *AICostExportScheduleResourceModel) ToOperationsReplaceExportScheduleRequest(ctx context.Context) (*operations.ReplaceExportScheduleRequest, diag.Diagnostics) {
+func (r *AICostExportScheduleResourceModel) ToOperationsUpsertCostExportScheduleRequest(ctx context.Context) (*operations.UpsertCostExportScheduleRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var scheduleID string
 	scheduleID = r.ID.ValueString()
 
-	requestBody, requestBodyDiags := r.ToOperationsReplaceExportScheduleRequestBody(ctx)
+	requestBody, requestBodyDiags := r.ToOperationsUpsertCostExportScheduleRequestBody(ctx)
 	diags.Append(requestBodyDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
-	out := operations.ReplaceExportScheduleRequest{
+	out := operations.UpsertCostExportScheduleRequest{
 		ScheduleID:  scheduleID,
 		RequestBody: *requestBody,
 	}
@@ -249,26 +249,26 @@ func (r *AICostExportScheduleResourceModel) ToOperationsReplaceExportScheduleReq
 	return &out, diags
 }
 
-func (r *AICostExportScheduleResourceModel) ToOperationsReplaceExportScheduleRequestBody(ctx context.Context) (*operations.ReplaceExportScheduleRequestBody, diag.Diagnostics) {
+func (r *AICostExportScheduleResourceModel) ToOperationsUpsertCostExportScheduleRequestBody(ctx context.Context) (*operations.UpsertCostExportScheduleRequestBody, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var name string
 	name = r.Name.ValueString()
 
-	cadence := operations.ReplaceExportScheduleCadence(r.Cadence.ValueString())
+	cadence := operations.UpsertCostExportScheduleCadence(r.Cadence.ValueString())
 	timeZone := new(string)
 	if !r.TimeZone.IsUnknown() && !r.TimeZone.IsNull() {
 		*timeZone = r.TimeZone.ValueString()
 	} else {
 		timeZone = nil
 	}
-	status := new(operations.ReplaceExportScheduleStatus)
+	status := new(operations.UpsertCostExportScheduleStatus)
 	if !r.Status.IsUnknown() && !r.Status.IsNull() {
-		*status = operations.ReplaceExportScheduleStatus(r.Status.ValueString())
+		*status = operations.UpsertCostExportScheduleStatus(r.Status.ValueString())
 	} else {
 		status = nil
 	}
-	dataset := operations.ReplaceExportScheduleDataset(r.Dataset.ValueString())
+	dataset := operations.UpsertCostExportScheduleDataset(r.Dataset.ValueString())
 	var focus *shared.AICostFocusOptionsInput
 	if r.Focus != nil {
 		version := shared.Version(r.Focus.Version.ValueString())
@@ -288,8 +288,8 @@ func (r *AICostExportScheduleResourceModel) ToOperationsReplaceExportScheduleReq
 			TagKeys:      tagKeys,
 		}
 	}
-	format := operations.ReplaceExportScheduleFormat(r.Format.ValueString())
-	compression := operations.ReplaceExportScheduleCompression(r.Compression.ValueString())
+	format := operations.UpsertCostExportScheduleFormat(r.Format.ValueString())
+	compression := operations.UpsertCostExportScheduleCompression(r.Compression.ValueString())
 	var filters interface{}
 	if !r.Filters.IsUnknown() && !r.Filters.IsNull() {
 		_ = json.Unmarshal([]byte(r.Filters.ValueString()), &filters)
@@ -304,7 +304,7 @@ func (r *AICostExportScheduleResourceModel) ToOperationsReplaceExportScheduleReq
 		}
 		labels[labelsKey] = labelsInst
 	}
-	out := operations.ReplaceExportScheduleRequestBody{
+	out := operations.UpsertCostExportScheduleRequestBody{
 		Name:        name,
 		Cadence:     cadence,
 		TimeZone:    timeZone,

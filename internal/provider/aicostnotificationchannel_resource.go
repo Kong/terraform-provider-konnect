@@ -376,13 +376,13 @@ func (r *AICostNotificationChannelResource) Update(ctx context.Context, req reso
 
 	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
 
-	request, requestDiags := data.ToOperationsReplaceCostNotificationChannelRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertCostNotificationChannelRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.NotificationChannels.ReplaceCostNotificationChannel(ctx, *request)
+	res, err := r.client.NotificationChannels.UpsertCostNotificationChannel(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {

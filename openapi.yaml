@@ -171,7 +171,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: AICostBudget#create
         terraform-datasource: null
-      operationId: create-budget
+      operationId: create-cost-budget
       summary: Create a budget
       description: |-
         **Pre-release Endpoint**
@@ -228,7 +228,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: AICostBudget#read
         terraform-datasource: null
-      operationId: get-budget
+      operationId: get-cost-budget
       summary: Get a budget
       description: |-
         **Pre-release Endpoint**
@@ -275,7 +275,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: AICostBudget#update
         terraform-datasource: null
-      operationId: replace-budget
+      operationId: upsert-cost-budget
       summary: Replace a budget's updatable fields
       description: |-
         **Pre-release Endpoint**
@@ -349,7 +349,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: AICostBudget#delete
         terraform-datasource: null
-      operationId: delete-budget
+      operationId: delete-cost-budget
       summary: Delete a budget
       description: |-
         **Pre-release Endpoint**
@@ -395,7 +395,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: AICostBudgetNotificationRule#read
         terraform-datasource: null
-      operationId: get-notification-rule
+      operationId: get-cost-notification-rule
       summary: Get a budget's notification rule
       description: |-
         **Pre-release Endpoint**
@@ -451,7 +451,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: 'AICostBudgetNotificationRule#create,update'
         terraform-datasource: null
-      operationId: replace-notification-rule
+      operationId: upsert-cost-notification-rule
       summary: Create or replace a notification rule
       description: |-
         **Pre-release Endpoint**
@@ -640,7 +640,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: AICostBudgetNotificationRule#delete
         terraform-datasource: null
-      operationId: delete-notification-rule
+      operationId: delete-cost-notification-rule
       summary: Delete a budget's notification rule
       description: |-
         **Pre-release Endpoint**
@@ -693,7 +693,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: AICostExportSchedule#create
         terraform-datasource: null
-      operationId: create-export-schedule
+      operationId: create-cost-export-schedule
       summary: Create an export schedule
       description: |-
         **Pre-release Endpoint**
@@ -748,7 +748,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: AICostExportSchedule#read
         terraform-datasource: null
-      operationId: get-export-schedule
+      operationId: get-cost-export-schedule
       summary: Get an export schedule
       description: |-
         **Pre-release Endpoint**
@@ -795,7 +795,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: AICostExportSchedule#update
         terraform-datasource: null
-      operationId: replace-export-schedule
+      operationId: upsert-cost-export-schedule
       summary: Replace an export schedule
       description: |-
         **Pre-release Endpoint**
@@ -861,7 +861,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: AICostExportSchedule#delete
         terraform-datasource: null
-      operationId: delete-export-schedule
+      operationId: delete-cost-export-schedule
       summary: Delete an export schedule
       description: |-
         **Pre-release Endpoint**
@@ -1008,7 +1008,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: AICostNotificationChannel#update
         terraform-datasource: null
-      operationId: replace-cost-notification-channel
+      operationId: upsert-cost-notification-channel
       summary: Replace a notification channel
       description: |-
         **Pre-release Endpoint**
@@ -59306,34 +59306,6 @@ components:
       title: AIGatewayTokenVaultEnrollmentProtection
       x-min-runtime-version: '2.3'
       x-speakeasy-param-computed: false
-    AIGatewayTokenVaultCredentialManager:
-      description: |-
-        Serves the self-service enrollment UI through which end users authorize the upstream providers
-        this auth strategy authenticates against. Omit `token_vault` entirely to serve no such UI.
-
-        Requires a `token-vault` Datastore reference in `datastores`; enabling the credential manager
-        without one is rejected.
-
-        **Requires a minimum runtime version of `2.3`**.
-      type: object
-      properties:
-        enable_credential_manager:
-          description: Whether the self-service enrollment UI is served for this auth strategy.
-          type: boolean
-          default: false
-        storage:
-          description: |
-            Read-only. The directory and encryption key versions this entity's credentials are stored
-            with, resolved from the `token-vault` Datastore referenced in `datastores`; change them on
-            the Datastore.
-          allOf:
-            - $ref: '#/components/schemas/TokenVaultDatastoreConfig'
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
-      additionalProperties: false
-      title: AIGatewayTokenVaultCredentialManager
-      x-min-runtime-version: '2.3'
-      x-speakeasy-param-computed: false
     AIGatewayRedisAWSAuthentication:
       description: AWS specific configs for connecting to a Cloud Provider's redis instance.
       type: object
@@ -64450,22 +64422,22 @@ components:
           additionalProperties: false
           properties:
             type:
-              description: 'The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchor`.'
+              description: 'The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchored_at`.'
               type: string
               const: fixed
             interval:
               description: 'The length of each budget window, as an ISO 8601 duration such as `P1M` for a month or `P1D` for a day.'
               type: string
-            anchor:
+            anchored_at:
               description: |-
-                A time when a budget window starts. Windows start a whole number of intervals before or after it. The intervals count in the local time of the anchor's time zone, so calendar units such as months stay aligned to the calendar. A window that would start on a day its month doesn't have, such as the 31st, starts on the month's last day.
+                A time when a budget window starts. Windows start a whole number of intervals before or after it. The intervals count in the local time of its time zone, so calendar units such as months stay aligned to the calendar. A window that would start on a day its month doesn't have, such as the 31st, starts on the month's last day.
 
                 A date-time with a UTC offset and an IANA time zone in brackets, such as `2026-01-01T00:00:00+01:00[Europe/Budapest]`.
               type: string
           required:
             - type
             - interval
-            - anchor
+            - anchored_at
         posture:
           description: What the budget declares should happen when spend reaches the limit. Nothing enforces it.
           allOf:
@@ -64813,21 +64785,21 @@ components:
           nullable: true
           x-speakeasy-param-computed: false
         validity:
-          description: 'The period the exemption covers, from `from` until `until`.'
+          description: 'The period the exemption covers, from `starts_at` until `ends_at`.'
           type: object
           properties:
-            from:
+            starts_at:
               description: |-
                 When the exemption starts, as an RFC 3339 timestamp in UTC or as a date-time with a UTC offset and an IANA time zone in brackets, such as `2026-08-16T00:00:00+02:00[Europe/Budapest]`.
 
                 If the request omitted it, the budget's `created_at`.
               type: string
-            until:
-              description: 'When the exemption ends, in the same formats as `from`.'
+            ends_at:
+              description: 'When the exemption ends, in the same formats as `starts_at`.'
               type: string
           required:
-            - from
-            - until
+            - starts_at
+            - ends_at
       required:
         - id
         - name
@@ -65036,7 +65008,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/AICostFocusVersion'
         charge_period:
-          description: 'The length of each row''s charge period: a calendar day or an hour in `time_zone`, which `ChargePeriodStart` and `ChargePeriodEnd` bound. The range selects the events and doesn''t shorten the first or last period, so those periods can extend beyond `from` and `to`.'
+          description: 'The length of each row''s charge period: a calendar day or an hour in `time_zone`, which `ChargePeriodStart` and `ChargePeriodEnd` bound. The range selects the events and doesn''t shorten the first or last period, so those periods can extend beyond `starts_at` and `ends_at`.'
           allOf:
             - $ref: '#/components/schemas/AICostFocusChargePeriod'
         tag_keys:
@@ -65193,7 +65165,7 @@ components:
           description: |-
             An export schedule exports the organization's usage period by period, such as month by month. An `active` schedule creates one export of each period as the period ends. Each export is an ordinary export whose `schedule` names the schedule: it's listed, downloaded, and expires like a one-time export. Its files follow the dataset's rule: one for each day for `usage_events`, and one for each calendar month for `focus`. Each export of a `daily` `usage_events` schedule or a `monthly` `focus` schedule therefore has one file.
 
-            - The export of a period has the period's start as `from` and its end as `to`, and the schedule's other settings as they are when the export is created.
+            - The export of a period has the period's start as `starts_at` and its end as `ends_at`, and the schedule's other settings as they are when the export is created.
             - When a schedule becomes `active`, by creation or by resuming, its first period is the one in progress. That period's export covers the whole period, including the time before the schedule became `active`.
             - A schedule exports each period once and never refreshes it, even when events of the period arrive later. A scheduled export that fails stays `failed`, and the schedule doesn't create it again. To include later events or to fill a failed period, a client creates a one-time export of the same range.
             - When runs are late, for example after an outage, the schedule catches up on at most the 31 most recent periods that ended while it was `active`, and skips older ones.
@@ -65492,11 +65464,11 @@ components:
           type: string
           const: exempt
         validity:
-          description: 'The period the exemption covers, from `from` until `until`.'
+          description: 'The period the exemption covers, from `starts_at` until `ends_at`.'
           type: object
           additionalProperties: false
           properties:
-            from:
+            starts_at:
               description: |-
                 When the exemption starts, as an RFC 3339 timestamp or as a date-time with a UTC offset and an IANA time zone in brackets, such as `2026-08-16T00:00:00+02:00[Europe/Budapest]`.
 
@@ -65505,14 +65477,14 @@ components:
               default: null
               nullable: true
               x-speakeasy-param-computed: false
-            until:
+            ends_at:
               description: |-
-                When the exemption ends, in the same formats as `from`, which the service normalizes the same way.
+                When the exemption ends, in the same formats as `starts_at`, which the service normalizes the same way.
 
-                Must be later than `from`.
+                Must be later than `starts_at`.
               type: string
           required:
-            - until
+            - ends_at
       additionalProperties: false
       required:
         - name
@@ -65705,7 +65677,7 @@ components:
           additionalProperties: false
           properties:
             type:
-              description: 'The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchor`.'
+              description: 'The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchored_at`.'
               type: string
               const: fixed
             interval:
@@ -65714,9 +65686,9 @@ components:
 
                 From 1 second to 100 years, in whole milliseconds.
               type: string
-            anchor:
+            anchored_at:
               description: |-
-                A time when a budget window starts. Windows start a whole number of intervals before or after it. The intervals count in the local time of the anchor's time zone, so calendar units such as months stay aligned to the calendar. A window that would start on a day its month doesn't have, such as the 31st, starts on the month's last day.
+                A time when a budget window starts. Windows start a whole number of intervals before or after it. The intervals count in the local time of its time zone, so calendar units such as months stay aligned to the calendar. A window that would start on a day its month doesn't have, such as the 31st, starts on the month's last day.
 
                 A date-time with a UTC offset and an IANA time zone in brackets, such as `2026-01-01T00:00:00+01:00[Europe/Budapest]`, in a year from 1970 to 2200.
               type: string
@@ -65724,7 +65696,7 @@ components:
           required:
             - type
             - interval
-            - anchor
+            - anchored_at
         posture:
           description: |-
             What the budget declares should happen when spend reaches the limit. Nothing enforces it.

@@ -8,114 +8,109 @@ import (
 	"net/http"
 )
 
-type GetBudgetRequest struct {
+type GetCostNotificationRuleRequest struct {
 	// The `id` of the budget.
 	BudgetID string `pathParam:"style=simple,explode=false,name=budgetId"`
 }
 
-func (g GetBudgetRequest) MarshalJSON() ([]byte, error) {
+func (g GetCostNotificationRuleRequest) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(g, "", false)
 }
 
-func (g *GetBudgetRequest) UnmarshalJSON(data []byte) error {
+func (g *GetCostNotificationRuleRequest) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"budgetId"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GetBudgetRequest) GetBudgetID() string {
+func (g *GetCostNotificationRuleRequest) GetBudgetID() string {
 	if g == nil {
 		return ""
 	}
 	return g.BudgetID
 }
 
-type GetBudgetResponse struct {
+type GetCostNotificationRuleResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// The budget.
-	AICostBudget *shared.AICostBudget
+	// The notification rule.
+	AICostNotificationRule *shared.AICostNotificationRule
+	// The budget is an exemption, which has no notification rule. `invalid_parameters` names `budgetId`.
+	BadRequestError *shared.BadRequestError
 	// The request has no valid access token. The token is missing, malformed, or expired, or it fails another check, and the response doesn't say which.
 	UnauthorizedError *shared.UnauthorizedError
 	// The access token is valid, but its principal lacks the permission this operation requires. For an operation on one resource, the response doesn't reveal whether that resource exists.
 	ForbiddenError *shared.ForbiddenError
-	// The organization has no budget with this identifier that the caller can see.
+	// The organization has no budget with this identifier that the caller can see, or the budget has no notification rule.
 	NotFoundError *shared.NotFoundError
 }
 
-func (g GetBudgetResponse) MarshalJSON() ([]byte, error) {
+func (g GetCostNotificationRuleResponse) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(g, "", false)
 }
 
-func (g *GetBudgetResponse) UnmarshalJSON(data []byte) error {
+func (g *GetCostNotificationRuleResponse) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GetBudgetResponse) GetContentType() string {
+func (g *GetCostNotificationRuleResponse) GetContentType() string {
 	if g == nil {
 		return ""
 	}
 	return g.ContentType
 }
 
-func (g *GetBudgetResponse) GetStatusCode() int {
+func (g *GetCostNotificationRuleResponse) GetStatusCode() int {
 	if g == nil {
 		return 0
 	}
 	return g.StatusCode
 }
 
-func (g *GetBudgetResponse) GetRawResponse() *http.Response {
+func (g *GetCostNotificationRuleResponse) GetRawResponse() *http.Response {
 	if g == nil {
 		return nil
 	}
 	return g.RawResponse
 }
 
-func (g *GetBudgetResponse) GetAICostBudget() *shared.AICostBudget {
+func (g *GetCostNotificationRuleResponse) GetAICostNotificationRule() *shared.AICostNotificationRule {
 	if g == nil {
 		return nil
 	}
-	return g.AICostBudget
+	return g.AICostNotificationRule
 }
 
-func (g *GetBudgetResponse) GetAICostBudgetLimit() *shared.AICostLimitBudget {
-	if v := g.GetAICostBudget(); v != nil {
-		return v.AICostLimitBudget
+func (g *GetCostNotificationRuleResponse) GetBadRequestError() *shared.BadRequestError {
+	if g == nil {
+		return nil
 	}
-	return nil
+	return g.BadRequestError
 }
 
-func (g *GetBudgetResponse) GetAICostBudgetExempt() *shared.AICostExemptBudget {
-	if v := g.GetAICostBudget(); v != nil {
-		return v.AICostExemptBudget
-	}
-	return nil
-}
-
-func (g *GetBudgetResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (g *GetCostNotificationRuleResponse) GetUnauthorizedError() *shared.UnauthorizedError {
 	if g == nil {
 		return nil
 	}
 	return g.UnauthorizedError
 }
 
-func (g *GetBudgetResponse) GetForbiddenError() *shared.ForbiddenError {
+func (g *GetCostNotificationRuleResponse) GetForbiddenError() *shared.ForbiddenError {
 	if g == nil {
 		return nil
 	}
 	return g.ForbiddenError
 }
 
-func (g *GetBudgetResponse) GetNotFoundError() *shared.NotFoundError {
+func (g *GetCostNotificationRuleResponse) GetNotFoundError() *shared.NotFoundError {
 	if g == nil {
 		return nil
 	}

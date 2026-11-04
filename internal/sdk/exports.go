@@ -32,7 +32,7 @@ func newExports(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 	}
 }
 
-// CreateExportSchedule - Create an export schedule
+// CreateCostExportSchedule - Create an export schedule
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
@@ -41,7 +41,7 @@ func newExports(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 // An `active` schedule creates one export of each of its periods as the period ends, starting with the period in progress.
 //
 // If the body is invalid, the request fails with `400`. If the organization already has 20 export schedules, the request fails with `409`.
-func (s *Exports) CreateExportSchedule(ctx context.Context, request operations.CreateExportScheduleRequestBody, opts ...operations.Option) (*operations.CreateExportScheduleResponse, error) {
+func (s *Exports) CreateCostExportSchedule(ctx context.Context, request operations.CreateCostExportScheduleRequestBody, opts ...operations.Option) (*operations.CreateCostExportScheduleResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -71,7 +71,7 @@ func (s *Exports) CreateExportSchedule(ctx context.Context, request operations.C
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-export-schedule",
+		OperationID:      "create-cost-export-schedule",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -211,7 +211,7 @@ func (s *Exports) CreateExportSchedule(ctx context.Context, request operations.C
 		}
 	}
 
-	res := &operations.CreateExportScheduleResponse{
+	res := &operations.CreateCostExportScheduleResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -226,7 +226,7 @@ func (s *Exports) CreateExportSchedule(ctx context.Context, request operations.C
 				return nil, err
 			}
 
-			var out operations.CreateExportScheduleResponseBody
+			var out operations.CreateCostExportScheduleResponseBody
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
@@ -335,12 +335,12 @@ func (s *Exports) CreateExportSchedule(ctx context.Context, request operations.C
 
 }
 
-// GetExportSchedule - Get an export schedule
+// GetCostExportSchedule - Get an export schedule
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
 // Returns one of the organization's export schedules. If the organization has no export schedule with this identifier, or the identifier isn't a valid UUID, the request fails with `404`.
-func (s *Exports) GetExportSchedule(ctx context.Context, request operations.GetExportScheduleRequest, opts ...operations.Option) (*operations.GetExportScheduleResponse, error) {
+func (s *Exports) GetCostExportSchedule(ctx context.Context, request operations.GetCostExportScheduleRequest, opts ...operations.Option) (*operations.GetCostExportScheduleResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -370,7 +370,7 @@ func (s *Exports) GetExportSchedule(ctx context.Context, request operations.GetE
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-export-schedule",
+		OperationID:      "get-cost-export-schedule",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -503,7 +503,7 @@ func (s *Exports) GetExportSchedule(ctx context.Context, request operations.GetE
 		}
 	}
 
-	res := &operations.GetExportScheduleResponse{
+	res := &operations.GetCostExportScheduleResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -518,7 +518,7 @@ func (s *Exports) GetExportSchedule(ctx context.Context, request operations.GetE
 				return nil, err
 			}
 
-			var out operations.GetExportScheduleResponseBody
+			var out operations.GetCostExportScheduleResponseBody
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
@@ -606,7 +606,7 @@ func (s *Exports) GetExportSchedule(ctx context.Context, request operations.GetE
 
 }
 
-// ReplaceExportSchedule - Replace an export schedule
+// UpsertCostExportSchedule - Replace an export schedule
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
@@ -618,7 +618,7 @@ func (s *Exports) GetExportSchedule(ctx context.Context, request operations.GetE
 // - `cadence` and `time_zone` can't change, so the body repeats their stored values. If either differs, the request fails with `400` naming the field. Redefining a schedule's periods takes a delete and a create.
 // - An omitted `time_zone` counts as `UTC`, so a replacement of a schedule in another time zone that omits it fails with `400`.
 // - If the organization has no export schedule with this identifier, or the identifier isn't a valid UUID, the request fails with `404`. The request never creates a schedule.
-func (s *Exports) ReplaceExportSchedule(ctx context.Context, request operations.ReplaceExportScheduleRequest, opts ...operations.Option) (*operations.ReplaceExportScheduleResponse, error) {
+func (s *Exports) UpsertCostExportSchedule(ctx context.Context, request operations.UpsertCostExportScheduleRequest, opts ...operations.Option) (*operations.UpsertCostExportScheduleResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -648,7 +648,7 @@ func (s *Exports) ReplaceExportSchedule(ctx context.Context, request operations.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "replace-export-schedule",
+		OperationID:      "upsert-cost-export-schedule",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -788,7 +788,7 @@ func (s *Exports) ReplaceExportSchedule(ctx context.Context, request operations.
 		}
 	}
 
-	res := &operations.ReplaceExportScheduleResponse{
+	res := &operations.UpsertCostExportScheduleResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -803,7 +803,7 @@ func (s *Exports) ReplaceExportSchedule(ctx context.Context, request operations.
 				return nil, err
 			}
 
-			var out operations.ReplaceExportScheduleResponseBody
+			var out operations.UpsertCostExportScheduleResponseBody
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
@@ -912,14 +912,14 @@ func (s *Exports) ReplaceExportSchedule(ctx context.Context, request operations.
 
 }
 
-// DeleteExportSchedule - Delete an export schedule
+// DeleteCostExportSchedule - Delete an export schedule
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
 // Deletes an export schedule. The exports it created remain, with `schedule` set to `null`, and a `pending` one still runs.
 //
 // If the organization has no export schedule with this identifier, or the identifier isn't a valid UUID, the request fails with `404`. This includes deleting the same schedule again.
-func (s *Exports) DeleteExportSchedule(ctx context.Context, request operations.DeleteExportScheduleRequest, opts ...operations.Option) (*operations.DeleteExportScheduleResponse, error) {
+func (s *Exports) DeleteCostExportSchedule(ctx context.Context, request operations.DeleteCostExportScheduleRequest, opts ...operations.Option) (*operations.DeleteCostExportScheduleResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -948,7 +948,7 @@ func (s *Exports) DeleteExportSchedule(ctx context.Context, request operations.D
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-export-schedule",
+		OperationID:      "delete-cost-export-schedule",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1076,7 +1076,7 @@ func (s *Exports) DeleteExportSchedule(ctx context.Context, request operations.D
 		}
 	}
 
-	res := &operations.DeleteExportScheduleResponse{
+	res := &operations.DeleteCostExportScheduleResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

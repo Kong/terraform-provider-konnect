@@ -21,7 +21,7 @@ const (
 
 				window = {
 					interval = "P1M"
-					anchor   = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
+					anchored_at = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
 				}
 
 				scope = {

@@ -8,30 +8,30 @@ import (
 	"net/http"
 )
 
-type DeleteExportScheduleRequest struct {
+type DeleteCostExportScheduleRequest struct {
 	// The `id` of the export schedule.
 	ScheduleID string `pathParam:"style=simple,explode=false,name=scheduleId"`
 }
 
-func (d DeleteExportScheduleRequest) MarshalJSON() ([]byte, error) {
+func (d DeleteCostExportScheduleRequest) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(d, "", false)
 }
 
-func (d *DeleteExportScheduleRequest) UnmarshalJSON(data []byte) error {
+func (d *DeleteCostExportScheduleRequest) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"scheduleId"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DeleteExportScheduleRequest) GetScheduleID() string {
+func (d *DeleteCostExportScheduleRequest) GetScheduleID() string {
 	if d == nil {
 		return ""
 	}
 	return d.ScheduleID
 }
 
-type DeleteExportScheduleResponse struct {
+type DeleteCostExportScheduleResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
@@ -46,53 +46,53 @@ type DeleteExportScheduleResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d DeleteExportScheduleResponse) MarshalJSON() ([]byte, error) {
+func (d DeleteCostExportScheduleResponse) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(d, "", false)
 }
 
-func (d *DeleteExportScheduleResponse) UnmarshalJSON(data []byte) error {
+func (d *DeleteCostExportScheduleResponse) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DeleteExportScheduleResponse) GetContentType() string {
+func (d *DeleteCostExportScheduleResponse) GetContentType() string {
 	if d == nil {
 		return ""
 	}
 	return d.ContentType
 }
 
-func (d *DeleteExportScheduleResponse) GetStatusCode() int {
+func (d *DeleteCostExportScheduleResponse) GetStatusCode() int {
 	if d == nil {
 		return 0
 	}
 	return d.StatusCode
 }
 
-func (d *DeleteExportScheduleResponse) GetRawResponse() *http.Response {
+func (d *DeleteCostExportScheduleResponse) GetRawResponse() *http.Response {
 	if d == nil {
 		return nil
 	}
 	return d.RawResponse
 }
 
-func (d *DeleteExportScheduleResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (d *DeleteCostExportScheduleResponse) GetUnauthorizedError() *shared.UnauthorizedError {
 	if d == nil {
 		return nil
 	}
 	return d.UnauthorizedError
 }
 
-func (d *DeleteExportScheduleResponse) GetForbiddenError() *shared.ForbiddenError {
+func (d *DeleteCostExportScheduleResponse) GetForbiddenError() *shared.ForbiddenError {
 	if d == nil {
 		return nil
 	}
 	return d.ForbiddenError
 }
 
-func (d *DeleteExportScheduleResponse) GetNotFoundError() *shared.NotFoundError {
+func (d *DeleteCostExportScheduleResponse) GetNotFoundError() *shared.NotFoundError {
 	if d == nil {
 		return nil
 	}

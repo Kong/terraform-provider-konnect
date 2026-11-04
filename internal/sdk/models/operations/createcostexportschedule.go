@@ -132,8 +132,8 @@ func (e *Compression) IsExact() bool {
 	return false
 }
 
-// CreateExportScheduleRequestBody - The body of a request that creates or replaces an export schedule. It carries the full schedule without `id`, `next_run_at`, `created_at`, and `updated_at`, which the server sets.
-type CreateExportScheduleRequestBody struct {
+// CreateCostExportScheduleRequestBody - The body of a request that creates or replaces an export schedule. It carries the full schedule without `id`, `next_run_at`, `created_at`, and `updated_at`, which the server sets.
+type CreateCostExportScheduleRequestBody struct {
 	// A human-readable name for the schedule.
 	//
 	// 1 to 100 characters after the server removes leading and trailing whitespace.
@@ -169,104 +169,104 @@ type CreateExportScheduleRequestBody struct {
 	Labels  map[string]*string `json:"labels,omitempty"`
 }
 
-func (c CreateExportScheduleRequestBody) MarshalJSON() ([]byte, error) {
+func (c CreateCostExportScheduleRequestBody) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *CreateExportScheduleRequestBody) UnmarshalJSON(data []byte) error {
+func (c *CreateCostExportScheduleRequestBody) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "cadence", "dataset", "format", "compression"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CreateExportScheduleRequestBody) GetName() string {
+func (c *CreateCostExportScheduleRequestBody) GetName() string {
 	if c == nil {
 		return ""
 	}
 	return c.Name
 }
 
-func (c *CreateExportScheduleRequestBody) GetCadence() Cadence {
+func (c *CreateCostExportScheduleRequestBody) GetCadence() Cadence {
 	if c == nil {
 		return Cadence("")
 	}
 	return c.Cadence
 }
 
-func (c *CreateExportScheduleRequestBody) GetTimeZone() *string {
+func (c *CreateCostExportScheduleRequestBody) GetTimeZone() *string {
 	if c == nil {
 		return nil
 	}
 	return c.TimeZone
 }
 
-func (c *CreateExportScheduleRequestBody) GetStatus() *Status {
+func (c *CreateCostExportScheduleRequestBody) GetStatus() *Status {
 	if c == nil {
 		return nil
 	}
 	return c.Status
 }
 
-func (c *CreateExportScheduleRequestBody) GetDataset() Dataset {
+func (c *CreateCostExportScheduleRequestBody) GetDataset() Dataset {
 	if c == nil {
 		return Dataset("")
 	}
 	return c.Dataset
 }
 
-func (c *CreateExportScheduleRequestBody) GetFocus() *shared.AICostFocusOptionsInput {
+func (c *CreateCostExportScheduleRequestBody) GetFocus() *shared.AICostFocusOptionsInput {
 	if c == nil {
 		return nil
 	}
 	return c.Focus
 }
 
-func (c *CreateExportScheduleRequestBody) GetFormat() Format {
+func (c *CreateCostExportScheduleRequestBody) GetFormat() Format {
 	if c == nil {
 		return Format("")
 	}
 	return c.Format
 }
 
-func (c *CreateExportScheduleRequestBody) GetCompression() Compression {
+func (c *CreateCostExportScheduleRequestBody) GetCompression() Compression {
 	if c == nil {
 		return Compression("")
 	}
 	return c.Compression
 }
 
-func (c *CreateExportScheduleRequestBody) GetFilters() any {
+func (c *CreateCostExportScheduleRequestBody) GetFilters() any {
 	if c == nil {
 		return nil
 	}
 	return c.Filters
 }
 
-func (c *CreateExportScheduleRequestBody) GetLabels() map[string]*string {
+func (c *CreateCostExportScheduleRequestBody) GetLabels() map[string]*string {
 	if c == nil {
 		return nil
 	}
 	return c.Labels
 }
 
-// CreateExportScheduleCadence - The length of each period, which sets the range of each export.
+// CreateCostExportScheduleCadence - The length of each period, which sets the range of each export.
 //
 // A replacement can't change it.
-type CreateExportScheduleCadence string
+type CreateCostExportScheduleCadence string
 
 const (
-	CreateExportScheduleCadenceDaily   CreateExportScheduleCadence = "daily"
-	CreateExportScheduleCadenceWeekly  CreateExportScheduleCadence = "weekly"
-	CreateExportScheduleCadenceMonthly CreateExportScheduleCadence = "monthly"
+	CreateCostExportScheduleCadenceDaily   CreateCostExportScheduleCadence = "daily"
+	CreateCostExportScheduleCadenceWeekly  CreateCostExportScheduleCadence = "weekly"
+	CreateCostExportScheduleCadenceMonthly CreateCostExportScheduleCadence = "monthly"
 )
 
-func (e CreateExportScheduleCadence) ToPointer() *CreateExportScheduleCadence {
+func (e CreateCostExportScheduleCadence) ToPointer() *CreateCostExportScheduleCadence {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *CreateExportScheduleCadence) IsExact() bool {
+func (e *CreateCostExportScheduleCadence) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "daily", "weekly", "monthly":
@@ -276,20 +276,20 @@ func (e *CreateExportScheduleCadence) IsExact() bool {
 	return false
 }
 
-// CreateExportScheduleStatus - Whether the schedule creates exports.
-type CreateExportScheduleStatus string
+// CreateCostExportScheduleStatus - Whether the schedule creates exports.
+type CreateCostExportScheduleStatus string
 
 const (
-	CreateExportScheduleStatusActive CreateExportScheduleStatus = "active"
-	CreateExportScheduleStatusPaused CreateExportScheduleStatus = "paused"
+	CreateCostExportScheduleStatusActive CreateCostExportScheduleStatus = "active"
+	CreateCostExportScheduleStatusPaused CreateCostExportScheduleStatus = "paused"
 )
 
-func (e CreateExportScheduleStatus) ToPointer() *CreateExportScheduleStatus {
+func (e CreateCostExportScheduleStatus) ToPointer() *CreateCostExportScheduleStatus {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *CreateExportScheduleStatus) IsExact() bool {
+func (e *CreateCostExportScheduleStatus) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "active", "paused":
@@ -299,20 +299,20 @@ func (e *CreateExportScheduleStatus) IsExact() bool {
 	return false
 }
 
-// CreateExportScheduleDataset - The data that each export holds.
-type CreateExportScheduleDataset string
+// CreateCostExportScheduleDataset - The data that each export holds.
+type CreateCostExportScheduleDataset string
 
 const (
-	CreateExportScheduleDatasetUsageEvents CreateExportScheduleDataset = "usage_events"
-	CreateExportScheduleDatasetFocus       CreateExportScheduleDataset = "focus"
+	CreateCostExportScheduleDatasetUsageEvents CreateCostExportScheduleDataset = "usage_events"
+	CreateCostExportScheduleDatasetFocus       CreateCostExportScheduleDataset = "focus"
 )
 
-func (e CreateExportScheduleDataset) ToPointer() *CreateExportScheduleDataset {
+func (e CreateCostExportScheduleDataset) ToPointer() *CreateCostExportScheduleDataset {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *CreateExportScheduleDataset) IsExact() bool {
+func (e *CreateCostExportScheduleDataset) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "usage_events", "focus":
@@ -345,7 +345,7 @@ func (e *Version) IsExact() bool {
 	return false
 }
 
-// ChargePeriod - The length of each row's charge period: a calendar day or an hour in `time_zone`, which `ChargePeriodStart` and `ChargePeriodEnd` bound. The range selects the events and doesn't shorten the first or last period, so those periods can extend beyond `from` and `to`.
+// ChargePeriod - The length of each row's charge period: a calendar day or an hour in `time_zone`, which `ChargePeriodStart` and `ChargePeriodEnd` bound. The range selects the events and doesn't shorten the first or last period, so those periods can extend beyond `starts_at` and `ends_at`.
 type ChargePeriod string
 
 const (
@@ -374,7 +374,7 @@ func (e *ChargePeriod) IsExact() bool {
 type Focus struct {
 	// The FOCUS version that the files follow.
 	Version Version `json:"version"`
-	// The length of each row's charge period: a calendar day or an hour in `time_zone`, which `ChargePeriodStart` and `ChargePeriodEnd` bound. The range selects the events and doesn't shorten the first or last period, so those periods can extend beyond `from` and `to`.
+	// The length of each row's charge period: a calendar day or an hour in `time_zone`, which `ChargePeriodStart` and `ChargePeriodEnd` bound. The range selects the events and doesn't shorten the first or last period, so those periods can extend beyond `starts_at` and `ends_at`.
 	ChargePeriod ChargePeriod `json:"charge_period"`
 	// The tag keys whose values split the rows. A row's `Tags` column holds the named keys that its events carry, with their values.
 	//
@@ -414,20 +414,20 @@ func (f *Focus) GetTagKeys() []string {
 	return f.TagKeys
 }
 
-// CreateExportScheduleFormat - The file format of each export's data files.
-type CreateExportScheduleFormat string
+// CreateCostExportScheduleFormat - The file format of each export's data files.
+type CreateCostExportScheduleFormat string
 
 const (
-	CreateExportScheduleFormatParquet CreateExportScheduleFormat = "parquet"
-	CreateExportScheduleFormatCsv     CreateExportScheduleFormat = "csv"
+	CreateCostExportScheduleFormatParquet CreateCostExportScheduleFormat = "parquet"
+	CreateCostExportScheduleFormatCsv     CreateCostExportScheduleFormat = "csv"
 )
 
-func (e CreateExportScheduleFormat) ToPointer() *CreateExportScheduleFormat {
+func (e CreateCostExportScheduleFormat) ToPointer() *CreateCostExportScheduleFormat {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *CreateExportScheduleFormat) IsExact() bool {
+func (e *CreateCostExportScheduleFormat) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "parquet", "csv":
@@ -437,21 +437,21 @@ func (e *CreateExportScheduleFormat) IsExact() bool {
 	return false
 }
 
-// CreateExportScheduleCompression - How each export's data files are compressed.
-type CreateExportScheduleCompression string
+// CreateCostExportScheduleCompression - How each export's data files are compressed.
+type CreateCostExportScheduleCompression string
 
 const (
-	CreateExportScheduleCompressionNone CreateExportScheduleCompression = "none"
-	CreateExportScheduleCompressionGzip CreateExportScheduleCompression = "gzip"
-	CreateExportScheduleCompressionZstd CreateExportScheduleCompression = "zstd"
+	CreateCostExportScheduleCompressionNone CreateCostExportScheduleCompression = "none"
+	CreateCostExportScheduleCompressionGzip CreateCostExportScheduleCompression = "gzip"
+	CreateCostExportScheduleCompressionZstd CreateCostExportScheduleCompression = "zstd"
 )
 
-func (e CreateExportScheduleCompression) ToPointer() *CreateExportScheduleCompression {
+func (e CreateCostExportScheduleCompression) ToPointer() *CreateCostExportScheduleCompression {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *CreateExportScheduleCompression) IsExact() bool {
+func (e *CreateCostExportScheduleCompression) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "none", "gzip", "zstd":
@@ -461,13 +461,13 @@ func (e *CreateExportScheduleCompression) IsExact() bool {
 	return false
 }
 
-// CreateExportScheduleResponseBody - An export schedule exports the organization's usage period by period, such as month by month. An `active` schedule creates one export of each period as the period ends. Each export is an ordinary export whose `schedule` names the schedule: it's listed, downloaded, and expires like a one-time export. Its files follow the dataset's rule: one for each day for `usage_events`, and one for each calendar month for `focus`. Each export of a `daily` `usage_events` schedule or a `monthly` `focus` schedule therefore has one file.
+// CreateCostExportScheduleResponseBody - An export schedule exports the organization's usage period by period, such as month by month. An `active` schedule creates one export of each period as the period ends. Each export is an ordinary export whose `schedule` names the schedule: it's listed, downloaded, and expires like a one-time export. Its files follow the dataset's rule: one for each day for `usage_events`, and one for each calendar month for `focus`. Each export of a `daily` `usage_events` schedule or a `monthly` `focus` schedule therefore has one file.
 //
-// - The export of a period has the period's start as `from` and its end as `to`, and the schedule's other settings as they are when the export is created.
+// - The export of a period has the period's start as `starts_at` and its end as `ends_at`, and the schedule's other settings as they are when the export is created.
 // - When a schedule becomes `active`, by creation or by resuming, its first period is the one in progress. That period's export covers the whole period, including the time before the schedule became `active`.
 // - A schedule exports each period once and never refreshes it, even when events of the period arrive later. A scheduled export that fails stays `failed`, and the schedule doesn't create it again. To include later events or to fill a failed period, a client creates a one-time export of the same range.
 // - When runs are late, for example after an outage, the schedule catches up on at most the 31 most recent periods that ended while it was `active`, and skips older ones.
-type CreateExportScheduleResponseBody struct {
+type CreateCostExportScheduleResponseBody struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// A human-readable name for the schedule.
@@ -477,23 +477,23 @@ type CreateExportScheduleResponseBody struct {
 	// The length of each period, which sets the range of each export.
 	//
 	// A replacement can't change it.
-	Cadence CreateExportScheduleCadence `json:"cadence"`
+	Cadence CreateCostExportScheduleCadence `json:"cadence"`
 	// The IANA time zone in which the periods start. Each export that the schedule creates has this `time_zone`.
 	//
 	// A replacement can't change it.
 	TimeZone string `json:"time_zone"`
 	// Whether the schedule creates exports.
-	Status CreateExportScheduleStatus `json:"status"`
+	Status CreateCostExportScheduleStatus `json:"status"`
 	// The data that each export holds.
-	Dataset CreateExportScheduleDataset `json:"dataset"`
+	Dataset CreateCostExportScheduleDataset `json:"dataset"`
 	// The FOCUS options of each export, with defaults applied.
 	//
 	// `null` unless `dataset` is `focus`.
 	Focus *Focus `json:"focus"`
 	// The file format of each export's data files.
-	Format CreateExportScheduleFormat `json:"format"`
+	Format CreateCostExportScheduleFormat `json:"format"`
 	// How each export's data files are compressed.
-	Compression CreateExportScheduleCompression `json:"compression"`
+	Compression CreateCostExportScheduleCompression `json:"compression"`
 	// The filters of each export. `{}` for none.
 	Filters any `json:"filters"`
 	// Key-value metadata on the schedule. The schedule list can filter by label. Each export that the schedule creates copies the labels as they are at that moment.
@@ -508,116 +508,116 @@ type CreateExportScheduleResponseBody struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func (c CreateExportScheduleResponseBody) MarshalJSON() ([]byte, error) {
+func (c CreateCostExportScheduleResponseBody) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *CreateExportScheduleResponseBody) UnmarshalJSON(data []byte) error {
+func (c *CreateCostExportScheduleResponseBody) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "cadence", "time_zone", "status", "dataset", "format", "compression", "filters", "labels", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CreateExportScheduleResponseBody) GetID() string {
+func (c *CreateCostExportScheduleResponseBody) GetID() string {
 	if c == nil {
 		return ""
 	}
 	return c.ID
 }
 
-func (c *CreateExportScheduleResponseBody) GetName() string {
+func (c *CreateCostExportScheduleResponseBody) GetName() string {
 	if c == nil {
 		return ""
 	}
 	return c.Name
 }
 
-func (c *CreateExportScheduleResponseBody) GetCadence() CreateExportScheduleCadence {
+func (c *CreateCostExportScheduleResponseBody) GetCadence() CreateCostExportScheduleCadence {
 	if c == nil {
-		return CreateExportScheduleCadence("")
+		return CreateCostExportScheduleCadence("")
 	}
 	return c.Cadence
 }
 
-func (c *CreateExportScheduleResponseBody) GetTimeZone() string {
+func (c *CreateCostExportScheduleResponseBody) GetTimeZone() string {
 	if c == nil {
 		return ""
 	}
 	return c.TimeZone
 }
 
-func (c *CreateExportScheduleResponseBody) GetStatus() CreateExportScheduleStatus {
+func (c *CreateCostExportScheduleResponseBody) GetStatus() CreateCostExportScheduleStatus {
 	if c == nil {
-		return CreateExportScheduleStatus("")
+		return CreateCostExportScheduleStatus("")
 	}
 	return c.Status
 }
 
-func (c *CreateExportScheduleResponseBody) GetDataset() CreateExportScheduleDataset {
+func (c *CreateCostExportScheduleResponseBody) GetDataset() CreateCostExportScheduleDataset {
 	if c == nil {
-		return CreateExportScheduleDataset("")
+		return CreateCostExportScheduleDataset("")
 	}
 	return c.Dataset
 }
 
-func (c *CreateExportScheduleResponseBody) GetFocus() *Focus {
+func (c *CreateCostExportScheduleResponseBody) GetFocus() *Focus {
 	if c == nil {
 		return nil
 	}
 	return c.Focus
 }
 
-func (c *CreateExportScheduleResponseBody) GetFormat() CreateExportScheduleFormat {
+func (c *CreateCostExportScheduleResponseBody) GetFormat() CreateCostExportScheduleFormat {
 	if c == nil {
-		return CreateExportScheduleFormat("")
+		return CreateCostExportScheduleFormat("")
 	}
 	return c.Format
 }
 
-func (c *CreateExportScheduleResponseBody) GetCompression() CreateExportScheduleCompression {
+func (c *CreateCostExportScheduleResponseBody) GetCompression() CreateCostExportScheduleCompression {
 	if c == nil {
-		return CreateExportScheduleCompression("")
+		return CreateCostExportScheduleCompression("")
 	}
 	return c.Compression
 }
 
-func (c *CreateExportScheduleResponseBody) GetFilters() any {
+func (c *CreateCostExportScheduleResponseBody) GetFilters() any {
 	if c == nil {
 		return nil
 	}
 	return c.Filters
 }
 
-func (c *CreateExportScheduleResponseBody) GetLabels() map[string]*string {
+func (c *CreateCostExportScheduleResponseBody) GetLabels() map[string]*string {
 	if c == nil {
 		return map[string]*string{}
 	}
 	return c.Labels
 }
 
-func (c *CreateExportScheduleResponseBody) GetNextRunAt() *time.Time {
+func (c *CreateCostExportScheduleResponseBody) GetNextRunAt() *time.Time {
 	if c == nil {
 		return nil
 	}
 	return c.NextRunAt
 }
 
-func (c *CreateExportScheduleResponseBody) GetCreatedAt() time.Time {
+func (c *CreateCostExportScheduleResponseBody) GetCreatedAt() time.Time {
 	if c == nil {
 		return time.Time{}
 	}
 	return c.CreatedAt
 }
 
-func (c *CreateExportScheduleResponseBody) GetUpdatedAt() time.Time {
+func (c *CreateCostExportScheduleResponseBody) GetUpdatedAt() time.Time {
 	if c == nil {
 		return time.Time{}
 	}
 	return c.UpdatedAt
 }
 
-type CreateExportScheduleResponse struct {
+type CreateCostExportScheduleResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
@@ -625,7 +625,7 @@ type CreateExportScheduleResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// The created export schedule.
-	Object *CreateExportScheduleResponseBody
+	Object *CreateCostExportScheduleResponseBody
 	// The request body is invalid. `invalid_parameters` names each invalid field.
 	BadRequestError *shared.BadRequestError
 	// The request has no valid access token. The token is missing, malformed, or expired, or it fails another check, and the response doesn't say which.
@@ -636,67 +636,67 @@ type CreateExportScheduleResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (c CreateExportScheduleResponse) MarshalJSON() ([]byte, error) {
+func (c CreateCostExportScheduleResponse) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *CreateExportScheduleResponse) UnmarshalJSON(data []byte) error {
+func (c *CreateCostExportScheduleResponse) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CreateExportScheduleResponse) GetContentType() string {
+func (c *CreateCostExportScheduleResponse) GetContentType() string {
 	if c == nil {
 		return ""
 	}
 	return c.ContentType
 }
 
-func (c *CreateExportScheduleResponse) GetStatusCode() int {
+func (c *CreateCostExportScheduleResponse) GetStatusCode() int {
 	if c == nil {
 		return 0
 	}
 	return c.StatusCode
 }
 
-func (c *CreateExportScheduleResponse) GetRawResponse() *http.Response {
+func (c *CreateCostExportScheduleResponse) GetRawResponse() *http.Response {
 	if c == nil {
 		return nil
 	}
 	return c.RawResponse
 }
 
-func (c *CreateExportScheduleResponse) GetObject() *CreateExportScheduleResponseBody {
+func (c *CreateCostExportScheduleResponse) GetObject() *CreateCostExportScheduleResponseBody {
 	if c == nil {
 		return nil
 	}
 	return c.Object
 }
 
-func (c *CreateExportScheduleResponse) GetBadRequestError() *shared.BadRequestError {
+func (c *CreateCostExportScheduleResponse) GetBadRequestError() *shared.BadRequestError {
 	if c == nil {
 		return nil
 	}
 	return c.BadRequestError
 }
 
-func (c *CreateExportScheduleResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (c *CreateCostExportScheduleResponse) GetUnauthorizedError() *shared.UnauthorizedError {
 	if c == nil {
 		return nil
 	}
 	return c.UnauthorizedError
 }
 
-func (c *CreateExportScheduleResponse) GetForbiddenError() *shared.ForbiddenError {
+func (c *CreateCostExportScheduleResponse) GetForbiddenError() *shared.ForbiddenError {
 	if c == nil {
 		return nil
 	}
 	return c.ForbiddenError
 }
 
-func (c *CreateExportScheduleResponse) GetConflictError() *shared.ConflictError {
+func (c *CreateCostExportScheduleResponse) GetConflictError() *shared.ConflictError {
 	if c == nil {
 		return nil
 	}

@@ -44,15 +44,15 @@ func (a *AICostLimitBudgetScope) GetEach() *string {
 
 // AICostLimitBudgetWindow - The budget window: the period the limit applies to, such as a calendar month. When one window ends, the next starts.
 type AICostLimitBudgetWindow struct {
-	// The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchor`.
+	// The kind of budget window. Always `fixed`: windows of length `interval` follow each other, aligned to `anchored_at`.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"fixed" json:"type"`
 	// The length of each budget window, as an ISO 8601 duration such as `P1M` for a month or `P1D` for a day.
 	Interval string `json:"interval"`
-	// A time when a budget window starts. Windows start a whole number of intervals before or after it. The intervals count in the local time of the anchor's time zone, so calendar units such as months stay aligned to the calendar. A window that would start on a day its month doesn't have, such as the 31st, starts on the month's last day.
+	// A time when a budget window starts. Windows start a whole number of intervals before or after it. The intervals count in the local time of its time zone, so calendar units such as months stay aligned to the calendar. A window that would start on a day its month doesn't have, such as the 31st, starts on the month's last day.
 	//
 	// A date-time with a UTC offset and an IANA time zone in brackets, such as `2026-01-01T00:00:00+01:00[Europe/Budapest]`.
-	Anchor string `json:"anchor"`
+	AnchoredAt string `json:"anchored_at"`
 }
 
 func (a AICostLimitBudgetWindow) MarshalJSON() ([]byte, error) {
@@ -60,7 +60,7 @@ func (a AICostLimitBudgetWindow) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AICostLimitBudgetWindow) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"type", "interval", "anchor"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"type", "interval", "anchored_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -77,11 +77,11 @@ func (a *AICostLimitBudgetWindow) GetInterval() string {
 	return a.Interval
 }
 
-func (a *AICostLimitBudgetWindow) GetAnchor() string {
+func (a *AICostLimitBudgetWindow) GetAnchoredAt() string {
 	if a == nil {
 		return ""
 	}
-	return a.Anchor
+	return a.AnchoredAt
 }
 
 // AICostLimitBudgetPosture - What the budget declares should happen when spend reaches the limit. Nothing enforces it.
