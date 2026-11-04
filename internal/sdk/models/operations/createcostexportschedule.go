@@ -3,6 +3,8 @@
 package operations
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
@@ -83,6 +85,32 @@ func (e *Dataset) IsExact() bool {
 	return false
 }
 
+// SchemaVersion - The schema version of each export's data files within the dataset, which fixes their columns and values. Each export that the schedule creates copies it, so a newer schema version doesn't change the schedule's exports.
+//
+// Defaults to `1`, also once newer schema versions exist, so a replacement that omits `schema_version` sets `1`.
+type SchemaVersion int64
+
+const (
+	SchemaVersionOne SchemaVersion = 1
+)
+
+func (e SchemaVersion) ToPointer() *SchemaVersion {
+	return &e
+}
+func (e *SchemaVersion) UnmarshalJSON(data []byte) error {
+	var v int64
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 1:
+		*e = SchemaVersion(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for SchemaVersion: %v", v)
+	}
+}
+
 // Format - The file format of each export's data files.
 type Format string
 
@@ -152,6 +180,10 @@ type CreateCostExportScheduleRequestBody struct {
 	Status *Status `default:"active" json:"status"`
 	// The data that each export holds.
 	Dataset Dataset `json:"dataset"`
+	// The schema version of each export's data files within the dataset, which fixes their columns and values. Each export that the schedule creates copies it, so a newer schema version doesn't change the schedule's exports.
+	//
+	// Defaults to `1`, also once newer schema versions exist, so a replacement that omits `schema_version` sets `1`.
+	SchemaVersion *SchemaVersion `default:"1" json:"schema_version"`
 	// The FOCUS options of each export.
 	//
 	// Required when `dataset` is `focus`, and isn't accepted for any other dataset.
@@ -213,6 +245,13 @@ func (c *CreateCostExportScheduleRequestBody) GetDataset() Dataset {
 		return Dataset("")
 	}
 	return c.Dataset
+}
+
+func (c *CreateCostExportScheduleRequestBody) GetSchemaVersion() *SchemaVersion {
+	if c == nil {
+		return nil
+	}
+	return c.SchemaVersion
 }
 
 func (c *CreateCostExportScheduleRequestBody) GetFocus() *shared.AICostFocusOptionsInput {
@@ -486,6 +525,8 @@ type CreateCostExportScheduleResponseBody struct {
 	Status CreateCostExportScheduleStatus `json:"status"`
 	// The data that each export holds.
 	Dataset CreateCostExportScheduleDataset `json:"dataset"`
+	// The schema version of each export's data files within the dataset, which fixes their columns and values.
+	SchemaVersion shared.AICostExportSchemaVersion `json:"schema_version"`
 	// The FOCUS options of each export, with defaults applied.
 	//
 	// `null` unless `dataset` is `focus`.
@@ -513,7 +554,7 @@ func (c CreateCostExportScheduleResponseBody) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateCostExportScheduleResponseBody) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "cadence", "time_zone", "status", "dataset", "format", "compression", "filters", "labels", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "cadence", "time_zone", "status", "dataset", "schema_version", "format", "compression", "filters", "labels", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -559,6 +600,13 @@ func (c *CreateCostExportScheduleResponseBody) GetDataset() CreateCostExportSche
 		return CreateCostExportScheduleDataset("")
 	}
 	return c.Dataset
+}
+
+func (c *CreateCostExportScheduleResponseBody) GetSchemaVersion() shared.AICostExportSchemaVersion {
+	if c == nil {
+		return shared.AICostExportSchemaVersion(0)
+	}
+	return c.SchemaVersion
 }
 
 func (c *CreateCostExportScheduleResponseBody) GetFocus() *Focus {

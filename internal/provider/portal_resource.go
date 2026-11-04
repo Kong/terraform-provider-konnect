@@ -12,11 +12,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -35,6 +38,7 @@ type PortalResource struct {
 
 // PortalResourceModel describes the resource data model.
 type PortalResourceModel struct {
+	Ai                                         *tfTypes.AISettings     `tfsdk:"ai"`
 	AuthenticationEnabled                      types.Bool              `tfsdk:"authentication_enabled"`
 	AutoApproveApplications                    types.Bool              `tfsdk:"auto_approve_applications"`
 	AutoApproveDevelopers                      types.Bool              `tfsdk:"auto_approve_developers"`
@@ -53,6 +57,7 @@ type PortalResourceModel struct {
 	NotificationsDeveloperPiiVisibilityEnabled types.Bool              `tfsdk:"notifications_developer_pii_visibility_enabled"`
 	RbacEnabled                                types.Bool              `tfsdk:"rbac_enabled"`
 	SiprEnabled                                types.Bool              `tfsdk:"sipr_enabled"`
+	ThemeName                                  types.String            `tfsdk:"theme_name"`
 	UpdatedAt                                  types.String            `tfsdk:"updated_at"`
 }
 
@@ -64,6 +69,66 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Portal Resource",
 		Attributes: map[string]schema.Attribute{
+			"ai": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"enabled": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Is AI enabled?. Default: false`,
+					},
+					"features": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"ai_search": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether AI Search is enabled or not. Default: false`,
+									},
+								},
+								Description: `AI Search config. Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
+							},
+							"mcp_server": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether the MCP Server is enabled or not. Default: false`,
+									},
+									"write_operations_enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether write operations are enabled or not for the Portal MCP Server enabled. Default: false`,
+									},
+								},
+								Description: `AI Features config. Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
+							},
+						},
+						Description: `AI features configuration. When top-level ` + "`" + `enabled` + "`" + ` is false, every feature toggle here is automatically reset to false. Not Null`,
+						Validators: []validator.Object{
+							speakeasy_objectvalidators.NotNull(),
+						},
+					},
+				},
+			},
 			"authentication_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -188,6 +253,13 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:    true,
 				Default:     booldefault.StaticBool(false),
 				Description: `Whether ip allow list is enabled for the portal. Default: false`,
+			},
+			"theme_name": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Name of the theme to use for the default content created upon creation of this portal. Must match an available theme name; if omitted or unrecognized, the default theme is used. Only applies when ` + "`" + `create_default_content` + "`" + ` is true. Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

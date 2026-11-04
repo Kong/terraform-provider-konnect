@@ -33,9 +33,6 @@ func newExports(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 }
 
 // CreateCostExportSchedule - Create an export schedule
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates an export schedule and returns it. The server assigns the identifier.
 //
 // An `active` schedule creates one export of each of its periods as the period ends, starting with the period in progress.
@@ -336,9 +333,6 @@ func (s *Exports) CreateCostExportSchedule(ctx context.Context, request operatio
 }
 
 // GetCostExportSchedule - Get an export schedule
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Returns one of the organization's export schedules. If the organization has no export schedule with this identifier, or the identifier isn't a valid UUID, the request fails with `404`.
 func (s *Exports) GetCostExportSchedule(ctx context.Context, request operations.GetCostExportScheduleRequest, opts ...operations.Option) (*operations.GetCostExportScheduleResponse, error) {
 	o := operations.Options{}
@@ -607,9 +601,6 @@ func (s *Exports) GetCostExportSchedule(ctx context.Context, request operations.
 }
 
 // UpsertCostExportSchedule - Replace an export schedule
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Replaces an export schedule's `name`, `status`, `dataset`, `focus`, `format`, `compression`, and `filters`, and returns the result. The schedule keeps its identifier.
 //
 // - The request carries the full schedule, so an omitted `filters` clears the filters, and an omitted `status` resumes a paused schedule.
@@ -913,9 +904,6 @@ func (s *Exports) UpsertCostExportSchedule(ctx context.Context, request operatio
 }
 
 // DeleteCostExportSchedule - Delete an export schedule
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Deletes an export schedule. The exports it created remain, with `schedule` set to `null`, and a `pending` one still runs.
 //
 // If the organization has no export schedule with this identifier, or the identifier isn't a valid UUID, the request fails with `404`. This includes deleting the same schedule again.

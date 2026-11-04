@@ -268,6 +268,8 @@ type GetCostExportScheduleResponseBody struct {
 	Status GetCostExportScheduleStatus `json:"status"`
 	// The data that each export holds.
 	Dataset GetCostExportScheduleDataset `json:"dataset"`
+	// The schema version of each export's data files within the dataset, which fixes their columns and values.
+	SchemaVersion shared.AICostExportSchemaVersion `json:"schema_version"`
 	// The FOCUS options of each export, with defaults applied.
 	//
 	// `null` unless `dataset` is `focus`.
@@ -295,7 +297,7 @@ func (g GetCostExportScheduleResponseBody) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetCostExportScheduleResponseBody) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"id", "name", "cadence", "time_zone", "status", "dataset", "format", "compression", "filters", "labels", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"id", "name", "cadence", "time_zone", "status", "dataset", "schema_version", "format", "compression", "filters", "labels", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -341,6 +343,13 @@ func (g *GetCostExportScheduleResponseBody) GetDataset() GetCostExportScheduleDa
 		return GetCostExportScheduleDataset("")
 	}
 	return g.Dataset
+}
+
+func (g *GetCostExportScheduleResponseBody) GetSchemaVersion() shared.AICostExportSchemaVersion {
+	if g == nil {
+		return shared.AICostExportSchemaVersion(0)
+	}
+	return g.SchemaVersion
 }
 
 func (g *GetCostExportScheduleResponseBody) GetFocus() *GetCostExportScheduleFocus {

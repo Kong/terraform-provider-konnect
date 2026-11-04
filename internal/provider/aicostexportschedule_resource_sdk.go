@@ -45,6 +45,7 @@ func (r *AICostExportScheduleResourceModel) RefreshFromOperationsCreateCostExpor
 		}
 		r.Name = types.StringValue(resp.Name)
 		r.NextRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.NextRunAt))
+		r.SchemaVersion = types.Int64Value(int64(resp.SchemaVersion))
 		r.Status = types.StringValue(string(resp.Status))
 		r.TimeZone = types.StringValue(resp.TimeZone)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
@@ -84,6 +85,7 @@ func (r *AICostExportScheduleResourceModel) RefreshFromOperationsGetCostExportSc
 		}
 		r.Name = types.StringValue(resp.Name)
 		r.NextRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.NextRunAt))
+		r.SchemaVersion = types.Int64Value(int64(resp.SchemaVersion))
 		r.Status = types.StringValue(string(resp.Status))
 		r.TimeZone = types.StringValue(resp.TimeZone)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
@@ -123,6 +125,7 @@ func (r *AICostExportScheduleResourceModel) RefreshFromOperationsUpsertCostExpor
 		}
 		r.Name = types.StringValue(resp.Name)
 		r.NextRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.NextRunAt))
+		r.SchemaVersion = types.Int64Value(int64(resp.SchemaVersion))
 		r.Status = types.StringValue(string(resp.Status))
 		r.TimeZone = types.StringValue(resp.TimeZone)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
@@ -151,6 +154,12 @@ func (r *AICostExportScheduleResourceModel) ToOperationsCreateCostExportSchedule
 		status = nil
 	}
 	dataset := operations.Dataset(r.Dataset.ValueString())
+	schemaVersion := new(operations.SchemaVersion)
+	if !r.SchemaVersion.IsUnknown() && !r.SchemaVersion.IsNull() {
+		*schemaVersion = operations.SchemaVersion(r.SchemaVersion.ValueInt64())
+	} else {
+		schemaVersion = nil
+	}
 	var focus *shared.AICostFocusOptionsInput
 	if r.Focus != nil {
 		version := shared.Version(r.Focus.Version.ValueString())
@@ -187,16 +196,17 @@ func (r *AICostExportScheduleResourceModel) ToOperationsCreateCostExportSchedule
 		labels[labelsKey] = labelsInst
 	}
 	out := operations.CreateCostExportScheduleRequestBody{
-		Name:        name,
-		Cadence:     cadence,
-		TimeZone:    timeZone,
-		Status:      status,
-		Dataset:     dataset,
-		Focus:       focus,
-		Format:      format,
-		Compression: compression,
-		Filters:     filters,
-		Labels:      labels,
+		Name:          name,
+		Cadence:       cadence,
+		TimeZone:      timeZone,
+		Status:        status,
+		Dataset:       dataset,
+		SchemaVersion: schemaVersion,
+		Focus:         focus,
+		Format:        format,
+		Compression:   compression,
+		Filters:       filters,
+		Labels:        labels,
 	}
 
 	return &out, diags
@@ -269,6 +279,12 @@ func (r *AICostExportScheduleResourceModel) ToOperationsUpsertCostExportSchedule
 		status = nil
 	}
 	dataset := operations.UpsertCostExportScheduleDataset(r.Dataset.ValueString())
+	schemaVersion := new(operations.UpsertCostExportScheduleSchemaVersion)
+	if !r.SchemaVersion.IsUnknown() && !r.SchemaVersion.IsNull() {
+		*schemaVersion = operations.UpsertCostExportScheduleSchemaVersion(r.SchemaVersion.ValueInt64())
+	} else {
+		schemaVersion = nil
+	}
 	var focus *shared.AICostFocusOptionsInput
 	if r.Focus != nil {
 		version := shared.Version(r.Focus.Version.ValueString())
@@ -305,16 +321,17 @@ func (r *AICostExportScheduleResourceModel) ToOperationsUpsertCostExportSchedule
 		labels[labelsKey] = labelsInst
 	}
 	out := operations.UpsertCostExportScheduleRequestBody{
-		Name:        name,
-		Cadence:     cadence,
-		TimeZone:    timeZone,
-		Status:      status,
-		Dataset:     dataset,
-		Focus:       focus,
-		Format:      format,
-		Compression: compression,
-		Filters:     filters,
-		Labels:      labels,
+		Name:          name,
+		Cadence:       cadence,
+		TimeZone:      timeZone,
+		Status:        status,
+		Dataset:       dataset,
+		SchemaVersion: schemaVersion,
+		Focus:         focus,
+		Format:        format,
+		Compression:   compression,
+		Filters:       filters,
+		Labels:        labels,
 	}
 
 	return &out, diags

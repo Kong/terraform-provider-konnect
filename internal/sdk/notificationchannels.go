@@ -33,9 +33,6 @@ func newNotificationChannels(rootSDK *Konnect, sdkConfig config.SDKConfiguration
 }
 
 // CreateCostNotificationChannel - Create a notification channel
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates a notification channel in the organization and returns it. The server assigns the identifier.
 //
 // `type` selects the kind of channel: an email channel takes its recipients in `email`, and a Slack channel takes an incoming webhook URL in `slack`. The response shows the webhook URL with its secret token replaced by `…`. If the body is invalid, such as a webhook URL that isn't a Slack incoming webhook URL, the request fails with `400`.
@@ -314,9 +311,6 @@ func (s *NotificationChannels) CreateCostNotificationChannel(ctx context.Context
 }
 
 // GetCostNotificationChannel - Get a notification channel
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Returns one of the organization's notification channels. If the organization has no notification channel with this identifier, or the identifier isn't a valid UUID, the request fails with `404`.
 func (s *NotificationChannels) GetCostNotificationChannel(ctx context.Context, request operations.GetCostNotificationChannelRequest, opts ...operations.Option) (*operations.GetCostNotificationChannelResponse, error) {
 	o := operations.Options{}
@@ -585,9 +579,6 @@ func (s *NotificationChannels) GetCostNotificationChannel(ctx context.Context, r
 }
 
 // UpsertCostNotificationChannel - Replace a notification channel
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Replaces a notification channel's `name`, `labels`, and settings, and returns the result. The channel keeps its identifier and type.
 //
 // - The request carries the full channel, so an omitted `labels` clears the channel's labels.
@@ -890,9 +881,6 @@ func (s *NotificationChannels) UpsertCostNotificationChannel(ctx context.Context
 }
 
 // DeleteCostNotificationChannel - Delete a notification channel
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Deletes a notification channel, removes it from every notification rule that lists it, and deletes its deliveries and channel tests, including any still pending.
 //
 // If the organization has no notification channel with this identifier, or the identifier isn't a valid UUID, the request fails with `404`. This includes deleting the same channel again.

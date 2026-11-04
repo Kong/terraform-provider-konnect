@@ -6,12 +6,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
@@ -40,20 +42,21 @@ type AICostExportScheduleResource struct {
 
 // AICostExportScheduleResourceModel describes the resource data model.
 type AICostExportScheduleResourceModel struct {
-	Cadence     types.String                     `tfsdk:"cadence"`
-	Compression types.String                     `tfsdk:"compression"`
-	CreatedAt   types.String                     `tfsdk:"created_at"`
-	Dataset     types.String                     `tfsdk:"dataset"`
-	Filters     jsontypes.Normalized             `tfsdk:"filters"`
-	Focus       *tfTypes.AICostFocusOptionsInput `tfsdk:"focus"`
-	Format      types.String                     `tfsdk:"format"`
-	ID          types.String                     `tfsdk:"id"`
-	Labels      map[string]types.String          `tfsdk:"labels"`
-	Name        types.String                     `tfsdk:"name"`
-	NextRunAt   types.String                     `tfsdk:"next_run_at"`
-	Status      types.String                     `tfsdk:"status"`
-	TimeZone    types.String                     `tfsdk:"time_zone"`
-	UpdatedAt   types.String                     `tfsdk:"updated_at"`
+	Cadence       types.String                     `tfsdk:"cadence"`
+	Compression   types.String                     `tfsdk:"compression"`
+	CreatedAt     types.String                     `tfsdk:"created_at"`
+	Dataset       types.String                     `tfsdk:"dataset"`
+	Filters       jsontypes.Normalized             `tfsdk:"filters"`
+	Focus         *tfTypes.AICostFocusOptionsInput `tfsdk:"focus"`
+	Format        types.String                     `tfsdk:"format"`
+	ID            types.String                     `tfsdk:"id"`
+	Labels        map[string]types.String          `tfsdk:"labels"`
+	Name          types.String                     `tfsdk:"name"`
+	NextRunAt     types.String                     `tfsdk:"next_run_at"`
+	SchemaVersion types.Int64                      `tfsdk:"schema_version"`
+	Status        types.String                     `tfsdk:"status"`
+	TimeZone      types.String                     `tfsdk:"time_zone"`
+	UpdatedAt     types.String                     `tfsdk:"updated_at"`
 }
 
 func (r *AICostExportScheduleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -168,6 +171,18 @@ func (r *AICostExportScheduleResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: `When the period in progress ends and the schedule creates its export, as an RFC 3339 timestamp in UTC. That export starts 6 hours later, so that events that arrive late can be stored first.` + "\n" +
 					`` + "\n" +
 					`` + "`" + `null` + "`" + ` while the schedule is ` + "`" + `paused` + "`" + `. It's in the past while a run is late.`,
+			},
+			"schema_version": schema.Int64Attribute{
+				Computed: true,
+				Optional: true,
+				Default:  int64default.StaticInt64(1),
+				MarkdownDescription: `The schema version of each export's data files within the dataset, which fixes their columns and values. Each export that the schedule creates copies it, so a newer schema version doesn't change the schedule's exports.` + "\n" +
+					`` + "\n" +
+					`Defaults to ` + "`" + `1` + "`" + `, also once newer schema versions exist, so a replacement that omits ` + "`" + `schema_version` + "`" + ` sets ` + "`" + `1` + "`" + `.` + "\n" +
+					`Default: 1; must be 1`,
+				Validators: []validator.Int64{
+					int64validator.OneOf(1),
+				},
 			},
 			"status": schema.StringAttribute{
 				Computed: true,

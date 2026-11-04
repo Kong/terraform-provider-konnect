@@ -29,6 +29,7 @@ type PortalDataSource struct {
 
 // PortalDataSourceModel describes the data model.
 type PortalDataSourceModel struct {
+	Ai                                         *tfTypes.AISettings             `tfsdk:"ai"`
 	AuthenticationEnabled                      types.Bool                      `tfsdk:"authentication_enabled"`
 	AutoApproveApplications                    types.Bool                      `tfsdk:"auto_approve_applications"`
 	AutoApproveDevelopers                      types.Bool                      `tfsdk:"auto_approve_developers"`
@@ -62,6 +63,45 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 		MarkdownDescription: "Portal DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"ai": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"enabled": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Is AI enabled?`,
+					},
+					"features": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"ai_search": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Description: `Whether AI Search is enabled or not`,
+									},
+								},
+								Description: `AI Search config`,
+							},
+							"mcp_server": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Description: `Whether the MCP Server is enabled or not`,
+									},
+									"write_operations_enabled": schema.BoolAttribute{
+										Computed:    true,
+										Description: `Whether write operations are enabled or not for the Portal MCP Server enabled`,
+									},
+								},
+								Description: `AI Features config`,
+							},
+						},
+						Description: `AI features configuration. When top-level ` + "`" + `enabled` + "`" + ` is false, every feature toggle here is automatically reset to false.`,
+					},
+				},
+			},
 			"authentication_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.`,

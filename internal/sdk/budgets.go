@@ -316,9 +316,6 @@ func (s *Budgets) CreateCostBudget(ctx context.Context, request operations.Creat
 }
 
 // GetCostBudget - Get a budget
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Returns one of the organization's budgets. If the organization has no budget with this identifier that the caller can see, or the identifier isn't a valid UUID, the request fails with `404`.
 func (s *Budgets) GetCostBudget(ctx context.Context, request operations.GetCostBudgetRequest, opts ...operations.Option) (*operations.GetCostBudgetResponse, error) {
 	o := operations.Options{}
@@ -894,9 +891,6 @@ func (s *Budgets) UpsertCostBudget(ctx context.Context, request operations.Upser
 }
 
 // DeleteCostBudget - Delete a budget
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Deletes a budget, with its notification rule and the rule's firings and deliveries. Deleting the same budget again fails with `404`.
 //
 // A caller whose access covers only particular principals or groups deletes a budget that lies within its groups alone, or one within its principals and groups that it created. Deleting any other budget it can see fails with `403`. If the organization has no budget with this identifier that the caller can see, or the identifier isn't a valid UUID, the request fails with `404`.
@@ -1142,9 +1136,6 @@ func (s *Budgets) DeleteCostBudget(ctx context.Context, request operations.Delet
 }
 
 // GetCostNotificationRule - Get a budget's notification rule
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Returns a limit budget's notification rule: the thresholds at which it fires, the channels that receive the alerts, and the wording of its messages. A budget has at most one rule.
 //
 // If the budget has no rule, the organization has no budget with this identifier that the caller can see, or the identifier isn't a valid UUID, the request fails with `404`. An exemption has no rule, so if the budget is an exemption, the request fails with `400`.
@@ -1436,9 +1427,6 @@ func (s *Budgets) GetCostNotificationRule(ctx context.Context, request operation
 }
 
 // UpsertCostNotificationRule - Create or replace a notification rule
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates a limit budget's notification rule, or replaces its `thresholds`, `channels`, and `message`, and returns the rule. The response status is `201` when the request creates the rule and `200` when it replaces one.
 //
 // - The service evaluates the rule at once, so a threshold that spend in the current budget window has already reached fires right away. A threshold already recorded for this budget window, derived budget, and limit doesn't fire again. The evaluation runs after the rule is stored, so if it fails, retrying the same request completes it.
@@ -1744,9 +1732,6 @@ func (s *Budgets) UpsertCostNotificationRule(ctx context.Context, request operat
 }
 
 // DeleteCostNotificationRule - Delete a budget's notification rule
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Deletes a budget's notification rule, with its firings and their deliveries. The budget stays. Deleting the rule again fails with `404`.
 //
 // If the budget has no rule, the organization has no budget with this identifier that the caller can see, or the identifier isn't a valid UUID, the request fails with `404`. If the budget is an exemption, the request fails with `400`.

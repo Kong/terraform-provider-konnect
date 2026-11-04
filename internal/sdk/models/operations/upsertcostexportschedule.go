@@ -3,6 +3,8 @@
 package operations
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
@@ -83,6 +85,32 @@ func (e *UpsertCostExportScheduleDataset) IsExact() bool {
 	return false
 }
 
+// UpsertCostExportScheduleSchemaVersion - The schema version of each export's data files within the dataset, which fixes their columns and values. Each export that the schedule creates copies it, so a newer schema version doesn't change the schedule's exports.
+//
+// Defaults to `1`, also once newer schema versions exist, so a replacement that omits `schema_version` sets `1`.
+type UpsertCostExportScheduleSchemaVersion int64
+
+const (
+	UpsertCostExportScheduleSchemaVersionOne UpsertCostExportScheduleSchemaVersion = 1
+)
+
+func (e UpsertCostExportScheduleSchemaVersion) ToPointer() *UpsertCostExportScheduleSchemaVersion {
+	return &e
+}
+func (e *UpsertCostExportScheduleSchemaVersion) UnmarshalJSON(data []byte) error {
+	var v int64
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 1:
+		*e = UpsertCostExportScheduleSchemaVersion(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for UpsertCostExportScheduleSchemaVersion: %v", v)
+	}
+}
+
 // UpsertCostExportScheduleFormat - The file format of each export's data files.
 type UpsertCostExportScheduleFormat string
 
@@ -152,6 +180,10 @@ type UpsertCostExportScheduleRequestBody struct {
 	Status *UpsertCostExportScheduleStatus `default:"active" json:"status"`
 	// The data that each export holds.
 	Dataset UpsertCostExportScheduleDataset `json:"dataset"`
+	// The schema version of each export's data files within the dataset, which fixes their columns and values. Each export that the schedule creates copies it, so a newer schema version doesn't change the schedule's exports.
+	//
+	// Defaults to `1`, also once newer schema versions exist, so a replacement that omits `schema_version` sets `1`.
+	SchemaVersion *UpsertCostExportScheduleSchemaVersion `default:"1" json:"schema_version"`
 	// The FOCUS options of each export.
 	//
 	// Required when `dataset` is `focus`, and isn't accepted for any other dataset.
@@ -213,6 +245,13 @@ func (u *UpsertCostExportScheduleRequestBody) GetDataset() UpsertCostExportSched
 		return UpsertCostExportScheduleDataset("")
 	}
 	return u.Dataset
+}
+
+func (u *UpsertCostExportScheduleRequestBody) GetSchemaVersion() *UpsertCostExportScheduleSchemaVersion {
+	if u == nil {
+		return nil
+	}
+	return u.SchemaVersion
 }
 
 func (u *UpsertCostExportScheduleRequestBody) GetFocus() *shared.AICostFocusOptionsInput {
@@ -517,6 +556,8 @@ type UpsertCostExportScheduleResponseBody struct {
 	Status UpsertCostExportScheduleExportsStatus `json:"status"`
 	// The data that each export holds.
 	Dataset UpsertCostExportScheduleExportsDataset `json:"dataset"`
+	// The schema version of each export's data files within the dataset, which fixes their columns and values.
+	SchemaVersion shared.AICostExportSchemaVersion `json:"schema_version"`
 	// The FOCUS options of each export, with defaults applied.
 	//
 	// `null` unless `dataset` is `focus`.
@@ -544,7 +585,7 @@ func (u UpsertCostExportScheduleResponseBody) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpsertCostExportScheduleResponseBody) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"id", "name", "cadence", "time_zone", "status", "dataset", "format", "compression", "filters", "labels", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"id", "name", "cadence", "time_zone", "status", "dataset", "schema_version", "format", "compression", "filters", "labels", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -590,6 +631,13 @@ func (u *UpsertCostExportScheduleResponseBody) GetDataset() UpsertCostExportSche
 		return UpsertCostExportScheduleExportsDataset("")
 	}
 	return u.Dataset
+}
+
+func (u *UpsertCostExportScheduleResponseBody) GetSchemaVersion() shared.AICostExportSchemaVersion {
+	if u == nil {
+		return shared.AICostExportSchemaVersion(0)
+	}
+	return u.SchemaVersion
 }
 
 func (u *UpsertCostExportScheduleResponseBody) GetFocus() *UpsertCostExportScheduleFocus {
