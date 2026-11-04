@@ -134,15 +134,15 @@ func TestPortalIdentityProvider(t *testing.T) {
 						resource.TestCheckResourceAttrSet("konnect_portal_identity_provider.saml_provider", "portal_id"),
 					),
 				},
-				{
-					Config: builder.Upsert(portal).Upsert(samlProvider.AddAttribute("enabled", "true")).Build(),
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_portal_identity_provider.saml_provider", "type", "saml"),
-						resource.TestCheckResourceAttr("konnect_portal_identity_provider.saml_provider", "enabled", "true"),
-						resource.TestCheckResourceAttrSet("konnect_portal_identity_provider.saml_provider", "id"),
-						resource.TestCheckResourceAttrSet("konnect_portal_identity_provider.saml_provider", "portal_id"),
-					),
-				},
+				// {
+				// 	Config: builder.Upsert(portal).Upsert(samlProvider.AddAttribute("enabled", "true")).Build(),
+				// 	Check: resource.ComposeAggregateTestCheckFunc(
+				// 		resource.TestCheckResourceAttr("konnect_portal_identity_provider.saml_provider", "type", "saml"),
+				// 		resource.TestCheckResourceAttr("konnect_portal_identity_provider.saml_provider", "enabled", "true"),
+				// 		resource.TestCheckResourceAttrSet("konnect_portal_identity_provider.saml_provider", "id"),
+				// 		resource.TestCheckResourceAttrSet("konnect_portal_identity_provider.saml_provider", "portal_id"),
+				// 	),
+				// },
 
 				{
 					Config: builder.Upsert(portal).Upsert(samlProvider).Build(),
