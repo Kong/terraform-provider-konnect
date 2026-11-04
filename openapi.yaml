@@ -27757,7 +27757,6 @@ components:
         - instance
         - detail
         - invalid_parameters
-      title: Error
     UnauthorizedError:
       description: standard error
       type: object
@@ -27811,7 +27810,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     ForbiddenError:
       description: standard error
       type: object
@@ -27865,7 +27863,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     InternalError:
       description: standard error
       type: object
@@ -27915,7 +27912,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     ConflictError:
       description: standard error
       type: object
@@ -27969,7 +27965,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     NotFoundError:
       description: standard error
       type: object
@@ -28023,7 +28018,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     NotImplementedError:
       description: standard error
       type: object
@@ -28075,7 +28069,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     CreatedAt:
       description: An ISO-8601 timestamp representation of entity creation date.
       type: string
@@ -28139,7 +28132,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     ManagedBy:
       description: |
         Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
@@ -28191,7 +28183,6 @@ components:
           example: ERROR_TYPE_FIELD
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
-      title: Error Detail
     KonnectCPLegacyBadRequestError:
       description: standard error
       type: object
@@ -28220,7 +28211,6 @@ components:
             $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
-      title: Error
     KonnectCPLegacyUnauthorizedError:
       description: standard error
       type: object
@@ -28249,7 +28239,6 @@ components:
             $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
-      title: Error
     KonnectCPLegacyForbiddenError:
       description: standard error
       type: object
@@ -28278,7 +28267,6 @@ components:
             $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
-      title: Error
     KonnectCPLegacyNotFoundError:
       description: standard error
       type: object
@@ -28307,7 +28295,6 @@ components:
             $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
-      title: Error
     KonnectCPLegacyConflictError:
       description: standard error
       type: object
@@ -28336,7 +28323,6 @@ components:
             $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
-      title: Error
     ControlPlaneId:
       description: ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI.
       type: string
@@ -32063,7 +32049,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     LabelsUpdate:
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -37171,7 +37156,7 @@ components:
           nullable: false
           properties:
             name:
-              description: 'The theme name to apply to this portal. Supported names are ''ocean'', ''mesa'', and ''grove''. If another name is provided or this property is omitted, the portal uses the default ''ocean'' theme.'
+              description: 'The theme name to apply to this portal. Supported names are ''mesa'', ''grove'', ''pebble'', or ''ocean''. If another name is provided or this property is omitted, the portal uses the default ''ocean'' theme.'
               type: string
               default: ocean
               nullable: false
@@ -47184,6 +47169,8 @@ components:
           nullable: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
       additionalProperties: false
       required:
         - display_name
@@ -47223,6 +47210,8 @@ components:
           nullable: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
       additionalProperties: false
       required:
         - display_name
@@ -47258,6 +47247,8 @@ components:
           nullable: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
         id:
           $ref: '#/components/schemas/UUID'
         min_runtime_version:
@@ -52578,6 +52569,47 @@ components:
           - has(principal.metadata.tier) && principal.metadata.tier == 'partner'
         deny_when:
           - has(principal.metadata.role) && principal.metadata.role != 'admin'
+    AIGatewayMCPServerACLs:
+      description: 'Access control rules for MCP resources. Configure exactly one of `allow`, `deny`, `allow_when`, or `deny_when`.'
+      type: object
+      properties:
+        allow:
+          description: List of consumer groups that are permitted access.
+          type: array
+          items:
+            type: string
+          x-speakeasy-param-computed: true
+        deny:
+          description: List of consumer groups that are denied access.
+          type: array
+          items:
+            type: string
+          x-speakeasy-param-computed: true
+        allow_when:
+          description: Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            x-expression:
+              type: boolean
+          nullable: true
+          x-min-runtime-version: '2.3'
+          x-speakeasy-param-computed: false
+        deny_when:
+          description: Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            x-expression:
+              type: boolean
+          nullable: true
+          x-min-runtime-version: '2.3'
+          x-speakeasy-param-computed: false
+      additionalProperties: false
     AIGatewayPolicyReferences:
       description: List of policy references.
       type: array
@@ -54783,6 +54815,16 @@ components:
           nullable: true
           x-min-runtime-version: '2.1'
           x-speakeasy-param-computed: false
+        expressions:
+          description: |-
+            Policy config expressions
+
+            **Requires a minimum runtime version of `2.3`**.
+          type: object
+          additionalProperties: true
+          nullable: true
+          x-min-runtime-version: '2.3'
+          x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
@@ -54854,6 +54896,16 @@ components:
           nullable: true
           x-min-runtime-version: '2.1'
           x-speakeasy-param-computed: false
+        expressions:
+          description: |-
+            Policy config expressions
+
+            **Requires a minimum runtime version of `2.3`**.
+          type: object
+          additionalProperties: true
+          nullable: true
+          x-min-runtime-version: '2.3'
+          x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
@@ -54924,6 +54976,16 @@ components:
           maxLength: 1024
           nullable: true
           x-min-runtime-version: '2.1'
+          x-speakeasy-param-computed: false
+        expressions:
+          description: |-
+            Policy config expressions
+
+            **Requires a minimum runtime version of `2.3`**.
+          type: object
+          additionalProperties: true
+          nullable: true
+          x-min-runtime-version: '2.3'
           x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/PublicLabels'
@@ -56516,7 +56578,7 @@ components:
             operation (`initialize`, `tools/list`, `tools/call`) is allowed, and before any tool-level
             `default_tool_acls` or per-tool `access.acls` check is evaluated.
           allOf:
-            - $ref: '#/components/schemas/AIGatewayMCPACLs'
+            - $ref: '#/components/schemas/AIGatewayMCPServerACLs'
         default_tool_acls:
           description: |
             Default per-tool access control rules for allowing or denying consumer groups access to
@@ -56578,7 +56640,7 @@ components:
             `tools/call`) is allowed, and before any tool-level `default_tool_acls` or per-tool
             `access.acls` check is evaluated.
           allOf:
-            - $ref: '#/components/schemas/AIGatewayMCPACLs'
+            - $ref: '#/components/schemas/AIGatewayMCPServerACLs'
         default_tool_acls:
           description: |
             Default per-tool access control rules for allowing or denying callers access to tools,
@@ -56789,19 +56851,36 @@ components:
       additionalProperties: false
       title: AIGatewayTokenVaultCredentialPlacement
       x-terraform-no-default-null: true
-    AIGatewayTokenVaultCredentialManager:
+    AIGatewayTokenVaultEnrollmentProtection:
       description: |-
-        Serves the self-service enrollment UI through which end users authorize the upstream providers
-        this auth strategy authenticates against. Omit `token_vault` entirely to serve no such UI.
+        Enables enrollment protection for the Token Vault datastore linked to this auth strategy.
+        Users of the linked Token Vault will need to authenticate using this OIDC auth strategy
+        before completing enrollment with upstream providers. Enrollment links always store upstream
+        credentials in the Token Vault belonging to the principal who requested the link. Enrollment
+        protection ensures that other principals cannot use an enrollment link to unknowingly
+        authorize the storage of their upstream credentials in another principal's Token Vault.
 
-        Requires a `token-vault` Datastore reference in `datastores`; enabling the credential manager
+        Note that the auth strategy used to protect upstream resources such as MCP servers need not
+        be the same auth strategy used for enrollment protection. Omit `token_vault` entirely to
+        enforce no such enrollment protection.
+
+        Requires a `token-vault` Datastore reference in `datastores`; enabling enrollment protection
         without one is rejected.
 
         **Requires a minimum runtime version of `2.3`**.
       type: object
       properties:
         enable_credential_manager:
-          description: Whether the self-service enrollment UI is served for this auth strategy.
+          description: |
+            Enables the self-service credential manager UI through which end users authorize
+            upstream providers for Token Vault datastore linked to this auth strategy. This OIDC
+            auth strategy is used to authenticate access to the self-service UI, but need not
+            necessarily be the same auth strategy that is used to authenticate access to upstream
+            Token Vault providers.
+
+            Requires a `token-vault` Datastore reference in `datastores`; enabling the credential
+            manager without one is rejected. The credential manager cannot be used without
+            enrollment protection.
           type: boolean
           default: false
         storage:
@@ -56814,7 +56893,7 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
-      title: AIGatewayTokenVaultCredentialManager
+      title: AIGatewayTokenVaultEnrollmentProtection
       x-min-runtime-version: '2.3'
       x-speakeasy-param-computed: false
     AIGatewayRedisAWSAuthentication:
@@ -58601,7 +58680,7 @@ components:
           type: string
           const: openid-connect
         token_vault:
-          $ref: '#/components/schemas/AIGatewayTokenVaultCredentialManager'
+          $ref: '#/components/schemas/AIGatewayTokenVaultEnrollmentProtection'
         config:
           $ref: '#/components/schemas/AIGWOpenIDConnectGeneratedConfig'
       required:
@@ -60252,7 +60331,7 @@ components:
           type: string
           const: openid-connect
         token_vault:
-          $ref: '#/components/schemas/AIGatewayTokenVaultCredentialManager'
+          $ref: '#/components/schemas/AIGatewayTokenVaultEnrollmentProtection'
         config:
           $ref: '#/components/schemas/AIGWOpenIDConnectGeneratedConfig'
         id:
@@ -60426,7 +60505,6 @@ components:
         - title
         - instance
         - detail
-      title: Error
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
