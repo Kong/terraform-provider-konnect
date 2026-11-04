@@ -161,6 +161,10 @@ func (p *KonnectProvider) Actions(_ context.Context) []func() action.Action {
 
 func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
+		NewAICostBudgetResource,
+		NewAICostBudgetNotificationRuleResource,
+		NewAICostExportScheduleResource,
+		NewAICostNotificationChannelResource,
 		NewAIGatewayResource,
 		NewAIGatewayAgentResource,
 		NewAIGatewayAuthStrategyResource,

@@ -66,6 +66,12 @@ type Konnect struct {
 	// Konnect IP inventory
 	PlatformIPs             *PlatformIPs
 	ServerlessCloudGateways *ServerlessCloudGateways
+	// Budgets set spending limits, or exemptions from them, for parts of the organization's usage. These operations manage budgets and their notification rules, and read balances, firings, and notification events.
+	Budgets *Budgets
+	// Exports copy the organization's cost and usage data into files to download. These operations manage one-time exports and export schedules, and download the files.
+	Exports *Exports
+	// Notification channels are the email recipient lists and Slack incoming webhooks that budget alerts go to. These operations manage the channels and send test messages.
+	NotificationChannels *NotificationChannels
 	// API related to the management of Konnect AI Gateway resources.
 	AIGateways *AIGateways
 	// AI Agents registered with the AI Gateway.
@@ -506,10 +512,10 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		SDKVersion: "3.27.0",
+		SDKVersion: "3.28.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:         "speakeasy-sdk/terraform 3.27.0 2.952.5 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
-			SDKVersion:        "3.27.0",
+			UserAgent:         "speakeasy-sdk/terraform 3.28.0 2.952.5 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
+			SDKVersion:        "3.28.0",
 			GenVersion:        "2.952.5",
 			OpenAPIDocVersion: "2.0.0",
 			ServerList:        ServerList,
@@ -535,6 +541,9 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.PlatformRegions = newPlatformRegions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PlatformIPs = newPlatformIPs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Budgets = newBudgets(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Exports = newExports(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.NotificationChannels = newNotificationChannels(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGateways = newAIGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayAgents = newAIGatewayAgents(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayAuthStrategies = newAIGatewayAuthStrategies(sdk, sdk.sdkConfiguration, sdk.hooks)

@@ -96,6 +96,7 @@ data "konnect_portal" "my_portal" {
 
 ### Read-Only
 
+- `ai` (Attributes) (see [below for nested schema](#nestedatt--ai))
 - `authentication_enabled` (Boolean) Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.
 - `auto_approve_applications` (Boolean) Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.
 - `auto_approve_developers` (Boolean) Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.
@@ -225,3 +226,37 @@ Optional:
 - `neq` (String) The field does not match the provided value.
 - `ocontains` (String) The field contains any of the provided values.
 - `oeq` (String) The field matches any of the provided values.
+
+
+
+<a id="nestedatt--ai"></a>
+### Nested Schema for `ai`
+
+Read-Only:
+
+- `enabled` (Boolean) Is AI enabled?
+- `features` (Attributes) AI features configuration. When top-level `enabled` is false, every feature toggle here is automatically reset to false. (see [below for nested schema](#nestedatt--ai--features))
+
+<a id="nestedatt--ai--features"></a>
+### Nested Schema for `ai.features`
+
+Read-Only:
+
+- `ai_search` (Attributes) AI Search config (see [below for nested schema](#nestedatt--ai--features--ai_search))
+- `mcp_server` (Attributes) AI Features config (see [below for nested schema](#nestedatt--ai--features--mcp_server))
+
+<a id="nestedatt--ai--features--ai_search"></a>
+### Nested Schema for `ai.features.ai_search`
+
+Read-Only:
+
+- `enabled` (Boolean) Whether AI Search is enabled or not
+
+
+<a id="nestedatt--ai--features--mcp_server"></a>
+### Nested Schema for `ai.features.mcp_server`
+
+Read-Only:
+
+- `enabled` (Boolean) Whether the MCP Server is enabled or not
+- `write_operations_enabled` (Boolean) Whether write operations are enabled or not for the Portal MCP Server enabled

@@ -3,6 +3,6 @@
 package types
 
 type SolaceLogPluginConfig struct {
-	Message *Message                    `tfsdk:"message"`
+	Message *SolaceLogPluginMessage     `tfsdk:"message"`
 	Session *SolaceConsumePluginSession `tfsdk:"session"`
 }

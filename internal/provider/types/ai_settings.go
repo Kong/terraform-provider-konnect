@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type SchemaRegistryReference struct {
-	ID types.String `tfsdk:"id"`
+type AISettings struct {
+	Enabled  types.Bool          `tfsdk:"enabled"`
+	Features *AISettingsFeatures `tfsdk:"features"`
 }

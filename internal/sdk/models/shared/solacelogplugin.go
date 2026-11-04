@@ -198,8 +198,8 @@ func (s *SolaceLogPluginDestinations) GetType() *SolaceLogPluginType {
 	return s.Type
 }
 
-// Message - The log message related configuration.
-type Message struct {
+// SolaceLogPluginMessage - The log message related configuration.
+type SolaceLogPluginMessage struct {
 	// When using a non-DIRECT guaranteed delivery mode, this property sets the log message acknowledgement timeout (waiting time).
 	AckTimeout *int64 `default:"2000" json:"ack_timeout"`
 	// A key-value map that dynamically modifies log fields using Lua code.
@@ -222,85 +222,85 @@ type Message struct {
 	TTL *int64 `default:"0" json:"ttl"`
 }
 
-func (m Message) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(m, "", false)
+func (s SolaceLogPluginMessage) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
 }
 
-func (m *Message) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"destinations"}); err != nil {
+func (s *SolaceLogPluginMessage) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"destinations"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *Message) GetAckTimeout() *int64 {
-	if m == nil {
+func (s *SolaceLogPluginMessage) GetAckTimeout() *int64 {
+	if s == nil {
 		return nil
 	}
-	return m.AckTimeout
+	return s.AckTimeout
 }
 
-func (m *Message) GetCustomFieldsByLua() map[string]string {
-	if m == nil {
+func (s *SolaceLogPluginMessage) GetCustomFieldsByLua() map[string]string {
+	if s == nil {
 		return nil
 	}
-	return m.CustomFieldsByLua
+	return s.CustomFieldsByLua
 }
 
-func (m *Message) GetDeliveryMode() *DeliveryMode {
-	if m == nil {
+func (s *SolaceLogPluginMessage) GetDeliveryMode() *DeliveryMode {
+	if s == nil {
 		return nil
 	}
-	return m.DeliveryMode
+	return s.DeliveryMode
 }
 
-func (m *Message) GetDestinations() []SolaceLogPluginDestinations {
-	if m == nil {
+func (s *SolaceLogPluginMessage) GetDestinations() []SolaceLogPluginDestinations {
+	if s == nil {
 		return []SolaceLogPluginDestinations{}
 	}
-	return m.Destinations
+	return s.Destinations
 }
 
-func (m *Message) GetDmqEligible() *bool {
-	if m == nil {
+func (s *SolaceLogPluginMessage) GetDmqEligible() *bool {
+	if s == nil {
 		return nil
 	}
-	return m.DmqEligible
+	return s.DmqEligible
 }
 
-func (m *Message) GetPriority() *int64 {
-	if m == nil {
+func (s *SolaceLogPluginMessage) GetPriority() *int64 {
+	if s == nil {
 		return nil
 	}
-	return m.Priority
+	return s.Priority
 }
 
-func (m *Message) GetSenderID() *string {
-	if m == nil {
+func (s *SolaceLogPluginMessage) GetSenderID() *string {
+	if s == nil {
 		return nil
 	}
-	return m.SenderID
+	return s.SenderID
 }
 
-func (m *Message) GetTracing() *bool {
-	if m == nil {
+func (s *SolaceLogPluginMessage) GetTracing() *bool {
+	if s == nil {
 		return nil
 	}
-	return m.Tracing
+	return s.Tracing
 }
 
-func (m *Message) GetTracingSampled() *bool {
-	if m == nil {
+func (s *SolaceLogPluginMessage) GetTracingSampled() *bool {
+	if s == nil {
 		return nil
 	}
-	return m.TracingSampled
+	return s.TracingSampled
 }
 
-func (m *Message) GetTTL() *int64 {
-	if m == nil {
+func (s *SolaceLogPluginMessage) GetTTL() *int64 {
+	if s == nil {
 		return nil
 	}
-	return m.TTL
+	return s.TTL
 }
 
 // SolaceLogPluginClientCredentials - Client credentials used to automatically obtain and renew OAuth2 access tokens from an IdP for the `CLIENT_CREDENTIALS` authentication scheme. When set, Kong fetches tokens from `token_endpoint` using `client_id` and `client_secret`, caches them until expiry, and retries with a fresh token whenever Solace returns an unauthenticated response.
@@ -609,7 +609,7 @@ func (s *SolaceLogPluginSession) GetVpnName() *string {
 
 type SolaceLogPluginConfig struct {
 	// The log message related configuration.
-	Message Message `json:"message"`
+	Message SolaceLogPluginMessage `json:"message"`
 	// Session related configuration.
 	Session SolaceLogPluginSession `json:"session"`
 }
@@ -625,9 +625,9 @@ func (s *SolaceLogPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (s *SolaceLogPluginConfig) GetMessage() Message {
+func (s *SolaceLogPluginConfig) GetMessage() SolaceLogPluginMessage {
 	if s == nil {
-		return Message{}
+		return SolaceLogPluginMessage{}
 	}
 	return s.Message
 }

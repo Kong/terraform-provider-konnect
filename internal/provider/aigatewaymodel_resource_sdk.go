@@ -9462,9 +9462,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						} else {
 							verify = nil
 						}
-						version1 := new(shared.Version)
+						version1 := new(shared.AIGatewayModelVectorDBConfigPgVectorVersion)
 						if !r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.IsNull() {
-							*version1 = shared.Version(r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.ValueString())
+							*version1 = shared.AIGatewayModelVectorDBConfigPgVectorVersion(r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.ValueString())
 						} else {
 							version1 = nil
 						}
@@ -14657,9 +14657,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 						} else {
 							verify1 = nil
 						}
-						version3 := new(shared.Version)
+						version3 := new(shared.AIGatewayModelVectorDBConfigPgVectorVersion)
 						if !r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.IsNull() {
-							*version3 = shared.Version(r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.ValueString())
+							*version3 = shared.AIGatewayModelVectorDBConfigPgVectorVersion(r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.ValueString())
 						} else {
 							version3 = nil
 						}
@@ -19849,9 +19849,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						} else {
 							verify = nil
 						}
-						version1 := new(shared.Version)
+						version1 := new(shared.AIGatewayModelVectorDBConfigPgVectorVersion)
 						if !r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.IsUnknown() && !r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.IsNull() {
-							*version1 = shared.Version(r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.ValueString())
+							*version1 = shared.AIGatewayModelVectorDBConfigPgVectorVersion(r.API.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.ValueString())
 						} else {
 							version1 = nil
 						}
@@ -25044,9 +25044,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 						} else {
 							verify1 = nil
 						}
-						version3 := new(shared.Version)
+						version3 := new(shared.AIGatewayModelVectorDBConfigPgVectorVersion)
 						if !r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.IsUnknown() && !r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.IsNull() {
-							*version3 = shared.Version(r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.ValueString())
+							*version3 = shared.AIGatewayModelVectorDBConfigPgVectorVersion(r.Model.Config.Balancer.Semantic.Vectordb.Pgvector.Ssl.Version.ValueString())
 						} else {
 							version3 = nil
 						}
