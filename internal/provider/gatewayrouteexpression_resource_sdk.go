@@ -68,6 +68,9 @@ func (r *GatewayRouteExpressionResourceModel) ToOperationsCreateRouteRouteExpres
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	routeExpression, routeExpressionDiags := r.ToSharedRouteExpression(ctx)
 	diags.Append(routeExpressionDiags...)
 
@@ -77,6 +80,7 @@ func (r *GatewayRouteExpressionResourceModel) ToOperationsCreateRouteRouteExpres
 
 	out := operations.CreateRouteRouteExpressionRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		RouteExpression: *routeExpression,
 	}
 
@@ -92,9 +96,13 @@ func (r *GatewayRouteExpressionResourceModel) ToOperationsDeleteRouteRouteExpres
 	var routeID string
 	routeID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteRouteRouteExpressionRequest{
 		ControlPlaneID: controlPlaneID,
 		RouteID:        routeID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -109,9 +117,13 @@ func (r *GatewayRouteExpressionResourceModel) ToOperationsGetRouteRouteExpressio
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetRouteRouteExpressionRequest{
 		RouteID:        routeID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -126,6 +138,9 @@ func (r *GatewayRouteExpressionResourceModel) ToOperationsUpsertRouteRouteExpres
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	routeExpression, routeExpressionDiags := r.ToSharedRouteExpression(ctx)
 	diags.Append(routeExpressionDiags...)
 
@@ -136,6 +151,7 @@ func (r *GatewayRouteExpressionResourceModel) ToOperationsUpsertRouteRouteExpres
 	out := operations.UpsertRouteRouteExpressionRequest{
 		RouteID:         routeID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		RouteExpression: *routeExpression,
 	}
 

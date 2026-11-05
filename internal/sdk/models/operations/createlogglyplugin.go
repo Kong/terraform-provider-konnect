@@ -10,8 +10,10 @@ import (
 
 type CreateLogglyPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string              `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	LogglyPlugin   shared.LogglyPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace    string              `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	LogglyPlugin shared.LogglyPlugin `request:"mediaType=application/json"`
 }
 
 func (c CreateLogglyPluginRequest) MarshalJSON() ([]byte, error) {
@@ -19,7 +21,7 @@ func (c CreateLogglyPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateLogglyPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "LogglyPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "LogglyPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateLogglyPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateLogglyPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateLogglyPluginRequest) GetLogglyPlugin() shared.LogglyPlugin {

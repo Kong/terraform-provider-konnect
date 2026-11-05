@@ -39,6 +39,9 @@ func (r *GatewayACLResourceModel) ToOperationsCreateACLWithConsumerRequest(ctx c
 	var consumerID string
 	consumerID = r.ConsumerID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aclWithoutParents, aclWithoutParentsDiags := r.ToSharedACLWithoutParents(ctx)
 	diags.Append(aclWithoutParentsDiags...)
 
@@ -49,6 +52,7 @@ func (r *GatewayACLResourceModel) ToOperationsCreateACLWithConsumerRequest(ctx c
 	out := operations.CreateACLWithConsumerRequest{
 		ControlPlaneID:    controlPlaneID,
 		ConsumerID:        consumerID,
+		Workspace:         workspace,
 		ACLWithoutParents: *aclWithoutParents,
 	}
 
@@ -67,10 +71,14 @@ func (r *GatewayACLResourceModel) ToOperationsDeleteACLWithConsumerRequest(ctx c
 	var aclID string
 	aclID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteACLWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		ACLID:          aclID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -88,10 +96,14 @@ func (r *GatewayACLResourceModel) ToOperationsGetACLWithConsumerRequest(ctx cont
 	var aclID string
 	aclID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetACLWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		ACLID:          aclID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags

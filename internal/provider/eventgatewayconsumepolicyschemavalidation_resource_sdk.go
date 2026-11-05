@@ -276,6 +276,115 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) ToSharedEventGa
 			EventGatewayConsumeSchemaValidationPolicyJSONConfig: eventGatewayConsumeSchemaValidationPolicyJSONConfig,
 		}
 	}
+	var eventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig *shared.EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig
+	if r.Config.InlineSchema != nil {
+		failureMode2 := new(shared.ConsumeFailureMode)
+		if !r.Config.InlineSchema.FailureMode.IsUnknown() && !r.Config.InlineSchema.FailureMode.IsNull() {
+			*failureMode2 = shared.ConsumeFailureMode(r.Config.InlineSchema.FailureMode.ValueString())
+		} else {
+			failureMode2 = nil
+		}
+		validateKey2 := new(bool)
+		if !r.Config.InlineSchema.ValidateKey.IsUnknown() && !r.Config.InlineSchema.ValidateKey.IsNull() {
+			*validateKey2 = r.Config.InlineSchema.ValidateKey.ValueBool()
+		} else {
+			validateKey2 = nil
+		}
+		validateValue2 := new(bool)
+		if !r.Config.InlineSchema.ValidateValue.IsUnknown() && !r.Config.InlineSchema.ValidateValue.IsNull() {
+			*validateValue2 = r.Config.InlineSchema.ValidateValue.ValueBool()
+		} else {
+			validateValue2 = nil
+		}
+		keyValidationAction2 := new(shared.ConsumeKeyValidationAction)
+		if !r.Config.InlineSchema.KeyValidationAction.IsUnknown() && !r.Config.InlineSchema.KeyValidationAction.IsNull() {
+			*keyValidationAction2 = shared.ConsumeKeyValidationAction(r.Config.InlineSchema.KeyValidationAction.ValueString())
+		} else {
+			keyValidationAction2 = nil
+		}
+		valueValidationAction2 := new(shared.ConsumeValueValidationAction)
+		if !r.Config.InlineSchema.ValueValidationAction.IsUnknown() && !r.Config.InlineSchema.ValueValidationAction.IsNull() {
+			*valueValidationAction2 = shared.ConsumeValueValidationAction(r.Config.InlineSchema.ValueValidationAction.ValueString())
+		} else {
+			valueValidationAction2 = nil
+		}
+		var key *shared.SchemaValidationInlineSchemaConfig
+		if r.Config.InlineSchema.Key != nil {
+			var schemaValidationInlineSchemaConfigJSON *shared.SchemaValidationInlineSchemaConfigJSON
+			if r.Config.InlineSchema.Key.JSON != nil {
+				var schema string
+				schema = r.Config.InlineSchema.Key.JSON.Schema.ValueString()
+
+				schemaValidationInlineSchemaConfigJSON = &shared.SchemaValidationInlineSchemaConfigJSON{
+					Schema: schema,
+				}
+			}
+			if schemaValidationInlineSchemaConfigJSON != nil {
+				key = &shared.SchemaValidationInlineSchemaConfig{
+					SchemaValidationInlineSchemaConfigJSON: schemaValidationInlineSchemaConfigJSON,
+				}
+			}
+			var schemaValidationInlineSchemaConfigAvro *shared.SchemaValidationInlineSchemaConfigAvro
+			if r.Config.InlineSchema.Key.Avro != nil {
+				var schema1 string
+				schema1 = r.Config.InlineSchema.Key.Avro.Schema.ValueString()
+
+				schemaValidationInlineSchemaConfigAvro = &shared.SchemaValidationInlineSchemaConfigAvro{
+					Schema: schema1,
+				}
+			}
+			if schemaValidationInlineSchemaConfigAvro != nil {
+				key = &shared.SchemaValidationInlineSchemaConfig{
+					SchemaValidationInlineSchemaConfigAvro: schemaValidationInlineSchemaConfigAvro,
+				}
+			}
+		}
+		var value *shared.SchemaValidationInlineSchemaConfig
+		if r.Config.InlineSchema.Value != nil {
+			var schemaValidationInlineSchemaConfigJson1 *shared.SchemaValidationInlineSchemaConfigJSON
+			if r.Config.InlineSchema.Value.JSON != nil {
+				var schema2 string
+				schema2 = r.Config.InlineSchema.Value.JSON.Schema.ValueString()
+
+				schemaValidationInlineSchemaConfigJson1 = &shared.SchemaValidationInlineSchemaConfigJSON{
+					Schema: schema2,
+				}
+			}
+			if schemaValidationInlineSchemaConfigJson1 != nil {
+				value = &shared.SchemaValidationInlineSchemaConfig{
+					SchemaValidationInlineSchemaConfigJSON: schemaValidationInlineSchemaConfigJson1,
+				}
+			}
+			var schemaValidationInlineSchemaConfigAvro1 *shared.SchemaValidationInlineSchemaConfigAvro
+			if r.Config.InlineSchema.Value.Avro != nil {
+				var schema3 string
+				schema3 = r.Config.InlineSchema.Value.Avro.Schema.ValueString()
+
+				schemaValidationInlineSchemaConfigAvro1 = &shared.SchemaValidationInlineSchemaConfigAvro{
+					Schema: schema3,
+				}
+			}
+			if schemaValidationInlineSchemaConfigAvro1 != nil {
+				value = &shared.SchemaValidationInlineSchemaConfig{
+					SchemaValidationInlineSchemaConfigAvro: schemaValidationInlineSchemaConfigAvro1,
+				}
+			}
+		}
+		eventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig = &shared.EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig{
+			FailureMode:           failureMode2,
+			ValidateKey:           validateKey2,
+			ValidateValue:         validateValue2,
+			KeyValidationAction:   keyValidationAction2,
+			ValueValidationAction: valueValidationAction2,
+			Key:                   key,
+			Value:                 value,
+		}
+	}
+	if eventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig != nil {
+		config = shared.EventGatewayConsumeSchemaValidationPolicyConfig{
+			EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig: eventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig,
+		}
+	}
 	condition := new(string)
 	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
 		*condition = r.Condition.ValueString()

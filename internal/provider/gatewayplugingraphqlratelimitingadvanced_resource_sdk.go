@@ -108,10 +108,10 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 			}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 			if resp.Config.Redis.ClusterNodes != nil {
-				r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+				r.Config.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 				for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-					var clusterNodes tfTypes.ClusterNodes
+					var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -133,10 +133,10 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
 			if resp.Config.Redis.SentinelNodes != nil {
-				r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+				r.Config.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 				for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-					var sentinelNodes tfTypes.SentinelNodes
+					var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -258,6 +258,9 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsCrea
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	graphqlRateLimitingAdvancedPlugin, graphqlRateLimitingAdvancedPluginDiags := r.ToSharedGraphqlRateLimitingAdvancedPlugin(ctx)
 	diags.Append(graphqlRateLimitingAdvancedPluginDiags...)
 
@@ -267,6 +270,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsCrea
 
 	out := operations.CreateGraphqlratelimitingadvancedPluginRequest{
 		ControlPlaneID:                    controlPlaneID,
+		Workspace:                         workspace,
 		GraphqlRateLimitingAdvancedPlugin: *graphqlRateLimitingAdvancedPlugin,
 	}
 
@@ -282,9 +286,13 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsDele
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteGraphqlratelimitingadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -299,9 +307,13 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsGetG
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetGraphqlratelimitingadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -316,6 +328,9 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsUpda
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	graphqlRateLimitingAdvancedPlugin, graphqlRateLimitingAdvancedPluginDiags := r.ToSharedGraphqlRateLimitingAdvancedPlugin(ctx)
 	diags.Append(graphqlRateLimitingAdvancedPluginDiags...)
 
@@ -326,6 +341,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsUpda
 	out := operations.UpdateGraphqlratelimitingadvancedPluginRequest{
 		PluginID:                          pluginID,
 		ControlPlaneID:                    controlPlaneID,
+		Workspace:                         workspace,
 		GraphqlRateLimitingAdvancedPlugin: *graphqlRateLimitingAdvancedPlugin,
 	}
 

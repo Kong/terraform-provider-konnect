@@ -125,6 +125,9 @@ func (r *GatewayPluginJwtResourceModel) ToOperationsCreateJwtPluginRequest(ctx c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	jwtPlugin, jwtPluginDiags := r.ToSharedJwtPlugin(ctx)
 	diags.Append(jwtPluginDiags...)
 
@@ -134,6 +137,7 @@ func (r *GatewayPluginJwtResourceModel) ToOperationsCreateJwtPluginRequest(ctx c
 
 	out := operations.CreateJwtPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		JwtPlugin:      *jwtPlugin,
 	}
 
@@ -149,9 +153,13 @@ func (r *GatewayPluginJwtResourceModel) ToOperationsDeleteJwtPluginRequest(ctx c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteJwtPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -166,9 +174,13 @@ func (r *GatewayPluginJwtResourceModel) ToOperationsGetJwtPluginRequest(ctx cont
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetJwtPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -183,6 +195,9 @@ func (r *GatewayPluginJwtResourceModel) ToOperationsUpdateJwtPluginRequest(ctx c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	jwtPlugin, jwtPluginDiags := r.ToSharedJwtPlugin(ctx)
 	diags.Append(jwtPluginDiags...)
 
@@ -193,6 +208,7 @@ func (r *GatewayPluginJwtResourceModel) ToOperationsUpdateJwtPluginRequest(ctx c
 	out := operations.UpdateJwtPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		JwtPlugin:      *jwtPlugin,
 	}
 

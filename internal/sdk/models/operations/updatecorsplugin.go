@@ -12,8 +12,10 @@ type UpdateCorsPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CorsPlugin     shared.CorsPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace  string            `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	CorsPlugin shared.CorsPlugin `request:"mediaType=application/json"`
 }
 
 func (u UpdateCorsPluginRequest) MarshalJSON() ([]byte, error) {
@@ -21,7 +23,7 @@ func (u UpdateCorsPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateCorsPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "CorsPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "workspace", "CorsPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -39,6 +41,13 @@ func (u *UpdateCorsPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return u.ControlPlaneID
+}
+
+func (u *UpdateCorsPluginRequest) GetWorkspace() string {
+	if u == nil {
+		return ""
+	}
+	return u.Workspace
 }
 
 func (u *UpdateCorsPluginRequest) GetCorsPlugin() shared.CorsPlugin {

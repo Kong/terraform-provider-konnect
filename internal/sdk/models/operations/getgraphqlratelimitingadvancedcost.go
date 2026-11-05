@@ -13,6 +13,8 @@ type GetGraphqlRateLimitingAdvancedCostRequest struct {
 	GraphQLCostDecorationID string `pathParam:"style=simple,explode=false,name=GraphQLCostDecorationId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (g GetGraphqlRateLimitingAdvancedCostRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (g GetGraphqlRateLimitingAdvancedCostRequest) MarshalJSON() ([]byte, error)
 }
 
 func (g *GetGraphqlRateLimitingAdvancedCostRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"GraphQLCostDecorationId", "controlPlaneId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"GraphQLCostDecorationId", "controlPlaneId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,6 +40,13 @@ func (g *GetGraphqlRateLimitingAdvancedCostRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return g.ControlPlaneID
+}
+
+func (g *GetGraphqlRateLimitingAdvancedCostRequest) GetWorkspace() string {
+	if g == nil {
+		return ""
+	}
+	return g.Workspace
 }
 
 type GetGraphqlRateLimitingAdvancedCostResponse struct {

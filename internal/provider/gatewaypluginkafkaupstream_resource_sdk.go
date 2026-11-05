@@ -67,10 +67,10 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstream
 			r.Config.Authentication.User = types.StringPointerValue(resp.Config.Authentication.User)
 		}
 		if resp.Config.BootstrapServers != nil {
-			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
+			r.Config.BootstrapServers = []tfTypes.SentinelNodes{}
 
 			for _, bootstrapServersItem := range resp.Config.BootstrapServers {
-				var bootstrapServers tfTypes.BootstrapServers
+				var bootstrapServers tfTypes.SentinelNodes
 
 				bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
 				bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
@@ -361,6 +361,9 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsCreateKafkaupstrea
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	kafkaUpstreamPlugin, kafkaUpstreamPluginDiags := r.ToSharedKafkaUpstreamPlugin(ctx)
 	diags.Append(kafkaUpstreamPluginDiags...)
 
@@ -370,6 +373,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsCreateKafkaupstrea
 
 	out := operations.CreateKafkaupstreamPluginRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		KafkaUpstreamPlugin: *kafkaUpstreamPlugin,
 	}
 
@@ -385,9 +389,13 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsDeleteKafkaupstrea
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteKafkaupstreamPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -402,9 +410,13 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsGetKafkaupstreamPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetKafkaupstreamPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -419,6 +431,9 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsUpdateKafkaupstrea
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	kafkaUpstreamPlugin, kafkaUpstreamPluginDiags := r.ToSharedKafkaUpstreamPlugin(ctx)
 	diags.Append(kafkaUpstreamPluginDiags...)
 
@@ -429,6 +444,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsUpdateKafkaupstrea
 	out := operations.UpdateKafkaupstreamPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		KafkaUpstreamPlugin: *kafkaUpstreamPlugin,
 	}
 

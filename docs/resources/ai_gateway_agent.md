@@ -37,6 +37,12 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
     ]
   }
   config = {
+    ca_certificates = [
+      "my-ca-certificate"
+    ]
+    certificates = [
+      "my-certificate"
+    ]
     logging = {
       max_payload_size = 524288
       payloads         = false
@@ -157,6 +163,24 @@ This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${pa
 
 Optional:
 
+- `ca_certificates` (List of String) CA certificates used to verify the TLS certificate of the upstream agent endpoint,
+referenced by name. Each entry must be the `name` of an existing AI CA Certificate on the
+same AI Gateway.
+
+The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
+generated for this Agent, which proxies requests to `config.url`.
+
+If unset, the default trust store is used to verify the upstream's TLS certificate.
+- `certificates` (List of String) Client certificates used for mutual TLS (mTLS) authentication with the upstream agent
+endpoint, referenced by name. Each entry must be the `name` of an existing AI Certificate
+on the same AI Gateway.
+
+The certificates are applied to the Kong Gateway Service generated for this Agent, which
+proxies requests to `config.url`. The generated Service presents a single client
+certificate (`client_certificate`) during the TLS handshake with the upstream, so at most
+one certificate may be configured.
+
+If unset, no client certificate is presented to the upstream.
 - `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
 - `proxy` (Attributes) HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider. (see [below for nested schema](#nestedatt--config--proxy))

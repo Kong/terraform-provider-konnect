@@ -128,6 +128,9 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsCreateHeadercerta
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	headerCertAuthPlugin, headerCertAuthPluginDiags := r.ToSharedHeaderCertAuthPlugin(ctx)
 	diags.Append(headerCertAuthPluginDiags...)
 
@@ -137,6 +140,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsCreateHeadercerta
 
 	out := operations.CreateHeadercertauthPluginRequest{
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		HeaderCertAuthPlugin: *headerCertAuthPlugin,
 	}
 
@@ -152,9 +156,13 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsDeleteHeadercerta
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteHeadercertauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -169,9 +177,13 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsGetHeadercertauth
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetHeadercertauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -186,6 +198,9 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsUpdateHeadercerta
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	headerCertAuthPlugin, headerCertAuthPluginDiags := r.ToSharedHeaderCertAuthPlugin(ctx)
 	diags.Append(headerCertAuthPluginDiags...)
 
@@ -196,6 +211,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsUpdateHeadercerta
 	out := operations.UpdateHeadercertauthPluginRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		HeaderCertAuthPlugin: *headerCertAuthPlugin,
 	}
 

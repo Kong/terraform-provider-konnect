@@ -109,6 +109,9 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsCreateR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	routeTransformerAdvancedPlugin, routeTransformerAdvancedPluginDiags := r.ToSharedRouteTransformerAdvancedPlugin(ctx)
 	diags.Append(routeTransformerAdvancedPluginDiags...)
 
@@ -118,6 +121,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsCreateR
 
 	out := operations.CreateRoutetransformeradvancedPluginRequest{
 		ControlPlaneID:                 controlPlaneID,
+		Workspace:                      workspace,
 		RouteTransformerAdvancedPlugin: *routeTransformerAdvancedPlugin,
 	}
 
@@ -133,9 +137,13 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsDeleteR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteRoutetransformeradvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -150,9 +158,13 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsGetRout
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetRoutetransformeradvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -167,6 +179,9 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsUpdateR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	routeTransformerAdvancedPlugin, routeTransformerAdvancedPluginDiags := r.ToSharedRouteTransformerAdvancedPlugin(ctx)
 	diags.Append(routeTransformerAdvancedPluginDiags...)
 
@@ -177,6 +192,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsUpdateR
 	out := operations.UpdateRoutetransformeradvancedPluginRequest{
 		PluginID:                       pluginID,
 		ControlPlaneID:                 controlPlaneID,
+		Workspace:                      workspace,
 		RouteTransformerAdvancedPlugin: *routeTransformerAdvancedPlugin,
 	}
 

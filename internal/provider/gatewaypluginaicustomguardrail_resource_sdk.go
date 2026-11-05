@@ -183,6 +183,9 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsCreateAicustom
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiCustomGuardrailPlugin, aiCustomGuardrailPluginDiags := r.ToSharedAiCustomGuardrailPlugin(ctx)
 	diags.Append(aiCustomGuardrailPluginDiags...)
 
@@ -192,6 +195,7 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsCreateAicustom
 
 	out := operations.CreateAicustomguardrailPluginRequest{
 		ControlPlaneID:          controlPlaneID,
+		Workspace:               workspace,
 		AiCustomGuardrailPlugin: *aiCustomGuardrailPlugin,
 	}
 
@@ -207,9 +211,13 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsDeleteAicustom
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAicustomguardrailPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -224,9 +232,13 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsGetAicustomgua
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAicustomguardrailPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -241,6 +253,9 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsUpdateAicustom
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiCustomGuardrailPlugin, aiCustomGuardrailPluginDiags := r.ToSharedAiCustomGuardrailPlugin(ctx)
 	diags.Append(aiCustomGuardrailPluginDiags...)
 
@@ -251,6 +266,7 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsUpdateAicustom
 	out := operations.UpdateAicustomguardrailPluginRequest{
 		PluginID:                pluginID,
 		ControlPlaneID:          controlPlaneID,
+		Workspace:               workspace,
 		AiCustomGuardrailPlugin: *aiCustomGuardrailPlugin,
 	}
 

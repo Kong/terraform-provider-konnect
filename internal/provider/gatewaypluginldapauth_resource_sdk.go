@@ -109,6 +109,9 @@ func (r *GatewayPluginLdapAuthResourceModel) ToOperationsCreateLdapauthPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	ldapAuthPlugin, ldapAuthPluginDiags := r.ToSharedLdapAuthPlugin(ctx)
 	diags.Append(ldapAuthPluginDiags...)
 
@@ -118,6 +121,7 @@ func (r *GatewayPluginLdapAuthResourceModel) ToOperationsCreateLdapauthPluginReq
 
 	out := operations.CreateLdapauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		LdapAuthPlugin: *ldapAuthPlugin,
 	}
 
@@ -133,9 +137,13 @@ func (r *GatewayPluginLdapAuthResourceModel) ToOperationsDeleteLdapauthPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteLdapauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -150,9 +158,13 @@ func (r *GatewayPluginLdapAuthResourceModel) ToOperationsGetLdapauthPluginReques
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetLdapauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -167,6 +179,9 @@ func (r *GatewayPluginLdapAuthResourceModel) ToOperationsUpdateLdapauthPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	ldapAuthPlugin, ldapAuthPluginDiags := r.ToSharedLdapAuthPlugin(ctx)
 	diags.Append(ldapAuthPluginDiags...)
 
@@ -177,6 +192,7 @@ func (r *GatewayPluginLdapAuthResourceModel) ToOperationsUpdateLdapauthPluginReq
 	out := operations.UpdateLdapauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		LdapAuthPlugin: *ldapAuthPlugin,
 	}
 

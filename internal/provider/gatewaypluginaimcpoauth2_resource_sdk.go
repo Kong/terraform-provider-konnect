@@ -273,6 +273,9 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsCreateAimcpoauth2Plu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiMcpOauth2Plugin, aiMcpOauth2PluginDiags := r.ToSharedAiMcpOauth2Plugin(ctx)
 	diags.Append(aiMcpOauth2PluginDiags...)
 
@@ -282,6 +285,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsCreateAimcpoauth2Plu
 
 	out := operations.CreateAimcpoauth2PluginRequest{
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		AiMcpOauth2Plugin: *aiMcpOauth2Plugin,
 	}
 
@@ -297,9 +301,13 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsDeleteAimcpoauth2Plu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAimcpoauth2PluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -314,9 +322,13 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsGetAimcpoauth2Plugin
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAimcpoauth2PluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -331,6 +343,9 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsUpdateAimcpoauth2Plu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiMcpOauth2Plugin, aiMcpOauth2PluginDiags := r.ToSharedAiMcpOauth2Plugin(ctx)
 	diags.Append(aiMcpOauth2PluginDiags...)
 
@@ -341,6 +356,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsUpdateAimcpoauth2Plu
 	out := operations.UpdateAimcpoauth2PluginRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		AiMcpOauth2Plugin: *aiMcpOauth2Plugin,
 	}
 

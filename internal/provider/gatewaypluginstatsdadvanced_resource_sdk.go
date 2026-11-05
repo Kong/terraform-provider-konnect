@@ -183,6 +183,9 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsCreateStatsdadvan
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	statsdAdvancedPlugin, statsdAdvancedPluginDiags := r.ToSharedStatsdAdvancedPlugin(ctx)
 	diags.Append(statsdAdvancedPluginDiags...)
 
@@ -192,6 +195,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsCreateStatsdadvan
 
 	out := operations.CreateStatsdadvancedPluginRequest{
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		StatsdAdvancedPlugin: *statsdAdvancedPlugin,
 	}
 
@@ -207,9 +211,13 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsDeleteStatsdadvan
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteStatsdadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -224,9 +232,13 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsGetStatsdadvanced
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetStatsdadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -241,6 +253,9 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsUpdateStatsdadvan
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	statsdAdvancedPlugin, statsdAdvancedPluginDiags := r.ToSharedStatsdAdvancedPlugin(ctx)
 	diags.Append(statsdAdvancedPluginDiags...)
 
@@ -251,6 +266,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsUpdateStatsdadvan
 	out := operations.UpdateStatsdadvancedPluginRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		StatsdAdvancedPlugin: *statsdAdvancedPlugin,
 	}
 

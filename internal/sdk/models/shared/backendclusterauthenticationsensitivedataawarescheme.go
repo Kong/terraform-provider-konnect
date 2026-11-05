@@ -12,15 +12,17 @@ import (
 type BackendClusterAuthenticationSensitiveDataAwareSchemeType string
 
 const (
-	BackendClusterAuthenticationSensitiveDataAwareSchemeTypeAnonymous BackendClusterAuthenticationSensitiveDataAwareSchemeType = "anonymous"
-	BackendClusterAuthenticationSensitiveDataAwareSchemeTypeSaslPlain BackendClusterAuthenticationSensitiveDataAwareSchemeType = "sasl_plain"
-	BackendClusterAuthenticationSensitiveDataAwareSchemeTypeSaslScram BackendClusterAuthenticationSensitiveDataAwareSchemeType = "sasl_scram"
+	BackendClusterAuthenticationSensitiveDataAwareSchemeTypeAnonymous  BackendClusterAuthenticationSensitiveDataAwareSchemeType = "anonymous"
+	BackendClusterAuthenticationSensitiveDataAwareSchemeTypeSaslPlain  BackendClusterAuthenticationSensitiveDataAwareSchemeType = "sasl_plain"
+	BackendClusterAuthenticationSensitiveDataAwareSchemeTypeSaslScram  BackendClusterAuthenticationSensitiveDataAwareSchemeType = "sasl_scram"
+	BackendClusterAuthenticationSensitiveDataAwareSchemeTypeSaslAwsIam BackendClusterAuthenticationSensitiveDataAwareSchemeType = "sasl_aws_iam"
 )
 
 type BackendClusterAuthenticationSensitiveDataAwareScheme struct {
 	BackendClusterAuthenticationAnonymous                   *BackendClusterAuthenticationAnonymous                   `queryParam:"inline" union:"member"`
 	BackendClusterAuthenticationSaslPlainSensitiveDataAware *BackendClusterAuthenticationSaslPlainSensitiveDataAware `queryParam:"inline" union:"member"`
 	BackendClusterAuthenticationSaslScramSensitiveDataAware *BackendClusterAuthenticationSaslScramSensitiveDataAware `queryParam:"inline" union:"member"`
+	BackendClusterAuthenticationSaslAwsIam                  *BackendClusterAuthenticationSaslAwsIam                  `queryParam:"inline" union:"member"`
 
 	Type BackendClusterAuthenticationSensitiveDataAwareSchemeType
 }
@@ -49,6 +51,15 @@ func CreateBackendClusterAuthenticationSensitiveDataAwareSchemeSaslScram(saslScr
 	return BackendClusterAuthenticationSensitiveDataAwareScheme{
 		BackendClusterAuthenticationSaslScramSensitiveDataAware: &saslScram,
 		Type: typ,
+	}
+}
+
+func CreateBackendClusterAuthenticationSensitiveDataAwareSchemeSaslAwsIam(saslAwsIam BackendClusterAuthenticationSaslAwsIam) BackendClusterAuthenticationSensitiveDataAwareScheme {
+	typ := BackendClusterAuthenticationSensitiveDataAwareSchemeTypeSaslAwsIam
+
+	return BackendClusterAuthenticationSensitiveDataAwareScheme{
+		BackendClusterAuthenticationSaslAwsIam: &saslAwsIam,
+		Type:                                   typ,
 	}
 }
 
@@ -98,6 +109,15 @@ func (u *BackendClusterAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(dat
 		u.BackendClusterAuthenticationSaslScramSensitiveDataAware = backendClusterAuthenticationSaslScramSensitiveDataAware
 		u.Type = BackendClusterAuthenticationSensitiveDataAwareSchemeTypeSaslScram
 		return nil
+	case "sasl_aws_iam":
+		backendClusterAuthenticationSaslAwsIam := new(BackendClusterAuthenticationSaslAwsIam)
+		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationSaslAwsIam, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sasl_aws_iam) type BackendClusterAuthenticationSaslAwsIam within BackendClusterAuthenticationSensitiveDataAwareScheme: %w", string(data), err)
+		}
+
+		u.BackendClusterAuthenticationSaslAwsIam = backendClusterAuthenticationSaslAwsIam
+		u.Type = BackendClusterAuthenticationSensitiveDataAwareSchemeTypeSaslAwsIam
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for BackendClusterAuthenticationSensitiveDataAwareScheme", string(data))
@@ -114,6 +134,10 @@ func (u BackendClusterAuthenticationSensitiveDataAwareScheme) MarshalJSON() ([]b
 
 	if u.BackendClusterAuthenticationSaslScramSensitiveDataAware != nil {
 		return utils.MarshalJSON(u.BackendClusterAuthenticationSaslScramSensitiveDataAware, "", true)
+	}
+
+	if u.BackendClusterAuthenticationSaslAwsIam != nil {
+		return utils.MarshalJSON(u.BackendClusterAuthenticationSaslAwsIam, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type BackendClusterAuthenticationSensitiveDataAwareScheme: all fields are null")

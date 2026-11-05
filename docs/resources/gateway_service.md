@@ -23,15 +23,19 @@ resource "konnect_gateway_service" "my_gatewayservice" {
   connect_timeout  = 60000
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 10
+  description      = "...my_description..."
   enabled          = true
   host             = "...my_host..."
   id               = "...my_id..."
-  name             = "...my_name..."
-  path             = "...my_path..."
-  port             = 80
-  protocol         = "http"
-  read_timeout     = 60000
-  retries          = 5
+  managed_by = {
+    key = "value"
+  }
+  name         = "...my_name..."
+  path         = "...my_path..."
+  port         = 80
+  protocol     = "http"
+  read_timeout = 60000
+  retries      = 5
   tags = [
     "..."
   ]
@@ -46,6 +50,8 @@ resource "konnect_gateway_service" "my_gatewayservice" {
   tls_verify       = true
   tls_verify_depth = 49
   updated_at       = 8
+  url              = "...my_url..."
+  workspace        = "team-payments"
   write_timeout    = 60000
 }
 ```
@@ -56,7 +62,6 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 ### Required
 
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
-- `host` (String) The host of the upstream server. Note that the host value is case sensitive.
 
 ### Optional
 
@@ -64,8 +69,13 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 - `client_certificate` (Attributes) Certificate to be used as client certificate while TLS handshaking to the upstream server. (see [below for nested schema](#nestedatt--client_certificate))
 - `connect_timeout` (Number) The timeout in milliseconds for establishing a connection to the upstream server. Default: 60000
 - `created_at` (Number) Unix epoch when the resource was created.
+- `description` (String) User-defined entity description. Konnect only field, not synced to the Gateway.
 - `enabled` (Boolean) Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`. Default: true
+- `host` (String) The host of the upstream server. Note that the host value is case sensitive.
 - `id` (String) A string representing a UUID (universally unique identifier).
+- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+Keys must be 1–63 characters long and start with an alphanumeric character.
 - `name` (String) The Service name.
 - `path` (String) The path to be used in requests to the upstream server.
 - `port` (Number) The upstream server port. Default: 80
@@ -77,6 +87,8 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 - `tls_verify` (Boolean) Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.
 - `tls_verify_depth` (Number) Maximum depth of chain while verifying Upstream server's TLS certificate. If set to `null`, then the Nginx default is respected.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
+- `url` (String) Helper field to set `protocol`, `host`, `port` and `path` using a URL. This field is write-only and is not returned in responses.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 - `write_timeout` (Number) The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Default: 60000
 
 <a id="nestedatt--client_certificate"></a>
@@ -107,6 +119,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "7fca84d6-7d37-4a74-a7b0-93e576089a41"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -114,5 +127,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_service.my_konnect_gateway_service '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41"}'
+terraform import konnect_gateway_service.my_konnect_gateway_service '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41", "workspace": "team-payments"}'
 ```

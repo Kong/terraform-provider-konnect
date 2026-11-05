@@ -381,21 +381,21 @@ func (c *ClientJwk) GetY() *string {
 	return c.Y
 }
 
-// AuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
-type AuthProvider string
+// AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider string
 
 const (
-	AuthProviderAws   AuthProvider = "aws"
-	AuthProviderAzure AuthProvider = "azure"
-	AuthProviderGcp   AuthProvider = "gcp"
+	AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProviderAws   AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider = "aws"
+	AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProviderAzure AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider = "azure"
+	AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProviderGcp   AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider = "gcp"
 )
 
-func (e AuthProvider) ToPointer() *AuthProvider {
+func (e AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider) ToPointer() *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *AuthProvider) IsExact() bool {
+func (e *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "aws", "azure", "gcp":
@@ -408,7 +408,7 @@ func (e *AuthProvider) IsExact() bool {
 // AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
 type AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication struct {
 	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
-	AuthProvider *AuthProvider `json:"auth_provider,omitempty"`
+	AuthProvider *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider `json:"auth_provider,omitempty"`
 	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
@@ -444,7 +444,7 @@ func (a *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication) U
 	return nil
 }
 
-func (a *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication) GetAuthProvider() *AuthProvider {
+func (a *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication) GetAuthProvider() *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider {
 	if a == nil {
 		return nil
 	}
@@ -528,85 +528,85 @@ func (a *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication) G
 	return a.GcpServiceAccountJSON
 }
 
-type ClusterNodes struct {
+type AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes struct {
 	// A string representing a host name, such as example.com.
 	IP *string `default:"127.0.0.1" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"6379" json:"port"`
 }
 
-func (c ClusterNodes) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (a AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (c *ClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (a *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ClusterNodes) GetIP() *string {
-	if c == nil {
+func (a *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes) GetIP() *string {
+	if a == nil {
 		return nil
 	}
-	return c.IP
+	return a.IP
 }
 
-func (c *ClusterNodes) GetPort() *int64 {
-	if c == nil {
+func (a *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return c.Port
+	return a.Port
 }
 
-type SentinelNodes struct {
+type AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes struct {
 	// A string representing a host name, such as example.com.
 	Host *string `default:"127.0.0.1" json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"6379" json:"port"`
 }
 
-func (s SentinelNodes) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
+func (a AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (s *SentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+func (a *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SentinelNodes) GetHost() *string {
-	if s == nil {
+func (a *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return s.Host
+	return a.Host
 }
 
-func (s *SentinelNodes) GetPort() *int64 {
-	if s == nil {
+func (a *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return s.Port
+	return a.Port
 }
 
-// SentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
-type SentinelRole string
+// AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+type AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole string
 
 const (
-	SentinelRoleAny    SentinelRole = "any"
-	SentinelRoleMaster SentinelRole = "master"
-	SentinelRoleSlave  SentinelRole = "slave"
+	AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRoleAny    AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole = "any"
+	AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRoleMaster AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole = "master"
+	AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRoleSlave  AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole = "slave"
 )
 
-func (e SentinelRole) ToPointer() *SentinelRole {
+func (e AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole) ToPointer() *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *SentinelRole) IsExact() bool {
+func (e *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "any", "master", "slave":
@@ -622,7 +622,7 @@ type ClusterCacheRedis struct {
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []ClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -646,11 +646,11 @@ type ClusterCacheRedis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `json:"sentinel_master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []SentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
-	SentinelRole *SentinelRole `json:"sentinel_role,omitempty"`
+	SentinelRole *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 	SentinelUsername *string `json:"sentinel_username,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
@@ -701,7 +701,7 @@ func (c *ClusterCacheRedis) GetClusterMaxRedirections() *int64 {
 	return c.ClusterMaxRedirections
 }
 
-func (c *ClusterCacheRedis) GetClusterNodes() []ClusterNodes {
+func (c *ClusterCacheRedis) GetClusterNodes() []AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes {
 	if c == nil {
 		return nil
 	}
@@ -785,7 +785,7 @@ func (c *ClusterCacheRedis) GetSentinelMaster() *string {
 	return c.SentinelMaster
 }
 
-func (c *ClusterCacheRedis) GetSentinelNodes() []SentinelNodes {
+func (c *ClusterCacheRedis) GetSentinelNodes() []AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes {
 	if c == nil {
 		return nil
 	}
@@ -799,7 +799,7 @@ func (c *ClusterCacheRedis) GetSentinelPassword() *string {
 	return c.SentinelPassword
 }
 
-func (c *ClusterCacheRedis) GetSentinelRole() *SentinelRole {
+func (c *ClusterCacheRedis) GetSentinelRole() *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole {
 	if c == nil {
 		return nil
 	}
@@ -1197,6 +1197,41 @@ func (e *PasswordParamType) IsExact() bool {
 	return false
 }
 
+// Jit - Token claims to share with the Kong Identity principal lookup. Kong Identity, not this plugin, decides whether the claims are used: a trusted IdP with JIT provisioning enabled in Konnect maps them onto a principal provisioned just in time. By default the lookup only carries the principal claim (e.g. 'sub') and no additional claims are shared.
+//
+// **Requires a minimum runtime version of `2.3`**.
+type Jit struct {
+	// Send the full set of verified token claims with the Kong Identity principal lookup.
+	AllClaims *bool `default:"false" json:"all_claims"`
+	// Send only the named token claims with the Kong Identity principal lookup. The claims are picked from the same source the principal claim is read from. Set all_claims to send every verified claim instead.
+	Claims []string `json:"claims,omitempty"`
+}
+
+func (j Jit) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *Jit) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (j *Jit) GetAllClaims() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.AllClaims
+}
+
+func (j *Jit) GetClaims() []string {
+	if j == nil {
+		return nil
+	}
+	return j.Claims
+}
+
 // AIGWOpenIDConnectGeneratedConfigPrincipals - Configuration for Kong Identity principal hydration after token verification.
 type AIGWOpenIDConnectGeneratedConfigPrincipals struct {
 	// The Kong Identity directory instance to look up against.
@@ -1205,6 +1240,10 @@ type AIGWOpenIDConnectGeneratedConfigPrincipals struct {
 	Enabled *bool `default:"false" json:"enabled"`
 	// When true (default), return 401 if fail to match a Principal in Kong Identity after token verification. When false, the request continues without authenticated_principal set.
 	ErrorOnMiss *bool `default:"true" json:"error_on_miss"`
+	// Token claims to share with the Kong Identity principal lookup. Kong Identity, not this plugin, decides whether the claims are used: a trusted IdP with JIT provisioning enabled in Konnect maps them onto a principal provisioned just in time. By default the lookup only carries the principal claim (e.g. 'sub') and no additional claims are shared.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Jit *Jit `json:"jit,omitempty"`
 	// If a Consumer is attached to the matched Principal in Kong Identity, load it and set it in the request context, overriding consumer_by.
 	MatchConsumer *bool `default:"true" json:"match_consumer"`
 	// If Consumer Groups are attached to the matched Principal in Kong Identity, load them, overriding consumer_groups_claim.
@@ -1245,6 +1284,13 @@ func (a *AIGWOpenIDConnectGeneratedConfigPrincipals) GetErrorOnMiss() *bool {
 		return nil
 	}
 	return a.ErrorOnMiss
+}
+
+func (a *AIGWOpenIDConnectGeneratedConfigPrincipals) GetJit() *Jit {
+	if a == nil {
+		return nil
+	}
+	return a.Jit
 }
 
 func (a *AIGWOpenIDConnectGeneratedConfigPrincipals) GetMatchConsumer() *bool {
@@ -1321,6 +1367,59 @@ func (e *ProofOfPossessionMtls) IsExact() bool {
 		}
 	}
 	return false
+}
+
+// ProtectedResourceMetadata - When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.
+//
+// **Requires a minimum runtime version of `2.3`**.
+type ProtectedResourceMetadata struct {
+	// List of authorization server issuer URIs to advertise in the RFC 9728 metadata document.
+	AuthorizationServers []string `json:"authorization_servers"`
+	// Override the well-known metadata endpoint path. Defaults to the path component of resource with /.well-known/oauth-protected-resource appended.
+	MetadataEndpoint *string `json:"metadata_endpoint,omitempty"`
+	// The URI of the protected resource. Used as the resource field in the RFC 9728 metadata document and to derive the well-known endpoint path.
+	Resource string `json:"resource"`
+	// Scopes supported by this protected resource. Included in the RFC 9728 metadata document and in the scope attribute of WWW-Authenticate challenge headers on 401 responses.
+	ScopesSupported []string `json:"scopes_supported,omitempty"`
+}
+
+func (p ProtectedResourceMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProtectedResourceMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"authorization_servers", "resource"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *ProtectedResourceMetadata) GetAuthorizationServers() []string {
+	if p == nil {
+		return []string{}
+	}
+	return p.AuthorizationServers
+}
+
+func (p *ProtectedResourceMetadata) GetMetadataEndpoint() *string {
+	if p == nil {
+		return nil
+	}
+	return p.MetadataEndpoint
+}
+
+func (p *ProtectedResourceMetadata) GetResource() string {
+	if p == nil {
+		return ""
+	}
+	return p.Resource
+}
+
+func (p *ProtectedResourceMetadata) GetScopesSupported() []string {
+	if p == nil {
+		return nil
+	}
+	return p.ScopesSupported
 }
 
 // PushedAuthorizationRequestEndpointAuthMethod - The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -2063,47 +2162,227 @@ func (e *AIGWOpenIDConnectGeneratedConfigTokenEndpointAuthMethod) IsExact() bool
 	return false
 }
 
-// Cache support for token exchange
-type Cache struct {
+// AIGWOpenIDConnectGeneratedConfigCache - Cache support for token exchange
+type AIGWOpenIDConnectGeneratedConfigCache struct {
 	// Whether to enable caching.
 	Enabled *bool `default:"true" json:"enabled"`
 	// Cache ttl in seconds used when caching exchanged tokens, use it to override `conf.cache_ttl`. Token expiry will be used if shorter than this value.
 	TTL *int64 `json:"ttl,omitempty"`
 }
 
-func (c Cache) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (a AIGWOpenIDConnectGeneratedConfigCache) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (c *Cache) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (a *AIGWOpenIDConnectGeneratedConfigCache) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Cache) GetEnabled() *bool {
-	if c == nil {
+func (a *AIGWOpenIDConnectGeneratedConfigCache) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return c.Enabled
+	return a.Enabled
 }
 
-func (c *Cache) GetTTL() *int64 {
-	if c == nil {
+func (a *AIGWOpenIDConnectGeneratedConfigCache) GetTTL() *int64 {
+	if a == nil {
 		return nil
 	}
-	return c.TTL
+	return a.TTL
+}
+
+// AIGWOpenIDConnectGeneratedConfigGrantType - The token exchange grant. `token_exchange` (default) uses the OAuth 2.0 Token Exchange grant (RFC 8693). `jwt_bearer` uses the JWT Bearer authorization-grant flow (RFC 7523); see `token_exchange.provider` for provider-specific defaults in this mode.
+//
+// **Requires a minimum runtime version of `2.3`**.
+type AIGWOpenIDConnectGeneratedConfigGrantType string
+
+const (
+	AIGWOpenIDConnectGeneratedConfigGrantTypeJwtBearer     AIGWOpenIDConnectGeneratedConfigGrantType = "jwt_bearer"
+	AIGWOpenIDConnectGeneratedConfigGrantTypeTokenExchange AIGWOpenIDConnectGeneratedConfigGrantType = "token_exchange"
+)
+
+func (e AIGWOpenIDConnectGeneratedConfigGrantType) ToPointer() *AIGWOpenIDConnectGeneratedConfigGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGWOpenIDConnectGeneratedConfigGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "jwt_bearer", "token_exchange":
+			return true
+		}
+	}
+	return false
+}
+
+// MapIdentitiesFrom - Which token's claims to use for consumer, consumer group, and principal mapping. Only takes effect when token exchange is configured. `exchanged_tokens` (default) uses the token(s) returned by the exchange or tokens derived from it, as today. `subject_token` uses the original, pre-exchange bearer token's claims instead.
+//
+// **Requires a minimum runtime version of `2.3`**.
+type MapIdentitiesFrom string
+
+const (
+	MapIdentitiesFromExchangedTokens MapIdentitiesFrom = "exchanged_tokens"
+	MapIdentitiesFromSubjectToken    MapIdentitiesFrom = "subject_token"
+)
+
+func (e MapIdentitiesFrom) ToPointer() *MapIdentitiesFrom {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MapIdentitiesFrom) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "exchanged_tokens", "subject_token":
+			return true
+		}
+	}
+	return false
+}
+
+// Provider - Identity provider used with `grant_type = jwt_bearer`; not allowed with `grant_type = token_exchange`. `standard` (default) adds no provider-specific parameter. `microsoft` adds the required `requested_token_use=on_behalf_of`, which is fixed and cannot be overridden via `post_args_names/values`.
+//
+// **Requires a minimum runtime version of `2.3`**.
+type Provider string
+
+const (
+	ProviderMicrosoft Provider = "microsoft"
+	ProviderStandard  Provider = "standard"
+)
+
+func (e Provider) ToPointer() *Provider {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Provider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "microsoft", "standard":
+			return true
+		}
+	}
+	return false
+}
+
+// AIGWOpenIDConnectGeneratedConfigSource - Where to obtain the actor token. `header` reads it from a request header. `config` uses a fixed value. `none` disables actor token support.
+type AIGWOpenIDConnectGeneratedConfigSource string
+
+const (
+	AIGWOpenIDConnectGeneratedConfigSourceConfig AIGWOpenIDConnectGeneratedConfigSource = "config"
+	AIGWOpenIDConnectGeneratedConfigSourceHeader AIGWOpenIDConnectGeneratedConfigSource = "header"
+	AIGWOpenIDConnectGeneratedConfigSourceNone   AIGWOpenIDConnectGeneratedConfigSource = "none"
+)
+
+func (e AIGWOpenIDConnectGeneratedConfigSource) ToPointer() *AIGWOpenIDConnectGeneratedConfigSource {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGWOpenIDConnectGeneratedConfigSource) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "config", "header", "none":
+			return true
+		}
+	}
+	return false
+}
+
+// ActorToken - How to obtain the actor token to include in the token exchange request. Represents the identity of the party acting on behalf of the subject.
+//
+// **Requires a minimum runtime version of `2.3`**.
+type ActorToken struct {
+	// Header name containing the actor token. Required when `source` is `header`.
+	HeaderName *string `json:"header_name,omitempty"`
+	// Where to obtain the actor token. `header` reads it from a request header. `config` uses a fixed value. `none` disables actor token support.
+	Source *AIGWOpenIDConnectGeneratedConfigSource `default:"none" json:"source"`
+	// Static actor token value. Required when `source` is `config`.
+	StaticToken *string `json:"static_token,omitempty"`
+	// The RFC 8693 token type identifier of the actor token (the `actor_token_type` request parameter).
+	Type *string `default:"urn:ietf:params:oauth:token-type:access_token" json:"type"`
+}
+
+func (a ActorToken) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *ActorToken) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *ActorToken) GetHeaderName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.HeaderName
+}
+
+func (a *ActorToken) GetSource() *AIGWOpenIDConnectGeneratedConfigSource {
+	if a == nil {
+		return nil
+	}
+	return a.Source
+}
+
+func (a *ActorToken) GetStaticToken() *string {
+	if a == nil {
+		return nil
+	}
+	return a.StaticToken
+}
+
+func (a *ActorToken) GetType() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Type
 }
 
 // Request - Parameters used in the token exchange request.
 type Request struct {
+	// How to obtain the actor token to include in the token exchange request. Represents the identity of the party acting on behalf of the subject.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	ActorToken *ActorToken `json:"actor_token,omitempty"`
 	// Audiences used in the token exchange request. Values defined here override those defined in `config.audience`.
 	Audience []string `json:"audience,omitempty"`
-	// Use empty audiences. Use this field to override audiences defined in `config.audience`.
+	// Use empty audiences. Use this field to remove audiences defined in `config.audience`.
 	EmptyAudience *bool `default:"false" json:"empty_audience"`
-	// Use empty scopes. Use this field to override scopes defined in `config.scopes`.
+	// Use no extra headers on the token exchange request. Use this field to remove extra headers defined in `config.token_headers_names`.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	EmptyHeaders *bool `default:"false" json:"empty_headers"`
+	// Use no extra POST arguments on the token exchange request. Use this field to remove extra POST arguments defined in `config.token_post_args_names`.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	EmptyPostArgs *bool `default:"false" json:"empty_post_args"`
+	// Use empty scopes. Use this field to remove scopes defined in `config.scopes`.
 	EmptyScopes *bool `default:"false" json:"empty_scopes"`
+	// Extra header names sent only on the token exchange request. Overrides `config.token_headers_names` for this request.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	HeadersNames []string `json:"headers_names,omitempty"`
+	// Values paired by index with `headers_names`.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	HeadersValues []string `json:"headers_values,omitempty"`
+	// Extra POST argument names sent only on the token exchange request. Overrides `config.token_post_args_names` for this request. Use this, not the top-level field, for parameters that must not be attached to the plugin's other token endpoint calls, for example `requested_token_use` for Entra ID's On-Behalf-Of flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	PostArgsNames []string `json:"post_args_names,omitempty"`
+	// Values paired by index with `post_args_names`.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	PostArgsValues []string `json:"post_args_values,omitempty"`
 	// Scopes used in the token exchange request. Values defined here override those defined in `config.scopes`.
 	Scopes []string `json:"scopes,omitempty"`
 }
@@ -2117,6 +2396,13 @@ func (r *Request) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (r *Request) GetActorToken() *ActorToken {
+	if r == nil {
+		return nil
+	}
+	return r.ActorToken
 }
 
 func (r *Request) GetAudience() []string {
@@ -2133,11 +2419,53 @@ func (r *Request) GetEmptyAudience() *bool {
 	return r.EmptyAudience
 }
 
+func (r *Request) GetEmptyHeaders() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.EmptyHeaders
+}
+
+func (r *Request) GetEmptyPostArgs() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.EmptyPostArgs
+}
+
 func (r *Request) GetEmptyScopes() *bool {
 	if r == nil {
 		return nil
 	}
 	return r.EmptyScopes
+}
+
+func (r *Request) GetHeadersNames() []string {
+	if r == nil {
+		return nil
+	}
+	return r.HeadersNames
+}
+
+func (r *Request) GetHeadersValues() []string {
+	if r == nil {
+		return nil
+	}
+	return r.HeadersValues
+}
+
+func (r *Request) GetPostArgsNames() []string {
+	if r == nil {
+		return nil
+	}
+	return r.PostArgsNames
+}
+
+func (r *Request) GetPostArgsValues() []string {
+	if r == nil {
+		return nil
+	}
+	return r.PostArgsValues
 }
 
 func (r *Request) GetScopes() []string {
@@ -2147,12 +2475,16 @@ func (r *Request) GetScopes() []string {
 	return r.Scopes
 }
 
-// Conditions - A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined.
+// Conditions - A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined -- every token from that issuer is exchanged unconditionally, since a foreign-issued token that isn't exchanged can never pass normal verification against the target issuer anyway. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
 type Conditions struct {
-	HasAudience     []string `json:"has_audience,omitempty"`
-	HasScopes       []string `json:"has_scopes,omitempty"`
+	// Audience values that must all be present in the token, matched against `audience_claim`.
+	HasAudience []string `json:"has_audience,omitempty"`
+	// Scope values that must all be present in the token, matched against `scopes_claim`.
+	HasScopes []string `json:"has_scopes,omitempty"`
+	// Audience values that must all be absent from the token, matched against `audience_claim`.
 	MissingAudience []string `json:"missing_audience,omitempty"`
-	MissingScopes   []string `json:"missing_scopes,omitempty"`
+	// Scope values that must all be absent from the token, matched against `scopes_claim`.
+	MissingScopes []string `json:"missing_scopes,omitempty"`
 }
 
 func (c Conditions) MarshalJSON() ([]byte, error) {
@@ -2195,10 +2527,22 @@ func (c *Conditions) GetMissingScopes() []string {
 }
 
 type SubjectTokenIssuers struct {
-	// A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined.
+	// A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined -- every token from that issuer is exchanged unconditionally, since a foreign-issued token that isn't exchanged can never pass normal verification against the target issuer anyway. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
 	Conditions *Conditions `json:"conditions,omitempty"`
+	// When true, a token issued by `issuer` that fails to match `conditions` is denied instead of being passed through unexchanged. Evaluated independently for this item only, with no effect on other `subject_token_issuers` items. Only allowed when this issuer is the target issuer, since `conditions` is required there and foreign-issuer items always match.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	DenyOnMismatch *bool `default:"false" json:"deny_on_mismatch"`
 	// Tokens of whose iss claim matches this value will be exchanged.
 	Issuer string `json:"issuer"`
+	// An explicit JWKS endpoint for this issuer. This field should be left empty when this issuer is the same as the target issuer. It is only used when `verify_signature` is `true`. When set, Kong fetches the signing keys from this URI directly instead of using OIDC Discovery.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	JwksURI *string `json:"jwks_uri,omitempty"`
+	// When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. This field should be left empty or set to `false` when this issuer is the same as the target issuer. Defaults to `false` for backward compatibility.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	VerifySignature *bool `default:"false" json:"verify_signature"`
 }
 
 func (s SubjectTokenIssuers) MarshalJSON() ([]byte, error) {
@@ -2219,6 +2563,13 @@ func (s *SubjectTokenIssuers) GetConditions() *Conditions {
 	return s.Conditions
 }
 
+func (s *SubjectTokenIssuers) GetDenyOnMismatch() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.DenyOnMismatch
+}
+
 func (s *SubjectTokenIssuers) GetIssuer() string {
 	if s == nil {
 		return ""
@@ -2226,10 +2577,36 @@ func (s *SubjectTokenIssuers) GetIssuer() string {
 	return s.Issuer
 }
 
+func (s *SubjectTokenIssuers) GetJwksURI() *string {
+	if s == nil {
+		return nil
+	}
+	return s.JwksURI
+}
+
+func (s *SubjectTokenIssuers) GetVerifySignature() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.VerifySignature
+}
+
 // TokenExchange - Details on how to accept tokens from other identity providers.
 type TokenExchange struct {
 	// Cache support for token exchange
-	Cache *Cache `json:"cache,omitempty"`
+	Cache *AIGWOpenIDConnectGeneratedConfigCache `json:"cache,omitempty"`
+	// The token exchange grant. `token_exchange` (default) uses the OAuth 2.0 Token Exchange grant (RFC 8693). `jwt_bearer` uses the JWT Bearer authorization-grant flow (RFC 7523); see `token_exchange.provider` for provider-specific defaults in this mode.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	GrantType *AIGWOpenIDConnectGeneratedConfigGrantType `default:"token_exchange" json:"grant_type"`
+	// Which token's claims to use for consumer, consumer group, and principal mapping. Only takes effect when token exchange is configured. `exchanged_tokens` (default) uses the token(s) returned by the exchange or tokens derived from it, as today. `subject_token` uses the original, pre-exchange bearer token's claims instead.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	MapIdentitiesFrom *MapIdentitiesFrom `default:"exchanged_tokens" json:"map_identities_from"`
+	// Identity provider used with `grant_type = jwt_bearer`; not allowed with `grant_type = token_exchange`. `standard` (default) adds no provider-specific parameter. `microsoft` adds the required `requested_token_use=on_behalf_of`, which is fixed and cannot be overridden via `post_args_names/values`.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Provider *Provider `default:"standard" json:"provider"`
 	// Parameters used in the token exchange request.
 	Request *Request `json:"request,omitempty"`
 	// Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged.
@@ -2247,11 +2624,32 @@ func (t *TokenExchange) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (t *TokenExchange) GetCache() *Cache {
+func (t *TokenExchange) GetCache() *AIGWOpenIDConnectGeneratedConfigCache {
 	if t == nil {
 		return nil
 	}
 	return t.Cache
+}
+
+func (t *TokenExchange) GetGrantType() *AIGWOpenIDConnectGeneratedConfigGrantType {
+	if t == nil {
+		return nil
+	}
+	return t.GrantType
+}
+
+func (t *TokenExchange) GetMapIdentitiesFrom() *MapIdentitiesFrom {
+	if t == nil {
+		return nil
+	}
+	return t.MapIdentitiesFrom
+}
+
+func (t *TokenExchange) GetProvider() *Provider {
+	if t == nil {
+		return nil
+	}
+	return t.Provider
 }
 
 func (t *TokenExchange) GetRequest() *Request {
@@ -2385,6 +2783,8 @@ type AIGWOpenIDConnectGeneratedConfigOutput struct {
 	// The name of the cookie in which the bearer token is passed.
 	BearerTokenCookieName *string `json:"bearer_token_cookie_name,omitempty"`
 	// The name of the HTTP header from which the bearer token is retrieved. The default value is `authorization:bearer`, which reads the token from the `Authorization: Bearer <token>` header. Accepts plain header names such as `x-my-token` as well as Kong's special `authorization:bearer` notation. The `access-token` and `x-access-token` headers are also checked as a fallback for backward compatibility regardless of this setting.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
 	BearerTokenHeaderName *string `default:"authorization:bearer" json:"bearer_token_header_name"`
 	// Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
 	BearerTokenParamType []BearerTokenParamType `json:"bearer_token_param_type,omitempty"`
@@ -2437,8 +2837,10 @@ type AIGWOpenIDConnectGeneratedConfigOutput struct {
 	ConsumerGroupsOptional *bool `default:"false" json:"consumer_groups_optional"`
 	// Do not terminate the request if consumer mapping fails.
 	ConsumerOptional *bool `default:"false" json:"consumer_optional"`
-	// The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	CredentialClaim []string `json:"credential_claim,omitempty"`
+	// The claims used to derive a virtual credential, for example to be consumed by the rate-limiting plugin, when consumer mapping is not used. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	CredentialClaims [][]string `json:"credential_claims"`
 	// Disable issuing the session cookie with the specified grants.
 	DisableSession []DisableSession `json:"disable_session,omitempty"`
 	// Extra header names passed to the discovery endpoint.
@@ -2603,6 +3005,10 @@ type AIGWOpenIDConnectGeneratedConfigOutput struct {
 	ProofOfPossessionDpop *ProofOfPossessionDpop `default:"off" json:"proof_of_possession_dpop"`
 	// Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
 	ProofOfPossessionMtls *ProofOfPossessionMtls `default:"off" json:"proof_of_possession_mtls"`
+	// When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	ProtectedResourceMetadata *ProtectedResourceMetadata `json:"protected_resource_metadata,omitempty"`
 	// The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
 	PushedAuthorizationRequestEndpoint *string `json:"pushed_authorization_request_endpoint,omitempty"`
 	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -2806,6 +3212,8 @@ type AIGWOpenIDConnectGeneratedConfigOutput struct {
 	VerifyParameters *bool `default:"false" json:"verify_parameters"`
 	// Verify the cryptographic signature of tokens. Disabling this skips verification for every token source, including tokens presented directly by clients (bearer); this is insecure for that path. To trust only tokens fetched from the identity provider for specific grants, use `ignore_signature` instead, which never affects bearer tokens.
 	VerifySignature *bool `default:"true" json:"verify_signature"`
+	// Claim path used to derive virtual credentials when consumer mapping is not used.
+	CredentialClaim []string `json:"credential_claim,omitempty"`
 }
 
 func (a AIGWOpenIDConnectGeneratedConfigOutput) MarshalJSON() ([]byte, error) {
@@ -3134,11 +3542,11 @@ func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetConsumerOptional() *bool {
 	return a.ConsumerOptional
 }
 
-func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetCredentialClaim() []string {
+func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetCredentialClaims() [][]string {
 	if a == nil {
 		return nil
 	}
-	return a.CredentialClaim
+	return a.CredentialClaims
 }
 
 func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetDisableSession() []DisableSession {
@@ -3706,6 +4114,13 @@ func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetProofOfPossessionMtls() *Pro
 		return nil
 	}
 	return a.ProofOfPossessionMtls
+}
+
+func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetProtectedResourceMetadata() *ProtectedResourceMetadata {
+	if a == nil {
+		return nil
+	}
+	return a.ProtectedResourceMetadata
 }
 
 func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetPushedAuthorizationRequestEndpoint() *string {
@@ -4422,6 +4837,13 @@ func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetVerifySignature() *bool {
 	return a.VerifySignature
 }
 
+func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetCredentialClaim() []string {
+	if a == nil {
+		return nil
+	}
+	return a.CredentialClaim
+}
+
 type AIGWOpenIDConnectGeneratedConfig struct {
 	// An optional string (consumer UUID or username) value that functions as an “anonymous” consumer if authentication fails. If empty (default null), requests that fail authentication will return a `4xx` HTTP status code. This value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
 	Anonymous *string `json:"anonymous,omitempty"`
@@ -4460,6 +4882,8 @@ type AIGWOpenIDConnectGeneratedConfig struct {
 	// The name of the cookie in which the bearer token is passed.
 	BearerTokenCookieName *string `json:"bearer_token_cookie_name,omitempty"`
 	// The name of the HTTP header from which the bearer token is retrieved. The default value is `authorization:bearer`, which reads the token from the `Authorization: Bearer <token>` header. Accepts plain header names such as `x-my-token` as well as Kong's special `authorization:bearer` notation. The `access-token` and `x-access-token` headers are also checked as a fallback for backward compatibility regardless of this setting.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
 	BearerTokenHeaderName *string `default:"authorization:bearer" json:"bearer_token_header_name"`
 	// Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
 	BearerTokenParamType []BearerTokenParamType `json:"bearer_token_param_type,omitempty"`
@@ -4514,8 +4938,10 @@ type AIGWOpenIDConnectGeneratedConfig struct {
 	ConsumerGroupsOptional *bool `default:"false" json:"consumer_groups_optional"`
 	// Do not terminate the request if consumer mapping fails.
 	ConsumerOptional *bool `default:"false" json:"consumer_optional"`
-	// The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	CredentialClaim []string `json:"credential_claim,omitempty"`
+	// The claims used to derive a virtual credential, for example to be consumed by the rate-limiting plugin, when consumer mapping is not used. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	CredentialClaims [][]string `json:"credential_claims"`
 	// Disable issuing the session cookie with the specified grants.
 	DisableSession []DisableSession `json:"disable_session,omitempty"`
 	// Extra header names passed to the discovery endpoint.
@@ -4684,6 +5110,10 @@ type AIGWOpenIDConnectGeneratedConfig struct {
 	ProofOfPossessionDpop *ProofOfPossessionDpop `default:"off" json:"proof_of_possession_dpop"`
 	// Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
 	ProofOfPossessionMtls *ProofOfPossessionMtls `default:"off" json:"proof_of_possession_mtls"`
+	// When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	ProtectedResourceMetadata *ProtectedResourceMetadata `json:"protected_resource_metadata,omitempty"`
 	// The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
 	PushedAuthorizationRequestEndpoint *string `json:"pushed_authorization_request_endpoint,omitempty"`
 	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -4887,6 +5317,8 @@ type AIGWOpenIDConnectGeneratedConfig struct {
 	VerifyParameters *bool `default:"false" json:"verify_parameters"`
 	// Verify the cryptographic signature of tokens. Disabling this skips verification for every token source, including tokens presented directly by clients (bearer); this is insecure for that path. To trust only tokens fetched from the identity provider for specific grants, use `ignore_signature` instead, which never affects bearer tokens.
 	VerifySignature *bool `default:"true" json:"verify_signature"`
+	// Claim path used to derive virtual credentials when consumer mapping is not used.
+	CredentialClaim []string `json:"credential_claim,omitempty"`
 }
 
 func (a AIGWOpenIDConnectGeneratedConfig) MarshalJSON() ([]byte, error) {
@@ -5222,11 +5654,11 @@ func (a *AIGWOpenIDConnectGeneratedConfig) GetConsumerOptional() *bool {
 	return a.ConsumerOptional
 }
 
-func (a *AIGWOpenIDConnectGeneratedConfig) GetCredentialClaim() []string {
+func (a *AIGWOpenIDConnectGeneratedConfig) GetCredentialClaims() [][]string {
 	if a == nil {
 		return nil
 	}
-	return a.CredentialClaim
+	return a.CredentialClaims
 }
 
 func (a *AIGWOpenIDConnectGeneratedConfig) GetDisableSession() []DisableSession {
@@ -5808,6 +6240,13 @@ func (a *AIGWOpenIDConnectGeneratedConfig) GetProofOfPossessionMtls() *ProofOfPo
 		return nil
 	}
 	return a.ProofOfPossessionMtls
+}
+
+func (a *AIGWOpenIDConnectGeneratedConfig) GetProtectedResourceMetadata() *ProtectedResourceMetadata {
+	if a == nil {
+		return nil
+	}
+	return a.ProtectedResourceMetadata
 }
 
 func (a *AIGWOpenIDConnectGeneratedConfig) GetPushedAuthorizationRequestEndpoint() *string {
@@ -6522,4 +6961,11 @@ func (a *AIGWOpenIDConnectGeneratedConfig) GetVerifySignature() *bool {
 		return nil
 	}
 	return a.VerifySignature
+}
+
+func (a *AIGWOpenIDConnectGeneratedConfig) GetCredentialClaim() []string {
+	if a == nil {
+		return nil
+	}
+	return a.CredentialClaim
 }

@@ -7,17 +7,22 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -45,6 +50,7 @@ type AIGatewayModelProviderResource struct {
 type AIGatewayModelProviderResourceModel struct {
 	Anthropic   *tfTypes.AIGatewayModelProviderAnthropic `queryParam:"inline" tfsdk:"anthropic"`
 	Azure       *tfTypes.AIGatewayModelProviderAzure     `queryParam:"inline" tfsdk:"azure"`
+	Baseten     *tfTypes.AIGatewayModelProviderAnthropic `queryParam:"inline" tfsdk:"baseten"`
 	Bedrock     *tfTypes.AIGatewayModelProviderBedrock   `queryParam:"inline" tfsdk:"bedrock"`
 	Cerebras    *tfTypes.AIGatewayModelProviderAnthropic `queryParam:"inline" tfsdk:"cerebras"`
 	Cohere      *tfTypes.AIGatewayModelProviderAnthropic `queryParam:"inline" tfsdk:"cohere"`
@@ -178,6 +184,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -222,6 +258,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -234,6 +733,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -428,6 +928,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -472,6 +1002,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -484,6 +1477,661 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
+						path.MatchRelative().AtParent().AtName("baseten"),
+						path.MatchRelative().AtParent().AtName("bedrock"),
+						path.MatchRelative().AtParent().AtName("cerebras"),
+						path.MatchRelative().AtParent().AtName("cohere"),
+						path.MatchRelative().AtParent().AtName("dashscope"),
+						path.MatchRelative().AtParent().AtName("databricks"),
+						path.MatchRelative().AtParent().AtName("deepseek"),
+						path.MatchRelative().AtParent().AtName("gemini"),
+						path.MatchRelative().AtParent().AtName("huggingface"),
+						path.MatchRelative().AtParent().AtName("kimi"),
+						path.MatchRelative().AtParent().AtName("llama2"),
+						path.MatchRelative().AtParent().AtName("mistral"),
+						path.MatchRelative().AtParent().AtName("ollama"),
+						path.MatchRelative().AtParent().AtName("openai"),
+						path.MatchRelative().AtParent().AtName("sagemaker"),
+						path.MatchRelative().AtParent().AtName("typesafe"),
+						path.MatchRelative().AtParent().AtName("vercel"),
+						path.MatchRelative().AtParent().AtName("vllm"),
+						path.MatchRelative().AtParent().AtName("xai"),
+					}...),
+				},
+			},
+			"baseten": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"config": schema.SingleNestedAttribute{
+						Required: true,
+						Attributes: map[string]schema.Attribute{
+							"auth": schema.SingleNestedAttribute{
+								Required: true,
+								Attributes: map[string]schema.Attribute{
+									"headers": schema.ListNestedAttribute{
+										Computed: true,
+										Optional: true,
+										NestedObject: schema.NestedAttributeObject{
+											Validators: []validator.Object{
+												speakeasy_objectvalidators.NotNull(),
+											},
+											Attributes: map[string]schema.Attribute{
+												"name": schema.StringAttribute{
+													Computed: true,
+													Optional: true,
+													MarkdownDescription: `The name of the header used for authentication.` + "\n" +
+														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+														`Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
+												},
+												"value": schema.StringAttribute{
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
+													MarkdownDescription: `The auth header value for ‘header_name’, for example ‘Bearer key...’.` + "\n" +
+														`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+												},
+											},
+										},
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
+									},
+									"params": schema.ListNestedAttribute{
+										Computed: true,
+										Optional: true,
+										NestedObject: schema.NestedAttributeObject{
+											Validators: []validator.Object{
+												speakeasy_objectvalidators.NotNull(),
+											},
+											Attributes: map[string]schema.Attribute{
+												"location": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
+												},
+												"name": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
+												},
+												"value": schema.StringAttribute{
+													Optional: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.UseConfigValue(),
+													},
+													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+												},
+											},
+										},
+										Validators: []validator.List{
+											listvalidator.SizeAtMost(1),
+										},
+									},
+								},
+								Description: `Basic auth config for an upstream model provider.`,
+							},
+						},
+						Description: `Configuration for the model provider.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
+					"display_name": schema.StringAttribute{
+						Required:    true,
+						Description: `The display name for this model provider instance.`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthBetween(1, 256),
+						},
+					},
+					"id": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `Contains a unique identifier used for this resource.`,
+					},
+					"labels": schema.MapAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Public labels store information about an entity that can be used for filtering a list of objects.` + "\n" +
+							`` + "\n" +
+							`Public labels are intended to store **PUBLIC** metadata. ` + "\n" +
+							`` + "\n" +
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+					},
+					"managed_by": schema.MapAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
+							`` + "\n" +
+							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+					},
+					"name": schema.StringAttribute{
+						Required:    true,
+						Description: `A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthBetween(1, 256),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
+						},
+					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Required:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory.`,
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
+					},
+				},
+				Description: `Configuration for an upstream model provider.`,
+				Validators: []validator.Object{
+					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("anthropic"),
+						path.MatchRelative().AtParent().AtName("azure"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -660,6 +2308,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -704,6 +2382,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -717,6 +2858,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
 						path.MatchRelative().AtParent().AtName("dashscope"),
@@ -836,6 +2978,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -880,6 +3052,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -893,6 +3528,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cohere"),
 						path.MatchRelative().AtParent().AtName("dashscope"),
@@ -1012,6 +3648,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -1056,6 +3722,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -1069,6 +4198,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("dashscope"),
@@ -1092,7 +4222,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("typesafe"), FieldPath: path.Root("typesafe").AtName("created_at")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("baseten"), FieldPath: path.Root("baseten").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("typesafe"), FieldPath: path.Root("typesafe").AtName("created_at")}}),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
@@ -1195,6 +4325,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -1239,6 +4399,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -1252,6 +4875,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -1371,6 +4995,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -1415,6 +5069,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -1428,6 +5545,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -1547,6 +5665,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -1591,6 +5739,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -1604,6 +6215,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -1627,7 +6239,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"display_name": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("typesafe"), FieldPath: path.Root("typesafe").AtName("display_name")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("baseten"), FieldPath: path.Root("baseten").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("typesafe"), FieldPath: path.Root("typesafe").AtName("display_name")}}),
 				},
 				Description: `The display name for this model provider instance.`,
 			},
@@ -1847,6 +6459,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -1891,6 +6533,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -1904,6 +7009,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -2023,6 +7129,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -2067,6 +7203,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -2080,6 +7679,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -2103,7 +7703,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("typesafe"), FieldPath: path.Root("typesafe").AtName("id")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("baseten"), FieldPath: path.Root("baseten").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("typesafe"), FieldPath: path.Root("typesafe").AtName("id")}}),
 				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
@@ -2206,6 +7806,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -2250,6 +7880,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -2263,6 +8356,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -2382,6 +8476,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -2426,6 +8550,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -2439,6 +9026,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -2558,6 +9146,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -2602,6 +9220,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -2615,6 +9696,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -2638,7 +9720,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"name": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("typesafe"), FieldPath: path.Root("typesafe").AtName("name")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("baseten"), FieldPath: path.Root("baseten").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("typesafe"), FieldPath: path.Root("typesafe").AtName("name")}}),
 				},
 				Description: `A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.`,
 			},
@@ -2741,6 +9823,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -2785,6 +9897,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -2798,6 +10373,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -2917,6 +10493,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -2961,6 +10567,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -2974,6 +11043,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -3144,6 +11214,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -3188,6 +11288,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -3201,6 +11764,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -3312,6 +11876,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Required:    true,
 						Description: `The display name for this model provider instance.`,
@@ -3352,6 +11946,465 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Required:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory.`,
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -3365,6 +12418,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -3388,7 +12442,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("typesafe"), FieldPath: path.Root("typesafe").AtName("updated_at")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("anthropic"), FieldPath: path.Root("anthropic").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("baseten"), FieldPath: path.Root("baseten").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("bedrock"), FieldPath: path.Root("bedrock").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cerebras"), FieldPath: path.Root("cerebras").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("cohere"), FieldPath: path.Root("cohere").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dashscope"), FieldPath: path.Root("dashscope").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("databricks"), FieldPath: path.Root("databricks").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("deepseek"), FieldPath: path.Root("deepseek").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gemini"), FieldPath: path.Root("gemini").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("huggingface"), FieldPath: path.Root("huggingface").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kimi"), FieldPath: path.Root("kimi").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("llama2"), FieldPath: path.Root("llama2").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("mistral"), FieldPath: path.Root("mistral").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("ollama"), FieldPath: path.Root("ollama").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openai"), FieldPath: path.Root("openai").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vercel"), FieldPath: path.Root("vercel").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("vllm"), FieldPath: path.Root("vllm").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("xai"), FieldPath: path.Root("xai").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("sagemaker"), FieldPath: path.Root("sagemaker").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("typesafe"), FieldPath: path.Root("typesafe").AtName("updated_at")}}),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
@@ -3491,6 +12545,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -3535,6 +12619,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -3548,6 +13095,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -3667,6 +13215,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -3711,6 +13289,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -3724,6 +13765,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),
@@ -3843,6 +13885,36 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -3887,6 +13959,469 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -3900,6 +14435,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),
 						path.MatchRelative().AtParent().AtName("azure"),
+						path.MatchRelative().AtParent().AtName("baseten"),
 						path.MatchRelative().AtParent().AtName("bedrock"),
 						path.MatchRelative().AtParent().AtName("cerebras"),
 						path.MatchRelative().AtParent().AtName("cohere"),

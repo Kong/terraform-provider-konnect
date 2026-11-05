@@ -59,10 +59,10 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 			r.Config.Authentication.User = types.StringPointerValue(resp.Config.Authentication.User)
 		}
 		if resp.Config.BootstrapServers != nil {
-			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
+			r.Config.BootstrapServers = []tfTypes.SentinelNodes{}
 
 			for _, bootstrapServersItem := range resp.Config.BootstrapServers {
-				var bootstrapServers tfTypes.BootstrapServers
+				var bootstrapServers tfTypes.SentinelNodes
 
 				bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
 				bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
@@ -310,6 +310,9 @@ func (r *GatewayPluginKafkaLogResourceModel) ToOperationsCreateKafkalogPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	kafkaLogPlugin, kafkaLogPluginDiags := r.ToSharedKafkaLogPlugin(ctx)
 	diags.Append(kafkaLogPluginDiags...)
 
@@ -319,6 +322,7 @@ func (r *GatewayPluginKafkaLogResourceModel) ToOperationsCreateKafkalogPluginReq
 
 	out := operations.CreateKafkalogPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		KafkaLogPlugin: *kafkaLogPlugin,
 	}
 
@@ -334,9 +338,13 @@ func (r *GatewayPluginKafkaLogResourceModel) ToOperationsDeleteKafkalogPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteKafkalogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -351,9 +359,13 @@ func (r *GatewayPluginKafkaLogResourceModel) ToOperationsGetKafkalogPluginReques
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetKafkalogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -368,6 +380,9 @@ func (r *GatewayPluginKafkaLogResourceModel) ToOperationsUpdateKafkalogPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	kafkaLogPlugin, kafkaLogPluginDiags := r.ToSharedKafkaLogPlugin(ctx)
 	diags.Append(kafkaLogPluginDiags...)
 
@@ -378,6 +393,7 @@ func (r *GatewayPluginKafkaLogResourceModel) ToOperationsUpdateKafkalogPluginReq
 	out := operations.UpdateKafkalogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		KafkaLogPlugin: *kafkaLogPlugin,
 	}
 

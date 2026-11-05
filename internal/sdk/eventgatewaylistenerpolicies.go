@@ -1139,6 +1139,7 @@ func (s *EventGatewayListenerPolicies) UpdateEventGatewayListenerPolicyTLSServer
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "update-event-gateway-listener-policy-tls-server")
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -1936,6 +1937,7 @@ func (s *EventGatewayListenerPolicies) CreateEventGatewayListenerPolicyTLSServer
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "create-event-gateway-listener-policy-tls-server")
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)

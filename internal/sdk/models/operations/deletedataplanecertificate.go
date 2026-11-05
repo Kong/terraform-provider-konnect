@@ -50,7 +50,7 @@ type DeleteDataplaneCertificateResponse struct {
 	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
 	// Forbidden
 	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
-	// Forbidden
+	// Not Found
 	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 }
 

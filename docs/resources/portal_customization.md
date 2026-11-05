@@ -166,7 +166,7 @@ Optional:
 
 - `colors` (Attributes) (see [below for nested schema](#nestedatt--theme--colors))
 - `mode` (String) possible known values include one of ["light", "dark", "system"]
-- `name` (String) The theme name to apply to this portal. Supported names are 'ocean', 'mesa', and 'grove'. If another name is provided or this property is omitted, the portal uses the default 'ocean' theme. Default: "ocean"
+- `name` (String) The theme name to apply to this portal. Supported names are 'mesa', 'grove', 'pebble', or 'ocean'. If another name is provided or this property is omitted, the portal uses the default 'ocean' theme. Default: "ocean"
 
 <a id="nestedatt--theme--colors"></a>
 ### Nested Schema for `theme.colors`

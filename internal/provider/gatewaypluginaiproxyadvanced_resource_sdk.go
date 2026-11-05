@@ -471,10 +471,10 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				}
 				r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
 				if resp.Config.Vectordb.Redis.ClusterNodes != nil {
-					r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+					r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 					for _, clusterNodesItem := range resp.Config.Vectordb.Redis.ClusterNodes {
-						var clusterNodes tfTypes.ClusterNodes
+						var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -496,10 +496,10 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				r.Config.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.SendTimeout)
 				r.Config.Vectordb.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelMaster)
 				if resp.Config.Vectordb.Redis.SentinelNodes != nil {
-					r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+					r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 					for _, sentinelNodesItem := range resp.Config.Vectordb.Redis.SentinelNodes {
-						var sentinelNodes tfTypes.SentinelNodes
+						var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -614,6 +614,9 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsCreateAiproxyadv
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiProxyAdvancedPlugin, aiProxyAdvancedPluginDiags := r.ToSharedAiProxyAdvancedPlugin(ctx)
 	diags.Append(aiProxyAdvancedPluginDiags...)
 
@@ -623,6 +626,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsCreateAiproxyadv
 
 	out := operations.CreateAiproxyadvancedPluginRequest{
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiProxyAdvancedPlugin: *aiProxyAdvancedPlugin,
 	}
 
@@ -638,9 +642,13 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsDeleteAiproxyadv
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAiproxyadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -655,9 +663,13 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsGetAiproxyadvanc
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAiproxyadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -672,6 +684,9 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsUpdateAiproxyadv
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiProxyAdvancedPlugin, aiProxyAdvancedPluginDiags := r.ToSharedAiProxyAdvancedPlugin(ctx)
 	diags.Append(aiProxyAdvancedPluginDiags...)
 
@@ -682,6 +697,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsUpdateAiproxyadv
 	out := operations.UpdateAiproxyadvancedPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiProxyAdvancedPlugin: *aiProxyAdvancedPlugin,
 	}
 

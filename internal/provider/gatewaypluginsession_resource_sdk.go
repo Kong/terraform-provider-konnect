@@ -157,6 +157,9 @@ func (r *GatewayPluginSessionResourceModel) ToOperationsCreateSessionPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	sessionPlugin, sessionPluginDiags := r.ToSharedSessionPlugin(ctx)
 	diags.Append(sessionPluginDiags...)
 
@@ -166,6 +169,7 @@ func (r *GatewayPluginSessionResourceModel) ToOperationsCreateSessionPluginReque
 
 	out := operations.CreateSessionPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		SessionPlugin:  *sessionPlugin,
 	}
 
@@ -181,9 +185,13 @@ func (r *GatewayPluginSessionResourceModel) ToOperationsDeleteSessionPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteSessionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -198,9 +206,13 @@ func (r *GatewayPluginSessionResourceModel) ToOperationsGetSessionPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetSessionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -215,6 +227,9 @@ func (r *GatewayPluginSessionResourceModel) ToOperationsUpdateSessionPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	sessionPlugin, sessionPluginDiags := r.ToSharedSessionPlugin(ctx)
 	diags.Append(sessionPluginDiags...)
 
@@ -225,6 +240,7 @@ func (r *GatewayPluginSessionResourceModel) ToOperationsUpdateSessionPluginReque
 	out := operations.UpdateSessionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		SessionPlugin:  *sessionPlugin,
 	}
 

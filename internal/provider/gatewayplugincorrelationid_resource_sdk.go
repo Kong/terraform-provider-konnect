@@ -112,6 +112,9 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsCreateCorrelationi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	correlationIDPlugin, correlationIDPluginDiags := r.ToSharedCorrelationIDPlugin(ctx)
 	diags.Append(correlationIDPluginDiags...)
 
@@ -121,6 +124,7 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsCreateCorrelationi
 
 	out := operations.CreateCorrelationidPluginRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		CorrelationIDPlugin: *correlationIDPlugin,
 	}
 
@@ -136,9 +140,13 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsDeleteCorrelationi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteCorrelationidPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -153,9 +161,13 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsGetCorrelationidPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetCorrelationidPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -170,6 +182,9 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsUpdateCorrelationi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	correlationIDPlugin, correlationIDPluginDiags := r.ToSharedCorrelationIDPlugin(ctx)
 	diags.Append(correlationIDPluginDiags...)
 
@@ -180,6 +195,7 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsUpdateCorrelationi
 	out := operations.UpdateCorrelationidPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		CorrelationIDPlugin: *correlationIDPlugin,
 	}
 

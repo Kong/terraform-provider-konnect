@@ -10,7 +10,9 @@ import (
 
 type CreateGraphqlproxycacheadvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                  string                                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace                       string                                 `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	GraphqlProxyCacheAdvancedPlugin shared.GraphqlProxyCacheAdvancedPlugin `request:"mediaType=application/json"`
 }
 
@@ -19,7 +21,7 @@ func (c CreateGraphqlproxycacheadvancedPluginRequest) MarshalJSON() ([]byte, err
 }
 
 func (c *CreateGraphqlproxycacheadvancedPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "GraphqlProxyCacheAdvancedPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "GraphqlProxyCacheAdvancedPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateGraphqlproxycacheadvancedPluginRequest) GetControlPlaneID() strin
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateGraphqlproxycacheadvancedPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateGraphqlproxycacheadvancedPluginRequest) GetGraphqlProxyCacheAdvancedPlugin() shared.GraphqlProxyCacheAdvancedPlugin {

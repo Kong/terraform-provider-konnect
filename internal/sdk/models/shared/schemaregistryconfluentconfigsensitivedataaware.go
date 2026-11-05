@@ -7,11 +7,14 @@ import (
 )
 
 // SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType - The format of the message.
+//
+// **`any` requires a minimum runtime version of `1.3`**.
 type SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType string
 
 const (
 	SchemaRegistryConfluentConfigSensitiveDataAwareSchemaTypeAvro SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType = "avro"
 	SchemaRegistryConfluentConfigSensitiveDataAwareSchemaTypeJSON SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType = "json"
+	SchemaRegistryConfluentConfigSensitiveDataAwareSchemaTypeAny  SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType = "any"
 )
 
 func (e SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType) ToPointer() *SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType {
@@ -22,7 +25,7 @@ func (e SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType) ToPointer() *
 func (e *SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "avro", "json":
+		case "avro", "json", "any":
 			return true
 		}
 	}
@@ -32,6 +35,8 @@ func (e *SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType) IsExact() bo
 // SchemaRegistryConfluentConfigSensitiveDataAware - The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry)
 type SchemaRegistryConfluentConfigSensitiveDataAware struct {
 	// The format of the message.
+	//
+	// **`any` requires a minimum runtime version of `1.3`**.
 	SchemaType SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType `json:"schema_type"`
 	// The endpoint of the Confluent schema registry.
 	Endpoint string `json:"endpoint"`

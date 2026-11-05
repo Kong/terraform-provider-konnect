@@ -32,8 +32,8 @@ func newConsumers(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *ho
 	}
 }
 
-// CreateConsumer - Create a new Consumer
-// Create a new Consumer
+// CreateConsumer - Create a new Consumer in a workspace
+// Create a new Consumer in a workspace
 func (s *Consumers) CreateConsumer(ctx context.Context, request operations.CreateConsumerRequest, opts ...operations.Option) (*operations.CreateConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -53,7 +53,7 @@ func (s *Consumers) CreateConsumer(ctx context.Context, request operations.Creat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -259,8 +259,8 @@ func (s *Consumers) CreateConsumer(ctx context.Context, request operations.Creat
 
 }
 
-// DeleteConsumer - Delete a Consumer
-// Delete a Consumer
+// DeleteConsumer - Delete a Consumer in a workspace
+// Delete a Consumer in a workspace
 func (s *Consumers) DeleteConsumer(ctx context.Context, request operations.DeleteConsumerRequest, opts ...operations.Option) (*operations.DeleteConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -280,7 +280,7 @@ func (s *Consumers) DeleteConsumer(ctx context.Context, request operations.Delet
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -462,8 +462,8 @@ func (s *Consumers) DeleteConsumer(ctx context.Context, request operations.Delet
 
 }
 
-// GetConsumer - Get a Consumer
-// Get a Consumer using ID or username.
+// GetConsumer - Get a Consumer in a workspace
+// Get a Consumer using ID or username in a workspace.
 func (s *Consumers) GetConsumer(ctx context.Context, request operations.GetConsumerRequest, opts ...operations.Option) (*operations.GetConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -483,7 +483,7 @@ func (s *Consumers) GetConsumer(ctx context.Context, request operations.GetConsu
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -684,8 +684,8 @@ func (s *Consumers) GetConsumer(ctx context.Context, request operations.GetConsu
 
 }
 
-// UpsertConsumer - Upsert a Consumer
-// Create or Update Consumer using ID or username.
+// UpsertConsumer - Upsert a Consumer in a workspace
+// Create or Update Consumer using ID or username in a workspace.
 func (s *Consumers) UpsertConsumer(ctx context.Context, request operations.UpsertConsumerRequest, opts ...operations.Option) (*operations.UpsertConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -705,7 +705,7 @@ func (s *Consumers) UpsertConsumer(ctx context.Context, request operations.Upser
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

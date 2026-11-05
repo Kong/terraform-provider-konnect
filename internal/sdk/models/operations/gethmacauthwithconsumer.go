@@ -15,6 +15,8 @@ type GetHmacAuthWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// ID of the HMAC-auth credential to lookup
 	HMACAuthID string `pathParam:"style=simple,explode=false,name=HMACAuthId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (g GetHmacAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
@@ -22,7 +24,7 @@ func (g GetHmacAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetHmacAuthWithConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "HMACAuthId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "HMACAuthId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -47,6 +49,13 @@ func (g *GetHmacAuthWithConsumerRequest) GetHMACAuthID() string {
 		return ""
 	}
 	return g.HMACAuthID
+}
+
+func (g *GetHmacAuthWithConsumerRequest) GetWorkspace() string {
+	if g == nil {
+		return ""
+	}
+	return g.Workspace
 }
 
 type GetHmacAuthWithConsumerResponse struct {

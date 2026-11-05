@@ -4,5 +4,5 @@ package types
 
 type MeshControlPlaneFilterParameters struct {
 	Labels *CloudGatewaysStringFieldFilterOverride `queryParam:"name=labels" tfsdk:"labels"`
-	Name   *MeshControlPlaneFilterParametersName   `queryParam:"name=name" tfsdk:"name"`
+	Name   *WorkspaceFilterParametersName          `queryParam:"name=name" tfsdk:"name"`
 }

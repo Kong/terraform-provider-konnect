@@ -109,6 +109,9 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsCreateAppdynamicsPlu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	appDynamicsPlugin, appDynamicsPluginDiags := r.ToSharedAppDynamicsPlugin(ctx)
 	diags.Append(appDynamicsPluginDiags...)
 
@@ -118,6 +121,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsCreateAppdynamicsPlu
 
 	out := operations.CreateAppdynamicsPluginRequest{
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		AppDynamicsPlugin: *appDynamicsPlugin,
 	}
 
@@ -133,9 +137,13 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsDeleteAppdynamicsPlu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAppdynamicsPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -150,9 +158,13 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsGetAppdynamicsPlugin
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAppdynamicsPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -167,6 +179,9 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsUpdateAppdynamicsPlu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	appDynamicsPlugin, appDynamicsPluginDiags := r.ToSharedAppDynamicsPlugin(ctx)
 	diags.Append(appDynamicsPluginDiags...)
 
@@ -177,6 +192,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsUpdateAppdynamicsPlu
 	out := operations.UpdateAppdynamicsPluginRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		AppDynamicsPlugin: *appDynamicsPlugin,
 	}
 

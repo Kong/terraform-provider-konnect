@@ -39,6 +39,9 @@ func (r *GatewayBasicAuthResourceModel) ToOperationsCreateBasicAuthWithConsumerR
 	var consumerID string
 	consumerID = r.ConsumerID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	basicAuthWithoutParents, basicAuthWithoutParentsDiags := r.ToSharedBasicAuthWithoutParents(ctx)
 	diags.Append(basicAuthWithoutParentsDiags...)
 
@@ -49,6 +52,7 @@ func (r *GatewayBasicAuthResourceModel) ToOperationsCreateBasicAuthWithConsumerR
 	out := operations.CreateBasicAuthWithConsumerRequest{
 		ControlPlaneID:          controlPlaneID,
 		ConsumerID:              consumerID,
+		Workspace:               workspace,
 		BasicAuthWithoutParents: *basicAuthWithoutParents,
 	}
 
@@ -67,10 +71,14 @@ func (r *GatewayBasicAuthResourceModel) ToOperationsDeleteBasicAuthWithConsumerR
 	var basicAuthID string
 	basicAuthID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteBasicAuthWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		BasicAuthID:    basicAuthID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -88,10 +96,14 @@ func (r *GatewayBasicAuthResourceModel) ToOperationsGetBasicAuthWithConsumerRequ
 	var basicAuthID string
 	basicAuthID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetBasicAuthWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		BasicAuthID:    basicAuthID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags

@@ -31,8 +31,8 @@ func newKeys(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.H
 	}
 }
 
-// CreateKey - Create a new Key
-// Create a new Key
+// CreateKey - Create a new Key in a workspace
+// Create a new Key in a workspace
 func (s *Keys) CreateKey(ctx context.Context, request operations.CreateKeyRequest, opts ...operations.Option) (*operations.CreateKeyResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -52,7 +52,7 @@ func (s *Keys) CreateKey(ctx context.Context, request operations.CreateKeyReques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/keys", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/keys", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -258,8 +258,8 @@ func (s *Keys) CreateKey(ctx context.Context, request operations.CreateKeyReques
 
 }
 
-// DeleteKey - Delete a Key
-// Delete a Key
+// DeleteKey - Delete a Key in a workspace
+// Delete a Key in a workspace
 func (s *Keys) DeleteKey(ctx context.Context, request operations.DeleteKeyRequest, opts ...operations.Option) (*operations.DeleteKeyResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -279,7 +279,7 @@ func (s *Keys) DeleteKey(ctx context.Context, request operations.DeleteKeyReques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/keys/{KeyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/keys/{KeyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -461,8 +461,8 @@ func (s *Keys) DeleteKey(ctx context.Context, request operations.DeleteKeyReques
 
 }
 
-// GetKey - Get a Key
-// Get a Key using ID or name.
+// GetKey - Get a Key in a workspace
+// Get a Key using ID or name in a workspace.
 func (s *Keys) GetKey(ctx context.Context, request operations.GetKeyRequest, opts ...operations.Option) (*operations.GetKeyResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -482,7 +482,7 @@ func (s *Keys) GetKey(ctx context.Context, request operations.GetKeyRequest, opt
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/keys/{KeyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/keys/{KeyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -683,8 +683,8 @@ func (s *Keys) GetKey(ctx context.Context, request operations.GetKeyRequest, opt
 
 }
 
-// UpsertKey - Upsert a Key
-// Create or Update Key using ID or name.
+// UpsertKey - Upsert a Key in a workspace
+// Create or Update Key using ID or name in a workspace.
 func (s *Keys) UpsertKey(ctx context.Context, request operations.UpsertKeyRequest, opts ...operations.Option) (*operations.UpsertKeyResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -704,7 +704,7 @@ func (s *Keys) UpsertKey(ctx context.Context, request operations.UpsertKeyReques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/keys/{KeyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/keys/{KeyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

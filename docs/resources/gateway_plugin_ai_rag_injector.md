@@ -229,6 +229,7 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
     "..."
   ]
   updated_at = 8
+  workspace  = "team-payments"
 }
 ```
 
@@ -256,6 +257,7 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -593,6 +595,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -600,5 +603,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_plugin_ai_rag_injector.my_konnect_gateway_plugin_ai_rag_injector '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}'
+terraform import konnect_gateway_plugin_ai_rag_injector.my_konnect_gateway_plugin_ai_rag_injector '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d", "workspace": "team-payments"}'
 ```

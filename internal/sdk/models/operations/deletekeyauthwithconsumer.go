@@ -14,6 +14,8 @@ type DeleteKeyAuthWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// ID of the API-key to lookup
 	KeyAuthID string `pathParam:"style=simple,explode=false,name=KeyAuthId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (d DeleteKeyAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
@@ -21,7 +23,7 @@ func (d DeleteKeyAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteKeyAuthWithConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "KeyAuthId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "KeyAuthId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -46,6 +48,13 @@ func (d *DeleteKeyAuthWithConsumerRequest) GetKeyAuthID() string {
 		return ""
 	}
 	return d.KeyAuthID
+}
+
+func (d *DeleteKeyAuthWithConsumerRequest) GetWorkspace() string {
+	if d == nil {
+		return ""
+	}
+	return d.Workspace
 }
 
 type DeleteKeyAuthWithConsumerResponse struct {

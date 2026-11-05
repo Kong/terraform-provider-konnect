@@ -11,6 +11,8 @@ import (
 type CreateUpstreamRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of the new Upstream for creation
 	Upstream shared.Upstream `request:"mediaType=application/json"`
 }
@@ -20,7 +22,7 @@ func (c CreateUpstreamRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateUpstreamRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "Upstream"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "Upstream"}); err != nil {
 		return err
 	}
 	return nil
@@ -31,6 +33,13 @@ func (c *CreateUpstreamRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateUpstreamRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateUpstreamRequest) GetUpstream() shared.Upstream {

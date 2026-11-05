@@ -112,6 +112,9 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsCreateReques
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	requestSizeLimitingPlugin, requestSizeLimitingPluginDiags := r.ToSharedRequestSizeLimitingPlugin(ctx)
 	diags.Append(requestSizeLimitingPluginDiags...)
 
@@ -121,6 +124,7 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsCreateReques
 
 	out := operations.CreateRequestsizelimitingPluginRequest{
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		RequestSizeLimitingPlugin: *requestSizeLimitingPlugin,
 	}
 
@@ -136,9 +140,13 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsDeleteReques
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteRequestsizelimitingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -153,9 +161,13 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsGetRequestsi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetRequestsizelimitingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -170,6 +182,9 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsUpdateReques
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	requestSizeLimitingPlugin, requestSizeLimitingPluginDiags := r.ToSharedRequestSizeLimitingPlugin(ctx)
 	diags.Append(requestSizeLimitingPluginDiags...)
 
@@ -180,6 +195,7 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsUpdateReques
 	out := operations.UpdateRequestsizelimitingPluginRequest{
 		PluginID:                  pluginID,
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		RequestSizeLimitingPlugin: *requestSizeLimitingPlugin,
 	}
 

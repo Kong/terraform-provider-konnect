@@ -14,6 +14,8 @@ type DeleteACLWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// ID of the ACL to lookup
 	ACLID string `pathParam:"style=simple,explode=false,name=ACLId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (d DeleteACLWithConsumerRequest) MarshalJSON() ([]byte, error) {
@@ -21,7 +23,7 @@ func (d DeleteACLWithConsumerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteACLWithConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "ACLId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "ACLId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -46,6 +48,13 @@ func (d *DeleteACLWithConsumerRequest) GetACLID() string {
 		return ""
 	}
 	return d.ACLID
+}
+
+func (d *DeleteACLWithConsumerRequest) GetWorkspace() string {
+	if d == nil {
+		return ""
+	}
+	return d.Workspace
 }
 
 type DeleteACLWithConsumerResponse struct {

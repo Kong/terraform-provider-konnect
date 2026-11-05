@@ -22,6 +22,20 @@ func (r *EventGatewayBackendClusterResourceModel) RefreshFromSharedBackendCluste
 		if resp.Authentication.BackendClusterAuthenticationAnonymous != nil {
 			r.Authentication.Anonymous = &tfTypes.CreateAPIProductDocumentDTOMetadata{}
 		}
+		if resp.Authentication.BackendClusterAuthenticationSaslAwsIam != nil {
+			r.Authentication.SaslAwsIam = &tfTypes.BackendClusterAuthenticationSaslAwsIam{}
+			if r.Authentication.SaslAwsIam.SaslAwsIam == nil {
+				r.Authentication.SaslAwsIam.SaslAwsIam = &tfTypes.SaslAwsIam{}
+			}
+			if resp.Authentication.BackendClusterAuthenticationSaslAwsIam.SaslAwsIam.BackendClusterAuthenticationSaslAwsIamAssumeRole != nil {
+				r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole = &tfTypes.BackendClusterAuthenticationSaslAwsIamAssumeRole{}
+				r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.Arn = types.StringValue(resp.Authentication.BackendClusterAuthenticationSaslAwsIam.SaslAwsIam.BackendClusterAuthenticationSaslAwsIamAssumeRole.Arn)
+				r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName = types.StringPointerValue(resp.Authentication.BackendClusterAuthenticationSaslAwsIam.SaslAwsIam.BackendClusterAuthenticationSaslAwsIamAssumeRole.SessionName)
+			}
+			if resp.Authentication.BackendClusterAuthenticationSaslAwsIam.SaslAwsIam.BackendClusterAuthenticationSaslAwsIamDefaultProviderChain != nil {
+				r.Authentication.SaslAwsIam.SaslAwsIam.DefaultProviderChain = &tfTypes.CreateAPIProductDocumentDTOMetadata{}
+			}
+		}
 		if resp.Authentication.BackendClusterAuthenticationSaslPlainSensitiveDataAware != nil {
 			r.Authentication.SaslPlain = &tfTypes.BackendClusterAuthenticationSaslPlain{}
 			r.Authentication.SaslPlain.Password = types.StringPointerValue(resp.Authentication.BackendClusterAuthenticationSaslPlainSensitiveDataAware.Password)
@@ -210,6 +224,48 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedCreateBackendClusterRe
 			BackendClusterAuthenticationSaslScram: backendClusterAuthenticationSaslScram,
 		}
 	}
+	var backendClusterAuthenticationSaslAwsIam *shared.BackendClusterAuthenticationSaslAwsIam
+	if r.Authentication.SaslAwsIam != nil {
+		var saslAwsIam shared.SaslAwsIam
+		var backendClusterAuthenticationSaslAwsIamDefaultProviderChain *shared.BackendClusterAuthenticationSaslAwsIamDefaultProviderChain
+		if r.Authentication.SaslAwsIam.SaslAwsIam.DefaultProviderChain != nil {
+			backendClusterAuthenticationSaslAwsIamDefaultProviderChain = &shared.BackendClusterAuthenticationSaslAwsIamDefaultProviderChain{}
+		}
+		if backendClusterAuthenticationSaslAwsIamDefaultProviderChain != nil {
+			saslAwsIam = shared.SaslAwsIam{
+				BackendClusterAuthenticationSaslAwsIamDefaultProviderChain: backendClusterAuthenticationSaslAwsIamDefaultProviderChain,
+			}
+		}
+		var backendClusterAuthenticationSaslAwsIamAssumeRole *shared.BackendClusterAuthenticationSaslAwsIamAssumeRole
+		if r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole != nil {
+			var arn string
+			arn = r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.Arn.ValueString()
+
+			sessionName := new(string)
+			if !r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName.IsUnknown() && !r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName.IsNull() {
+				*sessionName = r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName.ValueString()
+			} else {
+				sessionName = nil
+			}
+			backendClusterAuthenticationSaslAwsIamAssumeRole = &shared.BackendClusterAuthenticationSaslAwsIamAssumeRole{
+				Arn:         arn,
+				SessionName: sessionName,
+			}
+		}
+		if backendClusterAuthenticationSaslAwsIamAssumeRole != nil {
+			saslAwsIam = shared.SaslAwsIam{
+				BackendClusterAuthenticationSaslAwsIamAssumeRole: backendClusterAuthenticationSaslAwsIamAssumeRole,
+			}
+		}
+		backendClusterAuthenticationSaslAwsIam = &shared.BackendClusterAuthenticationSaslAwsIam{
+			SaslAwsIam: saslAwsIam,
+		}
+	}
+	if backendClusterAuthenticationSaslAwsIam != nil {
+		authentication = shared.BackendClusterAuthenticationScheme{
+			BackendClusterAuthenticationSaslAwsIam: backendClusterAuthenticationSaslAwsIam,
+		}
+	}
 	insecureAllowAnonymousVirtualClusterAuth := new(bool)
 	if !r.InsecureAllowAnonymousVirtualClusterAuth.IsUnknown() && !r.InsecureAllowAnonymousVirtualClusterAuth.IsNull() {
 		*insecureAllowAnonymousVirtualClusterAuth = r.InsecureAllowAnonymousVirtualClusterAuth.ValueBool()
@@ -353,6 +409,48 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedUpdateBackendClusterRe
 	if backendClusterAuthenticationSaslScramSensitiveDataAware != nil {
 		authentication = shared.BackendClusterAuthenticationSensitiveDataAwareScheme{
 			BackendClusterAuthenticationSaslScramSensitiveDataAware: backendClusterAuthenticationSaslScramSensitiveDataAware,
+		}
+	}
+	var backendClusterAuthenticationSaslAwsIam *shared.BackendClusterAuthenticationSaslAwsIam
+	if r.Authentication.SaslAwsIam != nil {
+		var saslAwsIam shared.SaslAwsIam
+		var backendClusterAuthenticationSaslAwsIamDefaultProviderChain *shared.BackendClusterAuthenticationSaslAwsIamDefaultProviderChain
+		if r.Authentication.SaslAwsIam.SaslAwsIam.DefaultProviderChain != nil {
+			backendClusterAuthenticationSaslAwsIamDefaultProviderChain = &shared.BackendClusterAuthenticationSaslAwsIamDefaultProviderChain{}
+		}
+		if backendClusterAuthenticationSaslAwsIamDefaultProviderChain != nil {
+			saslAwsIam = shared.SaslAwsIam{
+				BackendClusterAuthenticationSaslAwsIamDefaultProviderChain: backendClusterAuthenticationSaslAwsIamDefaultProviderChain,
+			}
+		}
+		var backendClusterAuthenticationSaslAwsIamAssumeRole *shared.BackendClusterAuthenticationSaslAwsIamAssumeRole
+		if r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole != nil {
+			var arn string
+			arn = r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.Arn.ValueString()
+
+			sessionName := new(string)
+			if !r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName.IsUnknown() && !r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName.IsNull() {
+				*sessionName = r.Authentication.SaslAwsIam.SaslAwsIam.AssumeRole.SessionName.ValueString()
+			} else {
+				sessionName = nil
+			}
+			backendClusterAuthenticationSaslAwsIamAssumeRole = &shared.BackendClusterAuthenticationSaslAwsIamAssumeRole{
+				Arn:         arn,
+				SessionName: sessionName,
+			}
+		}
+		if backendClusterAuthenticationSaslAwsIamAssumeRole != nil {
+			saslAwsIam = shared.SaslAwsIam{
+				BackendClusterAuthenticationSaslAwsIamAssumeRole: backendClusterAuthenticationSaslAwsIamAssumeRole,
+			}
+		}
+		backendClusterAuthenticationSaslAwsIam = &shared.BackendClusterAuthenticationSaslAwsIam{
+			SaslAwsIam: saslAwsIam,
+		}
+	}
+	if backendClusterAuthenticationSaslAwsIam != nil {
+		authentication = shared.BackendClusterAuthenticationSensitiveDataAwareScheme{
+			BackendClusterAuthenticationSaslAwsIam: backendClusterAuthenticationSaslAwsIam,
 		}
 	}
 	insecureAllowAnonymousVirtualClusterAuth := new(bool)

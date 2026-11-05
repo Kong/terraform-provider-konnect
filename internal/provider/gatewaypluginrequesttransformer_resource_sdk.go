@@ -198,6 +198,9 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsCreateRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	requestTransformerPlugin, requestTransformerPluginDiags := r.ToSharedRequestTransformerPlugin(ctx)
 	diags.Append(requestTransformerPluginDiags...)
 
@@ -207,6 +210,7 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsCreateRequest
 
 	out := operations.CreateRequesttransformerPluginRequest{
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		RequestTransformerPlugin: *requestTransformerPlugin,
 	}
 
@@ -222,9 +226,13 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsDeleteRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteRequesttransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -239,9 +247,13 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsGetRequesttra
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetRequesttransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -256,6 +268,9 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsUpdateRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	requestTransformerPlugin, requestTransformerPluginDiags := r.ToSharedRequestTransformerPlugin(ctx)
 	diags.Append(requestTransformerPluginDiags...)
 
@@ -266,6 +281,7 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsUpdateRequest
 	out := operations.UpdateRequesttransformerPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		RequestTransformerPlugin: *requestTransformerPlugin,
 	}
 

@@ -15,6 +15,8 @@ type GetJwtWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// ID of the JWT to lookup
 	JWTID string `pathParam:"style=simple,explode=false,name=JWTId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (g GetJwtWithConsumerRequest) MarshalJSON() ([]byte, error) {
@@ -22,7 +24,7 @@ func (g GetJwtWithConsumerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetJwtWithConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "JWTId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "JWTId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -47,6 +49,13 @@ func (g *GetJwtWithConsumerRequest) GetJWTID() string {
 		return ""
 	}
 	return g.JWTID
+}
+
+func (g *GetJwtWithConsumerRequest) GetWorkspace() string {
+	if g == nil {
+		return ""
+	}
+	return g.Workspace
 }
 
 type GetJwtWithConsumerResponse struct {

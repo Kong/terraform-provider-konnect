@@ -139,6 +139,9 @@ func (r *GatewayPluginJqResourceModel) ToOperationsCreateJqPluginRequest(ctx con
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	jqPlugin, jqPluginDiags := r.ToSharedJqPlugin(ctx)
 	diags.Append(jqPluginDiags...)
 
@@ -148,6 +151,7 @@ func (r *GatewayPluginJqResourceModel) ToOperationsCreateJqPluginRequest(ctx con
 
 	out := operations.CreateJqPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		JqPlugin:       *jqPlugin,
 	}
 
@@ -163,9 +167,13 @@ func (r *GatewayPluginJqResourceModel) ToOperationsDeleteJqPluginRequest(ctx con
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteJqPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -180,9 +188,13 @@ func (r *GatewayPluginJqResourceModel) ToOperationsGetJqPluginRequest(ctx contex
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetJqPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -197,6 +209,9 @@ func (r *GatewayPluginJqResourceModel) ToOperationsUpdateJqPluginRequest(ctx con
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	jqPlugin, jqPluginDiags := r.ToSharedJqPlugin(ctx)
 	diags.Append(jqPluginDiags...)
 
@@ -207,6 +222,7 @@ func (r *GatewayPluginJqResourceModel) ToOperationsUpdateJqPluginRequest(ctx con
 	out := operations.UpdateJqPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		JqPlugin:       *jqPlugin,
 	}
 

@@ -52,6 +52,9 @@ func (r *GatewayConsumerGroupResourceModel) ToOperationsCreateConsumerGroupReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	consumerGroup, consumerGroupDiags := r.ToSharedConsumerGroup(ctx)
 	diags.Append(consumerGroupDiags...)
 
@@ -61,6 +64,7 @@ func (r *GatewayConsumerGroupResourceModel) ToOperationsCreateConsumerGroupReque
 
 	out := operations.CreateConsumerGroupRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		ConsumerGroup:  *consumerGroup,
 	}
 
@@ -76,9 +80,13 @@ func (r *GatewayConsumerGroupResourceModel) ToOperationsDeleteConsumerGroupReque
 	var consumerGroupID string
 	consumerGroupID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteConsumerGroupRequest{
 		ControlPlaneID:  controlPlaneID,
 		ConsumerGroupID: consumerGroupID,
+		Workspace:       workspace,
 	}
 
 	return &out, diags
@@ -93,9 +101,13 @@ func (r *GatewayConsumerGroupResourceModel) ToOperationsGetConsumerGroupRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetConsumerGroupRequest{
 		ConsumerGroupID: consumerGroupID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 	}
 
 	return &out, diags
@@ -110,6 +122,9 @@ func (r *GatewayConsumerGroupResourceModel) ToOperationsUpsertConsumerGroupReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	consumerGroup, consumerGroupDiags := r.ToSharedConsumerGroup(ctx)
 	diags.Append(consumerGroupDiags...)
 
@@ -120,6 +135,7 @@ func (r *GatewayConsumerGroupResourceModel) ToOperationsUpsertConsumerGroupReque
 	out := operations.UpsertConsumerGroupRequest{
 		ConsumerGroupID: consumerGroupID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		ConsumerGroup:   *consumerGroup,
 	}
 

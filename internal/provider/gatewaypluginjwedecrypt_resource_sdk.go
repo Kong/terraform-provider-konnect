@@ -102,6 +102,9 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsCreateJwedecryptPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	jweDecryptPlugin, jweDecryptPluginDiags := r.ToSharedJweDecryptPlugin(ctx)
 	diags.Append(jweDecryptPluginDiags...)
 
@@ -111,6 +114,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsCreateJwedecryptPlugi
 
 	out := operations.CreateJwedecryptPluginRequest{
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		JweDecryptPlugin: *jweDecryptPlugin,
 	}
 
@@ -126,9 +130,13 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsDeleteJwedecryptPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteJwedecryptPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -143,9 +151,13 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsGetJwedecryptPluginRe
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetJwedecryptPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -160,6 +172,9 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsUpdateJwedecryptPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	jweDecryptPlugin, jweDecryptPluginDiags := r.ToSharedJweDecryptPlugin(ctx)
 	diags.Append(jweDecryptPluginDiags...)
 
@@ -170,6 +185,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsUpdateJwedecryptPlugi
 	out := operations.UpdateJwedecryptPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		JweDecryptPlugin: *jweDecryptPlugin,
 	}
 

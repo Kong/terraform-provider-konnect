@@ -130,6 +130,9 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsCreateMtlsauthPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	mtlsAuthPlugin, mtlsAuthPluginDiags := r.ToSharedMtlsAuthPlugin(ctx)
 	diags.Append(mtlsAuthPluginDiags...)
 
@@ -139,6 +142,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsCreateMtlsauthPluginReq
 
 	out := operations.CreateMtlsauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		MtlsAuthPlugin: *mtlsAuthPlugin,
 	}
 
@@ -154,9 +158,13 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsDeleteMtlsauthPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteMtlsauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -171,9 +179,13 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsGetMtlsauthPluginReques
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetMtlsauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -188,6 +200,9 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsUpdateMtlsauthPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	mtlsAuthPlugin, mtlsAuthPluginDiags := r.ToSharedMtlsAuthPlugin(ctx)
 	diags.Append(mtlsAuthPluginDiags...)
 
@@ -198,6 +213,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsUpdateMtlsauthPluginReq
 	out := operations.UpdateMtlsauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		MtlsAuthPlugin: *mtlsAuthPlugin,
 	}
 

@@ -129,6 +129,9 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsCreateIprestrictio
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	ipRestrictionPlugin, ipRestrictionPluginDiags := r.ToSharedIPRestrictionPlugin(ctx)
 	diags.Append(ipRestrictionPluginDiags...)
 
@@ -138,6 +141,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsCreateIprestrictio
 
 	out := operations.CreateIprestrictionPluginRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		IPRestrictionPlugin: *ipRestrictionPlugin,
 	}
 
@@ -153,9 +157,13 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsDeleteIprestrictio
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteIprestrictionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -170,9 +178,13 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsGetIprestrictionPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetIprestrictionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -187,6 +199,9 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsUpdateIprestrictio
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	ipRestrictionPlugin, ipRestrictionPluginDiags := r.ToSharedIPRestrictionPlugin(ctx)
 	diags.Append(ipRestrictionPluginDiags...)
 
@@ -197,6 +212,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsUpdateIprestrictio
 	out := operations.UpdateIprestrictionPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		IPRestrictionPlugin: *ipRestrictionPlugin,
 	}
 

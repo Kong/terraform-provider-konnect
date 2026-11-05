@@ -7,14 +7,6 @@ import (
 )
 
 type Message struct {
-	AckTimeout        types.Int64             `tfsdk:"ack_timeout"`
-	CustomFieldsByLua map[string]types.String `tfsdk:"custom_fields_by_lua"`
-	DeliveryMode      types.String            `tfsdk:"delivery_mode"`
-	Destinations      []Binds                 `tfsdk:"destinations"`
-	DmqEligible       types.Bool              `tfsdk:"dmq_eligible"`
-	Priority          types.Int64             `tfsdk:"priority"`
-	SenderID          types.String            `tfsdk:"sender_id"`
-	Tracing           types.Bool              `tfsdk:"tracing"`
-	TracingSampled    types.Bool              `tfsdk:"tracing_sampled"`
-	TTL               types.Int64             `tfsdk:"ttl"`
+	Body    types.String `tfsdk:"body"`
+	Subject types.String `tfsdk:"subject"`
 }

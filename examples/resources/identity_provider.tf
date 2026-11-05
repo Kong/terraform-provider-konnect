@@ -22,7 +22,7 @@ resource "konnect_identity_provider" "my_identityprovider" {
   }
 }
 # SAML
-resource "konnect_identity_provider" "my_identityprovider" {
+resource "konnect_identity_provider" "my_identityprovider_saml" {
   enabled    = true
   type       = "saml"
   login_path = "testsaml"

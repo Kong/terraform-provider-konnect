@@ -14,6 +14,7 @@ type AIGatewayTargetConfigType string
 const (
 	AIGatewayTargetConfigTypeAnthropic   AIGatewayTargetConfigType = "anthropic"
 	AIGatewayTargetConfigTypeAzure       AIGatewayTargetConfigType = "azure"
+	AIGatewayTargetConfigTypeBaseten     AIGatewayTargetConfigType = "baseten"
 	AIGatewayTargetConfigTypeBedrock     AIGatewayTargetConfigType = "bedrock"
 	AIGatewayTargetConfigTypeCerebras    AIGatewayTargetConfigType = "cerebras"
 	AIGatewayTargetConfigTypeCohere      AIGatewayTargetConfigType = "cohere"
@@ -38,6 +39,7 @@ const (
 type AIGatewayTargetConfig struct {
 	AIGatewayTargetAnthropicConfig   *AIGatewayTargetAnthropicConfig   `queryParam:"inline" union:"member"`
 	AIGatewayTargetAzureConfig       *AIGatewayTargetAzureConfig       `queryParam:"inline" union:"member"`
+	AIGatewayTargetBasetenConfig     *AIGatewayTargetBasetenConfig     `queryParam:"inline" union:"member"`
 	AIGatewayTargetBedrockConfig     *AIGatewayTargetBedrockConfig     `queryParam:"inline" union:"member"`
 	AIGatewayTargetCerebrasConfig    *AIGatewayTargetCerebrasConfig    `queryParam:"inline" union:"member"`
 	AIGatewayTargetCohereConfig      *AIGatewayTargetCohereConfig      `queryParam:"inline" union:"member"`
@@ -75,6 +77,15 @@ func CreateAIGatewayTargetConfigAzure(azure AIGatewayTargetAzureConfig) AIGatewa
 	return AIGatewayTargetConfig{
 		AIGatewayTargetAzureConfig: &azure,
 		Type:                       typ,
+	}
+}
+
+func CreateAIGatewayTargetConfigBaseten(baseten AIGatewayTargetBasetenConfig) AIGatewayTargetConfig {
+	typ := AIGatewayTargetConfigTypeBaseten
+
+	return AIGatewayTargetConfig{
+		AIGatewayTargetBasetenConfig: &baseten,
+		Type:                         typ,
 	}
 }
 
@@ -277,6 +288,15 @@ func (u *AIGatewayTargetConfig) UnmarshalJSON(data []byte) (err error) {
 		u.AIGatewayTargetAzureConfig = aiGatewayTargetAzureConfig
 		u.Type = AIGatewayTargetConfigTypeAzure
 		return nil
+	case "baseten":
+		aiGatewayTargetBasetenConfig := new(AIGatewayTargetBasetenConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayTargetBasetenConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == baseten) type AIGatewayTargetBasetenConfig within AIGatewayTargetConfig: %w", string(data), err)
+		}
+
+		u.AIGatewayTargetBasetenConfig = aiGatewayTargetBasetenConfig
+		u.Type = AIGatewayTargetConfigTypeBaseten
+		return nil
 	case "bedrock":
 		aiGatewayTargetBedrockConfig := new(AIGatewayTargetBedrockConfig)
 		if err := utils.UnmarshalJSON(data, &aiGatewayTargetBedrockConfig, "", true, nil); err != nil {
@@ -451,6 +471,10 @@ func (u AIGatewayTargetConfig) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayTargetAzureConfig != nil {
 		return utils.MarshalJSON(u.AIGatewayTargetAzureConfig, "", true)
+	}
+
+	if u.AIGatewayTargetBasetenConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayTargetBasetenConfig, "", true)
 	}
 
 	if u.AIGatewayTargetBedrockConfig != nil {

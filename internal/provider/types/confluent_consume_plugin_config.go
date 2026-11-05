@@ -8,7 +8,7 @@ import (
 
 type ConfluentConsumePluginConfig struct {
 	AutoOffsetReset          types.String                          `tfsdk:"auto_offset_reset"`
-	BootstrapServers         []BootstrapServers                    `tfsdk:"bootstrap_servers"`
+	BootstrapServers         []SentinelNodes                       `tfsdk:"bootstrap_servers"`
 	ClusterAPIKey            types.String                          `tfsdk:"cluster_api_key"`
 	ClusterAPISecret         types.String                          `tfsdk:"cluster_api_secret"`
 	ClusterName              types.String                          `tfsdk:"cluster_name"`

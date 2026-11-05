@@ -289,6 +289,9 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsCreateAillmasjudgeP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiLlmAsJudgePlugin, aiLlmAsJudgePluginDiags := r.ToSharedAiLlmAsJudgePlugin(ctx)
 	diags.Append(aiLlmAsJudgePluginDiags...)
 
@@ -298,6 +301,7 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsCreateAillmasjudgeP
 
 	out := operations.CreateAillmasjudgePluginRequest{
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		AiLlmAsJudgePlugin: *aiLlmAsJudgePlugin,
 	}
 
@@ -313,9 +317,13 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsDeleteAillmasjudgeP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAillmasjudgePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -330,9 +338,13 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsGetAillmasjudgePlug
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAillmasjudgePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -347,6 +359,9 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsUpdateAillmasjudgeP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiLlmAsJudgePlugin, aiLlmAsJudgePluginDiags := r.ToSharedAiLlmAsJudgePlugin(ctx)
 	diags.Append(aiLlmAsJudgePluginDiags...)
 
@@ -357,6 +372,7 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsUpdateAillmasjudgeP
 	out := operations.UpdateAillmasjudgePluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		AiLlmAsJudgePlugin: *aiLlmAsJudgePlugin,
 	}
 

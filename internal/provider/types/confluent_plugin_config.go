@@ -8,7 +8,7 @@ import (
 
 type ConfluentPluginConfig struct {
 	AllowedTopics                                []types.String                 `tfsdk:"allowed_topics"`
-	BootstrapServers                             []BootstrapServers             `tfsdk:"bootstrap_servers"`
+	BootstrapServers                             []SentinelNodes                `tfsdk:"bootstrap_servers"`
 	ClusterAPIKey                                types.String                   `tfsdk:"cluster_api_key"`
 	ClusterAPISecret                             types.String                   `tfsdk:"cluster_api_secret"`
 	ClusterName                                  types.String                   `tfsdk:"cluster_name"`

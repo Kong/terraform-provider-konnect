@@ -132,6 +132,9 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsCreateAilakeraguar
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiLakeraGuardPlugin, aiLakeraGuardPluginDiags := r.ToSharedAiLakeraGuardPlugin(ctx)
 	diags.Append(aiLakeraGuardPluginDiags...)
 
@@ -141,6 +144,7 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsCreateAilakeraguar
 
 	out := operations.CreateAilakeraguardPluginRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		AiLakeraGuardPlugin: *aiLakeraGuardPlugin,
 	}
 
@@ -156,9 +160,13 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsDeleteAilakeraguar
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAilakeraguardPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -173,9 +181,13 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsGetAilakeraguardPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAilakeraguardPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -190,6 +202,9 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsUpdateAilakeraguar
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiLakeraGuardPlugin, aiLakeraGuardPluginDiags := r.ToSharedAiLakeraGuardPlugin(ctx)
 	diags.Append(aiLakeraGuardPluginDiags...)
 
@@ -200,6 +215,7 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsUpdateAilakeraguar
 	out := operations.UpdateAilakeraguardPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		AiLakeraGuardPlugin: *aiLakeraGuardPlugin,
 	}
 

@@ -120,6 +120,9 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsCreateRoutebyheade
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	routeByHeaderPlugin, routeByHeaderPluginDiags := r.ToSharedRouteByHeaderPlugin(ctx)
 	diags.Append(routeByHeaderPluginDiags...)
 
@@ -129,6 +132,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsCreateRoutebyheade
 
 	out := operations.CreateRoutebyheaderPluginRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		RouteByHeaderPlugin: *routeByHeaderPlugin,
 	}
 
@@ -144,9 +148,13 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsDeleteRoutebyheade
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteRoutebyheaderPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -161,9 +169,13 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsGetRoutebyheaderPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetRoutebyheaderPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -178,6 +190,9 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsUpdateRoutebyheade
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	routeByHeaderPlugin, routeByHeaderPluginDiags := r.ToSharedRouteByHeaderPlugin(ctx)
 	diags.Append(routeByHeaderPluginDiags...)
 
@@ -188,6 +203,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsUpdateRoutebyheade
 	out := operations.UpdateRoutebyheaderPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		RouteByHeaderPlugin: *routeByHeaderPlugin,
 	}
 

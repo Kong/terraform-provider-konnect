@@ -20,6 +20,7 @@ type ControlPlaneGroup struct {
 	// - `me` — Middle East
 	// - `in` — India
 	// - `sg` — Singapore
+	// - `uk` — United Kingdom
 	//
 	ControlPlaneGroupGeo ControlPlaneGeo `json:"control_plane_group_geo"`
 }

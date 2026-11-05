@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -21,6 +22,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 	"github.com/kong/terraform-provider-konnect/v3/src/utils"
@@ -29,6 +31,7 @@ import (
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &CustomPluginResource{}
 var _ resource.ResourceWithImportState = &CustomPluginResource{}
+var _ resource.ResourceWithUpgradeState = &CustomPluginResource{}
 
 func NewCustomPluginResource() resource.Resource {
 	return &CustomPluginResource{}
@@ -45,6 +48,7 @@ func (r *CustomPluginResource) Metadata(ctx context.Context, req resource.Metada
 func (r *CustomPluginResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Gateway Custom Plugin Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
 				Optional:    true,
@@ -222,6 +226,15 @@ func (r *CustomPluginResource) Schema(ctx context.Context, req resource.SchemaRe
 				Computed:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString("default"),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -272,6 +285,7 @@ func (r *CustomPluginResource) Create(ctx context.Context, req resource.CreateRe
 
 	res, err := r.client.Plugins.CreatePlugin(ctx, operations.CreatePluginRequest{
 		ControlPlaneID: plugin.ControlPlaneID.ValueString(),
+		Workspace:      plugin.Workspace.ValueString(),
 		Plugin:         pluginData,
 	})
 
@@ -308,6 +322,7 @@ func (r *CustomPluginResource) Read(ctx context.Context, req resource.ReadReques
 
 	res, err := r.client.Plugins.GetPlugin(ctx, operations.GetPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      data.Workspace.ValueString(),
 		PluginID:       data.ID.ValueString(),
 	})
 
@@ -371,6 +386,7 @@ func (r *CustomPluginResource) Update(ctx context.Context, req resource.UpdateRe
 
 	res, err := r.client.Plugins.UpsertPlugin(ctx, operations.UpsertPluginRequest{
 		ControlPlaneID: data.ControlPlaneID.ValueString(),
+		Workspace:      data.Workspace.ValueString(),
 		PluginID:       data.ID.ValueString(),
 		Plugin:         plugin,
 	})
@@ -407,6 +423,7 @@ func (r *CustomPluginResource) Delete(ctx context.Context, req resource.DeleteRe
 
 	res, err := r.client.Plugins.DeletePlugin(ctx, operations.DeletePluginRequest{
 		ControlPlaneID: data.ControlPlaneID.ValueString(),
+		Workspace:      data.Workspace.ValueString(),
 		PluginID:       data.ID.ValueString(),
 	})
 
@@ -423,6 +440,12 @@ func (r *CustomPluginResource) Delete(ctx context.Context, req resource.DeleteRe
 
 func (r *CustomPluginResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource gateway_custom_plugin.")
+}
+
+func (r *CustomPluginResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaycustompluginStateUpgraderV0},
+	}
 }
 
 func pointerToId[T any](obj *T) *ForeignKeyWithId {

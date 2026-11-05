@@ -54,6 +54,7 @@ Requires replacement if changed.
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used for this resource.
+- `konnect_managed` (Boolean) An immutable read-only flag to identify resource managed by Konnect services.
 - `metadata` (Attributes) Metadata extracted from the certificate. (see [below for nested schema](#nestedatt--metadata))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 

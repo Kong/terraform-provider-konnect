@@ -132,6 +132,9 @@ func (r *GatewayPluginAiPromptCompressorResourceModel) ToOperationsCreateAipromp
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiPromptCompressorPlugin, aiPromptCompressorPluginDiags := r.ToSharedAiPromptCompressorPlugin(ctx)
 	diags.Append(aiPromptCompressorPluginDiags...)
 
@@ -141,6 +144,7 @@ func (r *GatewayPluginAiPromptCompressorResourceModel) ToOperationsCreateAipromp
 
 	out := operations.CreateAipromptcompressorPluginRequest{
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		AiPromptCompressorPlugin: *aiPromptCompressorPlugin,
 	}
 
@@ -156,9 +160,13 @@ func (r *GatewayPluginAiPromptCompressorResourceModel) ToOperationsDeleteAipromp
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAipromptcompressorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -173,9 +181,13 @@ func (r *GatewayPluginAiPromptCompressorResourceModel) ToOperationsGetAipromptco
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAipromptcompressorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -190,6 +202,9 @@ func (r *GatewayPluginAiPromptCompressorResourceModel) ToOperationsUpdateAipromp
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiPromptCompressorPlugin, aiPromptCompressorPluginDiags := r.ToSharedAiPromptCompressorPlugin(ctx)
 	diags.Append(aiPromptCompressorPluginDiags...)
 
@@ -200,6 +215,7 @@ func (r *GatewayPluginAiPromptCompressorResourceModel) ToOperationsUpdateAipromp
 	out := operations.UpdateAipromptcompressorPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		AiPromptCompressorPlugin: *aiPromptCompressorPlugin,
 	}
 

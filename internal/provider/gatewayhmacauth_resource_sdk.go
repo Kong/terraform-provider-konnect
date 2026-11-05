@@ -40,6 +40,9 @@ func (r *GatewayHMACAuthResourceModel) ToOperationsCreateHmacAuthWithConsumerReq
 	var consumerID string
 	consumerID = r.ConsumerID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	hmacAuthWithoutParents, hmacAuthWithoutParentsDiags := r.ToSharedHMACAuthWithoutParents(ctx)
 	diags.Append(hmacAuthWithoutParentsDiags...)
 
@@ -50,6 +53,7 @@ func (r *GatewayHMACAuthResourceModel) ToOperationsCreateHmacAuthWithConsumerReq
 	out := operations.CreateHmacAuthWithConsumerRequest{
 		ControlPlaneID:         controlPlaneID,
 		ConsumerID:             consumerID,
+		Workspace:              workspace,
 		HMACAuthWithoutParents: *hmacAuthWithoutParents,
 	}
 
@@ -68,10 +72,14 @@ func (r *GatewayHMACAuthResourceModel) ToOperationsDeleteHmacAuthWithConsumerReq
 	var hmacAuthID string
 	hmacAuthID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteHmacAuthWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		HMACAuthID:     hmacAuthID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -89,10 +97,14 @@ func (r *GatewayHMACAuthResourceModel) ToOperationsGetHmacAuthWithConsumerReques
 	var hmacAuthID string
 	hmacAuthID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetHmacAuthWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		HMACAuthID:     hmacAuthID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags

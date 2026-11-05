@@ -465,10 +465,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			}
 			r.RedisEe.Config.ClusterMaxRedirections = types.Int64PointerValue(resp.PartialRedisEe.Config.ClusterMaxRedirections)
 			if resp.PartialRedisEe.Config.ClusterNodes != nil {
-				r.RedisEe.Config.ClusterNodes = []tfTypes.ClusterNodes{}
+				r.RedisEe.Config.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 				for _, clusterNodesItem := range resp.PartialRedisEe.Config.ClusterNodes {
-					var clusterNodes tfTypes.ClusterNodes
+					var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -490,10 +490,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			r.RedisEe.Config.SendTimeout = types.Int64PointerValue(resp.PartialRedisEe.Config.SendTimeout)
 			r.RedisEe.Config.SentinelMaster = types.StringPointerValue(resp.PartialRedisEe.Config.SentinelMaster)
 			if resp.PartialRedisEe.Config.SentinelNodes != nil {
-				r.RedisEe.Config.SentinelNodes = []tfTypes.SentinelNodes{}
+				r.RedisEe.Config.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 				for _, sentinelNodesItem := range resp.PartialRedisEe.Config.SentinelNodes {
-					var sentinelNodes tfTypes.SentinelNodes
+					var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -629,10 +629,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				}
 				r.Vectordb.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.ClusterMaxRedirections)
 				if resp.PartialVectordb.Config.Redis.ClusterNodes != nil {
-					r.Vectordb.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+					r.Vectordb.Config.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 					for _, clusterNodesItem1 := range resp.PartialVectordb.Config.Redis.ClusterNodes {
-						var clusterNodes1 tfTypes.ClusterNodes
+						var clusterNodes1 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 						clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
 						clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
@@ -654,10 +654,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				r.Vectordb.Config.Redis.SendTimeout = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.SendTimeout)
 				r.Vectordb.Config.Redis.SentinelMaster = types.StringPointerValue(resp.PartialVectordb.Config.Redis.SentinelMaster)
 				if resp.PartialVectordb.Config.Redis.SentinelNodes != nil {
-					r.Vectordb.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+					r.Vectordb.Config.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 					for _, sentinelNodesItem1 := range resp.PartialVectordb.Config.Redis.SentinelNodes {
-						var sentinelNodes1 tfTypes.SentinelNodes
+						var sentinelNodes1 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 						sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
 						sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
@@ -709,6 +709,9 @@ func (r *GatewayPartialResourceModel) ToOperationsCreatePartialRequest(ctx conte
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	partial, partialDiags := r.ToSharedPartial(ctx)
 	diags.Append(partialDiags...)
 
@@ -718,6 +721,7 @@ func (r *GatewayPartialResourceModel) ToOperationsCreatePartialRequest(ctx conte
 
 	out := operations.CreatePartialRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Partial:        *partial,
 	}
 
@@ -733,9 +737,13 @@ func (r *GatewayPartialResourceModel) ToOperationsDeletePartialRequest(ctx conte
 	var partialID string
 	partialID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeletePartialRequest{
 		ControlPlaneID: controlPlaneID,
 		PartialID:      partialID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -750,9 +758,13 @@ func (r *GatewayPartialResourceModel) ToOperationsGetPartialRequest(ctx context.
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetPartialRequest{
 		PartialID:      partialID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -767,6 +779,9 @@ func (r *GatewayPartialResourceModel) ToOperationsUpsertPartialRequest(ctx conte
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	partial, partialDiags := r.ToSharedPartial(ctx)
 	diags.Append(partialDiags...)
 
@@ -777,6 +792,7 @@ func (r *GatewayPartialResourceModel) ToOperationsUpsertPartialRequest(ctx conte
 	out := operations.UpsertPartialRequest{
 		PartialID:      partialID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Partial:        *partial,
 	}
 

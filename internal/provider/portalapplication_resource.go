@@ -49,14 +49,14 @@ type PortalApplicationResourceModel struct {
 	ClientID          types.String                                `tfsdk:"client_id"`
 	CreatedAt         types.String                                `tfsdk:"created_at"`
 	DcrClientID       types.String                                `tfsdk:"dcr_client_id"`
-	DcrProvider       *tfTypes.SchemaRegistryReference            `tfsdk:"dcr_provider"`
+	DcrProvider       *tfTypes.AICostBudgetReference              `tfsdk:"dcr_provider"`
 	Description       types.String                                `tfsdk:"description"`
 	GrantedScopes     []types.String                              `tfsdk:"granted_scopes"`
 	ID                types.String                                `tfsdk:"id"`
 	Labels            map[string]types.String                     `tfsdk:"labels"`
 	Name              types.String                                `tfsdk:"name"`
 	Owner             *tfTypes.ApplicationOwner                   `tfsdk:"owner"`
-	Portal            *tfTypes.SchemaRegistryReference            `tfsdk:"portal"`
+	Portal            *tfTypes.AICostBudgetReference              `tfsdk:"portal"`
 	PortalID          types.String                                `tfsdk:"portal_id"`
 	RegistrationCount types.Float64                               `tfsdk:"registration_count"`
 	UpdatedAt         types.String                                `tfsdk:"updated_at"`

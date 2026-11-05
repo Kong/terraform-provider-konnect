@@ -36,13 +36,14 @@ type TeamResource struct {
 
 // TeamResourceModel describes the resource data model.
 type TeamResourceModel struct {
-	CreatedAt   types.String            `tfsdk:"created_at"`
-	Description types.String            `tfsdk:"description"`
-	ID          types.String            `tfsdk:"id"`
-	Labels      map[string]types.String `tfsdk:"labels"`
-	Name        types.String            `tfsdk:"name"`
-	SystemTeam  types.Bool              `tfsdk:"system_team"`
-	UpdatedAt   types.String            `tfsdk:"updated_at"`
+	CreatedAt      types.String            `tfsdk:"created_at"`
+	Description    types.String            `tfsdk:"description"`
+	ID             types.String            `tfsdk:"id"`
+	KonnectManaged types.Bool              `tfsdk:"konnect_managed"`
+	Labels         map[string]types.String `tfsdk:"labels"`
+	Name           types.String            `tfsdk:"name"`
+	SystemTeam     types.Bool              `tfsdk:"system_team"`
+	UpdatedAt      types.String            `tfsdk:"updated_at"`
 }
 
 func (r *TeamResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -73,6 +74,12 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `The team ID.`,
+			},
+			"konnect_managed": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     booldefault.StaticBool(false),
+				Description: `Whether the team's membership is managed by Konnect instead of being synced from an identity provider's team mappings. Set to ` + "`" + `false` + "`" + ` (default) to let identity provider team mappings keep syncing members into this team. Set to ` + "`" + `true` + "`" + ` to manage membership directly in Konnect and prevent identity provider team mappings from syncing to this team. Default: false`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,

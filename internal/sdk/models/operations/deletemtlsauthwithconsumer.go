@@ -14,6 +14,8 @@ type DeleteMtlsAuthWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// ID of the MTLS-auth credential to lookup
 	MTLSAuthID string `pathParam:"style=simple,explode=false,name=MTLSAuthId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (d DeleteMtlsAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
@@ -21,7 +23,7 @@ func (d DeleteMtlsAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteMtlsAuthWithConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "MTLSAuthId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "MTLSAuthId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -46,6 +48,13 @@ func (d *DeleteMtlsAuthWithConsumerRequest) GetMTLSAuthID() string {
 		return ""
 	}
 	return d.MTLSAuthID
+}
+
+func (d *DeleteMtlsAuthWithConsumerRequest) GetWorkspace() string {
+	if d == nil {
+		return ""
+	}
+	return d.Workspace
 }
 
 type DeleteMtlsAuthWithConsumerResponse struct {

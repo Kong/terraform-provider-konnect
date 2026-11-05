@@ -57,13 +57,13 @@ type UpdatePluginSchemasResponse struct {
 	RawResponse *http.Response
 	// A response for a single custom plugin schema.
 	PluginSchemas *shared.PluginSchemas
-	// Forbidden
+	// Bad Request
 	KonnectCPLegacyBadRequestError *shared.KonnectCPLegacyBadRequestError
 	// Unauthorized
 	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
 	// Forbidden
 	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
-	// Forbidden
+	// Not Found
 	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 }
 

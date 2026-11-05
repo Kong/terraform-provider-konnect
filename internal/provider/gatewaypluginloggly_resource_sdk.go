@@ -135,6 +135,9 @@ func (r *GatewayPluginLogglyResourceModel) ToOperationsCreateLogglyPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	logglyPlugin, logglyPluginDiags := r.ToSharedLogglyPlugin(ctx)
 	diags.Append(logglyPluginDiags...)
 
@@ -144,6 +147,7 @@ func (r *GatewayPluginLogglyResourceModel) ToOperationsCreateLogglyPluginRequest
 
 	out := operations.CreateLogglyPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		LogglyPlugin:   *logglyPlugin,
 	}
 
@@ -159,9 +163,13 @@ func (r *GatewayPluginLogglyResourceModel) ToOperationsDeleteLogglyPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteLogglyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -176,9 +184,13 @@ func (r *GatewayPluginLogglyResourceModel) ToOperationsGetLogglyPluginRequest(ct
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetLogglyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -193,6 +205,9 @@ func (r *GatewayPluginLogglyResourceModel) ToOperationsUpdateLogglyPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	logglyPlugin, logglyPluginDiags := r.ToSharedLogglyPlugin(ctx)
 	diags.Append(logglyPluginDiags...)
 
@@ -203,6 +218,7 @@ func (r *GatewayPluginLogglyResourceModel) ToOperationsUpdateLogglyPluginRequest
 	out := operations.UpdateLogglyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		LogglyPlugin:   *logglyPlugin,
 	}
 

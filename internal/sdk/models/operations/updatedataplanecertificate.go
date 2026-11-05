@@ -57,13 +57,13 @@ type UpdateDataplaneCertificateResponse struct {
 	RawResponse *http.Response
 	// Response body for retrieving a dp-client-certificate.
 	DataPlaneClientCertificateResponse *shared.DataPlaneClientCertificateResponse
-	// Forbidden
+	// Bad Request
 	KonnectCPLegacyBadRequestError *shared.KonnectCPLegacyBadRequestError
 	// Unauthorized
 	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
 	// Forbidden
 	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
-	// Forbidden
+	// Not Found
 	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 }
 

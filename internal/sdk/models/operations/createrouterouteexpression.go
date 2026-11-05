@@ -11,6 +11,8 @@ import (
 type CreateRouteRouteExpressionRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of the new Route for creation
 	RouteExpression shared.RouteExpression `request:"mediaType=application/json"`
 }
@@ -20,7 +22,7 @@ func (c CreateRouteRouteExpressionRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateRouteRouteExpressionRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "RouteExpression"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "RouteExpression"}); err != nil {
 		return err
 	}
 	return nil
@@ -31,6 +33,13 @@ func (c *CreateRouteRouteExpressionRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateRouteRouteExpressionRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateRouteRouteExpressionRequest) GetRouteExpression() shared.RouteExpression {

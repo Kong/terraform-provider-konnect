@@ -12,15 +12,17 @@ import (
 type BackendClusterAuthenticationSchemeType string
 
 const (
-	BackendClusterAuthenticationSchemeTypeAnonymous BackendClusterAuthenticationSchemeType = "anonymous"
-	BackendClusterAuthenticationSchemeTypeSaslPlain BackendClusterAuthenticationSchemeType = "sasl_plain"
-	BackendClusterAuthenticationSchemeTypeSaslScram BackendClusterAuthenticationSchemeType = "sasl_scram"
+	BackendClusterAuthenticationSchemeTypeAnonymous  BackendClusterAuthenticationSchemeType = "anonymous"
+	BackendClusterAuthenticationSchemeTypeSaslPlain  BackendClusterAuthenticationSchemeType = "sasl_plain"
+	BackendClusterAuthenticationSchemeTypeSaslScram  BackendClusterAuthenticationSchemeType = "sasl_scram"
+	BackendClusterAuthenticationSchemeTypeSaslAwsIam BackendClusterAuthenticationSchemeType = "sasl_aws_iam"
 )
 
 type BackendClusterAuthenticationScheme struct {
-	BackendClusterAuthenticationAnonymous *BackendClusterAuthenticationAnonymous `queryParam:"inline" union:"member"`
-	BackendClusterAuthenticationSaslPlain *BackendClusterAuthenticationSaslPlain `queryParam:"inline" union:"member"`
-	BackendClusterAuthenticationSaslScram *BackendClusterAuthenticationSaslScram `queryParam:"inline" union:"member"`
+	BackendClusterAuthenticationAnonymous  *BackendClusterAuthenticationAnonymous  `queryParam:"inline" union:"member"`
+	BackendClusterAuthenticationSaslPlain  *BackendClusterAuthenticationSaslPlain  `queryParam:"inline" union:"member"`
+	BackendClusterAuthenticationSaslScram  *BackendClusterAuthenticationSaslScram  `queryParam:"inline" union:"member"`
+	BackendClusterAuthenticationSaslAwsIam *BackendClusterAuthenticationSaslAwsIam `queryParam:"inline" union:"member"`
 
 	Type BackendClusterAuthenticationSchemeType
 }
@@ -49,6 +51,15 @@ func CreateBackendClusterAuthenticationSchemeSaslScram(saslScram BackendClusterA
 	return BackendClusterAuthenticationScheme{
 		BackendClusterAuthenticationSaslScram: &saslScram,
 		Type:                                  typ,
+	}
+}
+
+func CreateBackendClusterAuthenticationSchemeSaslAwsIam(saslAwsIam BackendClusterAuthenticationSaslAwsIam) BackendClusterAuthenticationScheme {
+	typ := BackendClusterAuthenticationSchemeTypeSaslAwsIam
+
+	return BackendClusterAuthenticationScheme{
+		BackendClusterAuthenticationSaslAwsIam: &saslAwsIam,
+		Type:                                   typ,
 	}
 }
 
@@ -98,6 +109,15 @@ func (u *BackendClusterAuthenticationScheme) UnmarshalJSON(data []byte) (err err
 		u.BackendClusterAuthenticationSaslScram = backendClusterAuthenticationSaslScram
 		u.Type = BackendClusterAuthenticationSchemeTypeSaslScram
 		return nil
+	case "sasl_aws_iam":
+		backendClusterAuthenticationSaslAwsIam := new(BackendClusterAuthenticationSaslAwsIam)
+		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationSaslAwsIam, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sasl_aws_iam) type BackendClusterAuthenticationSaslAwsIam within BackendClusterAuthenticationScheme: %w", string(data), err)
+		}
+
+		u.BackendClusterAuthenticationSaslAwsIam = backendClusterAuthenticationSaslAwsIam
+		u.Type = BackendClusterAuthenticationSchemeTypeSaslAwsIam
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for BackendClusterAuthenticationScheme", string(data))
@@ -114,6 +134,10 @@ func (u BackendClusterAuthenticationScheme) MarshalJSON() ([]byte, error) {
 
 	if u.BackendClusterAuthenticationSaslScram != nil {
 		return utils.MarshalJSON(u.BackendClusterAuthenticationSaslScram, "", true)
+	}
+
+	if u.BackendClusterAuthenticationSaslAwsIam != nil {
+		return utils.MarshalJSON(u.BackendClusterAuthenticationSaslAwsIam, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type BackendClusterAuthenticationScheme: all fields are null")

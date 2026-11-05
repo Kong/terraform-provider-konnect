@@ -13,6 +13,8 @@ type DeletePartialRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Partial to lookup
 	PartialID string `pathParam:"style=simple,explode=false,name=PartialId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (d DeletePartialRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (d DeletePartialRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeletePartialRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "PartialId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "PartialId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,6 +40,13 @@ func (d *DeletePartialRequest) GetPartialID() string {
 		return ""
 	}
 	return d.PartialID
+}
+
+func (d *DeletePartialRequest) GetWorkspace() string {
+	if d == nil {
+		return ""
+	}
+	return d.Workspace
 }
 
 type DeletePartialResponse struct {

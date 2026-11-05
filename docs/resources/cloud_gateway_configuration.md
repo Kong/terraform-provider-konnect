@@ -55,7 +55,8 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
 - `me` — Middle East
 - `in` — India
 - `sg` — Singapore
-possible known values include one of ["us", "eu", "au", "me", "in", "sg"]
+- `uk` — United Kingdom
+possible known values include one of ["us", "eu", "au", "me", "in", "sg", "uk"]
 - `control_plane_id` (String) ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI.
 - `dataplane_groups` (Attributes Set) List of data-plane groups that describe where to deploy instances, along with how many instances. (see [below for nested schema](#nestedatt--dataplane_groups))
 

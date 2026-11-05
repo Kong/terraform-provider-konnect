@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -21,20 +22,36 @@ func (r *AIGatewayPolicyResourceModel) RefreshFromSharedAIGatewayPolicy(ctx cont
 		configResult, _ := json.Marshal(resp.Config)
 		r.Config = jsontypes.NewNormalizedValue(string(configResult))
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.Datastores = []tfTypes.AIGatewayDatastoreRef{}
+
+		for _, datastoresItem := range resp.Datastores {
+			var datastores tfTypes.AIGatewayDatastoreRef
+
+			datastores.Name = types.StringValue(datastoresItem.Name)
+
+			r.Datastores = append(r.Datastores, datastores)
+		}
 		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		if resp.Expressions != nil {
+			r.Expressions = make(map[string]jsontypes.Normalized, len(resp.Expressions))
+			for key, value := range resp.Expressions {
+				result, _ := json.Marshal(value)
+				r.Expressions[key] = jsontypes.NewNormalizedValue(string(result))
+			}
+		}
 		r.Global = types.BoolPointerValue(resp.Global)
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringValue(value)
+			for key1, value1 := range resp.Labels {
+				r.Labels[key1] = types.StringValue(value1)
 			}
 		}
 		if len(resp.ManagedBy) > 0 {
 			r.ManagedBy = make(map[string]types.String, len(resp.ManagedBy))
-			for key1, value1 := range resp.ManagedBy {
-				r.ManagedBy[key1] = types.StringValue(value1)
+			for key2, value2 := range resp.ManagedBy {
+				r.ManagedBy[key2] = types.StringValue(value2)
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
@@ -157,6 +174,15 @@ func (r *AIGatewayPolicyResourceModel) ToSharedCreateAIGatewayPolicyRequest(ctx 
 	} else {
 		condition = nil
 	}
+	var expressions map[string]interface{}
+	if r.Expressions != nil {
+		expressions = make(map[string]interface{})
+		for expressionsKey := range r.Expressions {
+			var expressionsInst interface{}
+			_ = json.Unmarshal([]byte(r.Expressions[expressionsKey].ValueString()), &expressionsInst)
+			expressions[expressionsKey] = expressionsInst
+		}
+	}
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {
 		var labelsInst string
@@ -171,6 +197,15 @@ func (r *AIGatewayPolicyResourceModel) ToSharedCreateAIGatewayPolicyRequest(ctx 
 
 		managedBy[managedByKey] = managedByInst
 	}
+	datastores := make([]shared.AIGatewayDatastoreRef, 0, len(r.Datastores))
+	for datastoresIndex := range r.Datastores {
+		var name1 string
+		name1 = r.Datastores[datastoresIndex].Name.ValueString()
+
+		datastores = append(datastores, shared.AIGatewayDatastoreRef{
+			Name: name1,
+		})
+	}
 	out := shared.CreateAIGatewayPolicyRequest{
 		DisplayName: displayName,
 		Name:        name,
@@ -179,8 +214,10 @@ func (r *AIGatewayPolicyResourceModel) ToSharedCreateAIGatewayPolicyRequest(ctx 
 		Global:      global,
 		Config:      config,
 		Condition:   condition,
+		Expressions: expressions,
 		Labels:      labels,
 		ManagedBy:   managedBy,
+		Datastores:  datastores,
 	}
 
 	return &out, diags
@@ -218,6 +255,15 @@ func (r *AIGatewayPolicyResourceModel) ToSharedUpdateAIGatewayPolicyRequest(ctx 
 	} else {
 		condition = nil
 	}
+	var expressions map[string]interface{}
+	if r.Expressions != nil {
+		expressions = make(map[string]interface{})
+		for expressionsKey := range r.Expressions {
+			var expressionsInst interface{}
+			_ = json.Unmarshal([]byte(r.Expressions[expressionsKey].ValueString()), &expressionsInst)
+			expressions[expressionsKey] = expressionsInst
+		}
+	}
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {
 		var labelsInst string
@@ -232,6 +278,15 @@ func (r *AIGatewayPolicyResourceModel) ToSharedUpdateAIGatewayPolicyRequest(ctx 
 
 		managedBy[managedByKey] = managedByInst
 	}
+	datastores := make([]shared.AIGatewayDatastoreRef, 0, len(r.Datastores))
+	for datastoresIndex := range r.Datastores {
+		var name1 string
+		name1 = r.Datastores[datastoresIndex].Name.ValueString()
+
+		datastores = append(datastores, shared.AIGatewayDatastoreRef{
+			Name: name1,
+		})
+	}
 	out := shared.UpdateAIGatewayPolicyRequest{
 		DisplayName: displayName,
 		Name:        name,
@@ -240,8 +295,10 @@ func (r *AIGatewayPolicyResourceModel) ToSharedUpdateAIGatewayPolicyRequest(ctx 
 		Global:      global,
 		Config:      config,
 		Condition:   condition,
+		Expressions: expressions,
 		Labels:      labels,
 		ManagedBy:   managedBy,
+		Datastores:  datastores,
 	}
 
 	return &out, diags

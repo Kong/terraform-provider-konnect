@@ -287,6 +287,9 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsCreateAire
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiResponseTransformerPlugin, aiResponseTransformerPluginDiags := r.ToSharedAiResponseTransformerPlugin(ctx)
 	diags.Append(aiResponseTransformerPluginDiags...)
 
@@ -296,6 +299,7 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsCreateAire
 
 	out := operations.CreateAiresponsetransformerPluginRequest{
 		ControlPlaneID:              controlPlaneID,
+		Workspace:                   workspace,
 		AiResponseTransformerPlugin: *aiResponseTransformerPlugin,
 	}
 
@@ -311,9 +315,13 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsDeleteAire
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAiresponsetransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -328,9 +336,13 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsGetAirespo
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAiresponsetransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -345,6 +357,9 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsUpdateAire
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiResponseTransformerPlugin, aiResponseTransformerPluginDiags := r.ToSharedAiResponseTransformerPlugin(ctx)
 	diags.Append(aiResponseTransformerPluginDiags...)
 
@@ -355,6 +370,7 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsUpdateAire
 	out := operations.UpdateAiresponsetransformerPluginRequest{
 		PluginID:                    pluginID,
 		ControlPlaneID:              controlPlaneID,
+		Workspace:                   workspace,
 		AiResponseTransformerPlugin: *aiResponseTransformerPlugin,
 	}
 

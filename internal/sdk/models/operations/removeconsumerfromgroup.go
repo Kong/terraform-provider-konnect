@@ -13,6 +13,8 @@ type RemoveConsumerFromGroupRequest struct {
 	ConsumerID      string `pathParam:"style=simple,explode=false,name=ConsumerId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (r RemoveConsumerFromGroupRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (r RemoveConsumerFromGroupRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RemoveConsumerFromGroupRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"ConsumerGroupId", "ConsumerId", "controlPlaneId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"ConsumerGroupId", "ConsumerId", "controlPlaneId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -45,6 +47,13 @@ func (r *RemoveConsumerFromGroupRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return r.ControlPlaneID
+}
+
+func (r *RemoveConsumerFromGroupRequest) GetWorkspace() string {
+	if r == nil {
+		return ""
+	}
+	return r.Workspace
 }
 
 type RemoveConsumerFromGroupResponse struct {

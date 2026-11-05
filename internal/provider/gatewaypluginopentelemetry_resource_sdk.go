@@ -216,6 +216,9 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsCreateOpentelemetr
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	opentelemetryPlugin, opentelemetryPluginDiags := r.ToSharedOpentelemetryPlugin(ctx)
 	diags.Append(opentelemetryPluginDiags...)
 
@@ -225,6 +228,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsCreateOpentelemetr
 
 	out := operations.CreateOpentelemetryPluginRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		OpentelemetryPlugin: *opentelemetryPlugin,
 	}
 
@@ -240,9 +244,13 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsDeleteOpentelemetr
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteOpentelemetryPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -257,9 +265,13 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsGetOpentelemetryPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetOpentelemetryPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -274,6 +286,9 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsUpdateOpentelemetr
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	opentelemetryPlugin, opentelemetryPluginDiags := r.ToSharedOpentelemetryPlugin(ctx)
 	diags.Append(opentelemetryPluginDiags...)
 
@@ -284,6 +299,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsUpdateOpentelemetr
 	out := operations.UpdateOpentelemetryPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		OpentelemetryPlugin: *opentelemetryPlugin,
 	}
 

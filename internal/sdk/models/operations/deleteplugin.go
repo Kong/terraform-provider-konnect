@@ -13,6 +13,8 @@ type DeletePluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (d DeletePluginRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (d DeletePluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeletePluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "PluginId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "PluginId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,6 +40,13 @@ func (d *DeletePluginRequest) GetPluginID() string {
 		return ""
 	}
 	return d.PluginID
+}
+
+func (d *DeletePluginRequest) GetWorkspace() string {
+	if d == nil {
+		return ""
+	}
+	return d.Workspace
 }
 
 type DeletePluginResponse struct {

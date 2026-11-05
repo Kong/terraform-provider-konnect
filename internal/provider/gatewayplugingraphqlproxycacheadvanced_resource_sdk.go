@@ -100,10 +100,10 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) RefreshFromSharedG
 				}
 				r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 				if resp.Config.Redis.ClusterNodes != nil {
-					r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+					r.Config.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 					for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-						var clusterNodes tfTypes.ClusterNodes
+						var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -125,10 +125,10 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) RefreshFromSharedG
 				r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 				r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
 				if resp.Config.Redis.SentinelNodes != nil {
-					r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+					r.Config.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 					for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-						var sentinelNodes tfTypes.SentinelNodes
+						var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -248,6 +248,9 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsCreate
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	graphqlProxyCacheAdvancedPlugin, graphqlProxyCacheAdvancedPluginDiags := r.ToSharedGraphqlProxyCacheAdvancedPlugin(ctx)
 	diags.Append(graphqlProxyCacheAdvancedPluginDiags...)
 
@@ -257,6 +260,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsCreate
 
 	out := operations.CreateGraphqlproxycacheadvancedPluginRequest{
 		ControlPlaneID:                  controlPlaneID,
+		Workspace:                       workspace,
 		GraphqlProxyCacheAdvancedPlugin: *graphqlProxyCacheAdvancedPlugin,
 	}
 
@@ -272,9 +276,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsDelete
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteGraphqlproxycacheadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -289,9 +297,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsGetGra
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetGraphqlproxycacheadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -306,6 +318,9 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsUpdate
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	graphqlProxyCacheAdvancedPlugin, graphqlProxyCacheAdvancedPluginDiags := r.ToSharedGraphqlProxyCacheAdvancedPlugin(ctx)
 	diags.Append(graphqlProxyCacheAdvancedPluginDiags...)
 
@@ -316,6 +331,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsUpdate
 	out := operations.UpdateGraphqlproxycacheadvancedPluginRequest{
 		PluginID:                        pluginID,
 		ControlPlaneID:                  controlPlaneID,
+		Workspace:                       workspace,
 		GraphqlProxyCacheAdvancedPlugin: *graphqlProxyCacheAdvancedPlugin,
 	}
 

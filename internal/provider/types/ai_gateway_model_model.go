@@ -11,6 +11,7 @@ type AIGatewayModelModel struct {
 	Capabilities []types.String             `tfsdk:"capabilities"`
 	Config       *AIGatewayModelModelConfig `tfsdk:"config"`
 	CreatedAt    types.String               `tfsdk:"created_at"`
+	Datastores   []AIGatewayDatastoreRef    `tfsdk:"datastores"`
 	DisplayName  types.String               `tfsdk:"display_name"`
 	Enabled      types.Bool                 `tfsdk:"enabled"`
 	Formats      []AIGatewayModelFormat     `tfsdk:"formats"`

@@ -24,11 +24,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayRouteExpressionResource{}
-var _ resource.ResourceWithImportState = &GatewayRouteExpressionResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayRouteExpressionResource{}
 
 func NewGatewayRouteExpressionResource() resource.Resource {
 	return &GatewayRouteExpressionResource{}
@@ -58,6 +59,7 @@ type GatewayRouteExpressionResourceModel struct {
 	StripPath               types.Bool     `tfsdk:"strip_path"`
 	Tags                    []types.String `tfsdk:"tags"`
 	UpdatedAt               types.Int64    `tfsdk:"updated_at"`
+	Workspace               types.String   `tfsdk:"workspace"`
 }
 
 func (r *GatewayRouteExpressionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -67,6 +69,7 @@ func (r *GatewayRouteExpressionResource) Metadata(ctx context.Context, req resou
 func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayRouteExpression Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -171,6 +174,15 @@ func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resourc
 				Computed:    true,
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
+			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
 			},
 		},
 	}
@@ -420,12 +432,13 @@ func (r *GatewayRouteExpressionResource) ImportState(ctx context.Context, req re
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ID             string `json:"id"`
-		ControlPlaneID string `json:"control_plane_id"`
+		ID             string  `json:"id"`
+		ControlPlaneID string  `json:"control_plane_id"`
+		Workspace      *string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -439,4 +452,15 @@ func (r *GatewayRouteExpressionResource) ImportState(ctx context.Context, req re
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if data.Workspace == nil {
+		var workspaceDefault string = `default`
+		data.Workspace = &workspaceDefault
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayRouteExpressionResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewayrouteexpressionStateUpgraderV0},
+	}
 }

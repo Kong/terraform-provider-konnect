@@ -103,6 +103,9 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsCreateStandardw
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	standardWebhooksPlugin, standardWebhooksPluginDiags := r.ToSharedStandardWebhooksPlugin(ctx)
 	diags.Append(standardWebhooksPluginDiags...)
 
@@ -112,6 +115,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsCreateStandardw
 
 	out := operations.CreateStandardwebhooksPluginRequest{
 		ControlPlaneID:         controlPlaneID,
+		Workspace:              workspace,
 		StandardWebhooksPlugin: *standardWebhooksPlugin,
 	}
 
@@ -127,9 +131,13 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsDeleteStandardw
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteStandardwebhooksPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -144,9 +152,13 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsGetStandardwebh
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetStandardwebhooksPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -161,6 +173,9 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsUpdateStandardw
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	standardWebhooksPlugin, standardWebhooksPluginDiags := r.ToSharedStandardWebhooksPlugin(ctx)
 	diags.Append(standardWebhooksPluginDiags...)
 
@@ -171,6 +186,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsUpdateStandardw
 	out := operations.UpdateStandardwebhooksPluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,
+		Workspace:              workspace,
 		StandardWebhooksPlugin: *standardWebhooksPlugin,
 	}
 

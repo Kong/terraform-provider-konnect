@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -15,6 +16,26 @@ func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Contex
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.Ai == nil {
+			r.Ai = nil
+		} else {
+			r.Ai = &tfTypes.AISettings{}
+			r.Ai.Enabled = types.BoolPointerValue(resp.Ai.Enabled)
+			r.Ai.Features = &tfTypes.AISettingsFeatures{}
+			if resp.Ai.Features.AiSearch == nil {
+				r.Ai.Features.AiSearch = nil
+			} else {
+				r.Ai.Features.AiSearch = &tfTypes.AuthStrategyPrincipals{}
+				r.Ai.Features.AiSearch.Enabled = types.BoolPointerValue(resp.Ai.Features.AiSearch.Enabled)
+			}
+			if resp.Ai.Features.McpServer == nil {
+				r.Ai.Features.McpServer = nil
+			} else {
+				r.Ai.Features.McpServer = &tfTypes.McpServer{}
+				r.Ai.Features.McpServer.Enabled = types.BoolPointerValue(resp.Ai.Features.McpServer.Enabled)
+				r.Ai.Features.McpServer.WriteOperationsEnabled = types.BoolPointerValue(resp.Ai.Features.McpServer.WriteOperationsEnabled)
+			}
+		}
 		r.AuthenticationEnabled = types.BoolPointerValue(resp.AuthenticationEnabled)
 		r.AutoApproveApplications = types.BoolPointerValue(resp.AutoApproveApplications)
 		r.AutoApproveDevelopers = types.BoolPointerValue(resp.AutoApproveDevelopers)
@@ -127,6 +148,54 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 	} else {
 		rbacEnabled = nil
 	}
+	var ai *shared.AISettings
+	if r.Ai != nil {
+		enabled := new(bool)
+		if !r.Ai.Enabled.IsUnknown() && !r.Ai.Enabled.IsNull() {
+			*enabled = r.Ai.Enabled.ValueBool()
+		} else {
+			enabled = nil
+		}
+		var aiSearch *shared.AiSearch
+		if r.Ai.Features.AiSearch != nil {
+			enabled1 := new(bool)
+			if !r.Ai.Features.AiSearch.Enabled.IsUnknown() && !r.Ai.Features.AiSearch.Enabled.IsNull() {
+				*enabled1 = r.Ai.Features.AiSearch.Enabled.ValueBool()
+			} else {
+				enabled1 = nil
+			}
+			aiSearch = &shared.AiSearch{
+				Enabled: enabled1,
+			}
+		}
+		var mcpServer *shared.McpServer
+		if r.Ai.Features.McpServer != nil {
+			enabled2 := new(bool)
+			if !r.Ai.Features.McpServer.Enabled.IsUnknown() && !r.Ai.Features.McpServer.Enabled.IsNull() {
+				*enabled2 = r.Ai.Features.McpServer.Enabled.ValueBool()
+			} else {
+				enabled2 = nil
+			}
+			writeOperationsEnabled := new(bool)
+			if !r.Ai.Features.McpServer.WriteOperationsEnabled.IsUnknown() && !r.Ai.Features.McpServer.WriteOperationsEnabled.IsNull() {
+				*writeOperationsEnabled = r.Ai.Features.McpServer.WriteOperationsEnabled.ValueBool()
+			} else {
+				writeOperationsEnabled = nil
+			}
+			mcpServer = &shared.McpServer{
+				Enabled:                enabled2,
+				WriteOperationsEnabled: writeOperationsEnabled,
+			}
+		}
+		features := shared.AISettingsFeatures{
+			AiSearch:  aiSearch,
+			McpServer: mcpServer,
+		}
+		ai = &shared.AISettings{
+			Enabled:  enabled,
+			Features: features,
+		}
+	}
 	siprEnabled := new(bool)
 	if !r.SiprEnabled.IsUnknown() && !r.SiprEnabled.IsNull() {
 		*siprEnabled = r.SiprEnabled.ValueBool()
@@ -182,12 +251,19 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 	} else {
 		notificationsDeveloperPiiVisibilityEnabled = nil
 	}
+	themeName := new(string)
+	if !r.ThemeName.IsUnknown() && !r.ThemeName.IsNull() {
+		*themeName = r.ThemeName.ValueString()
+	} else {
+		themeName = nil
+	}
 	out := shared.CreatePortal{
 		Name:                             name,
 		DisplayName:                      displayName,
 		Description:                      description,
 		AuthenticationEnabled:            authenticationEnabled,
 		RbacEnabled:                      rbacEnabled,
+		Ai:                               ai,
 		SiprEnabled:                      siprEnabled,
 		DefaultAPIVisibility:             defaultAPIVisibility,
 		DefaultPageVisibility:            defaultPageVisibility,
@@ -196,6 +272,7 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 		AutoApproveApplications:          autoApproveApplications,
 		Labels:                           labels,
 		NotificationsDeveloperPiiVisibilityEnabled: notificationsDeveloperPiiVisibilityEnabled,
+		ThemeName: themeName,
 	}
 
 	return &out, diags
@@ -233,6 +310,54 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 		*rbacEnabled = r.RbacEnabled.ValueBool()
 	} else {
 		rbacEnabled = nil
+	}
+	var ai *shared.AISettings
+	if r.Ai != nil {
+		enabled := new(bool)
+		if !r.Ai.Enabled.IsUnknown() && !r.Ai.Enabled.IsNull() {
+			*enabled = r.Ai.Enabled.ValueBool()
+		} else {
+			enabled = nil
+		}
+		var aiSearch *shared.AiSearch
+		if r.Ai.Features.AiSearch != nil {
+			enabled1 := new(bool)
+			if !r.Ai.Features.AiSearch.Enabled.IsUnknown() && !r.Ai.Features.AiSearch.Enabled.IsNull() {
+				*enabled1 = r.Ai.Features.AiSearch.Enabled.ValueBool()
+			} else {
+				enabled1 = nil
+			}
+			aiSearch = &shared.AiSearch{
+				Enabled: enabled1,
+			}
+		}
+		var mcpServer *shared.McpServer
+		if r.Ai.Features.McpServer != nil {
+			enabled2 := new(bool)
+			if !r.Ai.Features.McpServer.Enabled.IsUnknown() && !r.Ai.Features.McpServer.Enabled.IsNull() {
+				*enabled2 = r.Ai.Features.McpServer.Enabled.ValueBool()
+			} else {
+				enabled2 = nil
+			}
+			writeOperationsEnabled := new(bool)
+			if !r.Ai.Features.McpServer.WriteOperationsEnabled.IsUnknown() && !r.Ai.Features.McpServer.WriteOperationsEnabled.IsNull() {
+				*writeOperationsEnabled = r.Ai.Features.McpServer.WriteOperationsEnabled.ValueBool()
+			} else {
+				writeOperationsEnabled = nil
+			}
+			mcpServer = &shared.McpServer{
+				Enabled:                enabled2,
+				WriteOperationsEnabled: writeOperationsEnabled,
+			}
+		}
+		features := shared.AISettingsFeatures{
+			AiSearch:  aiSearch,
+			McpServer: mcpServer,
+		}
+		ai = &shared.AISettings{
+			Enabled:  enabled,
+			Features: features,
+		}
 	}
 	siprEnabled := new(bool)
 	if !r.SiprEnabled.IsUnknown() && !r.SiprEnabled.IsNull() {
@@ -295,6 +420,7 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 		Description:                      description,
 		AuthenticationEnabled:            authenticationEnabled,
 		RbacEnabled:                      rbacEnabled,
+		Ai:                               ai,
 		SiprEnabled:                      siprEnabled,
 		DefaultAPIVisibility:             defaultAPIVisibility,
 		DefaultPageVisibility:            defaultPageVisibility,

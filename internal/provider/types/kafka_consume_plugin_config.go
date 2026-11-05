@@ -9,7 +9,7 @@ import (
 type KafkaConsumePluginConfig struct {
 	Authentication           *Authentication                       `tfsdk:"authentication"`
 	AutoOffsetReset          types.String                          `tfsdk:"auto_offset_reset"`
-	BootstrapServers         []BootstrapServers                    `tfsdk:"bootstrap_servers"`
+	BootstrapServers         []SentinelNodes                       `tfsdk:"bootstrap_servers"`
 	ClusterName              types.String                          `tfsdk:"cluster_name"`
 	CommitStrategy           types.String                          `tfsdk:"commit_strategy"`
 	ConsumerGroup            *ConfluentConsumePluginConsumerGroup  `tfsdk:"consumer_group"`

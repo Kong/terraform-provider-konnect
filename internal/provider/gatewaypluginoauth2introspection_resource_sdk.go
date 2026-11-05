@@ -120,6 +120,9 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsCreateOauth2
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	oauth2IntrospectionPlugin, oauth2IntrospectionPluginDiags := r.ToSharedOauth2IntrospectionPlugin(ctx)
 	diags.Append(oauth2IntrospectionPluginDiags...)
 
@@ -129,6 +132,7 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsCreateOauth2
 
 	out := operations.CreateOauth2introspectionPluginRequest{
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		Oauth2IntrospectionPlugin: *oauth2IntrospectionPlugin,
 	}
 
@@ -144,9 +148,13 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsDeleteOauth2
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteOauth2introspectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -161,9 +169,13 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsGetOauth2int
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetOauth2introspectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -178,6 +190,9 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsUpdateOauth2
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	oauth2IntrospectionPlugin, oauth2IntrospectionPluginDiags := r.ToSharedOauth2IntrospectionPlugin(ctx)
 	diags.Append(oauth2IntrospectionPluginDiags...)
 
@@ -188,6 +203,7 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsUpdateOauth2
 	out := operations.UpdateOauth2introspectionPluginRequest{
 		PluginID:                  pluginID,
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		Oauth2IntrospectionPlugin: *oauth2IntrospectionPlugin,
 	}
 

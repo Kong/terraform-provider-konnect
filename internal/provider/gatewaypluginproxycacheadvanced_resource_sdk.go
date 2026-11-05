@@ -104,10 +104,10 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 			}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 			if resp.Config.Redis.ClusterNodes != nil {
-				r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+				r.Config.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 				for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-					var clusterNodes tfTypes.ClusterNodes
+					var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -129,10 +129,10 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
 			if resp.Config.Redis.SentinelNodes != nil {
-				r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+				r.Config.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 				for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-					var sentinelNodes tfTypes.SentinelNodes
+					var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -278,6 +278,9 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsCreateProxyca
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	proxyCacheAdvancedPlugin, proxyCacheAdvancedPluginDiags := r.ToSharedProxyCacheAdvancedPlugin(ctx)
 	diags.Append(proxyCacheAdvancedPluginDiags...)
 
@@ -287,6 +290,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsCreateProxyca
 
 	out := operations.CreateProxycacheadvancedPluginRequest{
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		ProxyCacheAdvancedPlugin: *proxyCacheAdvancedPlugin,
 	}
 
@@ -302,9 +306,13 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsDeleteProxyca
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteProxycacheadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -319,9 +327,13 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsGetProxycache
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetProxycacheadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -336,6 +348,9 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsUpdateProxyca
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	proxyCacheAdvancedPlugin, proxyCacheAdvancedPluginDiags := r.ToSharedProxyCacheAdvancedPlugin(ctx)
 	diags.Append(proxyCacheAdvancedPluginDiags...)
 
@@ -346,6 +361,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsUpdateProxyca
 	out := operations.UpdateProxycacheadvancedPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		ProxyCacheAdvancedPlugin: *proxyCacheAdvancedPlugin,
 	}
 

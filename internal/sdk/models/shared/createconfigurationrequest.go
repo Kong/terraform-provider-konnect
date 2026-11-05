@@ -21,6 +21,7 @@ type CreateConfigurationRequest struct {
 	// - `me` — Middle East
 	// - `in` — India
 	// - `sg` — Singapore
+	// - `uk` — United Kingdom
 	//
 	ControlPlaneGeo ControlPlaneGeo `json:"control_plane_geo"`
 	// Supported gateway version. For `serverless.v1` cloud gateways and dedicated AI gateways

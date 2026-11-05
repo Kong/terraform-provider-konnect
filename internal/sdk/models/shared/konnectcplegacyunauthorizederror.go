@@ -8,9 +8,17 @@ import (
 
 // KonnectCPLegacyUnauthorizedError - standard error
 type KonnectCPLegacyUnauthorizedError struct {
+	// The Kong error code for this failure. `3` indicates a validation
+	// error and `5` a missing resource.
+	//
+	Code *int64 `json:"code,omitempty"`
 	// A short summary of the problem.
 	//
 	Message *string `json:"message,omitempty"`
+	// The fields that caused the request to be rejected, when the failure
+	// is attributable to values in the request.
+	//
+	Details []KonnectCPLegacyErrorDetail `json:"details,omitempty"`
 }
 
 func (k KonnectCPLegacyUnauthorizedError) MarshalJSON() ([]byte, error) {
@@ -24,9 +32,23 @@ func (k *KonnectCPLegacyUnauthorizedError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (k *KonnectCPLegacyUnauthorizedError) GetCode() *int64 {
+	if k == nil {
+		return nil
+	}
+	return k.Code
+}
+
 func (k *KonnectCPLegacyUnauthorizedError) GetMessage() *string {
 	if k == nil {
 		return nil
 	}
 	return k.Message
+}
+
+func (k *KonnectCPLegacyUnauthorizedError) GetDetails() []KonnectCPLegacyErrorDetail {
+	if k == nil {
+		return nil
+	}
+	return k.Details
 }

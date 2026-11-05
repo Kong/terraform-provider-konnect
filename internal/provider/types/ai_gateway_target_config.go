@@ -5,22 +5,23 @@ package types
 type AIGatewayTargetConfig struct {
 	Anthropic   *AIGatewayTargetAnthropicConfig   `queryParam:"inline" tfsdk:"anthropic"`
 	Azure       *AIGatewayTargetAzureConfig       `queryParam:"inline" tfsdk:"azure"`
+	Baseten     *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"baseten"`
 	Bedrock     *AIGatewayTargetBedrockConfig     `queryParam:"inline" tfsdk:"bedrock"`
-	Cerebras    *AIGatewayTargetCerebrasConfig    `queryParam:"inline" tfsdk:"cerebras"`
+	Cerebras    *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"cerebras"`
 	Cohere      *AIGatewayTargetCohereConfig      `queryParam:"inline" tfsdk:"cohere"`
 	Dashscope   *AIGatewayTargetDashscopeConfig   `queryParam:"inline" tfsdk:"dashscope"`
 	Databricks  *AIGatewayTargetDatabricksConfig  `queryParam:"inline" tfsdk:"databricks"`
-	Deepseek    *AIGatewayTargetCerebrasConfig    `queryParam:"inline" tfsdk:"deepseek"`
+	Deepseek    *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"deepseek"`
 	Gemini      *AIGatewayTargetGeminiConfig      `queryParam:"inline" tfsdk:"gemini"`
 	Huggingface *AIGatewayTargetHuggingfaceConfig `queryParam:"inline" tfsdk:"huggingface"`
 	Kimi        *AIGatewayTargetDashscopeConfig   `queryParam:"inline" tfsdk:"kimi"`
 	Llama2      *AIGatewayTargetLlama2Config      `queryParam:"inline" tfsdk:"llama2"`
 	Mistral     *AIGatewayTargetMistralConfig     `queryParam:"inline" tfsdk:"mistral"`
-	Ollama      *AIGatewayTargetCerebrasConfig    `queryParam:"inline" tfsdk:"ollama"`
-	Openai      *AIGatewayTargetCerebrasConfig    `queryParam:"inline" tfsdk:"openai"`
+	Ollama      *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"ollama"`
+	Openai      *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"openai"`
 	Sagemaker   *AIGatewayTargetSagemakerConfig   `queryParam:"inline" tfsdk:"sagemaker"`
 	Typesafe    *AIGatewayTargetTypesafeConfig    `queryParam:"inline" tfsdk:"typesafe"`
-	Vercel      *AIGatewayTargetCerebrasConfig    `queryParam:"inline" tfsdk:"vercel"`
+	Vercel      *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"vercel"`
 	Vllm        *AIGatewayTargetVllmConfig        `queryParam:"inline" tfsdk:"vllm"`
-	Xai         *AIGatewayTargetCerebrasConfig    `queryParam:"inline" tfsdk:"xai"`
+	Xai         *AIGatewayTargetBasetenConfig     `queryParam:"inline" tfsdk:"xai"`
 }

@@ -22,7 +22,8 @@ resource "konnect_gateway_key_auth" "my_gatewaykeyauth" {
   tags = [
     "..."
   ]
-  ttl = 5
+  ttl       = 5
+  workspace = "team-payments"
 }
 ```
 
@@ -41,6 +42,7 @@ resource "konnect_gateway_key_auth" "my_gatewaykeyauth" {
 - `key` (String) Requires replacement if changed.
 - `tags` (List of String) A set of strings representing tags. Requires replacement if changed.
 - `ttl` (Number) key-auth ttl in seconds. Requires replacement if changed.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 ## Import
 
@@ -55,6 +57,7 @@ import {
     consumer_id      = ""
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = ""
+    workspace        = "team-payments"
   })
 }
 ```
@@ -62,5 +65,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_key_auth.my_konnect_gateway_key_auth '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}'
+terraform import konnect_gateway_key_auth.my_konnect_gateway_key_auth '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "", "workspace": "team-payments"}'
 ```

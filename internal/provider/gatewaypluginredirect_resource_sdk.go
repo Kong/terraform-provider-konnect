@@ -110,6 +110,9 @@ func (r *GatewayPluginRedirectResourceModel) ToOperationsCreateRedirectPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	redirectPlugin, redirectPluginDiags := r.ToSharedRedirectPlugin(ctx)
 	diags.Append(redirectPluginDiags...)
 
@@ -119,6 +122,7 @@ func (r *GatewayPluginRedirectResourceModel) ToOperationsCreateRedirectPluginReq
 
 	out := operations.CreateRedirectPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		RedirectPlugin: *redirectPlugin,
 	}
 
@@ -134,9 +138,13 @@ func (r *GatewayPluginRedirectResourceModel) ToOperationsDeleteRedirectPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteRedirectPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -151,9 +159,13 @@ func (r *GatewayPluginRedirectResourceModel) ToOperationsGetRedirectPluginReques
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetRedirectPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -168,6 +180,9 @@ func (r *GatewayPluginRedirectResourceModel) ToOperationsUpdateRedirectPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	redirectPlugin, redirectPluginDiags := r.ToSharedRedirectPlugin(ctx)
 	diags.Append(redirectPluginDiags...)
 
@@ -178,6 +193,7 @@ func (r *GatewayPluginRedirectResourceModel) ToOperationsUpdateRedirectPluginReq
 	out := operations.UpdateRedirectPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		RedirectPlugin: *redirectPlugin,
 	}
 

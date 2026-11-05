@@ -280,6 +280,9 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToOperationsCreateAireq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiRequestTransformerPlugin, aiRequestTransformerPluginDiags := r.ToSharedAiRequestTransformerPlugin(ctx)
 	diags.Append(aiRequestTransformerPluginDiags...)
 
@@ -289,6 +292,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToOperationsCreateAireq
 
 	out := operations.CreateAirequesttransformerPluginRequest{
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		AiRequestTransformerPlugin: *aiRequestTransformerPlugin,
 	}
 
@@ -304,9 +308,13 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToOperationsDeleteAireq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAirequesttransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -321,9 +329,13 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToOperationsGetAireques
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAirequesttransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -338,6 +350,9 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToOperationsUpdateAireq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiRequestTransformerPlugin, aiRequestTransformerPluginDiags := r.ToSharedAiRequestTransformerPlugin(ctx)
 	diags.Append(aiRequestTransformerPluginDiags...)
 
@@ -348,6 +363,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToOperationsUpdateAireq
 	out := operations.UpdateAirequesttransformerPluginRequest{
 		PluginID:                   pluginID,
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		AiRequestTransformerPlugin: *aiRequestTransformerPlugin,
 	}
 

@@ -205,10 +205,10 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 				}
 				r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
 				if resp.Config.Vectordb.Redis.ClusterNodes != nil {
-					r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+					r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 					for _, clusterNodesItem := range resp.Config.Vectordb.Redis.ClusterNodes {
-						var clusterNodes tfTypes.ClusterNodes
+						var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -230,10 +230,10 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 				r.Config.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.SendTimeout)
 				r.Config.Vectordb.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelMaster)
 				if resp.Config.Vectordb.Redis.SentinelNodes != nil {
-					r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+					r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 					for _, sentinelNodesItem := range resp.Config.Vectordb.Redis.SentinelNodes {
-						var sentinelNodes tfTypes.SentinelNodes
+						var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -348,6 +348,9 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsCreateAisemantic
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiSemanticCachePlugin, aiSemanticCachePluginDiags := r.ToSharedAiSemanticCachePlugin(ctx)
 	diags.Append(aiSemanticCachePluginDiags...)
 
@@ -357,6 +360,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsCreateAisemantic
 
 	out := operations.CreateAisemanticcachePluginRequest{
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiSemanticCachePlugin: *aiSemanticCachePlugin,
 	}
 
@@ -372,9 +376,13 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsDeleteAisemantic
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAisemanticcachePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -389,9 +397,13 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsGetAisemanticcac
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAisemanticcachePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -406,6 +418,9 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsUpdateAisemantic
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiSemanticCachePlugin, aiSemanticCachePluginDiags := r.ToSharedAiSemanticCachePlugin(ctx)
 	diags.Append(aiSemanticCachePluginDiags...)
 
@@ -416,6 +431,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsUpdateAisemantic
 	out := operations.UpdateAisemanticcachePluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiSemanticCachePlugin: *aiSemanticCachePlugin,
 	}
 

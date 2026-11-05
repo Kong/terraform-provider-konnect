@@ -6,17 +6,52 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
+// AIGatewayModelBalancerSemanticConfigFailoverCriteria - **`http_400` requires a minimum runtime version of `2.3`**.
+//
+// **`http_401` requires a minimum runtime version of `2.3`**.
+//
+// **`http_402` requires a minimum runtime version of `2.3`**.
+//
+// **`http_405` requires a minimum runtime version of `2.3`**.
+//
+// **`http_408` requires a minimum runtime version of `2.3`**.
+//
+// **`http_409` requires a minimum runtime version of `2.3`**.
+//
+// **`http_413` requires a minimum runtime version of `2.3`**.
+//
+// **`http_415` requires a minimum runtime version of `2.3`**.
+//
+// **`http_422` requires a minimum runtime version of `2.3`**.
+//
+// **`http_522` requires a minimum runtime version of `2.3`**.
+//
+// **`http_529` requires a minimum runtime version of `2.3`**.
+//
+// **`http_5xx` requires a minimum runtime version of `2.3`**.
 type AIGatewayModelBalancerSemanticConfigFailoverCriteria string
 
 const (
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaError         AIGatewayModelBalancerSemanticConfigFailoverCriteria = "error"
+	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp400       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_400"
+	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp401       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_401"
+	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp402       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_402"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp403       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_403"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp404       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_404"
+	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp405       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_405"
+	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp408       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_408"
+	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp409       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_409"
+	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp413       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_413"
+	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp415       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_415"
+	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp422       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_422"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp429       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_429"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp500       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_500"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp502       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_502"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp503       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_503"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp504       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_504"
+	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp522       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_522"
+	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp529       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_529"
+	AIGatewayModelBalancerSemanticConfigFailoverCriteriaHttp5xx       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "http_5xx"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaInvalidHeader AIGatewayModelBalancerSemanticConfigFailoverCriteria = "invalid_header"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaNonIdempotent AIGatewayModelBalancerSemanticConfigFailoverCriteria = "non_idempotent"
 	AIGatewayModelBalancerSemanticConfigFailoverCriteriaTimeout       AIGatewayModelBalancerSemanticConfigFailoverCriteria = "timeout"
@@ -30,7 +65,7 @@ func (e AIGatewayModelBalancerSemanticConfigFailoverCriteria) ToPointer() *AIGat
 func (e *AIGatewayModelBalancerSemanticConfigFailoverCriteria) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "error", "http_403", "http_404", "http_429", "http_500", "http_502", "http_503", "http_504", "invalid_header", "non_idempotent", "timeout":
+		case "error", "http_400", "http_401", "http_402", "http_403", "http_404", "http_405", "http_408", "http_409", "http_413", "http_415", "http_422", "http_429", "http_500", "http_502", "http_503", "http_504", "http_522", "http_529", "http_5xx", "invalid_header", "non_idempotent", "timeout":
 			return true
 		}
 	}

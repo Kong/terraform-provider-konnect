@@ -13,6 +13,8 @@ type CreateBasicAuthWithConsumerRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Consumer ID for nested entities
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of new Basic-auth credential for creation
 	BasicAuthWithoutParents shared.BasicAuthWithoutParents `request:"mediaType=application/json"`
 }
@@ -22,7 +24,7 @@ func (c CreateBasicAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateBasicAuthWithConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "BasicAuthWithoutParents"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "workspace", "BasicAuthWithoutParents"}); err != nil {
 		return err
 	}
 	return nil
@@ -40,6 +42,13 @@ func (c *CreateBasicAuthWithConsumerRequest) GetConsumerID() string {
 		return ""
 	}
 	return c.ConsumerID
+}
+
+func (c *CreateBasicAuthWithConsumerRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateBasicAuthWithConsumerRequest) GetBasicAuthWithoutParents() shared.BasicAuthWithoutParents {

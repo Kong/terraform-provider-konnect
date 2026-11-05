@@ -133,6 +133,9 @@ func (r *GatewayPluginKeyAuthResourceModel) ToOperationsCreateKeyauthPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	keyAuthPlugin, keyAuthPluginDiags := r.ToSharedKeyAuthPlugin(ctx)
 	diags.Append(keyAuthPluginDiags...)
 
@@ -142,6 +145,7 @@ func (r *GatewayPluginKeyAuthResourceModel) ToOperationsCreateKeyauthPluginReque
 
 	out := operations.CreateKeyauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		KeyAuthPlugin:  *keyAuthPlugin,
 	}
 
@@ -157,9 +161,13 @@ func (r *GatewayPluginKeyAuthResourceModel) ToOperationsDeleteKeyauthPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteKeyauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -174,9 +182,13 @@ func (r *GatewayPluginKeyAuthResourceModel) ToOperationsGetKeyauthPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetKeyauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -191,6 +203,9 @@ func (r *GatewayPluginKeyAuthResourceModel) ToOperationsUpdateKeyauthPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	keyAuthPlugin, keyAuthPluginDiags := r.ToSharedKeyAuthPlugin(ctx)
 	diags.Append(keyAuthPluginDiags...)
 
@@ -201,6 +216,7 @@ func (r *GatewayPluginKeyAuthResourceModel) ToOperationsUpdateKeyauthPluginReque
 	out := operations.UpdateKeyauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		KeyAuthPlugin:  *keyAuthPlugin,
 	}
 

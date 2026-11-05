@@ -13,6 +13,8 @@ type CreateACLWithConsumerRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Consumer ID for nested entities
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of new ACL for creation
 	ACLWithoutParents shared.ACLWithoutParents `request:"mediaType=application/json"`
 }
@@ -22,7 +24,7 @@ func (c CreateACLWithConsumerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateACLWithConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "ACLWithoutParents"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "workspace", "ACLWithoutParents"}); err != nil {
 		return err
 	}
 	return nil
@@ -40,6 +42,13 @@ func (c *CreateACLWithConsumerRequest) GetConsumerID() string {
 		return ""
 	}
 	return c.ConsumerID
+}
+
+func (c *CreateACLWithConsumerRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateACLWithConsumerRequest) GetACLWithoutParents() shared.ACLWithoutParents {

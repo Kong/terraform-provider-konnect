@@ -203,6 +203,9 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToOperationsCreateSolaceconsum
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	solaceConsumePlugin, solaceConsumePluginDiags := r.ToSharedSolaceConsumePlugin(ctx)
 	diags.Append(solaceConsumePluginDiags...)
 
@@ -212,6 +215,7 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToOperationsCreateSolaceconsum
 
 	out := operations.CreateSolaceconsumePluginRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		SolaceConsumePlugin: *solaceConsumePlugin,
 	}
 
@@ -227,9 +231,13 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToOperationsDeleteSolaceconsum
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteSolaceconsumePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -244,9 +252,13 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToOperationsGetSolaceconsumePl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetSolaceconsumePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -261,6 +273,9 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToOperationsUpdateSolaceconsum
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	solaceConsumePlugin, solaceConsumePluginDiags := r.ToSharedSolaceConsumePlugin(ctx)
 	diags.Append(solaceConsumePluginDiags...)
 
@@ -271,6 +286,7 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToOperationsUpdateSolaceconsum
 	out := operations.UpdateSolaceconsumePluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		SolaceConsumePlugin: *solaceConsumePlugin,
 	}
 

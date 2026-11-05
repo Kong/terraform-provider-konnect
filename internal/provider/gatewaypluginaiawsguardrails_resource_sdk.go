@@ -131,6 +131,9 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsCreateAiawsguard
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiAwsGuardrailsPlugin, aiAwsGuardrailsPluginDiags := r.ToSharedAiAwsGuardrailsPlugin(ctx)
 	diags.Append(aiAwsGuardrailsPluginDiags...)
 
@@ -140,6 +143,7 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsCreateAiawsguard
 
 	out := operations.CreateAiawsguardrailsPluginRequest{
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiAwsGuardrailsPlugin: *aiAwsGuardrailsPlugin,
 	}
 
@@ -155,9 +159,13 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsDeleteAiawsguard
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAiawsguardrailsPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -172,9 +180,13 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsGetAiawsguardrai
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAiawsguardrailsPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -189,6 +201,9 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsUpdateAiawsguard
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiAwsGuardrailsPlugin, aiAwsGuardrailsPluginDiags := r.ToSharedAiAwsGuardrailsPlugin(ctx)
 	diags.Append(aiAwsGuardrailsPluginDiags...)
 
@@ -199,6 +214,7 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsUpdateAiawsguard
 	out := operations.UpdateAiawsguardrailsPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiAwsGuardrailsPlugin: *aiAwsGuardrailsPlugin,
 	}
 

@@ -154,6 +154,9 @@ func (r *GatewayPluginDatadogResourceModel) ToOperationsCreateDatadogPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	datadogPlugin, datadogPluginDiags := r.ToSharedDatadogPlugin(ctx)
 	diags.Append(datadogPluginDiags...)
 
@@ -163,6 +166,7 @@ func (r *GatewayPluginDatadogResourceModel) ToOperationsCreateDatadogPluginReque
 
 	out := operations.CreateDatadogPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		DatadogPlugin:  *datadogPlugin,
 	}
 
@@ -178,9 +182,13 @@ func (r *GatewayPluginDatadogResourceModel) ToOperationsDeleteDatadogPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteDatadogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -195,9 +203,13 @@ func (r *GatewayPluginDatadogResourceModel) ToOperationsGetDatadogPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetDatadogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -212,6 +224,9 @@ func (r *GatewayPluginDatadogResourceModel) ToOperationsUpdateDatadogPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	datadogPlugin, datadogPluginDiags := r.ToSharedDatadogPlugin(ctx)
 	diags.Append(datadogPluginDiags...)
 
@@ -222,6 +237,7 @@ func (r *GatewayPluginDatadogResourceModel) ToOperationsUpdateDatadogPluginReque
 	out := operations.UpdateDatadogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		DatadogPlugin:  *datadogPlugin,
 	}
 

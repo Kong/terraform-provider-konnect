@@ -14,6 +14,8 @@ type DeleteTargetWithUpstreamRequest struct {
 	UpstreamID string `pathParam:"style=simple,explode=false,name=UpstreamIdForTarget"`
 	// ID of the Target to lookup
 	TargetID string `pathParam:"style=simple,explode=false,name=TargetId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (d DeleteTargetWithUpstreamRequest) MarshalJSON() ([]byte, error) {
@@ -21,7 +23,7 @@ func (d DeleteTargetWithUpstreamRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteTargetWithUpstreamRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "UpstreamIdForTarget", "TargetId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "UpstreamIdForTarget", "TargetId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -46,6 +48,13 @@ func (d *DeleteTargetWithUpstreamRequest) GetTargetID() string {
 		return ""
 	}
 	return d.TargetID
+}
+
+func (d *DeleteTargetWithUpstreamRequest) GetWorkspace() string {
+	if d == nil {
+		return ""
+	}
+	return d.Workspace
 }
 
 type DeleteTargetWithUpstreamResponse struct {

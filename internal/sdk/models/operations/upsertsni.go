@@ -13,6 +13,8 @@ type UpsertSniRequest struct {
 	SNIID string `pathParam:"style=simple,explode=false,name=SNIId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of the SNI
 	Sni shared.Sni `request:"mediaType=application/json"`
 }
@@ -22,7 +24,7 @@ func (u UpsertSniRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpsertSniRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"SNIId", "controlPlaneId", "SNI"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"SNIId", "controlPlaneId", "workspace", "SNI"}); err != nil {
 		return err
 	}
 	return nil
@@ -40,6 +42,13 @@ func (u *UpsertSniRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return u.ControlPlaneID
+}
+
+func (u *UpsertSniRequest) GetWorkspace() string {
+	if u == nil {
+		return ""
+	}
+	return u.Workspace
 }
 
 func (u *UpsertSniRequest) GetSni() shared.Sni {

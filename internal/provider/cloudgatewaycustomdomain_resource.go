@@ -80,7 +80,8 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 					`- ` + "`" + `me` + "`" + ` — Middle East` + "\n" +
 					`- ` + "`" + `in` + "`" + ` — India` + "\n" +
 					`- ` + "`" + `sg` + "`" + ` — Singapore` + "\n" +
-					`possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.`,
+					`- ` + "`" + `uk` + "`" + ` — United Kingdom` + "\n" +
+					`possible known values include one of ["us", "eu", "au", "me", "in", "sg", "uk"]; Requires replacement if changed.`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,

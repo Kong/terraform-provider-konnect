@@ -14,7 +14,7 @@ CloudGatewayCustomDomain Resource
 
 ```terraform
 resource "konnect_cloud_gateway_custom_domain" "my_cloudgatewaycustomdomain" {
-  control_plane_geo = "sg"
+  control_plane_geo = "uk"
   control_plane_id  = "0949471e-b759-45ba-87ab-ee63fb781388"
   domain            = "example.com"
   kind              = "dedicated.v0"
@@ -34,7 +34,8 @@ resource "konnect_cloud_gateway_custom_domain" "my_cloudgatewaycustomdomain" {
 - `me` — Middle East
 - `in` — India
 - `sg` — Singapore
-possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.
+- `uk` — United Kingdom
+possible known values include one of ["us", "eu", "au", "me", "in", "sg", "uk"]; Requires replacement if changed.
 - `control_plane_id` (String) ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI. Requires replacement if changed.
 - `domain` (String) Domain name of the custom domain. Requires replacement if changed.
 

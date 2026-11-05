@@ -13,4 +13,5 @@ type AIGatewayBedrockEmbeddingsModelConfig struct {
 	Region                   types.String `tfsdk:"region"`
 	UpstreamURL              types.String `tfsdk:"upstream_url"`
 	VideoOutputS3URI         types.String `tfsdk:"video_output_s3_uri"`
+	VpcEndpoint              types.String `tfsdk:"vpc_endpoint"`
 }

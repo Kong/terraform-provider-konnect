@@ -187,6 +187,9 @@ func (r *GatewayPluginStatsdResourceModel) ToOperationsCreateStatsdPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	statsdPlugin, statsdPluginDiags := r.ToSharedStatsdPlugin(ctx)
 	diags.Append(statsdPluginDiags...)
 
@@ -196,6 +199,7 @@ func (r *GatewayPluginStatsdResourceModel) ToOperationsCreateStatsdPluginRequest
 
 	out := operations.CreateStatsdPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		StatsdPlugin:   *statsdPlugin,
 	}
 
@@ -211,9 +215,13 @@ func (r *GatewayPluginStatsdResourceModel) ToOperationsDeleteStatsdPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteStatsdPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -228,9 +236,13 @@ func (r *GatewayPluginStatsdResourceModel) ToOperationsGetStatsdPluginRequest(ct
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetStatsdPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -245,6 +257,9 @@ func (r *GatewayPluginStatsdResourceModel) ToOperationsUpdateStatsdPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	statsdPlugin, statsdPluginDiags := r.ToSharedStatsdPlugin(ctx)
 	diags.Append(statsdPluginDiags...)
 
@@ -255,6 +270,7 @@ func (r *GatewayPluginStatsdResourceModel) ToOperationsUpdateStatsdPluginRequest
 	out := operations.UpdateStatsdPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		StatsdPlugin:   *statsdPlugin,
 	}
 

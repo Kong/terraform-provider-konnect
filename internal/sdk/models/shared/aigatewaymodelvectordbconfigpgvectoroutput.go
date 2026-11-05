@@ -29,21 +29,21 @@ func (e *DistanceMetric) IsExact() bool {
 	return false
 }
 
-// Version - the ssl version to use for the pgvector database
-type Version string
+// AIGatewayModelVectorDBConfigPgVectorVersion - the ssl version to use for the pgvector database
+type AIGatewayModelVectorDBConfigPgVectorVersion string
 
 const (
-	VersionAny    Version = "any"
-	VersionTlsv12 Version = "tlsv1_2"
-	VersionTlsv13 Version = "tlsv1_3"
+	AIGatewayModelVectorDBConfigPgVectorVersionAny    AIGatewayModelVectorDBConfigPgVectorVersion = "any"
+	AIGatewayModelVectorDBConfigPgVectorVersionTlsv12 AIGatewayModelVectorDBConfigPgVectorVersion = "tlsv1_2"
+	AIGatewayModelVectorDBConfigPgVectorVersionTlsv13 AIGatewayModelVectorDBConfigPgVectorVersion = "tlsv1_3"
 )
 
-func (e Version) ToPointer() *Version {
+func (e AIGatewayModelVectorDBConfigPgVectorVersion) ToPointer() *AIGatewayModelVectorDBConfigPgVectorVersion {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Version) IsExact() bool {
+func (e *AIGatewayModelVectorDBConfigPgVectorVersion) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "any", "tlsv1_2", "tlsv1_3":
@@ -65,7 +65,7 @@ type Ssl struct {
 	// whether to verify ssl for the pgvector database
 	Verify *bool `default:"true" json:"verify"`
 	// the ssl version to use for the pgvector database
-	Version *Version `default:"tlsv1_2" json:"version"`
+	Version *AIGatewayModelVectorDBConfigPgVectorVersion `default:"tlsv1_2" json:"version"`
 }
 
 func (s Ssl) MarshalJSON() ([]byte, error) {
@@ -114,7 +114,7 @@ func (s *Ssl) GetVerify() *bool {
 	return s.Verify
 }
 
-func (s *Ssl) GetVersion() *Version {
+func (s *Ssl) GetVersion() *AIGatewayModelVectorDBConfigPgVectorVersion {
 	if s == nil {
 		return nil
 	}

@@ -194,10 +194,10 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 				}
 				r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 				if resp.Config.Redis.ClusterNodes != nil {
-					r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+					r.Config.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
 
 					for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-						var clusterNodes tfTypes.ClusterNodes
+						var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
 
 						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -219,10 +219,10 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 				r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 				r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
 				if resp.Config.Redis.SentinelNodes != nil {
-					r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+					r.Config.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
 
 					for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-						var sentinelNodes tfTypes.SentinelNodes
+						var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
 
 						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -353,6 +353,9 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsCreateAir
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiRateLimitingAdvancedPlugin, aiRateLimitingAdvancedPluginDiags := r.ToSharedAiRateLimitingAdvancedPlugin(ctx)
 	diags.Append(aiRateLimitingAdvancedPluginDiags...)
 
@@ -362,6 +365,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsCreateAir
 
 	out := operations.CreateAiratelimitingadvancedPluginRequest{
 		ControlPlaneID:               controlPlaneID,
+		Workspace:                    workspace,
 		AiRateLimitingAdvancedPlugin: *aiRateLimitingAdvancedPlugin,
 	}
 
@@ -377,9 +381,13 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsDeleteAir
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAiratelimitingadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -394,9 +402,13 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsGetAirate
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAiratelimitingadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -411,6 +423,9 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsUpdateAir
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiRateLimitingAdvancedPlugin, aiRateLimitingAdvancedPluginDiags := r.ToSharedAiRateLimitingAdvancedPlugin(ctx)
 	diags.Append(aiRateLimitingAdvancedPluginDiags...)
 
@@ -421,6 +436,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsUpdateAir
 	out := operations.UpdateAiratelimitingadvancedPluginRequest{
 		PluginID:                     pluginID,
 		ControlPlaneID:               controlPlaneID,
+		Workspace:                    workspace,
 		AiRateLimitingAdvancedPlugin: *aiRateLimitingAdvancedPlugin,
 	}
 

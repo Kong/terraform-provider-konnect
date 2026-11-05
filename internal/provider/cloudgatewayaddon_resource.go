@@ -352,7 +352,8 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 									`- ` + "`" + `me` + "`" + ` — Middle East` + "\n" +
 									`- ` + "`" + `in` + "`" + ` — India` + "\n" +
 									`- ` + "`" + `sg` + "`" + ` — Singapore` + "\n" +
-									`possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.`,
+									`- ` + "`" + `uk` + "`" + ` — United Kingdom` + "\n" +
+									`possible known values include one of ["us", "eu", "au", "me", "in", "sg", "uk"]; Not Null; Requires replacement if changed.`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
@@ -409,7 +410,8 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 									`- ` + "`" + `me` + "`" + ` — Middle East` + "\n" +
 									`- ` + "`" + `in` + "`" + ` — India` + "\n" +
 									`- ` + "`" + `sg` + "`" + ` — Singapore` + "\n" +
-									`possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.`,
+									`- ` + "`" + `uk` + "`" + ` — United Kingdom` + "\n" +
+									`possible known values include one of ["us", "eu", "au", "me", "in", "sg", "uk"]; Not Null; Requires replacement if changed.`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},

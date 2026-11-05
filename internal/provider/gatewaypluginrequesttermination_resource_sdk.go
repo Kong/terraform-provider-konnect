@@ -117,6 +117,9 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsCreateRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	requestTerminationPlugin, requestTerminationPluginDiags := r.ToSharedRequestTerminationPlugin(ctx)
 	diags.Append(requestTerminationPluginDiags...)
 
@@ -126,6 +129,7 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsCreateRequest
 
 	out := operations.CreateRequestterminationPluginRequest{
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		RequestTerminationPlugin: *requestTerminationPlugin,
 	}
 
@@ -141,9 +145,13 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsDeleteRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteRequestterminationPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -158,9 +166,13 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsGetRequestter
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetRequestterminationPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -175,6 +187,9 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsUpdateRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	requestTerminationPlugin, requestTerminationPluginDiags := r.ToSharedRequestTerminationPlugin(ctx)
 	diags.Append(requestTerminationPluginDiags...)
 
@@ -185,6 +200,7 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsUpdateRequest
 	out := operations.UpdateRequestterminationPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		RequestTerminationPlugin: *requestTerminationPlugin,
 	}
 

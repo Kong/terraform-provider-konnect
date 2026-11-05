@@ -155,6 +155,9 @@ func (r *GatewayPluginProxyCacheResourceModel) ToOperationsCreateProxycachePlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	proxyCachePlugin, proxyCachePluginDiags := r.ToSharedProxyCachePlugin(ctx)
 	diags.Append(proxyCachePluginDiags...)
 
@@ -164,6 +167,7 @@ func (r *GatewayPluginProxyCacheResourceModel) ToOperationsCreateProxycachePlugi
 
 	out := operations.CreateProxycachePluginRequest{
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		ProxyCachePlugin: *proxyCachePlugin,
 	}
 
@@ -179,9 +183,13 @@ func (r *GatewayPluginProxyCacheResourceModel) ToOperationsDeleteProxycachePlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteProxycachePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -196,9 +204,13 @@ func (r *GatewayPluginProxyCacheResourceModel) ToOperationsGetProxycachePluginRe
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetProxycachePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -213,6 +225,9 @@ func (r *GatewayPluginProxyCacheResourceModel) ToOperationsUpdateProxycachePlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	proxyCachePlugin, proxyCachePluginDiags := r.ToSharedProxyCachePlugin(ctx)
 	diags.Append(proxyCachePluginDiags...)
 
@@ -223,6 +238,7 @@ func (r *GatewayPluginProxyCacheResourceModel) ToOperationsUpdateProxycachePlugi
 	out := operations.UpdateProxycachePluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		ProxyCachePlugin: *proxyCachePlugin,
 	}
 

@@ -114,6 +114,9 @@ func (r *GatewayPluginTCPLogResourceModel) ToOperationsCreateTcplogPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	tcpLogPlugin, tcpLogPluginDiags := r.ToSharedTCPLogPlugin(ctx)
 	diags.Append(tcpLogPluginDiags...)
 
@@ -123,6 +126,7 @@ func (r *GatewayPluginTCPLogResourceModel) ToOperationsCreateTcplogPluginRequest
 
 	out := operations.CreateTcplogPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		TCPLogPlugin:   *tcpLogPlugin,
 	}
 
@@ -138,9 +142,13 @@ func (r *GatewayPluginTCPLogResourceModel) ToOperationsDeleteTcplogPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteTcplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -155,9 +163,13 @@ func (r *GatewayPluginTCPLogResourceModel) ToOperationsGetTcplogPluginRequest(ct
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetTcplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -172,6 +184,9 @@ func (r *GatewayPluginTCPLogResourceModel) ToOperationsUpdateTcplogPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	tcpLogPlugin, tcpLogPluginDiags := r.ToSharedTCPLogPlugin(ctx)
 	diags.Append(tcpLogPluginDiags...)
 
@@ -182,6 +197,7 @@ func (r *GatewayPluginTCPLogResourceModel) ToOperationsUpdateTcplogPluginRequest
 	out := operations.UpdateTcplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		TCPLogPlugin:   *tcpLogPlugin,
 	}
 

@@ -12,8 +12,10 @@ type UpdateJqPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	JqPlugin       shared.JqPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string          `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	JqPlugin  shared.JqPlugin `request:"mediaType=application/json"`
 }
 
 func (u UpdateJqPluginRequest) MarshalJSON() ([]byte, error) {
@@ -21,7 +23,7 @@ func (u UpdateJqPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateJqPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "JqPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "workspace", "JqPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -39,6 +41,13 @@ func (u *UpdateJqPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return u.ControlPlaneID
+}
+
+func (u *UpdateJqPluginRequest) GetWorkspace() string {
+	if u == nil {
+		return ""
+	}
+	return u.Workspace
 }
 
 func (u *UpdateJqPluginRequest) GetJqPlugin() shared.JqPlugin {

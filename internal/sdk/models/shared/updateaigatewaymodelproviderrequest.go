@@ -14,6 +14,7 @@ type UpdateAIGatewayModelProviderRequestType string
 const (
 	UpdateAIGatewayModelProviderRequestTypeAnthropic   UpdateAIGatewayModelProviderRequestType = "anthropic"
 	UpdateAIGatewayModelProviderRequestTypeAzure       UpdateAIGatewayModelProviderRequestType = "azure"
+	UpdateAIGatewayModelProviderRequestTypeBaseten     UpdateAIGatewayModelProviderRequestType = "baseten"
 	UpdateAIGatewayModelProviderRequestTypeBedrock     UpdateAIGatewayModelProviderRequestType = "bedrock"
 	UpdateAIGatewayModelProviderRequestTypeCerebras    UpdateAIGatewayModelProviderRequestType = "cerebras"
 	UpdateAIGatewayModelProviderRequestTypeCohere      UpdateAIGatewayModelProviderRequestType = "cohere"
@@ -37,6 +38,7 @@ const (
 type UpdateAIGatewayModelProviderRequest struct {
 	AIGatewayModelProviderAnthropic   *AIGatewayModelProviderAnthropic   `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAzure       *AIGatewayModelProviderAzure       `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderBaseten     *AIGatewayModelProviderBaseten     `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderBedrock     *AIGatewayModelProviderBedrock     `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderCerebras    *AIGatewayModelProviderCerebras    `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderCohere      *AIGatewayModelProviderCohere      `queryParam:"inline" union:"member"`
@@ -74,6 +76,15 @@ func CreateUpdateAIGatewayModelProviderRequestAzure(azure AIGatewayModelProvider
 	return UpdateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderAzure: &azure,
 		Type:                        typ,
+	}
+}
+
+func CreateUpdateAIGatewayModelProviderRequestBaseten(baseten AIGatewayModelProviderBaseten) UpdateAIGatewayModelProviderRequest {
+	typ := UpdateAIGatewayModelProviderRequestTypeBaseten
+
+	return UpdateAIGatewayModelProviderRequest{
+		AIGatewayModelProviderBaseten: &baseten,
+		Type:                          typ,
 	}
 }
 
@@ -276,6 +287,15 @@ func (u *UpdateAIGatewayModelProviderRequest) UnmarshalJSON(data []byte) (err er
 		u.AIGatewayModelProviderAzure = aiGatewayModelProviderAzure
 		u.Type = UpdateAIGatewayModelProviderRequestTypeAzure
 		return nil
+	case "baseten":
+		aiGatewayModelProviderBaseten := new(AIGatewayModelProviderBaseten)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderBaseten, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == baseten) type AIGatewayModelProviderBaseten within UpdateAIGatewayModelProviderRequest: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderBaseten = aiGatewayModelProviderBaseten
+		u.Type = UpdateAIGatewayModelProviderRequestTypeBaseten
+		return nil
 	case "bedrock":
 		aiGatewayModelProviderBedrock := new(AIGatewayModelProviderBedrock)
 		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderBedrock, "", true, nil); err != nil {
@@ -450,6 +470,10 @@ func (u UpdateAIGatewayModelProviderRequest) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayModelProviderAzure != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderAzure, "", true)
+	}
+
+	if u.AIGatewayModelProviderBaseten != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderBaseten, "", true)
 	}
 
 	if u.AIGatewayModelProviderBedrock != nil {

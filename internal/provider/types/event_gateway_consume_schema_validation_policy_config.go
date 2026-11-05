@@ -3,6 +3,7 @@
 package types
 
 type EventGatewayConsumeSchemaValidationPolicyConfig struct {
-	JSON                    *EventGatewayConsumeSchemaValidationPolicyJSONConfig `queryParam:"inline" tfsdk:"json"`
-	ConfluentSchemaRegistry *EventGatewayConsumeSchemaValidationPolicyJSONConfig `queryParam:"inline" tfsdk:"confluent_schema_registry"`
+	InlineSchema            *EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig `queryParam:"inline" tfsdk:"inline_schema"`
+	JSON                    *EventGatewayConsumeSchemaValidationPolicyJSONConfig         `queryParam:"inline" tfsdk:"json"`
+	ConfluentSchemaRegistry *EventGatewayConsumeSchemaValidationPolicyJSONConfig         `queryParam:"inline" tfsdk:"confluent_schema_registry"`
 }

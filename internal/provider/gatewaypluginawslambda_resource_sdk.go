@@ -155,6 +155,9 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsCreateAwslambdaPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	awsLambdaPlugin, awsLambdaPluginDiags := r.ToSharedAwsLambdaPlugin(ctx)
 	diags.Append(awsLambdaPluginDiags...)
 
@@ -164,6 +167,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsCreateAwslambdaPluginR
 
 	out := operations.CreateAwslambdaPluginRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		AwsLambdaPlugin: *awsLambdaPlugin,
 	}
 
@@ -179,9 +183,13 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsDeleteAwslambdaPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAwslambdaPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -196,9 +204,13 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsGetAwslambdaPluginRequ
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAwslambdaPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -213,6 +225,9 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsUpdateAwslambdaPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	awsLambdaPlugin, awsLambdaPluginDiags := r.ToSharedAwsLambdaPlugin(ctx)
 	diags.Append(awsLambdaPluginDiags...)
 
@@ -223,6 +238,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsUpdateAwslambdaPluginR
 	out := operations.UpdateAwslambdaPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		AwsLambdaPlugin: *awsLambdaPlugin,
 	}
 

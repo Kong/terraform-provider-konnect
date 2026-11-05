@@ -86,6 +86,10 @@ func (a *AIGatewayTarget) GetConfigAzure() *AIGatewayTargetAzureConfig {
 	return a.GetConfig().AIGatewayTargetAzureConfig
 }
 
+func (a *AIGatewayTarget) GetConfigBaseten() *AIGatewayTargetBasetenConfig {
+	return a.GetConfig().AIGatewayTargetBasetenConfig
+}
+
 func (a *AIGatewayTarget) GetConfigBedrock() *AIGatewayTargetBedrockConfig {
 	return a.GetConfig().AIGatewayTargetBedrockConfig
 }

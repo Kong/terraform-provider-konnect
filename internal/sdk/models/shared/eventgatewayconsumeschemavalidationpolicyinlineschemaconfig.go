@@ -48,6 +48,14 @@ type EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig struct {
 	ValueValidationAction *ConsumeValueValidationAction `json:"value_validation_action,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"inline_schema" json:"type"`
+	// Defines the schema for a record key or value, inline.
+	//
+	// **Requires a minimum runtime version of `1.3`**.
+	Key *SchemaValidationInlineSchemaConfig `json:"key,omitempty"`
+	// Defines the schema for a record key or value, inline.
+	//
+	// **Requires a minimum runtime version of `1.3`**.
+	Value *SchemaValidationInlineSchemaConfig `json:"value,omitempty"`
 }
 
 func (e EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig) MarshalJSON() ([]byte, error) {
@@ -98,4 +106,46 @@ func (e *EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig) GetValueVa
 
 func (e *EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig) GetType() string {
 	return "inline_schema"
+}
+
+func (e *EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig) GetKey() *SchemaValidationInlineSchemaConfig {
+	if e == nil {
+		return nil
+	}
+	return e.Key
+}
+
+func (e *EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig) GetKeyJSON() *SchemaValidationInlineSchemaConfigJSON {
+	if v := e.GetKey(); v != nil {
+		return v.SchemaValidationInlineSchemaConfigJSON
+	}
+	return nil
+}
+
+func (e *EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig) GetKeyAvro() *SchemaValidationInlineSchemaConfigAvro {
+	if v := e.GetKey(); v != nil {
+		return v.SchemaValidationInlineSchemaConfigAvro
+	}
+	return nil
+}
+
+func (e *EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig) GetValue() *SchemaValidationInlineSchemaConfig {
+	if e == nil {
+		return nil
+	}
+	return e.Value
+}
+
+func (e *EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig) GetValueJSON() *SchemaValidationInlineSchemaConfigJSON {
+	if v := e.GetValue(); v != nil {
+		return v.SchemaValidationInlineSchemaConfigJSON
+	}
+	return nil
+}
+
+func (e *EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig) GetValueAvro() *SchemaValidationInlineSchemaConfigAvro {
+	if v := e.GetValue(); v != nil {
+		return v.SchemaValidationInlineSchemaConfigAvro
+	}
+	return nil
 }

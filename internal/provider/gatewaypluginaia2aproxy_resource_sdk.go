@@ -108,6 +108,9 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsCreateAia2aproxyPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiA2aProxyPlugin, aiA2aProxyPluginDiags := r.ToSharedAiA2aProxyPlugin(ctx)
 	diags.Append(aiA2aProxyPluginDiags...)
 
@@ -117,6 +120,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsCreateAia2aproxyPlugi
 
 	out := operations.CreateAia2aproxyPluginRequest{
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		AiA2aProxyPlugin: *aiA2aProxyPlugin,
 	}
 
@@ -132,9 +136,13 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsDeleteAia2aproxyPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAia2aproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -149,9 +157,13 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsGetAia2aproxyPluginRe
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAia2aproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -166,6 +178,9 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsUpdateAia2aproxyPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiA2aProxyPlugin, aiA2aProxyPluginDiags := r.ToSharedAiA2aProxyPlugin(ctx)
 	diags.Append(aiA2aProxyPluginDiags...)
 
@@ -176,6 +191,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsUpdateAia2aproxyPlugi
 	out := operations.UpdateAia2aproxyPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		AiA2aProxyPlugin: *aiA2aProxyPlugin,
 	}
 

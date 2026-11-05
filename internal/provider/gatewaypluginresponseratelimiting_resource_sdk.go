@@ -213,6 +213,9 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsCreateRespo
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	responseRatelimitingPlugin, responseRatelimitingPluginDiags := r.ToSharedResponseRatelimitingPlugin(ctx)
 	diags.Append(responseRatelimitingPluginDiags...)
 
@@ -222,6 +225,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsCreateRespo
 
 	out := operations.CreateResponseratelimitingPluginRequest{
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		ResponseRatelimitingPlugin: *responseRatelimitingPlugin,
 	}
 
@@ -237,9 +241,13 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsDeleteRespo
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteResponseratelimitingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -254,9 +262,13 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsGetResponse
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetResponseratelimitingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -271,6 +283,9 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsUpdateRespo
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	responseRatelimitingPlugin, responseRatelimitingPluginDiags := r.ToSharedResponseRatelimitingPlugin(ctx)
 	diags.Append(responseRatelimitingPluginDiags...)
 
@@ -281,6 +296,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsUpdateRespo
 	out := operations.UpdateResponseratelimitingPluginRequest{
 		PluginID:                   pluginID,
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		ResponseRatelimitingPlugin: *responseRatelimitingPlugin,
 	}
 

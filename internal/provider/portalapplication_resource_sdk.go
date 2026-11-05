@@ -48,7 +48,7 @@ func (r *PortalApplicationResourceModel) RefreshFromSharedGetApplicationResponse
 		if resp.DcrProvider == nil {
 			r.DcrProvider = nil
 		} else {
-			r.DcrProvider = &tfTypes.SchemaRegistryReference{}
+			r.DcrProvider = &tfTypes.AICostBudgetReference{}
 			r.DcrProvider.ID = types.StringValue(resp.DcrProvider.ID)
 		}
 		r.Description = types.StringPointerValue(resp.Description)
@@ -67,7 +67,7 @@ func (r *PortalApplicationResourceModel) RefreshFromSharedGetApplicationResponse
 			r.Owner.ID = types.StringValue(resp.Owner.ID)
 			r.Owner.Type = types.StringValue(string(resp.Owner.Type))
 		}
-		r.Portal = &tfTypes.SchemaRegistryReference{}
+		r.Portal = &tfTypes.AICostBudgetReference{}
 		r.Portal.ID = types.StringValue(resp.Portal.ID)
 		r.RegistrationCount = types.Float64Value(resp.RegistrationCount)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))

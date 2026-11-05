@@ -33,8 +33,10 @@ type AddConsumerToGroupRequest struct {
 	// The UUID or name of the consumer group
 	ConsumerGroupID string `pathParam:"style=simple,explode=false,name=ConsumerGroupId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	RequestBody    *AddConsumerToGroupRequestBody `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace   string                         `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	RequestBody *AddConsumerToGroupRequestBody `request:"mediaType=application/json"`
 }
 
 func (a AddConsumerToGroupRequest) MarshalJSON() ([]byte, error) {
@@ -42,7 +44,7 @@ func (a AddConsumerToGroupRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddConsumerToGroupRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"ConsumerGroupId", "controlPlaneId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"ConsumerGroupId", "controlPlaneId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -60,6 +62,13 @@ func (a *AddConsumerToGroupRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return a.ControlPlaneID
+}
+
+func (a *AddConsumerToGroupRequest) GetWorkspace() string {
+	if a == nil {
+		return ""
+	}
+	return a.Workspace
 }
 
 func (a *AddConsumerToGroupRequest) GetRequestBody() *AddConsumerToGroupRequestBody {

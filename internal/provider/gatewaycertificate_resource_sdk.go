@@ -48,6 +48,9 @@ func (r *GatewayCertificateResourceModel) ToOperationsCreateCertificateRequest(c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	certificateRequest, certificateRequestDiags := r.ToSharedCertificateRequest(ctx)
 	diags.Append(certificateRequestDiags...)
 
@@ -57,6 +60,7 @@ func (r *GatewayCertificateResourceModel) ToOperationsCreateCertificateRequest(c
 
 	out := operations.CreateCertificateRequest{
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		CertificateRequest: *certificateRequest,
 	}
 
@@ -72,9 +76,13 @@ func (r *GatewayCertificateResourceModel) ToOperationsDeleteCertificateRequest(c
 	var certificateID string
 	certificateID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteCertificateRequest{
 		ControlPlaneID: controlPlaneID,
 		CertificateID:  certificateID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -89,9 +97,13 @@ func (r *GatewayCertificateResourceModel) ToOperationsGetCertificateRequest(ctx 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetCertificateRequest{
 		CertificateID:  certificateID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -106,6 +118,9 @@ func (r *GatewayCertificateResourceModel) ToOperationsUpsertCertificateRequest(c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	certificateRequest, certificateRequestDiags := r.ToSharedCertificateRequest(ctx)
 	diags.Append(certificateRequestDiags...)
 
@@ -116,6 +131,7 @@ func (r *GatewayCertificateResourceModel) ToOperationsUpsertCertificateRequest(c
 	out := operations.UpsertCertificateRequest{
 		CertificateID:      certificateID,
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		CertificateRequest: *certificateRequest,
 	}
 

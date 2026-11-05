@@ -109,6 +109,9 @@ func (r *GatewayPluginFileLogResourceModel) ToOperationsCreateFilelogPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	fileLogPlugin, fileLogPluginDiags := r.ToSharedFileLogPlugin(ctx)
 	diags.Append(fileLogPluginDiags...)
 
@@ -118,6 +121,7 @@ func (r *GatewayPluginFileLogResourceModel) ToOperationsCreateFilelogPluginReque
 
 	out := operations.CreateFilelogPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		FileLogPlugin:  *fileLogPlugin,
 	}
 
@@ -133,9 +137,13 @@ func (r *GatewayPluginFileLogResourceModel) ToOperationsDeleteFilelogPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteFilelogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -150,9 +158,13 @@ func (r *GatewayPluginFileLogResourceModel) ToOperationsGetFilelogPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetFilelogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -167,6 +179,9 @@ func (r *GatewayPluginFileLogResourceModel) ToOperationsUpdateFilelogPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	fileLogPlugin, fileLogPluginDiags := r.ToSharedFileLogPlugin(ctx)
 	diags.Append(fileLogPluginDiags...)
 
@@ -177,6 +192,7 @@ func (r *GatewayPluginFileLogResourceModel) ToOperationsUpdateFilelogPluginReque
 	out := operations.UpdateFilelogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		FileLogPlugin:  *fileLogPlugin,
 	}
 
