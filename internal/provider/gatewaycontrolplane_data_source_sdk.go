@@ -18,9 +18,17 @@ func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane1(ctx 
 	r.CloudGateway = types.BoolPointerValue(resp.CloudGateway)
 	r.ClusterType = types.StringPointerValue(resp.ClusterType)
 	r.Config = &tfTypes.ControlPlaneConfig{}
-	r.Config.AuthType = types.StringValue(string(resp.Config.AuthType))
-	r.Config.CloudGateway = types.BoolValue(resp.Config.CloudGateway)
-	r.Config.ClusterType = types.StringValue(string(resp.Config.ClusterType))
+	if resp.Config.AuthType != nil {
+		r.Config.AuthType = types.StringValue(string(*resp.Config.AuthType))
+	} else {
+		r.Config.AuthType = types.StringNull()
+	}
+	r.Config.CloudGateway = types.BoolPointerValue(resp.Config.CloudGateway)
+	if resp.Config.ClusterType != nil {
+		r.Config.ClusterType = types.StringValue(string(*resp.Config.ClusterType))
+	} else {
+		r.Config.ClusterType = types.StringNull()
+	}
 	r.Config.ControlPlaneEndpoint = types.StringValue(resp.Config.ControlPlaneEndpoint)
 	r.Config.ProxyUrls = []tfTypes.AIGatewayProxyURL{}
 
@@ -43,16 +51,20 @@ func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane1(ctx 
 		}
 	}
 	r.Name = types.StringValue(resp.Name)
-	r.ProxyUrls = []tfTypes.AIGatewayProxyURL{}
+	if resp.ProxyUrls != nil {
+		r.ProxyUrls = []tfTypes.AIGatewayProxyURL{}
 
-	for _, proxyUrlsItem1 := range resp.ProxyUrls {
-		var proxyUrls1 tfTypes.AIGatewayProxyURL
+		for _, proxyUrlsItem1 := range resp.ProxyUrls {
+			var proxyUrls1 tfTypes.AIGatewayProxyURL
 
-		proxyUrls1.Host = types.StringValue(proxyUrlsItem1.Host)
-		proxyUrls1.Port = types.Int64Value(proxyUrlsItem1.Port)
-		proxyUrls1.Protocol = types.StringValue(proxyUrlsItem1.Protocol)
+			proxyUrls1.Host = types.StringValue(proxyUrlsItem1.Host)
+			proxyUrls1.Port = types.Int64Value(proxyUrlsItem1.Port)
+			proxyUrls1.Protocol = types.StringValue(proxyUrlsItem1.Protocol)
 
-		r.ProxyUrls = append(r.ProxyUrls, proxyUrls1)
+			r.ProxyUrls = append(r.ProxyUrls, proxyUrls1)
+		}
+	} else {
+		r.ProxyUrls = nil
 	}
 
 	return diags

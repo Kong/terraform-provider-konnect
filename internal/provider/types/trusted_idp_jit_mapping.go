@@ -10,5 +10,6 @@ type TrustedIdpJitMapping struct {
 	DisplayName types.String            `tfsdk:"display_name"`
 	Email       types.String            `tfsdk:"email"`
 	Groups      types.String            `tfsdk:"groups"`
+	Identifier  types.String            `tfsdk:"identifier"`
 	Metadata    map[string]types.String `tfsdk:"metadata"`
 }

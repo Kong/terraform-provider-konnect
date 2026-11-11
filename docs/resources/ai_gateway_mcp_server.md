@@ -1534,7 +1534,8 @@ If unset, no client certificate is presented to the upstream.
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
-incoming requests. (see [below for nested schema](#nestedatt--conversion_listener--config--route))
+incoming requests.
+Not Null (see [below for nested schema](#nestedatt--conversion_listener--config--route))
 - `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--conversion_listener--config--server))
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--conversion_listener--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
@@ -2773,7 +2774,8 @@ revision that defines them receive them.
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
-incoming requests. (see [below for nested schema](#nestedatt--listener--config--route))
+incoming requests.
+Not Null (see [below for nested schema](#nestedatt--listener--config--route))
 - `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--listener--config--server))
 
 <a id="nestedatt--listener--config--cache"></a>
@@ -3444,7 +3446,8 @@ If unset, no client certificate is presented to the upstream.
 - `proxy` (Attributes) HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider. (see [below for nested schema](#nestedatt--passthrough_listener--config--proxy))
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
-incoming requests. (see [below for nested schema](#nestedatt--passthrough_listener--config--route))
+incoming requests.
+Not Null (see [below for nested schema](#nestedatt--passthrough_listener--config--route))
 - `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--passthrough_listener--config--server))
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
@@ -4074,7 +4077,8 @@ If unset, no client certificate is presented to the upstream.
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
-incoming requests. (see [below for nested schema](#nestedatt--upstream_server--config--route))
+incoming requests.
+Not Null (see [below for nested schema](#nestedatt--upstream_server--config--route))
 - `server` (Attributes) Server-side configuration specific to `upstream-server` mode. (see [below for nested schema](#nestedatt--upstream_server--config--server))
 - `tools_cache_ttl_seconds` (Number) The time-to-live (TTL) for the upstream tools cache in seconds. Set to `0` to refresh on
 every client call.

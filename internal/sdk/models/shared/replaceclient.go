@@ -18,6 +18,9 @@ type ReplaceClient struct {
 	ResponseTypes []ResponseType `json:"response_types"`
 	// The URIs that the client is allowed to redirect to after authentication in interactive flows. All redirect URIs must be absolute URIs, be secure (HTTPS), and must not include a fragment component.
 	RedirectUris []string `json:"redirect_uris,omitempty"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
 	LoginURI *string `default:"null" json:"login_uri"`
 	// The duration of the minted token is valid for, in seconds

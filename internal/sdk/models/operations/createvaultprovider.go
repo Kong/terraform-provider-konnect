@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-var CreateVaultProviderServerList = []string{
-	"https://us.api.konghq.com/",
-}
-
 type CreateVaultProviderRequest struct {
 	// ID of the directory
 	DirectoryID string `pathParam:"style=simple,explode=false,name=directoryId"`

@@ -11,13 +11,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
+	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
+	speakeasy_setplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/setplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
@@ -69,11 +74,12 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 			"cloud_gateway": schema.BoolAttribute{
 				Computed: true,
 				Optional: true,
+				Default:  booldefault.StaticBool(false),
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 				},
-				Description: `Whether this control-plane can be used for cloud-gateways. Requires replacement if changed.`,
+				Description: `Whether this control-plane can be used for cloud-gateways. Default: false; Requires replacement if changed.`,
 			},
 			"cluster_type": schema.StringAttribute{
 				Computed: true,
@@ -86,27 +92,33 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.Object{
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
 				Attributes: map[string]schema.Attribute{
 					"auth_type": schema.StringAttribute{
 						Computed: true,
+						Default:  stringdefault.StaticString(`pinned_client_certs`),
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The auth type value of the cluster associated with the Runtime Group.`,
+						Description: `The auth type value of the cluster associated with the Runtime Group. Default: "pinned_client_certs"`,
 					},
 					"cloud_gateway": schema.BoolAttribute{
 						Computed: true,
+						Default:  booldefault.StaticBool(false),
 						PlanModifiers: []planmodifier.Bool{
 							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 						},
-						Description: `Whether the Control Plane can be used for cloud-gateways.`,
+						Description: `Whether the Control Plane can be used for cloud-gateways. Default: false`,
 					},
 					"cluster_type": schema.StringAttribute{
 						Computed: true,
+						Default:  stringdefault.StaticString(`CLUSTER_TYPE_CONTROL_PLANE`),
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The ClusterType value of the cluster associated with the Control Plane.`,
+						Description: `The ClusterType value of the cluster associated with the Control Plane. Default: "CLUSTER_TYPE_CONTROL_PLANE"`,
 					},
 					"control_plane_endpoint": schema.StringAttribute{
 						Computed: true,
@@ -117,18 +129,33 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 					},
 					"proxy_urls": schema.SetNestedAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Set{
+							speakeasy_setplanmodifier.SuppressDiff(speakeasy_setplanmodifier.ExplicitSuppress),
+						},
 						NestedObject: schema.NestedAttributeObject{
+							PlanModifiers: []planmodifier.Object{
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+							},
 							Attributes: map[string]schema.Attribute{
 								"host": schema.StringAttribute{
-									Computed:    true,
+									Computed: true,
+									PlanModifiers: []planmodifier.String{
+										speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+									},
 									Description: `Hostname of the proxy URL.`,
 								},
 								"port": schema.Int64Attribute{
-									Computed:    true,
+									Computed: true,
+									PlanModifiers: []planmodifier.Int64{
+										speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+									},
 									Description: `Port of the proxy URL.`,
 								},
 								"protocol": schema.StringAttribute{
-									Computed:    true,
+									Computed: true,
+									PlanModifiers: []planmodifier.String{
+										speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+									},
 									Description: `Protocol of the proxy URL.`,
 								},
 							},
@@ -176,7 +203,6 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"proxy_urls": schema.SetNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

@@ -42,7 +42,7 @@ resource "konnect_gateway_control_plane" "my_gatewaycontrolplane" {
 ### Optional
 
 - `auth_type` (String) The auth type value of the cluster associated with the Runtime Group. possible known values include one of ["pinned_client_certs", "pki_client_certs"]
-- `cloud_gateway` (Boolean) Whether this control-plane can be used for cloud-gateways. Requires replacement if changed.
+- `cloud_gateway` (Boolean) Whether this control-plane can be used for cloud-gateways. Default: false; Requires replacement if changed.
 - `cluster_type` (String) The ClusterType value of the cluster associated with the Control Plane. possible known values include one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_HYBRID", "CLUSTER_TYPE_SERVERLESS_V1"]; Requires replacement if changed.
 - `description` (String) The description of the control plane in Konnect.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -70,9 +70,9 @@ Optional:
 
 Read-Only:
 
-- `auth_type` (String) The auth type value of the cluster associated with the Runtime Group.
-- `cloud_gateway` (Boolean) Whether the Control Plane can be used for cloud-gateways.
-- `cluster_type` (String) The ClusterType value of the cluster associated with the Control Plane.
+- `auth_type` (String) The auth type value of the cluster associated with the Runtime Group. Default: "pinned_client_certs"
+- `cloud_gateway` (Boolean) Whether the Control Plane can be used for cloud-gateways. Default: false
+- `cluster_type` (String) The ClusterType value of the cluster associated with the Control Plane. Default: "CLUSTER_TYPE_CONTROL_PLANE"
 - `control_plane_endpoint` (String) Control Plane Endpoint.
 - `proxy_urls` (Attributes Set) Array of proxy URLs associated with reaching the data-planes connected to a control-plane. (see [below for nested schema](#nestedatt--config--proxy_urls))
 - `telemetry_endpoint` (String) Telemetry Endpoint.

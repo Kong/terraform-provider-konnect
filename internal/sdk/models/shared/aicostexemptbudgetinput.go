@@ -99,7 +99,7 @@ type AICostExemptBudgetInput struct {
 	Scope AICostExemptBudgetInputScope `json:"scope"`
 	// Always `exempt` for an exemption, which carries the period it covers in `validity`.
 	//
-	// A replacement can't change it.
+	// A replacement can't change it. A person can't exempt their own usage: when the caller has access to only some principals, and the scope lies within the caller's principals rather than within their groups alone, the request fails with `400`. An organization-wide caller can create any exemption, and a Team Manager can create one for their groups.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	effect string `const:"exempt" json:"effect"`
 	// The period the exemption covers, from `starts_at` until `ends_at`.

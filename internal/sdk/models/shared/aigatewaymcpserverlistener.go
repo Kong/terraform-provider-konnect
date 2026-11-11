@@ -103,7 +103,7 @@ type AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig struct {
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
 	//
-	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
+	Route AIGatewayMCPServerRouteWithMatcher `json:"route"`
 	// Configuration for AI Gateway logging.
 	Logging *AIGatewayMCPServerListenerLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
@@ -129,15 +129,15 @@ func (a AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig) MarshalJ
 }
 
 func (a *AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"route"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig) GetRoute() *AIGatewayMCPServerRouteWithMatcher {
+func (a *AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig) GetRoute() AIGatewayMCPServerRouteWithMatcher {
 	if a == nil {
-		return nil
+		return AIGatewayMCPServerRouteWithMatcher{}
 	}
 	return a.Route
 }

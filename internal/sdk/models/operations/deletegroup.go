@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-var DeleteGroupServerList = []string{
-	"https://us.api.konghq.com/",
-}
-
 type DeleteGroupRequest struct {
 	// ID of the directory
 	DirectoryID string `pathParam:"style=simple,explode=false,name=directoryId"`
