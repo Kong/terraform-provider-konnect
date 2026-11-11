@@ -174,9 +174,6 @@ paths:
       operationId: create-cost-budget
       summary: Create a budget
       description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
         Creates a budget and returns it. The server assigns the identifier and records the caller as `created_by`.
 
         `effect` selects the kind of budget: a limit budget takes `limit`, `window`, and `posture`, and an exemption takes `validity`. A limit budget can split its limit with `scope.each`.
@@ -274,9 +271,6 @@ paths:
       operationId: upsert-cost-budget
       summary: Replace a budget's updatable fields
       description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
         Replaces a budget's `name`, `labels`, `priority`, and `scope`, with `limit`, `window`, and `posture` on a limit budget or `validity` on an exemption, and returns the result. The request carries the full budget. The budget keeps its identifier, notification rule, and recorded firings.
 
         - An omitted `labels`, `priority`, or `posture` resets to its default.
@@ -23113,8 +23107,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Kong Identity Directories
   '/v2/directories/{directoryId}':
@@ -23142,8 +23134,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Kong Identity Directories
     get:
@@ -23162,8 +23152,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Kong Identity Directories
     delete:
@@ -23195,8 +23183,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Kong Identity Directories
   '/v2/directories/{directoryId}/groups':
@@ -23229,8 +23215,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
   '/v2/directories/{directoryId}/groups/{groupId}':
@@ -23253,8 +23237,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
     put:
@@ -23284,8 +23266,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
     delete:
@@ -23305,8 +23285,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
   '/v2/directories/{directoryId}/groups/{groupId}/api-keys':
@@ -23337,8 +23315,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
   '/v2/directories/{directoryId}/groups/{groupId}/api-keys/{apiKeyId}':
@@ -23370,8 +23346,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
     get:
@@ -23392,8 +23366,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
     delete:
@@ -23416,8 +23388,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
   '/v2/directories/{directoryId}/groups/{groupId}/membership':
@@ -23447,8 +23417,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
   '/v2/directories/{directoryId}/groups/{groupId}/membership/{groupMembershipId}':
@@ -23472,8 +23440,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
     delete:
@@ -23493,8 +23459,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
   '/v2/directories/{directoryId}/principals':
@@ -23524,8 +23488,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipal
   '/v2/directories/{directoryId}/principals/{principalId}':
@@ -23554,8 +23516,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipal
     get:
@@ -23574,8 +23534,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipal
     delete:
@@ -23597,8 +23555,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipal
   '/v2/directories/{directoryId}/principals/{principalId}/api-keys':
@@ -23627,8 +23583,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
   '/v2/directories/{directoryId}/principals/{principalId}/api-keys/{apiKeyId}':
@@ -23658,8 +23612,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
     get:
@@ -23680,8 +23632,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
     delete:
@@ -23704,8 +23654,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
   '/v2/directories/{directoryId}/principals/{principalId}/basic-auths':
@@ -23733,8 +23681,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
   '/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}':
@@ -23759,8 +23705,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
     put:
@@ -23784,8 +23728,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
     delete:
@@ -23808,8 +23750,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
   '/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}/passwords':
@@ -23839,8 +23779,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
   '/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}/passwords/{passwordId}':
@@ -23866,8 +23804,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
     put:
@@ -23891,8 +23827,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
     delete:
@@ -23915,8 +23849,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
   '/v2/directories/{directoryId}/principals/{principalId}/identities':
@@ -23946,8 +23878,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalIdentity
   '/v2/directories/{directoryId}/principals/{principalId}/identities/{identityId}':
@@ -23971,8 +23901,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalIdentity
     put:
@@ -23999,8 +23927,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalIdentity
     delete:
@@ -24023,8 +23949,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalIdentity
   '/v2/directories/{directoryId}/trusted-idps':
@@ -24053,8 +23977,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Trusted IdPs
   '/v2/directories/{directoryId}/trusted-idps/{trustedIdpId}':
@@ -24077,8 +23999,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Trusted IdPs
     put:
@@ -24104,8 +24024,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Trusted IdPs
     delete:
@@ -24124,8 +24042,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Trusted IdPs
   '/v2/directories/{directoryId}/vault/keys':
@@ -24156,8 +24072,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultKeys
   '/v2/directories/{directoryId}/vault/keys/{keyId}':
@@ -24180,8 +24094,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultKeys
     patch:
@@ -24207,8 +24119,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultKeys
     delete:
@@ -24230,8 +24140,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultKeys
   '/v2/directories/{directoryId}/vault/providers':
@@ -24258,8 +24166,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
   '/v2/directories/{directoryId}/vault/providers/{providerId}':
@@ -24282,8 +24188,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
     put:
@@ -24308,8 +24212,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
     delete:
@@ -24328,8 +24230,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
   '/v2/directories/{directoryId}/vault/providers/{providerId}/credentials':
@@ -24362,8 +24262,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
   '/v2/directories/{directoryId}/vault/providers/{providerId}/credentials/{credentialId}':
@@ -24391,8 +24289,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
     put:
@@ -24419,8 +24315,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
     delete:
@@ -24438,8 +24332,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
   '/v2/portals/{portalId}/appearance':
@@ -29370,6 +29262,7 @@ components:
           description: Whether this control-plane can be used for cloud-gateways.
           type: boolean
           example: false
+          default: false
           nullable: false
         proxy_urls:
           $ref: '#/components/schemas/ProxyURLs'
@@ -29458,6 +29351,7 @@ components:
               description: The ClusterType value of the cluster associated with the Control Plane.
               type: string
               example: CLUSTER_TYPE_CONTROL_PLANE
+              default: CLUSTER_TYPE_CONTROL_PLANE
               enum:
                 - CLUSTER_TYPE_CONTROL_PLANE
                 - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
@@ -29472,6 +29366,7 @@ components:
               description: The auth type value of the cluster associated with the Runtime Group.
               type: string
               example: pinned_client_certs
+              default: pinned_client_certs
               enum:
                 - pinned_client_certs
                 - pki_client_certs
@@ -29481,11 +29376,26 @@ components:
             cloud_gateway:
               description: Whether the Control Plane can be used for cloud-gateways.
               type: boolean
+              example: false
+              default: false
               nullable: false
               readOnly: true
               x-speakeasy-param-suppress-computed-diff: true
             proxy_urls:
-              $ref: '#/components/schemas/ProxyURLs'
+              description: Array of proxy URLs associated with reaching the data-planes connected to a control-plane.
+              type: array
+              items:
+                $ref: '#/components/schemas/ProxyURL'
+              format: set
+              example:
+                - host: example.com
+                  port: 443
+                  protocol: https
+              maxItems: 5
+              readOnly: true
+              title: ProxyURLs
+              x-speakeasy-param-suppress-computed-diff: true
+          readOnly: true
           required:
             - control_plane_endpoint
             - telemetry_endpoint
@@ -29493,6 +29403,7 @@ components:
             - auth_type
             - cloud_gateway
             - proxy_urls
+          x-speakeasy-param-suppress-computed-diff: true
         created_at:
           description: An ISO-8604 timestamp representation of control plane creation date.
           type: string
@@ -29513,15 +29424,18 @@ components:
           description: The auth type value of the cluster associated with the Runtime Group.
           type: string
           example: pinned_client_certs
+          default: pinned_client_certs
           x-speakeasy-param-computed: true
         cluster_type:
           description: The ClusterType value of the cluster associated with the Control Plane.
           type: string
+          default: CLUSTER_TYPE_CONTROL_PLANE
           x-speakeasy-param-computed: true
         cloud_gateway:
           description: Whether this control-plane can be used for cloud-gateways.
           type: boolean
           example: false
+          default: false
           x-speakeasy-param-computed: true
         proxy_urls:
           description: Array of proxy URLs associated with reaching the data-planes connected to a control-plane.
@@ -29533,9 +29447,11 @@ components:
             - host: example.com
               port: 443
               protocol: https
+          default: null
           maxItems: 5
+          nullable: true
           title: ProxyURLs
-          x-speakeasy-param-computed: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - id
@@ -35766,22 +35682,6 @@ components:
         expires_at: '2022-12-31T12:52:23Z'
         last_used_at: '2022-10-24T13:05:42Z'
       title: System Account Access Token
-    IdentityProviderEnabled:
-      description: |
-        Indicates whether the identity provider is enabled.
-        Only one identity provider can be active at a time, such as SAML or OIDC.
-      type: boolean
-      example: true
-      default: false
-      title: Identity Provider Enabled Property
-    UpdateIdentityProviderEnabled:
-      description: |
-        Indicates whether the identity provider is enabled.
-        Only one identity provider can be active at a time, such as SAML or OIDC.
-        When omitted, the current value is left unchanged.
-      type: boolean
-      example: true
-      title: Identity Provider Enabled Property
     LegacyStringFieldFilter:
       description: 'Filter using **one** of the following operators: `eq`, `contains`'
       type: object
@@ -35818,6 +35718,41 @@ components:
           x-speakeasy-param-computed: false
       additionalProperties: false
       title: StringFieldFilterWithExists
+    IdentityProviderEnabled:
+      description: |
+        Indicates whether the identity provider is enabled.
+        Only one identity provider can be active at a time, such as SAML or OIDC.
+      type: boolean
+      example: true
+      default: false
+      title: Identity Provider Enabled Property
+    UpdateIdentityProviderEnabled:
+      description: |
+        Indicates whether the identity provider is enabled.
+        Only one identity provider can be active at a time, such as SAML or OIDC.
+        When omitted, the current value is left unchanged.
+      type: boolean
+      example: true
+      title: Identity Provider Enabled Property
+    ManagedByUpdate:
+      description: |
+        Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+        Set a key's value to `null` to remove it.
+
+        Keys must be 1–63 characters long and start with an alphanumeric character.
+      type: object
+      example:
+        owner: terraform
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+        nullable: true
+      maxProperties: 5
+      title: ManagedByUpdate
+      writeOnly: true
     TeamName:
       description: The name of the team.
       type: string
@@ -39566,8 +39501,9 @@ components:
         theme:
           description: The theme settings for this portal.
           type: object
+          default: null
           additionalProperties: false
-          nullable: false
+          nullable: true
           properties:
             name:
               description: 'The theme name to apply to this portal. Supported names are ''mesa'', ''grove'', ''pebble'', or ''ocean''. If another name is provided or this property is omitted, the portal uses the default ''ocean'' theme.'
@@ -39583,8 +39519,9 @@ components:
               x-speakeasy-unknown-values: allow
             colors:
               type: object
+              default: null
               additionalProperties: false
-              nullable: false
+              nullable: true
               properties:
                 primary:
                   description: The primary accent color used in the portal's theme. Must be a valid hex color value.
@@ -40004,7 +39941,7 @@ components:
     UpdateSAMLIdentityProviderConfig:
       description: |
         The properties of a SAML identity provider to update. Exactly one of `idp_metadata_url` or
-        `idp_metadata_xml` must be provided.
+        `idp_metadata_xml` must be provided with a non-empty value. An empty string is treated as not provided.
       type: object
       properties:
         idp_metadata_url:
@@ -40012,20 +39949,18 @@ components:
           type: string
           example: 'https://mocksaml.com/api/saml/metadata'
           default: null
-          minLength: 1
           nullable: true
-          pattern: '^https?://\S+$'
+          pattern: '^(https?://\S+)?$'
           x-speakeasy-param-computed: false
         idp_metadata_xml:
           description: |
             The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the `idp_metadata_url` field instead.
           type: string
           default: null
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
-      maxProperties: 1
+      maxProperties: 2
       minProperties: 1
       title: Update SAML Identity Provider Config
       x-speakeasy-name-override: SAMLIdentityProviderConfig
@@ -47981,7 +47916,11 @@ components:
         format: uri
       nullable: false
     LoginURI:
-      description: The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
       type: string
       format: uri
       default: null
@@ -58532,6 +58471,7 @@ components:
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
           required:
+            - route
             - url
           title: AIGatewayMCPServerKongListenerConfig
           x-terraform-no-default-null: true
@@ -58651,6 +58591,8 @@ components:
                   $ref: '#/components/schemas/AIGatewayMCPServerCacheHint'
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
+          required:
+            - route
           title: AIGatewayMCPServerKongListenerConfig
           x-terraform-no-default-null: true
         sources:
@@ -60007,6 +59949,7 @@ components:
           $ref: '#/components/schemas/AIGatewayProxyConfig'
       additionalProperties: false
       required:
+        - route
         - url
     AIGatewayMCPServerRouteWithMatcher:
       description: |
@@ -60089,6 +60032,7 @@ components:
           minimum: 0
       additionalProperties: false
       required:
+        - route
         - url
         - tools_cache_ttl_seconds
     AIGatewayMCPServerServerConfigBase:
@@ -60591,6 +60535,7 @@ components:
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
           required:
+            - route
             - url
           title: AIGatewayMCPServerKongListenerConfig
           x-terraform-no-default-null: true
@@ -60720,6 +60665,8 @@ components:
                   $ref: '#/components/schemas/AIGatewayMCPServerCacheHint'
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
+          required:
+            - route
           title: AIGatewayMCPServerKongListenerConfig
           x-terraform-no-default-null: true
         sources:
@@ -63775,7 +63722,7 @@ components:
       description: |-
         A condition on one usage field. `op` selects the comparison and the shape of `value`.
 
-        Usage without a value for the field matches only `nexists`. A `subject`, `group`, or `team` predicate takes only `eq`, `neq`, `in`, `nin`, `exists`, and `nexists`. Its values are complete references: a subject is `principal/{uuid}`, `consumer/{uuid}`, or `oidc/{sub}`, a group is `principal/{uuid}`, `consumer_group/{uuid}`, or `oidc/{group}`, and a team is `principal/{uuid}`. `subject_id` matches a subject's identifier without its type.
+        Usage without a value for the field matches only `nexists`. A `subject`, `group`, or `team` predicate takes only `eq`, `neq`, `in`, `nin`, `exists`, and `nexists`. Its values are complete references: a subject is `principal/{uuid}`, `consumer/{uuid}`, or `oidc/{sub}`, a group is `principal/{uuid}`, `consumer_group/{uuid}`, or `oidc/{group}`, and a team is `principal/{uuid}`. `subject_id` matches a subject's identifier without its type. A `tags.<key>` predicate's values each have at most 256 characters, none of them a control character.
       discriminator:
         propertyName: op
         mapping:
@@ -63950,7 +63897,7 @@ components:
           description: |-
             Always `exempt` for an exemption, which carries the period it covers in `validity`.
 
-            A replacement can't change it.
+            A replacement can't change it. A person can't exempt their own usage: when the caller has access to only some principals, and the scope lies within the caller's principals rather than within their groups alone, the request fails with `400`. An organization-wide caller can create any exemption, and a Team Manager can create one for their groups.
           type: string
           const: exempt
         validity:
@@ -65670,7 +65617,7 @@ components:
       x-speakeasy-param-computed: false
     TrustedIdpJitProvisioningEnabled:
       description: |
-        Whether a principal is provisioned just-in-time on first exchange when no principal matches the subject_token's issuer and sub claim.
+        Whether a principal is provisioned just-in-time on first exchange when no principal matches the subject_token's issuer and its identifier claim — `sub` by default, or the claim `jit.mapping.identifier` names.
       type: boolean
       default: true
     TrustedIdpVaultAccessEnabled:
@@ -65694,7 +65641,7 @@ components:
           $ref: '#/components/schemas/TrustedIdpJitMapping'
     TrustedIdpJitMapping:
       description: |
-        How the OIDC claims a client presents to fetch-principal map onto a principal provisioned just in time for this trusted IdP. Every field names one of those claims and is optional; a claim the mapping names but the lookup does not carry contributes nothing. An absent `mapping` — or an absent `jit` — means no claim mapping: provisioned principals get empty metadata and the lookup's claim value as display name.
+        How the OIDC claims a client presents to fetch-principal map onto a principal provisioned just in time for this trusted IdP. Every field names one of those claims and is optional; a claim the mapping names but the lookup does not carry contributes nothing — except `identifier`, which the vault token exchange uses to look up the principal, and whose absence from the subject_token fails the exchange. An absent `mapping` — or an absent `jit` — means no claim mapping: provisioned principals get empty metadata and the lookup's claim value as display name.
       type: object
       properties:
         metadata:
@@ -65728,6 +65675,12 @@ components:
           example: name
           nullable: true
           x-speakeasy-param-computed: false
+        identifier:
+          description: |
+            Name of the claim whose string value identifies the principal: the principal's OIDC identity keys on it, and an exchange looks the principal up by it. Defaults to `sub`. Set it when the IdP keys principals on another claim — Entra ID tokens, for example, carry the immutable object id in `oid`. The claim's value must identify one principal. When the claim is absent from the token, the lookup fails. Changing `identifier` re-keys existing principals' OIDC identities: they stop resolving, and the next exchange provisions anew or fails.
+          type: string
+          example: oid
+          default: sub
       x-terraform-no-default-null: true
     TrustedIdp:
       description: |
@@ -65812,25 +65765,6 @@ components:
         - team
       nullable: true
       x-speakeasy-unknown-values: allow
-    ManagedByUpdate:
-      description: |
-        Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
-
-        Set a key's value to `null` to remove it.
-
-        Keys must be 1–63 characters long and start with an alphanumeric character.
-      type: object
-      example:
-        owner: terraform
-      additionalProperties:
-        type: string
-        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
-        minLength: 1
-        maxLength: 63
-        nullable: true
-      maxProperties: 5
-      title: ManagedByUpdate
-      writeOnly: true
     ExpiresAtWritable:
       description: An ISO-8601 timestamp representation of entity expiration date.
       type: string
@@ -111761,6 +111695,21 @@ components:
         - issuer
         - cache_tokens_salt
       x-terraform-no-default-null: true
+    Protocols:
+      description: 'A string representing a protocol, such as HTTP or HTTPS.'
+      type: string
+      enum:
+        - grpc
+        - grpcs
+        - http
+        - https
+        - tcp
+        - tls
+        - tls_passthrough
+        - udp
+        - ws
+        - wss
+      x-speakeasy-unknown-values: allow
     WorkspaceFilterParameters:
       type: object
       properties:
@@ -111777,21 +111726,6 @@ components:
               type: string
       additionalProperties: false
       title: WorkspaceFilterParameters
-    Protocols:
-      description: 'A string representing a protocol, such as HTTP or HTTPS.'
-      type: string
-      enum:
-        - grpc
-        - grpcs
-        - http
-        - https
-        - tcp
-        - tls
-        - tls_passthrough
-        - udp
-        - ws
-        - wss
-      x-speakeasy-unknown-values: allow
     CreatePortalCustomDomainSSL:
       type: object
       properties:
@@ -114876,9 +114810,8 @@ components:
                 description: Details about the error.
                 type: string
                 example: Could not retrieve permissions to check resource accessibility.
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+                readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
             required:
               - status
               - title
@@ -115854,6 +115787,7 @@ components:
                     - canonical_domain
                     - created_at
                     - updated_at
+                    - ai
               meta:
                 $ref: '#/components/schemas/PaginatedMeta'
             additionalProperties: false
@@ -115973,6 +115907,7 @@ components:
               - canonical_domain
               - updated_at
               - created_at
+              - ai
             title: Portal
     PortalAssetResponse:
       description: 'Image asset for the portal. Can be either png, jpeg or svg'

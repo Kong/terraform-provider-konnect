@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-var CreateDirectoryServerList = []string{
-	"https://us.api.konghq.com/",
-}
-
 type CreateDirectoryResponse struct {
 	// HTTP response content type for this operation
 	ContentType string

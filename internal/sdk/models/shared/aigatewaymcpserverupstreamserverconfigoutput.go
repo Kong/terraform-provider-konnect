@@ -43,7 +43,7 @@ type AIGatewayMCPServerUpstreamServerConfigOutput struct {
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
 	//
-	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
+	Route AIGatewayMCPServerRouteWithMatcher `json:"route"`
 	// Configuration for AI Gateway logging.
 	Logging *AIGatewayMCPServerUpstreamServerConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
@@ -88,15 +88,15 @@ func (a AIGatewayMCPServerUpstreamServerConfigOutput) MarshalJSON() ([]byte, err
 }
 
 func (a *AIGatewayMCPServerUpstreamServerConfigOutput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"url", "tools_cache_ttl_seconds"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"route", "url", "tools_cache_ttl_seconds"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetRoute() *AIGatewayMCPServerRouteWithMatcher {
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetRoute() AIGatewayMCPServerRouteWithMatcher {
 	if a == nil {
-		return nil
+		return AIGatewayMCPServerRouteWithMatcher{}
 	}
 	return a.Route
 }
@@ -163,7 +163,7 @@ type AIGatewayMCPServerUpstreamServerConfig struct {
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
 	//
-	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
+	Route AIGatewayMCPServerRouteWithMatcher `json:"route"`
 	// Configuration for AI Gateway logging.
 	Logging *AIGatewayMCPServerUpstreamServerConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
@@ -208,15 +208,15 @@ func (a AIGatewayMCPServerUpstreamServerConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AIGatewayMCPServerUpstreamServerConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"url", "tools_cache_ttl_seconds"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"route", "url", "tools_cache_ttl_seconds"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AIGatewayMCPServerUpstreamServerConfig) GetRoute() *AIGatewayMCPServerRouteWithMatcher {
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetRoute() AIGatewayMCPServerRouteWithMatcher {
 	if a == nil {
-		return nil
+		return AIGatewayMCPServerRouteWithMatcher{}
 	}
 	return a.Route
 }

@@ -178,8 +178,7 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								Default:     stringdefault.StaticString(``),
 								Description: `The identity provider's metadata URL where the identity provider's metadata can be obtained. Default: ""`,
 								Validators: []validator.String{
-									stringvalidator.UTF8LengthAtLeast(1),
-									stringvalidator.RegexMatches(regexp.MustCompile(`^https?://\S+$`), "must match pattern "+regexp.MustCompile(`^https?://\S+$`).String()),
+									stringvalidator.RegexMatches(regexp.MustCompile(`^(https?://\S+)?$`), "must match pattern "+regexp.MustCompile(`^(https?://\S+)?$`).String()),
 								},
 							},
 							"idp_metadata_xml": schema.StringAttribute{
@@ -187,9 +186,6 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								Optional:    true,
 								Default:     stringdefault.StaticString(``),
 								Description: `The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the ` + "`" + `idp_metadata_url` + "`" + ` field instead. Default: ""`,
-								Validators: []validator.String{
-									stringvalidator.UTF8LengthAtLeast(1),
-								},
 							},
 							"sp_entity_id": schema.StringAttribute{
 								Computed: true,
@@ -206,7 +202,7 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 							},
 						},
 						MarkdownDescription: `The properties of a SAML identity provider to update. Exactly one of ` + "`" + `idp_metadata_url` + "`" + ` or` + "\n" +
-							`` + "`" + `idp_metadata_xml` + "`" + ` must be provided.`,
+							`` + "`" + `idp_metadata_xml` + "`" + ` must be provided with a non-empty value. An empty string is treated as not provided.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("oidc_identity_provider_config"),

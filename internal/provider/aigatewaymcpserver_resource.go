@@ -586,7 +586,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -3365,7 +3369,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -4852,7 +4860,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Optional: true,
@@ -6159,7 +6171,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,

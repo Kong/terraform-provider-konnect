@@ -33,9 +33,6 @@ func newBudgets(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 }
 
 // CreateCostBudget - Create a budget
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates a budget and returns it. The server assigns the identifier and records the caller as `created_by`.
 //
 // `effect` selects the kind of budget: a limit budget takes `limit`, `window`, and `posture`, and an exemption takes `validity`. A limit budget can split its limit with `scope.each`.
@@ -584,9 +581,6 @@ func (s *Budgets) GetCostBudget(ctx context.Context, request operations.GetCostB
 }
 
 // UpsertCostBudget - Replace a budget's updatable fields
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Replaces a budget's `name`, `labels`, `priority`, and `scope`, with `limit`, `window`, and `posture` on a limit budget or `validity` on an exemption, and returns the result. The request carries the full budget. The budget keeps its identifier, notification rule, and recorded firings.
 //
 // - An omitted `labels`, `priority`, or `posture` resets to its default.

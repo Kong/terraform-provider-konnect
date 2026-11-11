@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -103,13 +104,19 @@ func (r *IdentityTrustedIdpResource) Schema(ctx context.Context, req resource.Sc
 								Optional:    true,
 								Description: `Name of the claim carrying the names of the groups the provisioned principal joins — a string is one group, an array is many. Groups that do not exist yet are created. At most 100 groups per token.`,
 							},
+							"identifier": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`sub`),
+								Description: `Name of the claim whose string value identifies the principal: the principal's OIDC identity keys on it, and an exchange looks the principal up by it. Defaults to ` + "`" + `sub` + "`" + `. Set it when the IdP keys principals on another claim — Entra ID tokens, for example, carry the immutable object id in ` + "`" + `oid` + "`" + `. The claim's value must identify one principal. When the claim is absent from the token, the lookup fails. Changing ` + "`" + `identifier` + "`" + ` re-keys existing principals' OIDC identities: they stop resolving, and the next exchange provisions anew or fails. Default: "sub"`,
+							},
 							"metadata": schema.MapAttribute{
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `Maps a principal metadata key to the name of the claim whose value populates it: ` + "`" + `metadata[key] = claims[claim]` + "`" + `, values narrowed to the shapes the metadata render paths accept. At most 64 entries.`,
 							},
 						},
-						Description: `How the OIDC claims a client presents to fetch-principal map onto a principal provisioned just in time for this trusted IdP. Every field names one of those claims and is optional; a claim the mapping names but the lookup does not carry contributes nothing. An absent ` + "`" + `mapping` + "`" + ` — or an absent ` + "`" + `jit` + "`" + ` — means no claim mapping: provisioned principals get empty metadata and the lookup's claim value as display name.`,
+						Description: `How the OIDC claims a client presents to fetch-principal map onto a principal provisioned just in time for this trusted IdP. Every field names one of those claims and is optional; a claim the mapping names but the lookup does not carry contributes nothing — except ` + "`" + `identifier` + "`" + `, which the vault token exchange uses to look up the principal, and whose absence from the subject_token fails the exchange. An absent ` + "`" + `mapping` + "`" + ` — or an absent ` + "`" + `jit` + "`" + ` — means no claim mapping: provisioned principals get empty metadata and the lookup's claim value as display name.`,
 					},
 				},
 				Description: `Just-in-time provisioning configuration for this trusted IdP. The ` + "`" + `mapping` + "`" + ` decides how the OIDC claims a client presents to fetch-principal shape a principal provisioned just in time.`,
@@ -118,7 +125,7 @@ func (r *IdentityTrustedIdpResource) Schema(ctx context.Context, req resource.Sc
 				Computed:    true,
 				Optional:    true,
 				Default:     booldefault.StaticBool(true),
-				Description: `Whether a principal is provisioned just-in-time on first exchange when no principal matches the subject_token's issuer and sub claim. Default: true`,
+				Description: `Whether a principal is provisioned just-in-time on first exchange when no principal matches the subject_token's issuer and its identifier claim — ` + "`" + `sub` + "`" + ` by default, or the claim ` + "`" + `jit.mapping.identifier` + "`" + ` names. Default: true`,
 			},
 			"jwks_uri": schema.StringAttribute{
 				Optional:    true,

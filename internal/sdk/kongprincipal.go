@@ -49,11 +49,12 @@ func (s *KongPrincipal) CreatePrincipal(ctx context.Context, request operations.
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.CreatePrincipalServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -366,11 +367,12 @@ func (s *KongPrincipal) ReplacePrincipal(ctx context.Context, request operations
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.ReplacePrincipalServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -661,11 +663,12 @@ func (s *KongPrincipal) GetPrincipal(ctx context.Context, request operations.Get
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.GetPrincipalServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -927,11 +930,12 @@ func (s *KongPrincipal) DeletePrincipal(ctx context.Context, request operations.
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.DeletePrincipalServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)

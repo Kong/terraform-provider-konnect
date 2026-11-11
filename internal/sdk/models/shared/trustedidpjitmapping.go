@@ -6,7 +6,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// TrustedIdpJitMapping - How the OIDC claims a client presents to fetch-principal map onto a principal provisioned just in time for this trusted IdP. Every field names one of those claims and is optional; a claim the mapping names but the lookup does not carry contributes nothing. An absent `mapping` — or an absent `jit` — means no claim mapping: provisioned principals get empty metadata and the lookup's claim value as display name.
+// TrustedIdpJitMapping - How the OIDC claims a client presents to fetch-principal map onto a principal provisioned just in time for this trusted IdP. Every field names one of those claims and is optional; a claim the mapping names but the lookup does not carry contributes nothing — except `identifier`, which the vault token exchange uses to look up the principal, and whose absence from the subject_token fails the exchange. An absent `mapping` — or an absent `jit` — means no claim mapping: provisioned principals get empty metadata and the lookup's claim value as display name.
 type TrustedIdpJitMapping struct {
 	// Maps a principal metadata key to the name of the claim whose value populates it: `metadata[key] = claims[claim]`, values narrowed to the shapes the metadata render paths accept. At most 64 entries.
 	//
@@ -20,6 +20,9 @@ type TrustedIdpJitMapping struct {
 	// Name of the claim whose string value becomes the provisioned principal's display name. When absent from the token, the lookup's claim value is used instead.
 	//
 	DisplayName *string `json:"display_name,omitempty"`
+	// Name of the claim whose string value identifies the principal: the principal's OIDC identity keys on it, and an exchange looks the principal up by it. Defaults to `sub`. Set it when the IdP keys principals on another claim — Entra ID tokens, for example, carry the immutable object id in `oid`. The claim's value must identify one principal. When the claim is absent from the token, the lookup fails. Changing `identifier` re-keys existing principals' OIDC identities: they stop resolving, and the next exchange provisions anew or fails.
+	//
+	Identifier *string `default:"sub" json:"identifier"`
 }
 
 func (t TrustedIdpJitMapping) MarshalJSON() ([]byte, error) {
@@ -59,4 +62,11 @@ func (t *TrustedIdpJitMapping) GetDisplayName() *string {
 		return nil
 	}
 	return t.DisplayName
+}
+
+func (t *TrustedIdpJitMapping) GetIdentifier() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Identifier
 }

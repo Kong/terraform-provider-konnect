@@ -67,7 +67,7 @@ type CreateControlPlaneRequest struct {
 	// The auth type value of the cluster associated with the Runtime Group.
 	AuthType *AuthType `json:"auth_type,omitempty"`
 	// Whether this control-plane can be used for cloud-gateways.
-	CloudGateway *bool `json:"cloud_gateway,omitempty"`
+	CloudGateway *bool `default:"false" json:"cloud_gateway"`
 	// Array of proxy URLs associated with reaching the data-planes connected to a control-plane.
 	ProxyUrls []ProxyURL `json:"proxy_urls,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.

@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-var CreatePrincipalServerList = []string{
-	"https://us.api.konghq.com/",
-}
-
 type CreatePrincipalRequest struct {
 	// ID of the directory
 	DirectoryID string `pathParam:"style=simple,explode=false,name=directoryId"`
