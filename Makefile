@@ -36,7 +36,7 @@ test-cleanup:
 	@cd tests/e2e; rm -rf local-plugins .terraform .terraform.lock.hcl terraform.tfstate terraform.tfstate.backup
 
 acceptance:
-	@TF_ACC=1 go test -v -timeout 30m ./tests/resources
+	@TF_ACC=1 go test -v -p 1 -timeout 30m ./tests/resources/...
 
 # Run one shard of the acceptance tests: make acceptance-shard SHARD=gateway
 acceptance-shard:
