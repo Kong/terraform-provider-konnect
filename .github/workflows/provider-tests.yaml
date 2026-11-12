@@ -9,13 +9,41 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  # The tests share one Konnect org (and its quotas, e.g. 4 portals), so only
+  # one run per ref may use it at a time. A newer push cancels the older run.
+  group: provider-tests-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  check-shards:
+    name: Check test shards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+      - uses: actions/setup-go@cd53bc84d5e2fd85362f4cb840513e06427082d3 # v4
+        with:
+          go-version-file: "go.mod"
+      - name: Every test is in exactly one shard
+        run: make check-shards
+
   acceptance:
-    name: Acceptance Tests (Terraform ${{ matrix.terraform-version }})
+    name: Acceptance (${{ matrix.shard }})
+    needs: check-shards
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
+        shard:
+          - gateway
+          - ai-gateway
+          - event-gateway
+          - portal-api
+          - identity-org
         # Only test against one version for now as these tests are not
         # namespaced and will conflict
         terraform-version:
@@ -35,4 +63,45 @@ jobs:
           terraform_wrapper: false
       - env:
           KONNECT_SPAT: ${{ secrets.KONNECT_SPAT }}
-        run: make acceptance
+          OUT_DIR: shard-results
+        run: make acceptance-shard SHARD=${{ matrix.shard }}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: shard-${{ matrix.shard }}
+          path: shard-results/*.json
+
+  # Stable name for branch protection: it replaces the old single job's check
+  # name. Fails if any shard failed, or if a test was skipped by the split.
+  acceptance-summary:
+    name: Acceptance Tests (Terraform 1.13.*)
+    needs: acceptance
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+      - uses: actions/setup-go@cd53bc84d5e2fd85362f4cb840513e06427082d3 # v4
+        with:
+          go-version-file: "go.mod"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: shard-*
+          path: shard-results
+          merge-multiple: true
+      - name: Verify every test ran and passed
+        run: |
+          rc=0
+          scripts/acceptance-shard.sh verify shard-results || rc=1
+          if [ "${{ needs.acceptance.result }}" != "success" ]; then
+            echo "one or more shards failed or were cancelled"; rc=1
+          fi
+          exit $rc
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: sharded-results
+          path: sharded-results.txt
