@@ -188,3 +188,7 @@ The wall-clock time becomes roughly that of the slowest shard, and the total run
 - Is there an existing sweeper for leaked test resources in the Konnect org?
 - Is the org's API rate limit known for the shared `KONNECT_SPAT`?
 - Do the `ai_gateway` or `catalog_*` tests depend on a gateway control plane from other shards? The testdata suggests not, but this needs confirming.
+
+## Implementation status: shards are directories
+
+The shards are directories under `tests/resources/` (`gateway`, `aigateway`, `eventgateway`, `portalapi`, `identityorg`), each its own Go package with its own `testdata/`. This replaced an earlier version that assigned tests to shards with name regexes in a script, which hid the rule from developers. Now the folder is the shard, `tests/resources/README.md` explains where a test goes, and `make check-shards` fails if a test file is left in `tests/resources/` itself. The shared provider setup is in `tests/internal/acc`. The shard names in the earlier sections of this plan map as: `ai-gateway` is `aigateway`, `event-gateway` is `eventgateway`, `portal-api` is `portalapi`, `identity-org` is `identityorg`.

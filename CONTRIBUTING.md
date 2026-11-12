@@ -50,24 +50,25 @@ Please raise an issue if you have suggested changes to `openapi.yaml`.
 ## Automated Testing
 
 ### Acceptance tests  
-Acceptance tests are found in `/tests/resources` directory, and the terraform config files can be found in `/tests/resources/testdata` directory.
+Acceptance tests are found in `/tests/resources/<shard>/`, where each shard directory (`gateway`, `aigateway`, `eventgateway`, `portalapi`, `identityorg`) is one parallel CI job. The terraform config files are in the `testdata` directory next to the tests. See [`tests/resources/README.md`](tests/resources/README.md) for which shard a test belongs in.
 #### Running the tests
 Export your access token as an environment variable, and then run the tests.  
 ```
 export KONNECT_SPAT=
-make acceptance
+make acceptance                        # everything
+make acceptance-shard SHARD=gateway    # one shard
 ```  
 #### Directory and naming conventions
-- Each resource should have one test file, named `{resource}_test.go`, placed in `/tests/resources`, and corresponding config files in `/tests/resources/testdata/{testName}/` directory.   
+- Each resource should have one test file, named `{resource}_test.go`, placed in the shard directory for its product area (`/tests/resources/{shard}/`), and corresponding config files in `/tests/resources/{shard}/testdata/{testName}/` directory.   
 - If there are subtests to cover different scenarios, create one sub directory per scenario under the directory for the test, and name both after the scenario. We follow the go convention of subtest names being the combination of the name of the top-level test and the sequence of names passed to Run, separated by slashes - pointing to the config files used in that test.  
 
 #### Example
 If we are adding tests for `gateway_control_plane resource` with different scenarios for each type, we would:  
-1. Add `gateway_control_plane_test.go` in `/tests/resources`
+1. Add `gateway_control_plane_test.go` in `/tests/resources/gateway`
 2. Create a test `TestGatewayControlPlane` in `gateway_control_plane_test.go`
-3. Create a directory `TestGatewayControlPlane` in `/tests/resources/testdata` to add the config.  
+3. Create a directory `TestGatewayControlPlane` in `/tests/resources/gateway/testdata` to add the config.  
 4. Add subtests in `gateway_control_plane_test.go` for each scenario
-5. Add config files for each scenario in `/tests/resources/testdata/TestGatewayControlPlane/{scenarioName}/`.
+5. Add config files for each scenario in `/tests/resources/gateway/testdata/TestGatewayControlPlane/{scenarioName}/`.
 
 For more information, refer https://developer.hashicorp.com/terraform/plugin/testing/acceptance-tests
 

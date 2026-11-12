@@ -40,10 +40,10 @@ jobs:
       matrix:
         shard:
           - gateway
-          - ai-gateway
-          - event-gateway
-          - portal-api
-          - identity-org
+          - aigateway
+          - eventgateway
+          - portalapi
+          - identityorg
         # Only test against one version for now as these tests are not
         # namespaced and will conflict
         terraform-version:
