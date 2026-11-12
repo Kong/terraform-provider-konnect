@@ -14,7 +14,7 @@ resource "konnect_system_account_access_token" "my_systemaccountaccesstoken" {
 }
 
 resource "konnect_system_account_role" "my_systemaccountrole" {
-  entity_id        = "*"
+  entity_ids       = ["*"]
   entity_region    = "us"
   entity_type_name = "Control Planes"
   role_name        = "Viewer"
