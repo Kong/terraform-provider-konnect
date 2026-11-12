@@ -10,12 +10,16 @@ import (
 // Identity directories are limited per org, so every resource that hangs off a
 // directory is exercised against a single directory in one test.
 func TestIdentityDirectory(t *testing.T) {
+	// ConfigDirectory steps cannot be combined with an inline provider block
+	// (Config is ignored), so without this the provider falls back to the global
+	// URL, which does not serve identity APIs.
+	t.Setenv("KONNECT_SERVER_URL", "https://us.api.konghq.com")
+
 	t.Run("CRUD", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config:          providerConfigUs,
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_identity_directory.my_identitydirectory", "name", "tf-test-identity-directory"),
@@ -38,7 +42,6 @@ func TestIdentityDirectory(t *testing.T) {
 				},
 				{
 					// Update description / display_name on the directory, group, principal and trusted IdP
-					Config:          providerConfigUs,
 					ConfigDirectory: config.TestStepDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_identity_directory.my_identitydirectory", "description", "TF test directory updated"),
