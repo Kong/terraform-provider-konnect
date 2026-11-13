@@ -26,7 +26,7 @@ func (r *TeamResourceModel) RefreshFromSharedTeamResponse(ctx context.Context, r
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
-		r.SystemTeam = types.BoolPointerValue(resp.SystemTeam)
+		r.SystemTeam = types.BoolValue(resp.SystemTeam)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 

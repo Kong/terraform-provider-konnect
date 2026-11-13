@@ -52,7 +52,7 @@ Keys must be 1–63 characters long and start with an alphanumeric character.
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used for this resource.
-- `provisioned_by` (String) Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user's behalf (for example, `developer_portal` or `trusted_idp`). Default: "konnect_user"
+- `provisioned_by` (String) Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user's behalf (for example, `developer_portal` or `trusted_idp`).
 - `team_manager` (Attributes) The manager of a team, set through the team's `team_manager` custom identity. Always null for plain groups, and for teams without a manager. (see [below for nested schema](#nestedatt--team_manager))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 

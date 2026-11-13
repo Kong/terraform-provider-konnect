@@ -16,7 +16,7 @@ type TeamResponse struct {
 	// The description of the team.
 	Description *string `default:"null" json:"description"`
 	// Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"
-	SystemTeam *bool `default:"false" json:"system_team"`
+	SystemTeam bool `json:"system_team"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -36,7 +36,7 @@ func (t TeamResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TeamResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"id", "name", "labels", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"id", "name", "system_team", "labels", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -63,9 +63,9 @@ func (t *TeamResponse) GetDescription() *string {
 	return t.Description
 }
 
-func (t *TeamResponse) GetSystemTeam() *bool {
+func (t *TeamResponse) GetSystemTeam() bool {
 	if t == nil {
-		return nil
+		return false
 	}
 	return t.SystemTeam
 }

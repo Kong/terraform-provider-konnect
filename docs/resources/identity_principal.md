@@ -60,7 +60,7 @@ possible known values include one of ["agent", "user"]
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `groups` (List of String) List of IDs of the groups this principal is a member of.
 - `id` (String) Contains a unique identifier used for this resource.
-- `provisioned_by` (String) Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user's behalf (for example, `developer_portal` or `trusted_idp`). Default: "konnect_user"
+- `provisioned_by` (String) Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user's behalf (for example, `developer_portal` or `trusted_idp`).
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 ## Import

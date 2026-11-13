@@ -27,17 +27,9 @@ func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane1(ctx co
 			r.ClusterType = types.StringNull()
 		}
 		r.Config = &tfTypes.ControlPlaneConfig{}
-		if resp.Config.AuthType != nil {
-			r.Config.AuthType = types.StringValue(string(*resp.Config.AuthType))
-		} else {
-			r.Config.AuthType = types.StringNull()
-		}
-		r.Config.CloudGateway = types.BoolPointerValue(resp.Config.CloudGateway)
-		if resp.Config.ClusterType != nil {
-			r.Config.ClusterType = types.StringValue(string(*resp.Config.ClusterType))
-		} else {
-			r.Config.ClusterType = types.StringNull()
-		}
+		r.Config.AuthType = types.StringValue(string(resp.Config.AuthType))
+		r.Config.CloudGateway = types.BoolValue(resp.Config.CloudGateway)
+		r.Config.ClusterType = types.StringValue(string(resp.Config.ClusterType))
 		r.Config.ControlPlaneEndpoint = types.StringValue(resp.Config.ControlPlaneEndpoint)
 		r.Config.ProxyUrls = []tfTypes.AIGatewayProxyURL{}
 

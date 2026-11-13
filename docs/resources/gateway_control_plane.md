@@ -70,9 +70,9 @@ Optional:
 
 Read-Only:
 
-- `auth_type` (String) The auth type value of the cluster associated with the Runtime Group. Default: "pinned_client_certs"
-- `cloud_gateway` (Boolean) Whether the Control Plane can be used for cloud-gateways. Default: false
-- `cluster_type` (String) The ClusterType value of the cluster associated with the Control Plane. Default: "CLUSTER_TYPE_CONTROL_PLANE"
+- `auth_type` (String) The auth type value of the cluster associated with the Runtime Group.
+- `cloud_gateway` (Boolean) Whether the Control Plane can be used for cloud-gateways.
+- `cluster_type` (String) The ClusterType value of the cluster associated with the Control Plane.
 - `control_plane_endpoint` (String) Control Plane Endpoint.
 - `proxy_urls` (Attributes Set) Array of proxy URLs associated with reaching the data-planes connected to a control-plane. (see [below for nested schema](#nestedatt--config--proxy_urls))
 - `telemetry_endpoint` (String) Telemetry Endpoint.

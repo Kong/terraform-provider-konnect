@@ -40,7 +40,7 @@ type KongPrincipal struct {
 	//
 	ManagedBy map[string]string `json:"managed_by"`
 	// Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user's behalf (for example, `developer_portal` or `trusted_idp`).
-	ProvisionedBy *ProvisionedBy `default:"konnect_user" json:"provisioned_by"`
+	ProvisionedBy ProvisionedBy `json:"provisioned_by"`
 	// Whether the principal is active. Inactive principals are treated as nonexistent when authenticating.
 	// Defaults to `true` on create; omitting it on update or replace keeps the current value.
 	// Setting it to `false` sets `provisioned_by` to `konnect_user`. Principals provisioned by the developer portal cannot be deactivated.
@@ -56,7 +56,7 @@ func (k KongPrincipal) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KongPrincipal) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"id", "description", "metadata", "labels", "created_at", "updated_at", "managed_by", "active"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"id", "description", "metadata", "labels", "created_at", "updated_at", "managed_by", "provisioned_by", "active"}); err != nil {
 		return err
 	}
 	return nil
@@ -125,9 +125,9 @@ func (k *KongPrincipal) GetManagedBy() map[string]string {
 	return k.ManagedBy
 }
 
-func (k *KongPrincipal) GetProvisionedBy() *ProvisionedBy {
+func (k *KongPrincipal) GetProvisionedBy() ProvisionedBy {
 	if k == nil {
-		return nil
+		return ProvisionedBy("")
 	}
 	return k.ProvisionedBy
 }

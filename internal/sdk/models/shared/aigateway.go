@@ -100,7 +100,7 @@ type AIGateway struct {
 	// Whether the control plane should automatically raise min_runtime_version to match the DP fleet's minimum runtime version (the lowest AI Gateway runtime version reported across all connected data planes) as that value increases.
 	RuntimeAutoUpgrade *bool `default:"true" json:"runtime_auto_upgrade"`
 	// How this AI Gateway's control plane is deployed.
-	DeploymentType *AIGatewayDeploymentType `default:"hybrid" json:"deployment_type"`
+	DeploymentType AIGatewayDeploymentType `json:"deployment_type"`
 	// Object containing AI Gateway access endpoints.
 	Endpoints Endpoints `json:"endpoints"`
 	// The version identification of the latest configuration of the gateway.
@@ -122,7 +122,7 @@ func (a AIGateway) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AIGateway) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"display_name", "name", "id", "endpoints", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"display_name", "name", "id", "deployment_type", "endpoints", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -191,9 +191,9 @@ func (a *AIGateway) GetRuntimeAutoUpgrade() *bool {
 	return a.RuntimeAutoUpgrade
 }
 
-func (a *AIGateway) GetDeploymentType() *AIGatewayDeploymentType {
+func (a *AIGateway) GetDeploymentType() AIGatewayDeploymentType {
 	if a == nil {
-		return nil
+		return AIGatewayDeploymentType("")
 	}
 	return a.DeploymentType
 }

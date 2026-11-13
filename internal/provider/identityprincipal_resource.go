@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -134,11 +133,10 @@ func (r *IdentityPrincipalResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"provisioned_by": schema.StringAttribute{
 				Computed: true,
-				Default:  stringdefault.StaticString(`konnect_user`),
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Identifies the actor that provisioned this principal. Defaults to ` + "`" + `konnect_user` + "`" + ` for principals created directly by a user; other values identify a service that provisioned the principal on a user's behalf (for example, ` + "`" + `developer_portal` + "`" + ` or ` + "`" + `trusted_idp` + "`" + `). Default: "konnect_user"`,
+				Description: `Identifies the actor that provisioned this principal. Defaults to ` + "`" + `konnect_user` + "`" + ` for principals created directly by a user; other values identify a service that provisioned the principal on a user's behalf (for example, ` + "`" + `developer_portal` + "`" + ` or ` + "`" + `trusted_idp` + "`" + `).`,
 			},
 			"type": schema.StringAttribute{
 				Computed: true,

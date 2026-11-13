@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -98,27 +97,24 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				Attributes: map[string]schema.Attribute{
 					"auth_type": schema.StringAttribute{
 						Computed: true,
-						Default:  stringdefault.StaticString(`pinned_client_certs`),
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The auth type value of the cluster associated with the Runtime Group. Default: "pinned_client_certs"`,
+						Description: `The auth type value of the cluster associated with the Runtime Group.`,
 					},
 					"cloud_gateway": schema.BoolAttribute{
 						Computed: true,
-						Default:  booldefault.StaticBool(false),
 						PlanModifiers: []planmodifier.Bool{
 							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 						},
-						Description: `Whether the Control Plane can be used for cloud-gateways. Default: false`,
+						Description: `Whether the Control Plane can be used for cloud-gateways.`,
 					},
 					"cluster_type": schema.StringAttribute{
 						Computed: true,
-						Default:  stringdefault.StaticString(`CLUSTER_TYPE_CONTROL_PLANE`),
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The ClusterType value of the cluster associated with the Control Plane. Default: "CLUSTER_TYPE_CONTROL_PLANE"`,
+						Description: `The ClusterType value of the cluster associated with the Control Plane.`,
 					},
 					"control_plane_endpoint": schema.StringAttribute{
 						Computed: true,
@@ -203,6 +199,7 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"proxy_urls": schema.SetNestedAttribute{
+				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

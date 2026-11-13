@@ -29351,7 +29351,6 @@ components:
               description: The ClusterType value of the cluster associated with the Control Plane.
               type: string
               example: CLUSTER_TYPE_CONTROL_PLANE
-              default: CLUSTER_TYPE_CONTROL_PLANE
               enum:
                 - CLUSTER_TYPE_CONTROL_PLANE
                 - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
@@ -29366,7 +29365,6 @@ components:
               description: The auth type value of the cluster associated with the Runtime Group.
               type: string
               example: pinned_client_certs
-              default: pinned_client_certs
               enum:
                 - pinned_client_certs
                 - pki_client_certs
@@ -29377,7 +29375,6 @@ components:
               description: Whether the Control Plane can be used for cloud-gateways.
               type: boolean
               example: false
-              default: false
               nullable: false
               readOnly: true
               x-speakeasy-param-suppress-computed-diff: true
@@ -29447,11 +29444,9 @@ components:
             - host: example.com
               port: 443
               protocol: https
-          default: null
           maxItems: 5
-          nullable: true
           title: ProxyURLs
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
       additionalProperties: false
       required:
         - id
@@ -35016,7 +35011,6 @@ components:
             Indicates whether this auth strategy supports multiple credentials.
             Always `true` for KEY_AUTH.
           type: boolean
-          default: true
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         principals:
@@ -35455,7 +35449,6 @@ components:
         system_team:
           description: 'Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"'
           type: boolean
-          default: false
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         labels:
@@ -39501,9 +39494,8 @@ components:
         theme:
           description: The theme settings for this portal.
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
+          nullable: false
           properties:
             name:
               description: 'The theme name to apply to this portal. Supported names are ''mesa'', ''grove'', ''pebble'', or ''ocean''. If another name is provided or this property is omitted, the portal uses the default ''ocean'' theme.'
@@ -39519,9 +39511,8 @@ components:
               x-speakeasy-unknown-values: allow
             colors:
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 primary:
                   description: The primary accent color used in the portal's theme. Must be a valid hex color value.
@@ -49613,7 +49604,6 @@ components:
           description: How this AI Gateway's control plane is deployed.
           type: string
           example: hybrid
-          default: hybrid
           enum:
             - hybrid
             - managed
@@ -65743,7 +65733,6 @@ components:
     ProvisionedBy:
       description: 'Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user''s behalf (for example, `developer_portal` or `trusted_idp`).'
       type: string
-      default: konnect_user
       enum:
         - konnect_user
         - developer_portal
@@ -115907,7 +115896,6 @@ components:
               - canonical_domain
               - updated_at
               - created_at
-              - ai
             title: Portal
     PortalAssetResponse:
       description: 'Image asset for the portal. Can be either png, jpeg or svg'

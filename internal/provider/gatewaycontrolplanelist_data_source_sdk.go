@@ -26,17 +26,9 @@ func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPla
 			data.CloudGateway = types.BoolPointerValue(dataItem.CloudGateway)
 			data.ClusterType = types.StringPointerValue(dataItem.ClusterType)
 			data.Config = &tfTypes.ControlPlaneConfig{}
-			if dataItem.Config.AuthType != nil {
-				data.Config.AuthType = types.StringValue(string(*dataItem.Config.AuthType))
-			} else {
-				data.Config.AuthType = types.StringNull()
-			}
-			data.Config.CloudGateway = types.BoolPointerValue(dataItem.Config.CloudGateway)
-			if dataItem.Config.ClusterType != nil {
-				data.Config.ClusterType = types.StringValue(string(*dataItem.Config.ClusterType))
-			} else {
-				data.Config.ClusterType = types.StringNull()
-			}
+			data.Config.AuthType = types.StringValue(string(dataItem.Config.AuthType))
+			data.Config.CloudGateway = types.BoolValue(dataItem.Config.CloudGateway)
+			data.Config.ClusterType = types.StringValue(string(dataItem.Config.ClusterType))
 			data.Config.ControlPlaneEndpoint = types.StringValue(dataItem.Config.ControlPlaneEndpoint)
 			if data.Config.ProxyUrls == nil {
 				data.Config.ProxyUrls = []tfTypes.AIGatewayProxyURL{}
@@ -61,22 +53,18 @@ func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPla
 				}
 			}
 			data.Name = types.StringValue(dataItem.Name)
-			if dataItem.ProxyUrls != nil {
-				if data.ProxyUrls == nil {
-					data.ProxyUrls = []tfTypes.AIGatewayProxyURL{}
-				}
+			if data.ProxyUrls == nil {
+				data.ProxyUrls = []tfTypes.AIGatewayProxyURL{}
+			}
 
-				for _, proxyUrlsItem1 := range dataItem.ProxyUrls {
-					var proxyUrls1 tfTypes.AIGatewayProxyURL
+			for _, proxyUrlsItem1 := range dataItem.ProxyUrls {
+				var proxyUrls1 tfTypes.AIGatewayProxyURL
 
-					proxyUrls1.Host = types.StringValue(proxyUrlsItem1.Host)
-					proxyUrls1.Port = types.Int64Value(proxyUrlsItem1.Port)
-					proxyUrls1.Protocol = types.StringValue(proxyUrlsItem1.Protocol)
+				proxyUrls1.Host = types.StringValue(proxyUrlsItem1.Host)
+				proxyUrls1.Port = types.Int64Value(proxyUrlsItem1.Port)
+				proxyUrls1.Protocol = types.StringValue(proxyUrlsItem1.Protocol)
 
-					data.ProxyUrls = append(data.ProxyUrls, proxyUrls1)
-				}
-			} else {
-				data.ProxyUrls = nil
+				data.ProxyUrls = append(data.ProxyUrls, proxyUrls1)
 			}
 
 			r.Data = append(r.Data, data)

@@ -45,7 +45,7 @@ type KongGroup struct {
 	//
 	ManagedBy map[string]string `json:"managed_by"`
 	// Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user's behalf (for example, `developer_portal` or `trusted_idp`).
-	ProvisionedBy *ProvisionedBy `default:"konnect_user" json:"provisioned_by"`
+	ProvisionedBy ProvisionedBy `json:"provisioned_by"`
 	// The manager of a team, set through the team's `team_manager` custom identity. Always null for plain groups, and for teams without a manager.
 	//
 	TeamManager *KongTeamManager `json:"team_manager"`
@@ -56,7 +56,7 @@ func (k KongGroup) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KongGroup) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"id", "name", "description", "metadata", "labels", "created_at", "updated_at", "managed_by"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"id", "name", "description", "metadata", "labels", "created_at", "updated_at", "managed_by", "provisioned_by"}); err != nil {
 		return err
 	}
 	return nil
@@ -125,9 +125,9 @@ func (k *KongGroup) GetManagedBy() map[string]string {
 	return k.ManagedBy
 }
 
-func (k *KongGroup) GetProvisionedBy() *ProvisionedBy {
+func (k *KongGroup) GetProvisionedBy() ProvisionedBy {
 	if k == nil {
-		return nil
+		return ProvisionedBy("")
 	}
 	return k.ProvisionedBy
 }
