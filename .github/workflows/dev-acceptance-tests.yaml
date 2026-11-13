@@ -1,0 +1,47 @@
+name: Acceptance Tests (Dev Environment)
+
+# Manually run the acceptance tests against the Konnect dev environment for
+# any branch. Uses a separate PAT (KONNECT_SPAT_DEV) and points the SDK at the
+# dev domain via KONG_CUSTOM_DOMAIN.
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch (or tag/SHA) of this repository to test"
+        required: true
+        default: "main"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  # The tests share one Konnect org and its quotas, so don't overlap runs.
+  group: acceptance-dev-env
+  cancel-in-progress: false
+
+jobs:
+  acceptance-dev:
+    name: Acceptance Tests on dev (${{ inputs.branch }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+        with:
+          ref: ${{ inputs.branch }}
+      - uses: actions/setup-go@cd53bc84d5e2fd85362f4cb840513e06427082d3 # v4
+        with:
+          go-version-file: "go.mod"
+      - uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2
+        with:
+          terraform_version: "1.13.*"
+          terraform_wrapper: false
+      - name: Run acceptance tests
+        env:
+          KONNECT_SPAT: ${{ secrets.KONNECT_SPAT_DEV }}
+          KONG_CUSTOM_DOMAIN: konghq.tech
+        run: make acceptance
