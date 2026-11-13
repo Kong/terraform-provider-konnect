@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: de805c7d28591631c3e1a65a6430831e
+  docChecksum: 44428c48ba5c8a4430ebe9adde1110f5
   docVersion: 2.0.0
   speakeasyVersion: 1.804.0
   generationVersion: 2.952.5
   releaseVersion: 3.28.0
   configChecksum: e7751a2040e456710a0430261e0e28b5
 persistentEdits:
-  generation_id: 31c1321e-e6a7-4a6a-9a8f-75e334f2a19b
-  pristine_commit_hash: 061187c5f005630c78c38a1614d0487d467d48fa
-  pristine_tree_hash: 92ad60c5d449d7bb16171920370fb729d5c5d97a
+  generation_id: 258e22f0-6c03-4892-8a6b-5bba4608dfe5
+  pristine_commit_hash: a309f48f6b7aa37c8f4b65599739475e5241b166
+  pristine_tree_hash: b8ed72c8085c326cb915610b8ed22b1d2f2cb93d
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -3341,8 +3341,8 @@ trackedFiles:
     pristine_git_object: 45d251be545e6c6a859a24b09e30fb0916c23660
   examples/resources/konnect_system_account_role/resource.tf:
     id: fe67d67caba0
-    last_write_checksum: sha1:2d5b0aeef9c48edf247760bf5ff7b069e314df6c
-    pristine_git_object: 4b8252c48aa8c3c89051e3ab51371c088f166a44
+    last_write_checksum: sha1:05b2ae5da03bcb2a38832b543ac9735fefd2b176
+    pristine_git_object: 1d65b1ff2ef50e8495c4935a9a62258dbf20bf1a
   examples/resources/konnect_system_account_team/resource.tf:
     id: 1a17afc4145e
     last_write_checksum: sha1:3eeb0d61354bee53772109ec302bd8ce40563de2
@@ -3369,8 +3369,8 @@ trackedFiles:
     pristine_git_object: c478281b1dea2152cfe8f1a389bd5b3d0ad54881
   examples/resources/konnect_team_role/resource.tf:
     id: 8ad21e796111
-    last_write_checksum: sha1:5c3dd1e13c02eba9e1295a42c15eba5e0beb56e3
-    pristine_git_object: 934a23130efd7ef558ee2bdd4bb00926b1605ed0
+    last_write_checksum: sha1:3a0c3a36fba554e902ed614320d310736084cfc0
+    pristine_git_object: d988a17a093711e2922018d11ccf0420b555d307
   examples/resources/konnect_team_user/resource.tf:
     id: b1bf3e9b35e1
     last_write_checksum: sha1:2025939867ae1e5ef8bd06e20757ddeef18e9390
@@ -3385,12 +3385,12 @@ trackedFiles:
     pristine_git_object: b2b3d3587d37629318749ac21955d19752758f0c
   examples/resources/konnect_user_role/resource.tf:
     id: ddc163f67448
-    last_write_checksum: sha1:169788d3b771a94df51b567e7e41cc7f1b4774e6
-    pristine_git_object: 1dd3598b7835e5c230dbf91646cfe4b205aa8d77
+    last_write_checksum: sha1:29a01e1a801d5b4e6d79790f336f7cf023132550
+    pristine_git_object: bf821b3f9188218bc6e9957bc1b6d04d8b8b9057
   go.mod:
     id: c47645c391ad
-    last_write_checksum: sha1:0b6e25ccae78c62b54d3467dc7511f83e99abc4e
-    pristine_git_object: bdb57c9305f40424c4273f79314d1ad8be91cbd3
+    last_write_checksum: sha1:41dc74ed88bb4e5cab550582157f470b35846a9a
+    pristine_git_object: 4d034bc8cfa79b86cc36b5d53908050b89dce5ae
   internal/planmodifiers/boolplanmodifier/suppress_diff.go:
     id: 3cf85b98963e
     last_write_checksum: sha1:fd6984577c6c57e42da4c7aa4c45813eeded8092
@@ -5893,12 +5893,12 @@ trackedFiles:
     pristine_git_object: 3a7b9aae843fdcb17cea0a668ced40627ef17ecc
   internal/provider/systemaccountrole_resource.go:
     id: 83f90249aba9
-    last_write_checksum: sha1:a28c5f6d65ffa8ad4d5ae35f7745eb590d89e657
-    pristine_git_object: 6d16a2af3c4115cb2d4f023bf4387d69139d04b7
+    last_write_checksum: sha1:489184a1869f853c09254fd1250744ee4912a55c
+    pristine_git_object: b36ea1c80ac14d772f09e42dce2c71ac8b9f8520
   internal/provider/systemaccountrole_resource_sdk.go:
     id: 6be20d676175
-    last_write_checksum: sha1:e5d5097e44e6a814e02ca5f56a2b6028ca29d0b8
-    pristine_git_object: 6b1e5fa9f296bc810cdfcb511b3ace7dacde306f
+    last_write_checksum: sha1:505e4186f02907042826f3f5569799069f4e8c8c
+    pristine_git_object: 4cc76a00ca7dbea67817d8a4e5fe42150cca9007
   internal/provider/systemaccountteam_resource.go:
     id: 24509efb0e03
     last_write_checksum: sha1:0bbfe5f938e69c387e395ec6c2f55fcb409c188f
@@ -5933,12 +5933,12 @@ trackedFiles:
     pristine_git_object: 1a3c7ae43e5b875c014efdc4b6625e03ab55eb56
   internal/provider/teamrole_resource.go:
     id: d74f466c05c1
-    last_write_checksum: sha1:3ddcfdb67ca629567e42a37c303b03c718c9316b
-    pristine_git_object: a5b4ecb343bfa69ae9a6d2e07f05920cb91ebb12
+    last_write_checksum: sha1:0e7f30817ebab79ebe4bf4f1c352ae1605e80766
+    pristine_git_object: dc5db8724f077fe32ab5dd338d484d8bb5d1e8ba
   internal/provider/teamrole_resource_sdk.go:
     id: ecb2e1dc06b3
-    last_write_checksum: sha1:1cab744034dc24c486faac13f9029d3be3e39eec
-    pristine_git_object: e84c9590532fd5e841974833418982c7e8967620
+    last_write_checksum: sha1:91b6eabc0bf31ef1e8f5549ce5190743472747bc
+    pristine_git_object: b370267aaff747dd32e09edcab3c450816523eeb
   internal/provider/teamuser_resource.go:
     id: 517e5416fd95
     last_write_checksum: sha1:85ba0bfa8dd2f40ee6a3b9bbc7096dba1a424628
@@ -9157,12 +9157,12 @@ trackedFiles:
     pristine_git_object: 37447d25574d2a0725dc1a1016e167ce1787e297
   internal/provider/userrole_resource.go:
     id: d881a3659fe7
-    last_write_checksum: sha1:8ea1ae3070eb6449b2a06a23a339963737854fee
-    pristine_git_object: 683fe731330f46ca4a31d5b3595bbb54362e3086
+    last_write_checksum: sha1:47bd16de3b51c01eb7314f40a25f93e403bc3394
+    pristine_git_object: b47b95376910b128a0d107d376790b62302a3906
   internal/provider/userrole_resource_sdk.go:
     id: f35c9d87b02f
-    last_write_checksum: sha1:ba28695bf5de0b2e7bcb00f15ed6b12bdf21d818
-    pristine_git_object: 329daa4b2594af741dde2c9911d10bb265155618
+    last_write_checksum: sha1:6b1b416de79632f9449d35674c6810a0e8192280
+    pristine_git_object: 9b75fa32b39aa37aca0d1832fabebd3da47f5492
   internal/provider/utils.go:
     id: 312d50f148af
     last_write_checksum: sha1:40c197c19363bee01046dba857ba89b5dac85a58
@@ -12889,8 +12889,8 @@ trackedFiles:
     pristine_git_object: 85dc93df754a3848ad68616e1c7de3d4cdb335d0
   internal/sdk/models/operations/postsystemaccountsaccountidassignedroles.go:
     id: b3ee2eb10330
-    last_write_checksum: sha1:02a53a9d8f373848286e8722fe174bf98f749a62
-    pristine_git_object: a7bef0450ce662e3e12f50a9c36a14929cb11f67
+    last_write_checksum: sha1:9f39f7427b71b428947f216c8dec0337c8f6982d
+    pristine_git_object: 81081f2af61b3d007e7033819c12cf4d18d20908
   internal/sdk/models/operations/postsystemaccountsidaccesstokens.go:
     id: 973bfc662b63
     last_write_checksum: sha1:9ed4d3e4578e30b14f66778a9cd786f7fd51db30
@@ -15029,12 +15029,12 @@ trackedFiles:
     pristine_git_object: feb465332c5d3584187eaf4594117006183e7e3e
   internal/sdk/models/shared/assignedrole.go:
     id: a7eb02a71908
-    last_write_checksum: sha1:21d7e743d41327a97cb5593f99a033281d9ac1eb
-    pristine_git_object: 83b8246d12cc051334ddd9722d217dd327ad403e
+    last_write_checksum: sha1:5ceb5edfe66c4adaacd4d2cc9a148c59dd1f04b7
+    pristine_git_object: 7ff62fe42579a76a039be0b402be4e354220c733
   internal/sdk/models/shared/assignrole.go:
     id: ce1109b2a5a7
-    last_write_checksum: sha1:1810cb46c50d3a07269cabde9fa5ee26dd7e3a7d
-    pristine_git_object: 2fe960f279a3c14b08e1d7712493a2d975c86ab8
+    last_write_checksum: sha1:e5fbf3d37d9f249a68ea7cdbefb07c84e298868e
+    pristine_git_object: 3104fe9ffa204cbb2441698cb355a3307bd486fa
   internal/sdk/models/shared/auditlogdestination.go:
     id: 78a8bc265b66
     last_write_checksum: sha1:71575adfd5215713bc3d4232b5621bf9c97ef73b
@@ -18649,8 +18649,8 @@ trackedFiles:
     pristine_git_object: af6636178c69c7077e44c07b472a466b550a9b83
   internal/sdk/systemaccountsroles.go:
     id: 66aaf954baec
-    last_write_checksum: sha1:f459f43162886267673a4ee80fb9d13bd4798cab
-    pristine_git_object: 24f1946bd86ba2198f1f6c3cb1f8a2bb97fdcb91
+    last_write_checksum: sha1:e00b11aa032e8cba812df74b7f7f9e3abb15aa9b
+    pristine_git_object: 908239175beaffbb2bfa014ff132b98e7cc773b4
   internal/sdk/systemaccountsteammembership.go:
     id: b2e0efa6eaca
     last_write_checksum: sha1:93cc4781486c484eb8f0d48b09ef38d60094c0d5
@@ -29507,16 +29507,18 @@ examples:
         path:
           accountId: "<id>"
       requestBody:
-        application/json: {"role_name": "Viewer", "entity_id": "e67490ce-44dc-4cbd-b65e-b52c746fc26a", "entity_type_name": "Control Planes", "entity_region": "eu"}
+        application/json: {"role_name": "Viewer", "entity_ids": ["817d0422-45c9-4d88-8d64-45aef05c1ae7", "18ee2573-dec0-4b83-be99-fa7700bcdc61"], "entity_type_name": "Control Planes", "entity_region": "eu"}
       responses:
         "201":
-          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_type_name": "Control Planes", "entity_region": "us"}
+          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_ids": ["18ee2573-dec0-4b83-be99-fa7700bcdc61"], "entity_type_name": "Control Planes", "entity_region": "us"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "409":
           application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+        "400":
+          application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "to", "rule": "max_time", "maximum": "2026-10-31T23:59:59Z", "source": "body", "reason": "must be no later than 2026-10-31T23:59:59Z"}]}
   delete-system-accounts-accountId-assigned-roles-roleId:
     speakeasy-default-delete-system-accounts-account-id-assigned-roles-role-id:
       parameters:
@@ -29581,10 +29583,10 @@ examples:
         path:
           teamId: "e81bc3e5-e9db-4764-b7dd-e81e39072cbe"
       requestBody:
-        application/json: {"role_name": "Viewer", "entity_id": "e67490ce-44dc-4cbd-b65e-b52c746fc26a", "entity_type_name": "Control Planes", "entity_region": "eu"}
+        application/json: {"role_name": "Viewer", "entity_ids": ["817d0422-45c9-4d88-8d64-45aef05c1ae7", "18ee2573-dec0-4b83-be99-fa7700bcdc61"], "entity_type_name": "Control Planes", "entity_region": "eu"}
       responses:
         "201":
-          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_type_name": "Control Planes", "entity_region": "us"}
+          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_ids": ["18ee2573-dec0-4b83-be99-fa7700bcdc61"], "entity_type_name": "Control Planes", "entity_region": "us"}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -33184,7 +33186,7 @@ examples:
           roleId: "<id>"
       responses:
         "200":
-          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_type_name": "Control Planes", "entity_region": "us"}
+          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_ids": ["18ee2573-dec0-4b83-be99-fa7700bcdc61"], "entity_type_name": "Control Planes", "entity_region": "us"}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -33201,7 +33203,7 @@ examples:
           roleId: "8350205f-a305-4e39-abe9-bc082a80091a"
       responses:
         "200":
-          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_type_name": "Control Planes", "entity_region": "us"}
+          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_ids": ["18ee2573-dec0-4b83-be99-fa7700bcdc61"], "entity_type_name": "Control Planes", "entity_region": "us"}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -34331,10 +34333,10 @@ examples:
         path:
           userId: "e81bc3e5-e9db-4764-b7dd-e81e39072cbe"
       requestBody:
-        application/json: {"role_name": "Viewer", "entity_id": "e67490ce-44dc-4cbd-b65e-b52c746fc26a", "entity_type_name": "Control Planes", "entity_region": "eu"}
+        application/json: {"role_name": "Viewer", "entity_ids": ["817d0422-45c9-4d88-8d64-45aef05c1ae7", "18ee2573-dec0-4b83-be99-fa7700bcdc61"], "entity_type_name": "Control Planes", "entity_region": "eu"}
       responses:
         "201":
-          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_type_name": "Control Planes", "entity_region": "us"}
+          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_ids": ["18ee2573-dec0-4b83-be99-fa7700bcdc61"], "entity_type_name": "Control Planes", "entity_region": "us"}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -34353,7 +34355,7 @@ examples:
           roleId: "8350205f-a305-4e39-abe9-bc082a80091a"
       responses:
         "200":
-          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_type_name": "Control Planes", "entity_region": "us"}
+          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_ids": ["18ee2573-dec0-4b83-be99-fa7700bcdc61"], "entity_type_name": "Control Planes", "entity_region": "us"}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
         "401":

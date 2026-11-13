@@ -27364,6 +27364,8 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/AssignedRoleSingle'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
         '403':
@@ -35611,6 +35613,17 @@ components:
         - created_at
         - updated_at
       title: IdpTeamGroupMapping
+    EntityIds:
+      description: The IDs of the entities associated with this role assignment. Mutually exclusive with entity_id; exactly one of entity_id or entity_ids must be provided.
+      type: array
+      items:
+        type: string
+        format: uuid
+      example:
+        - 817d0422-45c9-4d88-8d64-45aef05c1ae7
+        - 18ee2573-dec0-4b83-be99-fa7700bcdc61
+      minItems: 1
+      uniqueItems: true
     AssignedRole:
       description: An assigned role is a role that has been assigned to a user or team.
       type: object
@@ -35628,13 +35641,15 @@ components:
           nullable: true
           x-speakeasy-param-computed: false
         entity_id:
-          description: A RBAC entity ID.
+          description: A RBAC entity ID. Deprecated in favor of entity_ids
           type: string
           format: uuid
           example: 817d0422-45c9-4d88-8d64-45aef05c1ae7
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          deprecated: true
+          x-speakeasy-deprecation-message: Use entity_ids instead. entity_id is deprecated and will be removed in a future release.
+          x-speakeasy-param-computed: true
+        entity_ids:
+          $ref: '#/components/schemas/EntityIds'
         entity_type_name:
           description: Name of the entity type the role is being assigned to.
           type: string
@@ -35659,6 +35674,8 @@ components:
         id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
         role_name: Viewer
         entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_ids:
+          - 18ee2573-dec0-4b83-be99-fa7700bcdc61
         entity_type_name: Control Planes
         entity_region: us
       title: AssignedRole
@@ -35766,22 +35783,6 @@ components:
         expires_at: '2022-12-31T12:52:23Z'
         last_used_at: '2022-10-24T13:05:42Z'
       title: System Account Access Token
-    IdentityProviderEnabled:
-      description: |
-        Indicates whether the identity provider is enabled.
-        Only one identity provider can be active at a time, such as SAML or OIDC.
-      type: boolean
-      example: true
-      default: false
-      title: Identity Provider Enabled Property
-    UpdateIdentityProviderEnabled:
-      description: |
-        Indicates whether the identity provider is enabled.
-        Only one identity provider can be active at a time, such as SAML or OIDC.
-        When omitted, the current value is left unchanged.
-      type: boolean
-      example: true
-      title: Identity Provider Enabled Property
     LegacyStringFieldFilter:
       description: 'Filter using **one** of the following operators: `eq`, `contains`'
       type: object
@@ -35818,6 +35819,41 @@ components:
           x-speakeasy-param-computed: false
       additionalProperties: false
       title: StringFieldFilterWithExists
+    IdentityProviderEnabled:
+      description: |
+        Indicates whether the identity provider is enabled.
+        Only one identity provider can be active at a time, such as SAML or OIDC.
+      type: boolean
+      example: true
+      default: false
+      title: Identity Provider Enabled Property
+    UpdateIdentityProviderEnabled:
+      description: |
+        Indicates whether the identity provider is enabled.
+        Only one identity provider can be active at a time, such as SAML or OIDC.
+        When omitted, the current value is left unchanged.
+      type: boolean
+      example: true
+      title: Identity Provider Enabled Property
+    ManagedByUpdate:
+      description: |
+        Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+        Set a key's value to `null` to remove it.
+
+        Keys must be 1–63 characters long and start with an alphanumeric character.
+      type: object
+      example:
+        owner: terraform
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+        nullable: true
+      maxProperties: 5
+      title: ManagedByUpdate
+      writeOnly: true
     TeamName:
       description: The name of the team.
       type: string
@@ -65812,25 +65848,6 @@ components:
         - team
       nullable: true
       x-speakeasy-unknown-values: allow
-    ManagedByUpdate:
-      description: |
-        Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
-
-        Set a key's value to `null` to remove it.
-
-        Keys must be 1–63 characters long and start with an alphanumeric character.
-      type: object
-      example:
-        owner: terraform
-      additionalProperties:
-        type: string
-        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
-        minLength: 1
-        maxLength: 63
-        nullable: true
-      maxProperties: 5
-      title: ManagedByUpdate
-      writeOnly: true
     ExpiresAtWritable:
       description: An ISO-8601 timestamp representation of entity expiration date.
       type: string
@@ -112707,7 +112724,7 @@ components:
       content:
         application/json:
           schema:
-            description: An assigned role is a role that has been assigned to a user or team.
+            description: An assigned role is a role that has been assigned to a user or team. Exactly one of `entity_id` or `entity_ids` must be provided.
             type: object
             properties:
               role_name:
@@ -112757,13 +112774,16 @@ components:
                   - Add On Viewer
                 x-speakeasy-unknown-values: allow
               entity_id:
-                description: The ID of the entity.
+                description: The ID of the entity. Mutually exclusive with `entity_ids`.
                 type: string
                 format: uuid
                 example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+                deprecated: true
+                x-speakeasy-deprecation-message: Use entity_ids instead. entity_id is deprecated and will be removed in a future release.
+                x-speakeasy-param-computed: true
+                x-speakeasy-plan-validators: EntityIdEntityIdsValidator
+              entity_ids:
+                $ref: '#/components/schemas/EntityIds'
               entity_type_name:
                 description: The type of entity.
                 type: string

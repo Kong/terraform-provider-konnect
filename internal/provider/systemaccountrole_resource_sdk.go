@@ -15,6 +15,10 @@ func (r *SystemAccountRoleResourceModel) RefreshFromSharedAssignedRole(ctx conte
 
 	if resp != nil {
 		r.EntityID = types.StringPointerValue(resp.EntityID)
+		r.EntityIds = make([]types.String, 0, len(resp.EntityIds))
+		for _, v := range resp.EntityIds {
+			r.EntityIds = append(r.EntityIds, types.StringValue(v))
+		}
 		if resp.EntityRegion != nil {
 			r.EntityRegion = types.StringValue(string(*resp.EntityRegion))
 		} else {
@@ -106,6 +110,10 @@ func (r *SystemAccountRoleResourceModel) ToSharedAssignRole(ctx context.Context)
 	} else {
 		entityID = nil
 	}
+	entityIds := make([]string, 0, len(r.EntityIds))
+	for entityIdsIndex := range r.EntityIds {
+		entityIds = append(entityIds, r.EntityIds[entityIdsIndex].ValueString())
+	}
 	entityTypeName := new(shared.EntityTypeName)
 	if !r.EntityTypeName.IsUnknown() && !r.EntityTypeName.IsNull() {
 		*entityTypeName = shared.EntityTypeName(r.EntityTypeName.ValueString())
@@ -121,6 +129,7 @@ func (r *SystemAccountRoleResourceModel) ToSharedAssignRole(ctx context.Context)
 	out := shared.AssignRole{
 		RoleName:       roleName,
 		EntityID:       entityID,
+		EntityIds:      entityIds,
 		EntityTypeName: entityTypeName,
 		EntityRegion:   entityRegion,
 	}

@@ -7,15 +7,20 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	custom_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -34,12 +39,13 @@ type SystemAccountRoleResource struct {
 
 // SystemAccountRoleResourceModel describes the resource data model.
 type SystemAccountRoleResourceModel struct {
-	AccountID      types.String `tfsdk:"account_id"`
-	EntityID       types.String `tfsdk:"entity_id"`
-	EntityRegion   types.String `tfsdk:"entity_region"`
-	EntityTypeName types.String `tfsdk:"entity_type_name"`
-	ID             types.String `tfsdk:"id"`
-	RoleName       types.String `tfsdk:"role_name"`
+	AccountID      types.String   `tfsdk:"account_id"`
+	EntityID       types.String   `tfsdk:"entity_id"`
+	EntityIds      []types.String `tfsdk:"entity_ids"`
+	EntityRegion   types.String   `tfsdk:"entity_region"`
+	EntityTypeName types.String   `tfsdk:"entity_type_name"`
+	ID             types.String   `tfsdk:"id"`
+	RoleName       types.String   `tfsdk:"role_name"`
 }
 
 func (r *SystemAccountRoleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -58,11 +64,31 @@ func (r *SystemAccountRoleResource) Schema(ctx context.Context, req resource.Sch
 				Description: `ID of the system account. Requires replacement if changed.`,
 			},
 			"entity_id": schema.StringAttribute{
+				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The ID of the entity. Requires replacement if changed.`,
+				DeprecationMessage: `Use entity_ids instead. entity_id is deprecated and will be removed in a future release.`,
+				Description:        `The ID of the entity. Mutually exclusive with ` + "`" + `entity_ids` + "`" + `. Requires replacement if changed.`,
+				Validators: []validator.String{
+					custom_stringvalidators.EntityIDEntityIdsValidator(),
+				},
+			},
+			"entity_ids": schema.ListAttribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
+				ElementType: types.StringType,
+				Description: `The IDs of the entities associated with this role assignment. Mutually exclusive with entity_id; exactly one of entity_id or entity_ids must be provided. Requires replacement if changed.`,
+				Validators: []validator.List{
+					listvalidator.SizeAtLeast(1),
+					listvalidator.UniqueValues(),
+				},
 			},
 			"entity_region": schema.StringAttribute{
 				Computed: true,

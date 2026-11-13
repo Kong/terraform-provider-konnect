@@ -14,7 +14,11 @@ UserRole Resource
 
 ```terraform
 resource "konnect_user_role" "my_userrole" {
-  entity_id        = "e67490ce-44dc-4cbd-b65e-b52c746fc26a"
+  entity_id = "e67490ce-44dc-4cbd-b65e-b52c746fc26a"
+  entity_ids = [
+    "817d0422-45c9-4d88-8d64-45aef05c1ae7",
+    "18ee2573-dec0-4b83-be99-fa7700bcdc61",
+  ]
   entity_region    = "eu"
   entity_type_name = "Control Planes"
   role_name        = "Viewer"
@@ -31,7 +35,8 @@ resource "konnect_user_role" "my_userrole" {
 
 ### Optional
 
-- `entity_id` (String) The ID of the entity. Requires replacement if changed.
+- `entity_id` (String, Deprecated) The ID of the entity. Mutually exclusive with `entity_ids`. Requires replacement if changed.
+- `entity_ids` (List of String) The IDs of the entities associated with this role assignment. Mutually exclusive with entity_id; exactly one of entity_id or entity_ids must be provided. Requires replacement if changed.
 - `entity_region` (String) Region of the team. possible known values include one of ["us", "eu", "au", "me", "in", "sg", "*"]; Requires replacement if changed.
 - `entity_type_name` (String) The type of entity. possible known values include one of ["Add Ons", "APIs", "API Products", "Application Auth Strategies", "Audit Logs", "Control Planes", "Dashboards", "DCR Providers", "Mesh Control Planes", "Networks", "Portals", "Reports", "Service Hub", "Auth Servers"]; Requires replacement if changed.
 - `role_name` (String) The desired role. possible known values include one of ["Admin", "Appearance Maintainer", "Application Registration", "Certificate Admin", "Cloud Gateway Cluster Admin", "Cloud Gateway Cluster Viewer", "Consumer Admin", "Connector", "Creator", "Debug Session Creator", "Deployer", "Discovery Admin", "Discovery Viewer", "Editor", "Gateway Service Admin", "Integration Admin", "Integration Viewer", "Key Admin", "Maintainer", "Network Admin", "Network Creator", "Network Viewer", "Plugin Admin", "Plugins Admin", "Product Publisher", "Publisher", "Route Admin", "SNI Admin", "Scorecard Admin", "Scorecard Viewer", "Service Admin", "Service Creator", "Service Viewer", "Upstream Admin", "Vault Admin", "Viewer", "Registration Approver", "Content Editor", "Add On Admin", "Add On Viewer"]; Requires replacement if changed.
