@@ -1,0 +1,130 @@
+package gateway
+
+import (
+	"testing"
+
+	"github.com/hashicorp/terraform-plugin-testing/config"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+)
+
+func TestGatewayPluginRateLimitingAdvanced(t *testing.T) {
+	t.Run("CRUD", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.header_name", "X-RateLimit-Limit"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.redis.port", "6379"),
+					),
+				},
+				{
+					// Update redis port to a vault reference
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.redis.port", "{vault://konnect/redis/portx}"),
+					),
+				},
+				{
+					// Update redis port back to an integer
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.redis.port", "6380"),
+					),
+				},
+				{
+					// Update some fields to null
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeTestCheckFunc(
+						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.header_name"),
+					),
+				},
+			},
+		})
+	})
+
+	t.Run("CRUD-with-partial", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					// Create: redis_ee partial + plugin referencing it
+					Config:             providerConfigUs,
+					ExpectNonEmptyPlan: true,
+					ConfigDirectory:    config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttrSet("konnect_gateway_partial.redis_ee_partial", "id"),
+						resource.TestCheckResourceAttr("konnect_gateway_partial.redis_ee_partial", "redis_ee.name", "my_tf_redis_ee_partial"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.namespace", "my-namespace"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "partials.0.id"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "partials.0.path", "config.redis"),
+					),
+				},
+				{
+					// Update: change config.namespace (not covered by the partial)
+					Config:             providerConfigUs,
+					ExpectNonEmptyPlan: true,
+					ConfigDirectory:    config.TestStepDirectory(),
+					Check: resource.ComposeTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.namespace", "updated-namespace"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "partials.0.id"),
+					),
+				},
+				{
+					// Update partial redis port to a vault reference
+					Config:             providerConfigUs,
+					ExpectNonEmptyPlan: true,
+					ConfigDirectory:    config.TestStepDirectory(),
+					Check: resource.ComposeTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_partial.redis_ee_partial", "redis_ee.config.port", "{vault://konnect/redis/portx}"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "partials.0.id"),
+					),
+				},
+			},
+		})
+	})
+
+	t.Run("CRUD-with-expressions", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					// Create the plugin with expressions set.
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "config.namespace", "my-namespace"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "expressions.custom_key", "net.src.ip"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "expressions.limit.0", "200"),
+					),
+				},
+				{
+					// Update expressions to different values.
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "expressions.custom_key", "net.dst.ip"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "expressions.limit.0", "300"),
+					),
+				},
+				{
+					// Remove only expressions.limit, keep custom_key.
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "expressions.custom_key", "net.dst.ip"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "expressions.limit.0"),
+					),
+				},
+			},
+		})
+	})
+}
