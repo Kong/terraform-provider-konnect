@@ -11,6 +11,11 @@ on:
         required: true
         default: "main"
         type: string
+      skip:
+        description: "Optional regex of tests to skip (go test -skip), e.g. TestVault|TestPortalV2/auth"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -44,4 +49,5 @@ jobs:
         env:
           KONNECT_SPAT: ${{ secrets.KONNECT_SPAT_DEV }}
           KONG_CUSTOM_DOMAIN: konghq.tech
+          ACC_SKIP: ${{ inputs.skip }}
         run: make acceptance
