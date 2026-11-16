@@ -174,9 +174,6 @@ paths:
       operationId: create-cost-budget
       summary: Create a budget
       description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
         Creates a budget and returns it. The server assigns the identifier and records the caller as `created_by`.
 
         `effect` selects the kind of budget: a limit budget takes `limit`, `window`, and `posture`, and an exemption takes `validity`. A limit budget can split its limit with `scope.each`.
@@ -274,9 +271,6 @@ paths:
       operationId: upsert-cost-budget
       summary: Replace a budget's updatable fields
       description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
         Replaces a budget's `name`, `labels`, `priority`, and `scope`, with `limit`, `window`, and `posture` on a limit budget or `validity` on an exemption, and returns the result. The request carries the full budget. The budget keeps its identifier, notification rule, and recorded firings.
 
         - An omitted `labels`, `priority`, or `posture` resets to its default.
@@ -23113,8 +23107,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Kong Identity Directories
   '/v2/directories/{directoryId}':
@@ -23142,8 +23134,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Kong Identity Directories
     get:
@@ -23162,8 +23152,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Kong Identity Directories
     delete:
@@ -23195,8 +23183,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Kong Identity Directories
   '/v2/directories/{directoryId}/groups':
@@ -23229,8 +23215,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
   '/v2/directories/{directoryId}/groups/{groupId}':
@@ -23253,8 +23237,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
     put:
@@ -23284,8 +23266,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
     delete:
@@ -23305,8 +23285,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
   '/v2/directories/{directoryId}/groups/{groupId}/api-keys':
@@ -23337,8 +23315,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
   '/v2/directories/{directoryId}/groups/{groupId}/api-keys/{apiKeyId}':
@@ -23370,8 +23346,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
     get:
@@ -23392,8 +23366,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
     delete:
@@ -23416,8 +23388,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
   '/v2/directories/{directoryId}/groups/{groupId}/membership':
@@ -23447,8 +23417,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
   '/v2/directories/{directoryId}/groups/{groupId}/membership/{groupMembershipId}':
@@ -23472,8 +23440,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
     delete:
@@ -23493,8 +23459,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - PrincipalGroup
   '/v2/directories/{directoryId}/principals':
@@ -23524,8 +23488,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipal
   '/v2/directories/{directoryId}/principals/{principalId}':
@@ -23554,8 +23516,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipal
     get:
@@ -23574,8 +23534,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipal
     delete:
@@ -23597,8 +23555,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipal
   '/v2/directories/{directoryId}/principals/{principalId}/api-keys':
@@ -23627,8 +23583,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
   '/v2/directories/{directoryId}/principals/{principalId}/api-keys/{apiKeyId}':
@@ -23658,8 +23612,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
     get:
@@ -23680,8 +23632,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
     delete:
@@ -23704,8 +23654,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
   '/v2/directories/{directoryId}/principals/{principalId}/basic-auths':
@@ -23733,8 +23681,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
   '/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}':
@@ -23759,8 +23705,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
     put:
@@ -23784,8 +23728,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
     delete:
@@ -23808,8 +23750,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
   '/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}/passwords':
@@ -23839,8 +23779,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
   '/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}/passwords/{passwordId}':
@@ -23866,8 +23804,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
     put:
@@ -23891,8 +23827,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
     delete:
@@ -23915,8 +23849,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalCredential
   '/v2/directories/{directoryId}/principals/{principalId}/identities':
@@ -23946,8 +23878,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalIdentity
   '/v2/directories/{directoryId}/principals/{principalId}/identities/{identityId}':
@@ -23971,8 +23901,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalIdentity
     put:
@@ -23999,8 +23927,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalIdentity
     delete:
@@ -24023,8 +23949,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - KongPrincipalIdentity
   '/v2/directories/{directoryId}/trusted-idps':
@@ -24053,8 +23977,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Trusted IdPs
   '/v2/directories/{directoryId}/trusted-idps/{trustedIdpId}':
@@ -24077,8 +23999,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Trusted IdPs
     put:
@@ -24104,8 +24024,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Trusted IdPs
     delete:
@@ -24124,8 +24042,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - Trusted IdPs
   '/v2/directories/{directoryId}/vault/keys':
@@ -24156,8 +24072,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultKeys
   '/v2/directories/{directoryId}/vault/keys/{keyId}':
@@ -24180,8 +24094,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultKeys
     patch:
@@ -24207,8 +24119,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultKeys
     delete:
@@ -24230,8 +24140,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultKeys
   '/v2/directories/{directoryId}/vault/providers':
@@ -24258,8 +24166,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
   '/v2/directories/{directoryId}/vault/providers/{providerId}':
@@ -24282,8 +24188,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
     put:
@@ -24308,8 +24212,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
     delete:
@@ -24328,8 +24230,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
   '/v2/directories/{directoryId}/vault/providers/{providerId}/credentials':
@@ -24362,8 +24262,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
   '/v2/directories/{directoryId}/vault/providers/{providerId}/credentials/{credentialId}':
@@ -24391,8 +24289,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
     put:
@@ -24419,8 +24315,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
     delete:
@@ -24438,8 +24332,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://us.api.konghq.com/'
       tags:
         - TokenVaultProviders
   '/v2/portals/{portalId}/appearance':
@@ -29372,6 +29264,7 @@ components:
           description: Whether this control-plane can be used for cloud-gateways.
           type: boolean
           example: false
+          default: false
           nullable: false
         proxy_urls:
           $ref: '#/components/schemas/ProxyURLs'
@@ -29483,11 +29376,25 @@ components:
             cloud_gateway:
               description: Whether the Control Plane can be used for cloud-gateways.
               type: boolean
+              example: false
               nullable: false
               readOnly: true
               x-speakeasy-param-suppress-computed-diff: true
             proxy_urls:
-              $ref: '#/components/schemas/ProxyURLs'
+              description: Array of proxy URLs associated with reaching the data-planes connected to a control-plane.
+              type: array
+              items:
+                $ref: '#/components/schemas/ProxyURL'
+              format: set
+              example:
+                - host: example.com
+                  port: 443
+                  protocol: https
+              maxItems: 5
+              readOnly: true
+              title: ProxyURLs
+              x-speakeasy-param-suppress-computed-diff: true
+          readOnly: true
           required:
             - control_plane_endpoint
             - telemetry_endpoint
@@ -29495,6 +29402,7 @@ components:
             - auth_type
             - cloud_gateway
             - proxy_urls
+          x-speakeasy-param-suppress-computed-diff: true
         created_at:
           description: An ISO-8604 timestamp representation of control plane creation date.
           type: string
@@ -29515,15 +29423,18 @@ components:
           description: The auth type value of the cluster associated with the Runtime Group.
           type: string
           example: pinned_client_certs
+          default: pinned_client_certs
           x-speakeasy-param-computed: true
         cluster_type:
           description: The ClusterType value of the cluster associated with the Control Plane.
           type: string
+          default: CLUSTER_TYPE_CONTROL_PLANE
           x-speakeasy-param-computed: true
         cloud_gateway:
           description: Whether this control-plane can be used for cloud-gateways.
           type: boolean
           example: false
+          default: false
           x-speakeasy-param-computed: true
         proxy_urls:
           description: Array of proxy URLs associated with reaching the data-planes connected to a control-plane.
@@ -30505,15 +30416,17 @@ components:
       description: |
         Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-        Keys must be 1–63 characters long and start with an alphanumeric character.
+        Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+        Values must be 1–127 characters long and must not be empty.
+        Keys and values must not contain spaces or control characters.
       type: object
       example:
         owner: terraform
       additionalProperties:
         type: string
-        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        pattern: '^[^\s\x00-\x1F\x7F-\x9F]+$'
         minLength: 1
-        maxLength: 63
+        maxLength: 127
       maxProperties: 5
       title: ManagedBy
     PaginationNextResponse:
@@ -35102,7 +35015,6 @@ components:
             Indicates whether this auth strategy supports multiple credentials.
             Always `true` for KEY_AUTH.
           type: boolean
-          default: true
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         principals:
@@ -35541,7 +35453,6 @@ components:
         system_team:
           description: 'Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"'
           type: boolean
-          default: false
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         labels:
@@ -35670,6 +35581,16 @@ components:
             - sg
             - '*'
           x-speakeasy-unknown-values: allow
+        konnect_managed:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            Indicates that the role is assigned and removed only by Konnect.
+          type: boolean
+          example: false
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       example:
         id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
         role_name: Viewer
@@ -35841,15 +35762,17 @@ components:
 
         Set a key's value to `null` to remove it.
 
-        Keys must be 1–63 characters long and start with an alphanumeric character.
+        Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+        Values must be 1–127 characters long. Value can be null.
+        Keys and values must not contain spaces or control characters.
       type: object
       example:
         owner: terraform
       additionalProperties:
         type: string
-        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        pattern: '^[^\s\x00-\x1F\x7F-\x9F]+$'
         minLength: 1
-        maxLength: 63
+        maxLength: 127
         nullable: true
       maxProperties: 5
       title: ManagedByUpdate
@@ -39531,18 +39454,6 @@ components:
       description: 'AI features configuration. When top-level `enabled` is false, every feature toggle here is automatically reset to false.'
       type: object
       properties:
-        ai_search:
-          description: AI Search config
-          type: object
-          additionalProperties: false
-          properties:
-            enabled:
-              description: Whether AI Search is enabled or not
-              type: boolean
-              default: false
-          required:
-            - enabled
-          x-speakeasy-param-computed: true
         mcp_server:
           description: AI Features config
           type: object
@@ -39574,21 +39485,6 @@ components:
       required:
         - enabled
         - features
-    TryItUIAudience:
-      description: |
-        The audience for the Try It UI feature.
-
-        `all` means that the Try It UI will be available to all users, including unauthenticated users.
-
-        `authenticated` means that the Try It UI will only be available to authenticated users.
-
-        `registered` means that the Try It UI will only be available to users who have registered for the API.
-      type: string
-      enum:
-        - all
-        - authenticated
-        - registered
-      x-speakeasy-unknown-values: allow
     SnippetName:
       description: The unique name of a snippet in a portal.
       type: string
@@ -39703,9 +39599,21 @@ components:
               type: boolean
               default: true
             try_it_ui_audience:
-              allOf:
-                - $ref: '#/components/schemas/TryItUIAudience'
-                - default: all
+              description: |
+                The audience for the Try It UI feature.
+
+                `all` means that the Try It UI will be available to all users, including unauthenticated users.
+
+                `authenticated` means that the Try It UI will only be available to authenticated users.
+
+                `registered` means that the Try It UI will only be available to users who have registered for the API.
+              type: string
+              default: all
+              enum:
+                - all
+                - authenticated
+                - registered
+              x-speakeasy-unknown-values: allow
           title: PortalCustomizationSpecRenderer
           x-speakeasy-param-computed: false
         robots:
@@ -40040,7 +39948,7 @@ components:
     UpdateSAMLIdentityProviderConfig:
       description: |
         The properties of a SAML identity provider to update. Exactly one of `idp_metadata_url` or
-        `idp_metadata_xml` must be provided.
+        `idp_metadata_xml` must be provided with a non-empty value. An empty string is treated as not provided.
       type: object
       properties:
         idp_metadata_url:
@@ -40048,20 +39956,18 @@ components:
           type: string
           example: 'https://mocksaml.com/api/saml/metadata'
           default: null
-          minLength: 1
           nullable: true
-          pattern: '^https?://\S+$'
+          pattern: '^(https?://\S+)?$'
           x-speakeasy-param-computed: false
         idp_metadata_xml:
           description: |
             The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the `idp_metadata_url` field instead.
           type: string
           default: null
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
-      maxProperties: 1
+      maxProperties: 2
       minProperties: 1
       title: Update SAML Identity Provider Config
       x-speakeasy-name-override: SAMLIdentityProviderConfig
@@ -48017,7 +47923,11 @@ components:
         format: uri
       nullable: false
     LoginURI:
-      description: The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
       type: string
       format: uri
       default: null
@@ -49532,12 +49442,14 @@ components:
         host:
           description: Hostname of the proxy URL.
           type: string
+          minLength: 1
         port:
           description: Port of the proxy URL.
           type: integer
         protocol:
           description: Protocol of the proxy URL.
           type: string
+          minLength: 1
       example:
         host: example.com
         port: 443
@@ -49710,7 +49622,6 @@ components:
           description: How this AI Gateway's control plane is deployed.
           type: string
           example: hybrid
-          default: hybrid
           enum:
             - hybrid
             - managed
@@ -49779,6 +49690,7 @@ components:
             -----BEGIN CERTIFICATE-----
             ...
             -----END CERTIFICATE-----
+          minLength: 1
           x-referenceable: true
         cert_digest:
           description: SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
@@ -49810,6 +49722,7 @@ components:
             -----BEGIN CERTIFICATE-----
             ...
             -----END CERTIFICATE-----
+          minLength: 1
           x-referenceable: true
         cert_digest:
           description: SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
@@ -49841,6 +49754,7 @@ components:
             -----BEGIN CERTIFICATE-----
             ...
             -----END CERTIFICATE-----
+          minLength: 1
           x-referenceable: true
         cert_digest:
           description: SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
@@ -49883,6 +49797,7 @@ components:
             -----BEGIN CERTIFICATE-----
             ...
             -----END CERTIFICATE-----
+          minLength: 1
           x-referenceable: true
         key:
           description: PEM-encoded private key matching `cert`.
@@ -49891,6 +49806,7 @@ components:
             -----BEGIN PRIVATE KEY-----
             ...
             -----END PRIVATE KEY-----
+          minLength: 1
           writeOnly: true
           x-referenceable: true
         cert_alt:
@@ -49941,6 +49857,7 @@ components:
             -----BEGIN CERTIFICATE-----
             ...
             -----END CERTIFICATE-----
+          minLength: 1
           x-referenceable: true
         key:
           description: PEM-encoded private key matching `cert`.
@@ -49949,6 +49866,7 @@ components:
             -----BEGIN PRIVATE KEY-----
             ...
             -----END PRIVATE KEY-----
+          minLength: 1
           writeOnly: true
           x-referenceable: true
         cert_alt:
@@ -49999,6 +49917,7 @@ components:
             -----BEGIN CERTIFICATE-----
             ...
             -----END CERTIFICATE-----
+          minLength: 1
           x-referenceable: true
         key:
           description: PEM-encoded private key matching `cert`.
@@ -50007,6 +49926,7 @@ components:
             -----BEGIN PRIVATE KEY-----
             ...
             -----END PRIVATE KEY-----
+          minLength: 1
           writeOnly: true
           x-referenceable: true
         cert_alt:
@@ -50056,6 +49976,7 @@ components:
       description: 'A reference to the certificate with which to associate the SNI hostname, by certificate name. The certificate must have a valid private key to be used by the SNI.'
       type: string
       example: my-certificate
+      minLength: 1
     AIGatewayCertificateReference:
       description: 'A reference to an AI Certificate on the same AI Gateway, by certificate name. The certificate must have a valid private key to be presented as a client certificate to an upstream.'
       type: string
@@ -50178,6 +50099,7 @@ components:
         cert:
           description: JSON escaped string of the certificate.
           type: string
+          minLength: 1
         title:
           description: A human-readable name for the certificate.
           type: string
@@ -50202,6 +50124,7 @@ components:
         cert:
           description: JSON escaped string of the certificate.
           type: string
+          minLength: 1
         title:
           description: A human-readable name for the certificate.
           type: string
@@ -51571,6 +51494,7 @@ components:
             name:
               description: The name of the embeddings model.
               type: string
+              minLength: 1
             config:
               $ref: '#/components/schemas/AIGatewayEmbeddingsModelConfig'
           required:
@@ -51621,6 +51545,7 @@ components:
         deployment_id:
           description: The Azure OpenAI deployment ID for the embeddings model.
           type: string
+          minLength: 1
         api_version:
           description: The Azure OpenAI API version to use.
           type: string
@@ -52128,6 +52053,7 @@ components:
           description: The name of the model defined in the upstream provider that will be executed.
           type: string
           example: gpt-5-model
+          minLength: 1
         weight:
           description: The weight this target gets within the upstream load balancer
           type: integer
@@ -52209,6 +52135,7 @@ components:
         ttl:
           description: 'Cache TTL this price applies to, e.g. "5m" or "1h".'
           type: string
+          minLength: 1
           pattern: '^[0-9]+\.?[0-9]*[hm]$'
         cost:
           description: Cost per 1M cache-write prompt tokens for this TTL.
@@ -52246,6 +52173,7 @@ components:
         above:
           description: 'Input-token threshold above which the factors apply, e.g. "128k" or "1m".'
           type: string
+          minLength: 1
           pattern: '^[0-9]+\.?[0-9]*[km]$'
         input_factor:
           description: Multiplier applied to input pricing above the threshold.
@@ -53334,6 +53262,7 @@ components:
         workspace_instance_id:
           description: The Databricks workspace instance ID.
           type: string
+          minLength: 1
       required:
         - type
         - workspace_instance_id
@@ -53932,6 +53861,7 @@ components:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
+          minLength: 1
           x-speakeasy-param-computed: false
         type:
           type: string
@@ -54535,6 +54465,7 @@ components:
           description: The upstream URL for the model endpoint.
           type: string
           format: uri
+          minLength: 1
           x-speakeasy-param-computed: false
         type:
           type: string
@@ -54862,12 +54793,15 @@ components:
         api_endpoint:
           description: The custom API endpoint for the Gemini model.
           type: string
+          minLength: 1
         location_id:
           description: The Google Cloud location ID for the model endpoint.
           type: string
+          minLength: 1
         project_id:
           description: The Google Cloud project ID for the model endpoint.
           type: string
+          minLength: 1
       required:
         - api_endpoint
         - location_id
@@ -55100,6 +55034,7 @@ components:
                 The ID of the Konnect Config Store that contains the secrets.
               type: string
               example: 77426bee-2bca-4005-81af-284868fd3038
+              minLength: 1
           required:
             - config_store_id
       required:
@@ -55232,6 +55167,7 @@ components:
               description: The session name used when assuming a role.
               type: string
               default: KongVault
+              minLength: 1
             sts_endpoint_url:
               description: |
                 A custom STS endpoint URL used for IAM role assumption.
@@ -55311,6 +55247,7 @@ components:
                 The project ID from your Google API Console.
                 You can find it by visiting your Google API Console and selecting “Manage all projects” in the projects list.
               type: string
+              minLength: 1
           required:
             - project_id
           title: GoogleSecretManagerVaultConfig
@@ -55388,11 +55325,13 @@ components:
                 The URI from which the vault is reachable.
                 This value can be found in your Azure Key Vault Dashboard under the Vault URI entry.
               type: string
+              minLength: 1
             location:
               description: |
                 Each Azure geography includes one or more regions
                 that meet specific data residency and compliance requirements.
               type: string
+              minLength: 1
             client_id:
               description: |
                 The client ID for your registered application.
@@ -55483,6 +55422,7 @@ components:
               description: |
                 The CyberArk Secrets Manager organization account name.
               type: string
+              minLength: 1
             api_key:
               description: |
                 The API key of the workload identity.
@@ -55493,10 +55433,12 @@ components:
               description: |
                 The CyberArk Secrets Manager backend URL to connect with. Accepts http or https protocols.
               type: string
+              minLength: 1
             login:
               description: |
                 The login name of the workload identity.
               type: string
+              minLength: 1
           required:
             - endpoint_url
             - login
@@ -55602,6 +55544,7 @@ components:
         host:
           description: The hostname of your HashiCorp vault.
           type: string
+          minLength: 1
         port:
           description: The port number of your HashiCorp vault.
           type: integer
@@ -55609,6 +55552,7 @@ components:
           description: The mount point.
           type: string
           default: secret
+          minLength: 1
         kv:
           description: The secrets engine version.
           type: string
@@ -55689,6 +55633,7 @@ components:
         host:
           description: The hostname of your HashiCorp vault.
           type: string
+          minLength: 1
         port:
           description: The port number of your HashiCorp vault.
           type: integer
@@ -55696,6 +55641,7 @@ components:
           description: The mount point.
           type: string
           default: secret
+          minLength: 1
         kv:
           description: The secrets engine version.
           type: string
@@ -55732,6 +55678,7 @@ components:
             -----BEGIN CERTIFICATE-----
             certificate-content
             -----END CERTIFICATE-----
+          minLength: 1
         key:
           description: The key for the client certificate.
           type: string
@@ -55794,6 +55741,7 @@ components:
         host:
           description: The hostname of your HashiCorp vault.
           type: string
+          minLength: 1
         port:
           description: The port number of your HashiCorp vault.
           type: integer
@@ -55801,6 +55749,7 @@ components:
           description: The mount point.
           type: string
           default: secret
+          minLength: 1
         kv:
           description: The secrets engine version.
           type: string
@@ -55837,12 +55786,15 @@ components:
             and the `token_policies` have permissions to read the secrets.
           type: string
           example: demo
+          minLength: 1
         token_endpoint:
           description: The OAuth2 token endpoint for Hashicorp Vault's OAuth2 auth method.
           type: string
+          minLength: 1
         client_id:
           description: The OAuth2 client ID.
           type: string
+          minLength: 1
         client_secret:
           description: The OAuth2 client secret.
           type: string
@@ -55903,6 +55855,7 @@ components:
         host:
           description: The hostname of your HashiCorp vault.
           type: string
+          minLength: 1
         port:
           description: The port number of your HashiCorp vault.
           type: integer
@@ -55910,6 +55863,7 @@ components:
           description: The mount point.
           type: string
           default: secret
+          minLength: 1
         kv:
           description: The secrets engine version.
           type: string
@@ -56017,6 +55971,7 @@ components:
         host:
           description: The hostname of your HashiCorp vault.
           type: string
+          minLength: 1
         port:
           description: The port number of your HashiCorp vault.
           type: integer
@@ -56024,6 +55979,7 @@ components:
           description: The mount point.
           type: string
           default: secret
+          minLength: 1
         kv:
           description: The secrets engine version.
           type: string
@@ -56114,6 +56070,7 @@ components:
         host:
           description: The hostname of your HashiCorp vault.
           type: string
+          minLength: 1
         port:
           description: The port number of your HashiCorp vault.
           type: integer
@@ -56121,6 +56078,7 @@ components:
           description: The mount point.
           type: string
           default: secret
+          minLength: 1
         kv:
           description: The secrets engine version.
           type: string
@@ -56153,9 +56111,11 @@ components:
         role:
           description: The role to use for GCP IAM auth.
           type: string
+          minLength: 1
         service_account:
           description: The GCP service account for GCE auth.
           type: string
+          minLength: 1
         jwt_exp:
           description: The JWT expiration time in seconds for GCP auth (0-900)
           type: integer
@@ -56208,6 +56168,7 @@ components:
         host:
           description: The hostname of your HashiCorp vault.
           type: string
+          minLength: 1
         port:
           description: The port number of your HashiCorp vault.
           type: integer
@@ -56215,6 +56176,7 @@ components:
           description: The mount point.
           type: string
           default: secret
+          minLength: 1
         kv:
           description: The secrets engine version.
           type: string
@@ -56247,6 +56209,7 @@ components:
         role:
           description: The role to use for GCP GCE auth.
           type: string
+          minLength: 1
         login_path:
           description: The login path for GCP auth in HashiCorp Vault.
           type: string
@@ -56296,6 +56259,7 @@ components:
         host:
           description: The hostname of your HashiCorp vault.
           type: string
+          minLength: 1
         port:
           description: The port number of your HashiCorp vault.
           type: integer
@@ -56303,6 +56267,7 @@ components:
           description: The mount point.
           type: string
           default: secret
+          minLength: 1
         kv:
           description: The secrets engine version.
           type: string
@@ -56335,6 +56300,7 @@ components:
         role:
           description: The role to use for Azure auth.
           type: string
+          minLength: 1
         login_path:
           description: The login path for Azure auth in HashiCorp Vault
           type: string
@@ -56384,6 +56350,7 @@ components:
         host:
           description: The hostname of your HashiCorp vault.
           type: string
+          minLength: 1
         port:
           description: The port number of your HashiCorp vault.
           type: integer
@@ -56391,6 +56358,7 @@ components:
           description: The mount point.
           type: string
           default: secret
+          minLength: 1
         kv:
           description: The secrets engine version.
           type: string
@@ -56423,9 +56391,11 @@ components:
         role:
           description: The role to use for AWS EC2 auth.
           type: string
+          minLength: 1
         nonce:
           description: The nonce for AWS EC2 auth.
           type: string
+          minLength: 1
         login_path:
           description: The login path for AWS auth in HashiCorp Vault.
           type: string
@@ -56476,6 +56446,7 @@ components:
         host:
           description: The hostname of your HashiCorp vault.
           type: string
+          minLength: 1
         port:
           description: The port number of your HashiCorp vault.
           type: integer
@@ -56483,6 +56454,7 @@ components:
           description: The mount point.
           type: string
           default: secret
+          minLength: 1
         kv:
           description: The secrets engine version.
           type: string
@@ -56515,9 +56487,11 @@ components:
         role:
           description: The role to use for AWS IAM auth.
           type: string
+          minLength: 1
         region:
           description: The AWS region for auth.
           type: string
+          minLength: 1
         login_path:
           description: The login path for AWS auth in HashiCorp Vault.
           type: string
@@ -56754,6 +56728,7 @@ components:
         host:
           type: string
           example: 127.0.0.1
+          minLength: 1
         port:
           type: integer
           maximum: 65535
@@ -56841,6 +56816,7 @@ components:
         host:
           type: string
           example: 127.0.0.1
+          minLength: 1
           x-referenceable: true
         port:
           description: |
@@ -56945,6 +56921,7 @@ components:
               host:
                 type: string
                 example: 127.0.0.1
+                minLength: 1
               port:
                 type: integer
                 example: 6379
@@ -56964,6 +56941,7 @@ components:
               ip:
                 type: string
                 example: 127.0.0.1
+                minLength: 1
               port:
                 type: integer
                 example: 6379
@@ -57027,6 +57005,7 @@ components:
         host:
           type: string
           example: 127.0.0.1
+          minLength: 1
         port:
           type: integer
           default: 5432
@@ -57044,6 +57023,7 @@ components:
         database:
           type: string
           example: kong-pgvector
+          minLength: 1
         timeout:
           description: 'Timeout in milliseconds for connecting, reading, and writing to the database.'
           type: integer
@@ -57120,10 +57100,12 @@ components:
           description: The name of the directory in which tokens are stored.
           type: string
           example: my-directory
+          minLength: 1
         current_version:
           description: The version of the encryption key used to encrypt new tokens.
           type: string
           example: v1
+          minLength: 1
         keys:
           description: The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.
           type: array
@@ -57143,6 +57125,7 @@ components:
           description: The identifier of this key version.
           type: string
           example: v1
+          minLength: 1
         key:
           description: |
             A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.
@@ -57234,6 +57217,7 @@ components:
             Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and configuration documentation can be found in the [Developer Docs](https://developer.konghq.com/plugins/).
           type: string
           example: ai-sanitizer
+          minLength: 1
         enabled:
           description: Whether the policy is enabled.
           type: boolean
@@ -57315,6 +57299,7 @@ components:
             Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and configuration documentation can be found in the [Developer Docs](https://developer.konghq.com/plugins/).
           type: string
           example: ai-sanitizer
+          minLength: 1
         enabled:
           description: Whether the policy is enabled.
           type: boolean
@@ -57396,6 +57381,7 @@ components:
             Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and configuration documentation can be found in the [Developer Docs](https://developer.konghq.com/plugins/).
           type: string
           example: ai-sanitizer
+          minLength: 1
         enabled:
           description: Whether the policy is enabled.
           type: boolean
@@ -57487,6 +57473,7 @@ components:
           description: 'The Lua schema definition for the custom policy, equivalent to a Kong plugin''s `schema.lua`.'
           type: string
           example: <lua_schema>
+          minLength: 1
         labels:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
@@ -57519,10 +57506,12 @@ components:
           description: 'The Lua schema definition for the custom policy, equivalent to a Kong plugin''s `schema.lua`.'
           type: string
           example: <lua_schema>
+          minLength: 1
         handler:
           description: 'The Lua handler implementation for the custom policy, equivalent to a Kong plugin''s `handler.lua`.'
           type: string
           example: <lua_handler>
+          minLength: 1
         labels:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
@@ -57567,6 +57556,7 @@ components:
           description: 'The Lua schema definition for the custom policy, equivalent to a Kong plugin''s `schema.lua`.'
           type: string
           example: <lua_schema>
+          minLength: 1
         labels:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
@@ -57599,10 +57589,12 @@ components:
           description: 'The Lua schema definition for the custom policy, equivalent to a Kong plugin''s `schema.lua`.'
           type: string
           example: <lua_schema>
+          minLength: 1
         handler:
           description: 'The Lua handler implementation for the custom policy, equivalent to a Kong plugin''s `handler.lua`.'
           type: string
           example: <lua_handler>
+          minLength: 1
         labels:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
@@ -57647,6 +57639,7 @@ components:
           description: 'The Lua schema definition for the custom policy, equivalent to a Kong plugin''s `schema.lua`.'
           type: string
           example: <lua_schema>
+          minLength: 1
         labels:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
@@ -57688,10 +57681,12 @@ components:
           description: 'The Lua schema definition for the custom policy, equivalent to a Kong plugin''s `schema.lua`.'
           type: string
           example: <lua_schema>
+          minLength: 1
         handler:
           description: 'The Lua handler implementation for the custom policy, equivalent to a Kong plugin''s `handler.lua`.'
           type: string
           example: <lua_handler>
+          minLength: 1
         labels:
           $ref: '#/components/schemas/PublicLabels'
         managed_by:
@@ -57766,6 +57761,7 @@ components:
               type: string
               format: uri
               example: 'https://booking-agent.internal.kongair.com'
+              minLength: 1
             upstream:
               $ref: '#/components/schemas/AIGatewayUpstreamConfig'
             route:
@@ -57881,6 +57877,7 @@ components:
               type: string
               format: uri
               example: 'https://booking-agent.internal.kongair.com'
+              minLength: 1
             upstream:
               $ref: '#/components/schemas/AIGatewayUpstreamConfig'
             route:
@@ -57996,6 +57993,7 @@ components:
               type: string
               format: uri
               example: 'https://booking-agent.internal.kongair.com'
+              minLength: 1
             upstream:
               $ref: '#/components/schemas/AIGatewayUpstreamConfig'
             route:
@@ -58206,6 +58204,7 @@ components:
           description: The display name for this credential instance.
           type: string
           example: Greg's Dev Key
+          minLength: 1
         name:
           description: 'A user-defined unique identifier for this credential, used as a stable human-readable reference. This value is immutable after creation.'
           example: gregs-dev-key
@@ -58246,6 +58245,7 @@ components:
           description: The display name for this credential instance.
           type: string
           example: Greg's Dev Key
+          minLength: 1
         name:
           description: 'A user-defined unique identifier for this credential, used as a stable human-readable reference. This value is immutable after creation.'
           example: gregs-dev-key
@@ -58291,6 +58291,7 @@ components:
           description: The display name for this credential instance.
           type: string
           example: Greg's Dev Key
+          minLength: 1
         name:
           description: 'A user-defined unique identifier for this credential, used as a stable human-readable reference. This value is immutable after creation.'
           example: gregs-dev-key
@@ -58375,6 +58376,7 @@ components:
           description: The ID of the consumer to add to the group.
           type: string
           example: cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b
+          minLength: 1
           x-speakeasy-name-override: consumer_id
       additionalProperties: false
       required:
@@ -58499,6 +58501,7 @@ components:
               type: string
               format: uri
               example: 'https://mcp.internal.kongair.com'
+              minLength: 1
             upstream:
               $ref: '#/components/schemas/AIGatewayUpstreamConfig'
             certificates:
@@ -58568,6 +58571,7 @@ components:
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
           required:
+            - route
             - url
           title: AIGatewayMCPServerKongListenerConfig
           x-terraform-no-default-null: true
@@ -58687,6 +58691,8 @@ components:
                   $ref: '#/components/schemas/AIGatewayMCPServerCacheHint'
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
+          required:
+            - route
           title: AIGatewayMCPServerKongListenerConfig
           x-terraform-no-default-null: true
         sources:
@@ -58928,6 +58934,7 @@ components:
         name:
           description: Tool identifier used to match remote MCP Server tools for ACL enforcement.
           type: string
+          minLength: 1
       additionalProperties: false
       required:
         - name
@@ -59198,6 +59205,7 @@ components:
         provider:
           description: Name of the upstream credential provider registered in the Token Vault directory.
           type: string
+          minLength: 1
         subject_token_type:
           description: |
             The kind of bearer token the caller presents, which the Token Vault exchanges for the
@@ -59874,6 +59882,7 @@ components:
           type: string
           format: uri
           example: 'https://mcp.internal.kongair.com'
+          minLength: 1
         upstream:
           $ref: '#/components/schemas/AIGatewayUpstreamConfig'
         certificates:
@@ -60007,6 +60016,7 @@ components:
           type: string
           format: uri
           example: 'https://mcp.internal.kongair.com'
+          minLength: 1
         upstream:
           $ref: '#/components/schemas/AIGatewayUpstreamConfig'
         certificates:
@@ -60043,6 +60053,7 @@ components:
           $ref: '#/components/schemas/AIGatewayProxyConfig'
       additionalProperties: false
       required:
+        - route
         - url
     AIGatewayMCPServerRouteWithMatcher:
       description: |
@@ -60085,6 +60096,7 @@ components:
           type: string
           format: uri
           example: 'https://mcp.internal.kongair.com'
+          minLength: 1
         upstream:
           $ref: '#/components/schemas/AIGatewayUpstreamConfig'
         certificates:
@@ -60125,6 +60137,7 @@ components:
           minimum: 0
       additionalProperties: false
       required:
+        - route
         - url
         - tools_cache_ttl_seconds
     AIGatewayMCPServerServerConfigBase:
@@ -60381,12 +60394,14 @@ components:
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
           format: uri
+          minLength: 1
           x-referenceable: true
         client_id:
           description: |
             The client ID for the OAuth 2.0 client-credentials.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
+          minLength: 1
           x-referenceable: true
         client_secret:
           description: |
@@ -60558,6 +60573,7 @@ components:
               type: string
               format: uri
               example: 'https://mcp.internal.kongair.com'
+              minLength: 1
             upstream:
               $ref: '#/components/schemas/AIGatewayUpstreamConfig'
             certificates:
@@ -60627,6 +60643,7 @@ components:
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
           required:
+            - route
             - url
           title: AIGatewayMCPServerKongListenerConfig
           x-terraform-no-default-null: true
@@ -60756,6 +60773,8 @@ components:
                   $ref: '#/components/schemas/AIGatewayMCPServerCacheHint'
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
+          required:
+            - route
           title: AIGatewayMCPServerKongListenerConfig
           x-terraform-no-default-null: true
         sources:
@@ -61037,6 +61056,7 @@ components:
           description: The name of the parameter.
           type: string
           example: origin
+          minLength: 1
         in:
           description: The location of the parameter in the request.
           type: string
@@ -61143,6 +61163,7 @@ components:
       description: Reference to a model provider instance by name.
       type: string
       example: azure-ai-se
+      minLength: 1
     AIGatewayModelProviderAnthropic:
       description: |
         Configuration for an upstream model provider.
@@ -61865,6 +61886,7 @@ components:
                   The name of the header used for authentication.
                   This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
                 type: string
+                minLength: 1
                 x-referenceable: true
               value:
                 description: |
@@ -61890,6 +61912,7 @@ components:
                 description: |
                   This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
                 type: string
+                minLength: 1
                 x-referenceable: true
               value:
                 description: |
@@ -62160,6 +62183,7 @@ components:
                   description: The Azure AI Foundry resource name.
                   type: string
                   example: kong-foundry-east
+                  minLength: 1
                 domain:
                   description: The domain for Azure AI Foundry hosted models.
                   type: string
@@ -62501,6 +62525,7 @@ components:
       type: string
       example: my-secret-value
       maxLength: 8192
+      minLength: 1
       writeOnly: true
       x-speakeasy-param-sensitive: true
       x-speakeasy-terraform-plan-only: true
@@ -63811,7 +63836,7 @@ components:
       description: |-
         A condition on one usage field. `op` selects the comparison and the shape of `value`.
 
-        Usage without a value for the field matches only `nexists`. A `subject`, `group`, or `team` predicate takes only `eq`, `neq`, `in`, `nin`, `exists`, and `nexists`. Its values are complete references: a subject is `principal/{uuid}`, `consumer/{uuid}`, or `oidc/{sub}`, a group is `principal/{uuid}`, `consumer_group/{uuid}`, or `oidc/{group}`, and a team is `principal/{uuid}`. `subject_id` matches a subject's identifier without its type.
+        Usage without a value for the field matches only `nexists`. A `subject`, `group`, or `team` predicate takes only `eq`, `neq`, `in`, `nin`, `exists`, and `nexists`. Its values are complete references: a subject is `principal/{uuid}`, `consumer/{uuid}`, or `oidc/{sub}`, a group is `principal/{uuid}`, `consumer_group/{uuid}`, or `oidc/{group}`, and a team is `principal/{uuid}`. `subject_id` matches a subject's identifier without its type. A `tags.<key>` predicate's values each have at most 256 characters, none of them a control character.
       discriminator:
         propertyName: op
         mapping:
@@ -63986,7 +64011,7 @@ components:
           description: |-
             Always `exempt` for an exemption, which carries the period it covers in `validity`.
 
-            A replacement can't change it.
+            A replacement can't change it. A person can't exempt their own usage: when the caller has access to only some principals, and the scope lies within the caller's principals rather than within their groups alone, the request fails with `400`. An organization-wide caller can create any exemption, and a Team Manager can create one for their groups.
           type: string
           const: exempt
         validity:
@@ -65706,7 +65731,7 @@ components:
       x-speakeasy-param-computed: false
     TrustedIdpJitProvisioningEnabled:
       description: |
-        Whether a principal is provisioned just-in-time on first exchange when no principal matches the subject_token's issuer and sub claim.
+        Whether a principal is provisioned just-in-time on first exchange when no principal matches the subject_token's issuer and its identifier claim — `sub` by default, or the claim `jit.mapping.identifier` names.
       type: boolean
       default: true
     TrustedIdpVaultAccessEnabled:
@@ -65730,7 +65755,7 @@ components:
           $ref: '#/components/schemas/TrustedIdpJitMapping'
     TrustedIdpJitMapping:
       description: |
-        How the OIDC claims a client presents to fetch-principal map onto a principal provisioned just in time for this trusted IdP. Every field names one of those claims and is optional; a claim the mapping names but the lookup does not carry contributes nothing. An absent `mapping` — or an absent `jit` — means no claim mapping: provisioned principals get empty metadata and the lookup's claim value as display name.
+        How the OIDC claims a client presents to fetch-principal map onto a principal provisioned just in time for this trusted IdP. Every field names one of those claims and is optional; a claim the mapping names but the lookup does not carry contributes nothing — except `identifier`, which the vault token exchange uses to look up the principal, and whose absence from the subject_token fails the exchange. An absent `mapping` — or an absent `jit` — means no claim mapping: provisioned principals get empty metadata and the lookup's claim value as display name.
       type: object
       properties:
         metadata:
@@ -65764,6 +65789,12 @@ components:
           example: name
           nullable: true
           x-speakeasy-param-computed: false
+        identifier:
+          description: |
+            Name of the claim whose string value identifies the principal: the principal's OIDC identity keys on it, and an exchange looks the principal up by it. Defaults to `sub`. Set it when the IdP keys principals on another claim — Entra ID tokens, for example, carry the immutable object id in `oid`. The claim's value must identify one principal. When the claim is absent from the token, the lookup fails. Changing `identifier` re-keys existing principals' OIDC identities: they stop resolving, and the next exchange provisions anew or fails.
+          type: string
+          example: oid
+          default: sub
       x-terraform-no-default-null: true
     TrustedIdp:
       description: |
@@ -65826,7 +65857,6 @@ components:
     ProvisionedBy:
       description: 'Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user''s behalf (for example, `developer_portal` or `trusted_idp`).'
       type: string
-      default: konnect_user
       enum:
         - konnect_user
         - developer_portal
@@ -111778,6 +111808,21 @@ components:
         - issuer
         - cache_tokens_salt
       x-terraform-no-default-null: true
+    Protocols:
+      description: 'A string representing a protocol, such as HTTP or HTTPS.'
+      type: string
+      enum:
+        - grpc
+        - grpcs
+        - http
+        - https
+        - tcp
+        - tls
+        - tls_passthrough
+        - udp
+        - ws
+        - wss
+      x-speakeasy-unknown-values: allow
     WorkspaceFilterParameters:
       type: object
       properties:
@@ -111794,21 +111839,6 @@ components:
               type: string
       additionalProperties: false
       title: WorkspaceFilterParameters
-    Protocols:
-      description: 'A string representing a protocol, such as HTTP or HTTPS.'
-      type: string
-      enum:
-        - grpc
-        - grpcs
-        - http
-        - https
-        - tcp
-        - tls
-        - tls_passthrough
-        - udp
-        - ws
-        - wss
-      x-speakeasy-unknown-values: allow
     CreatePortalCustomDomainSSL:
       type: object
       properties:
@@ -113304,10 +113334,6 @@ components:
                 description: 'When enabled, portal registration notifications include the registering developer''s identifying information (such as name and email).'
                 type: boolean
                 default: false
-              theme_name:
-                description: 'Name of the theme to use for the default content created upon creation of this portal. Must match an available theme name; if omitted or unrecognized, the default theme is used. Only applies when `create_default_content` is true.'
-                type: string
-                x-speakeasy-param-computed: false
             additionalProperties: false
             required:
               - name
@@ -114896,9 +114922,8 @@ components:
                 description: Details about the error.
                 type: string
                 example: Could not retrieve permissions to check resource accessibility.
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+                readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
             required:
               - status
               - title
@@ -115874,6 +115899,7 @@ components:
                     - canonical_domain
                     - created_at
                     - updated_at
+                    - ai
               meta:
                 $ref: '#/components/schemas/PaginatedMeta'
             additionalProperties: false
