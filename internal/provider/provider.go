@@ -420,6 +420,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewPortalCustomizationResource,
 		NewPortalDeveloperResource,
 		NewPortalFaviconResource,
+		NewPortalFormResource,
 		NewPortalIPAllowListResource,
 		NewPortalIdentityProviderResource,
 		NewPortalIdentityProviderTeamGroupMappingResource,

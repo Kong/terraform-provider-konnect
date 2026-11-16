@@ -419,6 +419,7 @@ type Konnect struct {
 	PortalCustomization *PortalCustomization
 	// APIs related to Konnect Developer Portal developers.
 	PortalDevelopers *PortalDevelopers
+	PortalForms      *PortalForms
 	// APIs related to Konnect Portal IP Allow List.
 	PortalsIPAllowList *PortalsIPAllowList
 	PortalPages        *PortalPages
@@ -658,6 +659,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalDevelopers = newPortalDevelopers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalForms = newPortalForms(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalsIPAllowList = newPortalsIPAllowList(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalPages = newPortalPages(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)

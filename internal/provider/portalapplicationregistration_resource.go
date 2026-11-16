@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -37,16 +38,17 @@ type PortalApplicationRegistrationResource struct {
 
 // PortalApplicationRegistrationResourceModel describes the resource data model.
 type PortalApplicationRegistrationResourceModel struct {
-	API           *tfTypes.API                                        `tfsdk:"api"`
-	APIID         types.String                                        `tfsdk:"api_id"`
-	Application   *tfTypes.APIProductVersionAuthStrategy              `tfsdk:"application"`
-	ApplicationID types.String                                        `tfsdk:"application_id"`
-	Consumer      *tfTypes.GetApplicationRegistrationResponseConsumer `tfsdk:"consumer"`
-	CreatedAt     types.String                                        `tfsdk:"created_at"`
-	ID            types.String                                        `tfsdk:"id"`
-	PortalID      types.String                                        `tfsdk:"portal_id"`
-	Status        types.String                                        `tfsdk:"status"`
-	UpdatedAt     types.String                                        `tfsdk:"updated_at"`
+	AdditionalData jsontypes.Normalized                                `tfsdk:"additional_data"`
+	API            *tfTypes.API                                        `tfsdk:"api"`
+	APIID          types.String                                        `tfsdk:"api_id"`
+	Application    *tfTypes.APIProductVersionAuthStrategy              `tfsdk:"application"`
+	ApplicationID  types.String                                        `tfsdk:"application_id"`
+	Consumer       *tfTypes.GetApplicationRegistrationResponseConsumer `tfsdk:"consumer"`
+	CreatedAt      types.String                                        `tfsdk:"created_at"`
+	ID             types.String                                        `tfsdk:"id"`
+	PortalID       types.String                                        `tfsdk:"portal_id"`
+	Status         types.String                                        `tfsdk:"status"`
+	UpdatedAt      types.String                                        `tfsdk:"updated_at"`
 }
 
 func (r *PortalApplicationRegistrationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -57,6 +59,16 @@ func (r *PortalApplicationRegistrationResource) Schema(ctx context.Context, req 
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "PortalApplicationRegistration Resource",
 		Attributes: map[string]schema.Attribute{
+			"additional_data": schema.StringAttribute{
+				CustomType: jsontypes.NormalizedType{},
+				Computed:   true,
+				Optional:   true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `The developer's answers to the ` + "`" + `api_registration` + "`" + ` form linked to this API, as a map from each field's ` + "`" + `name` + "`" + ` to its value. Optional, and ignored if no form is linked to the publication. Requires replacement if changed.; Parsed as JSON.`,
+			},
 			"api": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{

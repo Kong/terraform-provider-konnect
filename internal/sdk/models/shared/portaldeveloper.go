@@ -22,7 +22,7 @@ type PortalDeveloper struct {
 	// The developer's answers to the portal's `developer_registration`
 	// form, captured when they registered.
 	//
-	AdditionalData map[string]FormResponseEntry `json:"additional_data,omitempty"`
+	AdditionalData any `json:"additional_data,omitempty"`
 }
 
 func (p PortalDeveloper) MarshalJSON() ([]byte, error) {
@@ -30,6 +30,11 @@ func (p PortalDeveloper) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalDeveloper) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".additional_data |= (if . == null then . else map_values(.value) end)"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id", "created_at", "updated_at", "email", "full_name", "status"}); err != nil {
 		return err
 	}
@@ -78,7 +83,7 @@ func (p *PortalDeveloper) GetStatus() DeveloperStatus {
 	return p.Status
 }
 
-func (p *PortalDeveloper) GetAdditionalData() map[string]FormResponseEntry {
+func (p *PortalDeveloper) GetAdditionalData() any {
 	if p == nil {
 		return nil
 	}
