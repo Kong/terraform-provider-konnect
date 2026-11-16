@@ -3,6 +3,5 @@
 package types
 
 type AISettingsFeatures struct {
-	AiSearch  *AuthStrategyPrincipals `tfsdk:"ai_search"`
-	McpServer *McpServer              `tfsdk:"mcp_server"`
+	McpServer *McpServer `tfsdk:"mcp_server"`
 }

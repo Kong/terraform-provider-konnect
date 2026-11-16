@@ -17,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
@@ -44,6 +45,7 @@ type UserRoleResourceModel struct {
 	EntityRegion   types.String   `tfsdk:"entity_region"`
 	EntityTypeName types.String   `tfsdk:"entity_type_name"`
 	ID             types.String   `tfsdk:"id"`
+	KonnectManaged types.Bool     `tfsdk:"konnect_managed"`
 	RoleName       types.String   `tfsdk:"role_name"`
 	UserID         types.String   `tfsdk:"user_id"`
 }
@@ -102,6 +104,16 @@ func (r *UserRoleResource) Schema(ctx context.Context, req resource.SchemaReques
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The ID of the role assignment.`,
+			},
+			"konnect_managed": schema.BoolAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+				},
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`Indicates that the role is assigned and removed only by Konnect.`,
 			},
 			"role_name": schema.StringAttribute{
 				Optional: true,

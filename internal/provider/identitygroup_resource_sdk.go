@@ -36,11 +36,7 @@ func (r *IdentityGroupResourceModel) RefreshFromSharedKongGroup(ctx context.Cont
 		metadataResult, _ := json.Marshal(resp.Metadata)
 		r.Metadata = jsontypes.NewNormalizedValue(string(metadataResult))
 		r.Name = types.StringValue(resp.Name)
-		if resp.ProvisionedBy != nil {
-			r.ProvisionedBy = types.StringValue(string(*resp.ProvisionedBy))
-		} else {
-			r.ProvisionedBy = types.StringNull()
-		}
+		r.ProvisionedBy = types.StringValue(string(resp.ProvisionedBy))
 		if resp.TeamManager == nil {
 			r.TeamManager = nil
 		} else {

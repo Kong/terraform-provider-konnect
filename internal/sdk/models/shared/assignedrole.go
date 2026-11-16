@@ -50,6 +50,11 @@ type AssignedRole struct {
 	EntityTypeName *string `default:"null" json:"entity_type_name"`
 	// Region of the entity.
 	EntityRegion *AssignedRoleEntityRegion `json:"entity_region,omitempty"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Indicates that the role is assigned and removed only by Konnect.
+	KonnectManaged *bool `json:"konnect_managed,omitempty"`
 }
 
 func (a AssignedRole) MarshalJSON() ([]byte, error) {
@@ -103,4 +108,11 @@ func (a *AssignedRole) GetEntityRegion() *AssignedRoleEntityRegion {
 		return nil
 	}
 	return a.EntityRegion
+}
+
+func (a *AssignedRole) GetKonnectManaged() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.KonnectManaged
 }

@@ -30,6 +30,7 @@ func (r *SystemAccountRoleResourceModel) RefreshFromSharedAssignedRole(ctx conte
 			r.EntityTypeName = types.StringNull()
 		}
 		r.ID = types.StringPointerValue(resp.ID)
+		r.KonnectManaged = types.BoolPointerValue(resp.KonnectManaged)
 		if resp.RoleName != nil {
 			r.RoleName = types.StringValue(string(*resp.RoleName))
 		} else {

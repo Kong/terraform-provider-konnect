@@ -45,7 +45,7 @@ func (r *TeamDataSourceModel) RefreshFromSharedTeamResponse(ctx context.Context,
 		}
 	}
 	r.Name = types.StringValue(resp.Name)
-	r.SystemTeam = types.BoolPointerValue(resp.SystemTeam)
+	r.SystemTeam = types.BoolValue(resp.SystemTeam)
 	r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 
 	return diags

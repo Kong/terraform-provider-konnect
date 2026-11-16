@@ -739,6 +739,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The Azure OpenAI deployment ID for the embeddings model. Not Null`,
 																		Validators: []validator.String{
 																			speakeasy_stringvalidators.NotNull(),
+																			stringvalidator.UTF8LengthAtLeast(1),
 																		},
 																	},
 																	"type": schema.StringAttribute{
@@ -831,6 +832,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Description: `The custom API endpoint for the Gemini model. Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
+																					stringvalidator.UTF8LengthAtLeast(1),
 																				},
 																			},
 																			"location_id": schema.StringAttribute{
@@ -839,6 +841,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Description: `The Google Cloud location ID for the model endpoint. Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
+																					stringvalidator.UTF8LengthAtLeast(1),
 																				},
 																			},
 																			"project_id": schema.StringAttribute{
@@ -847,6 +850,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Description: `The Google Cloud project ID for the model endpoint. Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
+																					stringvalidator.UTF8LengthAtLeast(1),
 																				},
 																			},
 																		},
@@ -981,6 +985,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														Description: `The name of the embeddings model. Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 													"provider": schema.StringAttribute{
@@ -989,6 +994,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														Description: `Reference to a model provider instance by name. Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 												},
@@ -1859,7 +1865,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -1965,6 +1973,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -1986,6 +1995,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -2263,6 +2273,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -2284,6 +2295,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -2564,6 +2576,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -2585,6 +2598,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -2860,6 +2874,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -2881,6 +2896,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -3187,6 +3203,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -3208,6 +3225,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -3481,6 +3499,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -3502,6 +3521,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -3779,6 +3799,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -3800,6 +3821,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -4071,6 +4093,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -4092,6 +4115,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -4266,6 +4290,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `The Databricks workspace instance ID. Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 											},
@@ -4365,6 +4390,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -4386,6 +4412,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -4651,6 +4678,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -4672,6 +4700,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -4714,6 +4743,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `The custom API endpoint for the Gemini model. Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"location_id": schema.StringAttribute{
@@ -4722,6 +4752,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `The Google Cloud location ID for the model endpoint. Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"project_id": schema.StringAttribute{
@@ -4730,6 +4761,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `The Google Cloud project ID for the model endpoint. Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 													},
@@ -4968,6 +5000,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -4989,6 +5022,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -5266,6 +5300,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -5287,6 +5322,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -5560,6 +5596,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -5581,6 +5618,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -5758,6 +5796,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `The upstream URL for the model endpoint. Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 											},
@@ -5857,6 +5896,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -5878,6 +5918,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -6151,6 +6192,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -6172,6 +6214,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -6437,6 +6480,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -6458,6 +6502,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -6744,6 +6789,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -6765,6 +6811,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -7097,6 +7144,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -7118,6 +7166,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -7383,6 +7432,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -7404,6 +7454,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -7573,6 +7624,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `The upstream URL for the model endpoint. Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 											},
@@ -7672,6 +7724,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -7693,6 +7746,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -7900,6 +7954,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									Description: `The name of the model defined in the upstream provider that will be executed. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthAtLeast(1),
 									},
 								},
 								"provider": schema.StringAttribute{
@@ -7908,6 +7963,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									Description: `Reference to a model provider instance by name. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthAtLeast(1),
 									},
 								},
 								"semantic_description": schema.StringAttribute{
@@ -8642,6 +8698,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																		Description: `The Azure OpenAI deployment ID for the embeddings model. Not Null`,
 																		Validators: []validator.String{
 																			speakeasy_stringvalidators.NotNull(),
+																			stringvalidator.UTF8LengthAtLeast(1),
 																		},
 																	},
 																	"type": schema.StringAttribute{
@@ -8734,6 +8791,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Description: `The custom API endpoint for the Gemini model. Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
+																					stringvalidator.UTF8LengthAtLeast(1),
 																				},
 																			},
 																			"location_id": schema.StringAttribute{
@@ -8742,6 +8800,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Description: `The Google Cloud location ID for the model endpoint. Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
+																					stringvalidator.UTF8LengthAtLeast(1),
 																				},
 																			},
 																			"project_id": schema.StringAttribute{
@@ -8750,6 +8809,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																				Description: `The Google Cloud project ID for the model endpoint. Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
+																					stringvalidator.UTF8LengthAtLeast(1),
 																				},
 																			},
 																		},
@@ -8884,6 +8944,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														Description: `The name of the embeddings model. Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 													"provider": schema.StringAttribute{
@@ -8892,6 +8953,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 														Description: `Reference to a model provider instance by name. Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 												},
@@ -9774,7 +9836,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -9880,6 +9944,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -9901,6 +9966,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -10178,6 +10244,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -10199,6 +10266,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -10479,6 +10547,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -10500,6 +10569,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -10775,6 +10845,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -10796,6 +10867,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -11102,6 +11174,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -11123,6 +11196,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -11396,6 +11470,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -11417,6 +11492,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -11694,6 +11770,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -11715,6 +11792,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -11986,6 +12064,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -12007,6 +12086,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -12181,6 +12261,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `The Databricks workspace instance ID. Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 											},
@@ -12280,6 +12361,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -12301,6 +12383,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -12566,6 +12649,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -12587,6 +12671,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -12629,6 +12714,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `The custom API endpoint for the Gemini model. Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"location_id": schema.StringAttribute{
@@ -12637,6 +12723,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `The Google Cloud location ID for the model endpoint. Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"project_id": schema.StringAttribute{
@@ -12645,6 +12732,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 															Description: `The Google Cloud project ID for the model endpoint. Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 													},
@@ -12883,6 +12971,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -12904,6 +12993,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -13181,6 +13271,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -13202,6 +13293,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -13475,6 +13567,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -13496,6 +13589,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -13673,6 +13767,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `The upstream URL for the model endpoint. Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 											},
@@ -13772,6 +13867,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -13793,6 +13889,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -14066,6 +14163,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -14087,6 +14185,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -14352,6 +14451,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -14373,6 +14473,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -14659,6 +14760,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -14680,6 +14782,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -15012,6 +15115,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -15033,6 +15137,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -15298,6 +15403,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -15319,6 +15425,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -15488,6 +15595,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `The upstream URL for the model endpoint. Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 											},
@@ -15587,6 +15695,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Cache TTL this price applies to, e.g. "5m" or "1h". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[hm]$`).String()),
 																},
 															},
@@ -15608,6 +15717,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
 																	stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`), "must match pattern "+regexp.MustCompile(`^[0-9]+\.?[0-9]*[km]$`).String()),
 																},
 															},
@@ -15815,6 +15925,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									Description: `The name of the model defined in the upstream provider that will be executed. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthAtLeast(1),
 									},
 								},
 								"provider": schema.StringAttribute{
@@ -15823,6 +15934,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 									Description: `Reference to a model provider instance by name. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthAtLeast(1),
 									},
 								},
 								"semantic_description": schema.StringAttribute{

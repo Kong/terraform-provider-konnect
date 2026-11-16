@@ -112,6 +112,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -150,6 +151,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -246,7 +248,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -649,6 +653,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -815,6 +820,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 																`Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"value": schema.StringAttribute{
@@ -853,6 +859,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 															Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"value": schema.StringAttribute{
@@ -897,6 +904,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										Description: `The Azure AI Foundry resource name. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 								},
@@ -990,7 +998,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -1393,6 +1403,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -1524,6 +1535,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -1562,6 +1574,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -1650,7 +1663,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Required:    true,
@@ -2048,6 +2063,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							"provider": schema.StringAttribute{
 								Required:    true,
 								Description: `Name of the upstream credential provider registered in the Token Vault directory.`,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtLeast(1),
+								},
 							},
 							"storage": schema.SingleNestedAttribute{
 								Computed: true,
@@ -2228,6 +2246,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 																`Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"value": schema.StringAttribute{
@@ -2266,6 +2285,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 															Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"value": schema.StringAttribute{
@@ -2370,7 +2390,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -2773,6 +2795,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -2906,6 +2929,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -2944,6 +2968,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -3040,7 +3065,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -3443,6 +3470,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -3576,6 +3604,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -3614,6 +3643,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -3710,7 +3740,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -4113,6 +4145,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -4253,6 +4286,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -4291,6 +4325,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -4387,7 +4422,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -4790,6 +4827,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -4923,6 +4961,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -4961,6 +5000,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -5057,7 +5097,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -5460,6 +5502,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -5593,6 +5636,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -5631,6 +5675,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -5727,7 +5772,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -6130,6 +6177,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -6277,6 +6325,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 																`Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"value": schema.StringAttribute{
@@ -6315,6 +6364,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 															Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"value": schema.StringAttribute{
@@ -6521,7 +6571,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -6924,6 +6976,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -7057,6 +7110,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -7095,6 +7149,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -7191,7 +7246,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -7594,6 +7651,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -7734,6 +7792,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -7772,6 +7831,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -7868,7 +7928,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -8271,6 +8333,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -8404,6 +8467,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -8442,6 +8506,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -8538,7 +8603,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -8941,6 +9008,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -9074,6 +9142,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -9112,6 +9181,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -9208,7 +9278,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -9611,6 +9683,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -9751,6 +9824,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -9789,6 +9863,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -9885,7 +9960,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -10288,6 +10365,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -10421,6 +10499,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -10459,6 +10538,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -10555,7 +10635,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -10958,6 +11040,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -11094,6 +11177,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 																`Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"value": schema.StringAttribute{
@@ -11132,6 +11216,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 															Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
+																stringvalidator.UTF8LengthAtLeast(1),
 															},
 														},
 														"value": schema.StringAttribute{
@@ -11276,7 +11361,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -11679,6 +11766,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -11810,6 +11898,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -11848,6 +11937,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -11936,7 +12026,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Required:    true,
@@ -12334,6 +12426,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 							"provider": schema.StringAttribute{
 								Required:    true,
 								Description: `Name of the upstream credential provider registered in the Token Vault directory.`,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtLeast(1),
+								},
 							},
 							"storage": schema.SingleNestedAttribute{
 								Computed: true,
@@ -12473,6 +12568,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -12511,6 +12607,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -12607,7 +12704,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -13010,6 +13109,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -13143,6 +13243,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -13181,6 +13282,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -13277,7 +13379,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -13680,6 +13784,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -13813,6 +13918,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														`Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -13851,6 +13957,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 													Description: `This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -13947,7 +14054,9 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -14350,6 +14459,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{

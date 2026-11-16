@@ -36,11 +36,13 @@ type KongPrincipal struct {
 	UpdatedAt time.Time `json:"updated_at"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by"`
 	// Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user's behalf (for example, `developer_portal` or `trusted_idp`).
-	ProvisionedBy *ProvisionedBy `default:"konnect_user" json:"provisioned_by"`
+	ProvisionedBy ProvisionedBy `json:"provisioned_by"`
 	// Whether the principal is active. Inactive principals are treated as nonexistent when authenticating.
 	// Defaults to `true` on create; omitting it on update or replace keeps the current value.
 	// Setting it to `false` sets `provisioned_by` to `konnect_user`. Principals provisioned by the developer portal cannot be deactivated.
@@ -56,7 +58,7 @@ func (k KongPrincipal) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KongPrincipal) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"id", "description", "metadata", "labels", "created_at", "updated_at", "managed_by", "active"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"id", "description", "metadata", "labels", "created_at", "updated_at", "managed_by", "provisioned_by", "active"}); err != nil {
 		return err
 	}
 	return nil
@@ -125,9 +127,9 @@ func (k *KongPrincipal) GetManagedBy() map[string]string {
 	return k.ManagedBy
 }
 
-func (k *KongPrincipal) GetProvisionedBy() *ProvisionedBy {
+func (k *KongPrincipal) GetProvisionedBy() ProvisionedBy {
 	if k == nil {
-		return nil
+		return ProvisionedBy("")
 	}
 	return k.ProvisionedBy
 }

@@ -175,8 +175,16 @@ type PortalCustomizationSpecRenderer struct {
 	// Manage visibility of deprecated endpoints and models.
 	HideDeprecated *bool `default:"false" json:"hide_deprecated"`
 	// Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
-	AllowCustomServerUrls *bool                               `default:"true" json:"allow_custom_server_urls"`
-	TryItUIAudience       *PortalCustomizationTryItUIAudience `default:"all" json:"try_it_ui_audience"`
+	AllowCustomServerUrls *bool `default:"true" json:"allow_custom_server_urls"`
+	// The audience for the Try It UI feature.
+	//
+	// `all` means that the Try It UI will be available to all users, including unauthenticated users.
+	//
+	// `authenticated` means that the Try It UI will only be available to authenticated users.
+	//
+	// `registered` means that the Try It UI will only be available to users who have registered for the API.
+	//
+	TryItUIAudience *PortalCustomizationTryItUIAudience `default:"all" json:"try_it_ui_audience"`
 }
 
 func (p PortalCustomizationSpecRenderer) MarshalJSON() ([]byte, error) {

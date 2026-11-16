@@ -8,7 +8,7 @@ import (
 
 // TrustedIdpJit - Just-in-time provisioning configuration for this trusted IdP. The `mapping` decides how the OIDC claims a client presents to fetch-principal shape a principal provisioned just in time.
 type TrustedIdpJit struct {
-	// How the OIDC claims a client presents to fetch-principal map onto a principal provisioned just in time for this trusted IdP. Every field names one of those claims and is optional; a claim the mapping names but the lookup does not carry contributes nothing. An absent `mapping` — or an absent `jit` — means no claim mapping: provisioned principals get empty metadata and the lookup's claim value as display name.
+	// How the OIDC claims a client presents to fetch-principal map onto a principal provisioned just in time for this trusted IdP. Every field names one of those claims and is optional; a claim the mapping names but the lookup does not carry contributes nothing — except `identifier`, which the vault token exchange uses to look up the principal, and whose absence from the subject_token fails the exchange. An absent `mapping` — or an absent `jit` — means no claim mapping: provisioned principals get empty metadata and the lookup's claim value as display name.
 	//
 	Mapping *TrustedIdpJitMapping `json:"mapping,omitempty"`
 }

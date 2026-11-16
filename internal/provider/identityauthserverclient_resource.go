@@ -150,8 +150,11 @@ func (r *IdentityAuthServerClientResource) Schema(ctx context.Context, req resou
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"login_uri": schema.StringAttribute{
-				Optional:    true,
-				Description: `The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).`,
+				Optional: true,
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

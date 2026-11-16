@@ -17,9 +17,6 @@ resource "konnect_portal" "my_portal" {
   ai = {
     enabled = false
     features = {
-      ai_search = {
-        enabled = false
-      }
       mcp_server = {
         enabled                  = false
         write_operations_enabled = false
@@ -42,7 +39,6 @@ resource "konnect_portal" "my_portal" {
   notifications_developer_pii_visibility_enabled = false
   rbac_enabled                                   = false
   sipr_enabled                                   = true
-  theme_name                                     = "...my_theme_name..."
 }
 ```
 
@@ -76,7 +72,6 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `notifications_developer_pii_visibility_enabled` (Boolean) When enabled, portal registration notifications include the registering developer's identifying information (such as name and email). Default: false
 - `rbac_enabled` (Boolean) Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC. Default: false
 - `sipr_enabled` (Boolean) Whether ip allow list is enabled for the portal. Default: false
-- `theme_name` (String) Name of the theme to use for the default content created upon creation of this portal. Must match an available theme name; if omitted or unrecognized, the default theme is used. Only applies when `create_default_content` is true. Requires replacement if changed.
 
 ### Read-Only
 
@@ -99,16 +94,7 @@ Optional:
 
 Optional:
 
-- `ai_search` (Attributes) AI Search config (see [below for nested schema](#nestedatt--ai--features--ai_search))
 - `mcp_server` (Attributes) AI Features config (see [below for nested schema](#nestedatt--ai--features--mcp_server))
-
-<a id="nestedatt--ai--features--ai_search"></a>
-### Nested Schema for `ai.features.ai_search`
-
-Optional:
-
-- `enabled` (Boolean) Whether AI Search is enabled or not. Default: false
-
 
 <a id="nestedatt--ai--features--mcp_server"></a>
 ### Nested Schema for `ai.features.mcp_server`

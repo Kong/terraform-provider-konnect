@@ -437,7 +437,7 @@ type AppAuthStrategyKeyAuthResponse struct {
 	// Indicates whether this auth strategy supports multiple credentials.
 	// Always `true` for KEY_AUTH.
 	//
-	SupportsMultipleCredentials *bool `default:"true" json:"supports_multiple_credentials"`
+	SupportsMultipleCredentials *bool `json:"supports_multiple_credentials,omitempty"`
 	// Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
 	// applications; stored values may be set for any auth strategy in the organization.
 	//

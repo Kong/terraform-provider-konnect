@@ -94,6 +94,9 @@ func (r *AIGatewayConsumerCredentialResource) Schema(ctx context.Context, req re
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `The display name for this credential instance. Requires replacement if changed.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"gateway_id": schema.StringAttribute{
 				Required: true,
@@ -134,7 +137,9 @@ func (r *AIGatewayConsumerCredentialResource) Schema(ctx context.Context, req re
 				ElementType: types.StringType,
 				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 					`` + "\n" +
-					`Keys must be 1–63 characters long and start with an alphanumeric character.` + "\n" +
+					`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+					`Values must be 1–127 characters long and must not be empty.` + "\n" +
+					`Keys and values must not contain spaces or control characters.` + "\n" +
 					`Requires replacement if changed.`,
 			},
 			"name": schema.StringAttribute{

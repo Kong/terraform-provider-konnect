@@ -31,6 +31,7 @@ func (r *IdentityTrustedIdpResourceModel) RefreshFromSharedTrustedIdp(ctx contex
 				r.Jit.Mapping.DisplayName = types.StringPointerValue(resp.Jit.Mapping.DisplayName)
 				r.Jit.Mapping.Email = types.StringPointerValue(resp.Jit.Mapping.Email)
 				r.Jit.Mapping.Groups = types.StringPointerValue(resp.Jit.Mapping.Groups)
+				r.Jit.Mapping.Identifier = types.StringPointerValue(resp.Jit.Mapping.Identifier)
 				if resp.Jit.Mapping.Metadata != nil {
 					r.Jit.Mapping.Metadata = make(map[string]types.String, len(resp.Jit.Mapping.Metadata))
 					for key, value := range resp.Jit.Mapping.Metadata {
@@ -190,11 +191,18 @@ func (r *IdentityTrustedIdpResourceModel) ToSharedCreateTrustedIdpPayload(ctx co
 			} else {
 				displayName1 = nil
 			}
+			identifier := new(string)
+			if !r.Jit.Mapping.Identifier.IsUnknown() && !r.Jit.Mapping.Identifier.IsNull() {
+				*identifier = r.Jit.Mapping.Identifier.ValueString()
+			} else {
+				identifier = nil
+			}
 			mapping = &shared.TrustedIdpJitMapping{
 				Metadata:    metadata,
 				Email:       email,
 				Groups:      groups,
 				DisplayName: displayName1,
+				Identifier:  identifier,
 			}
 		}
 		jit = &shared.TrustedIdpJit{
@@ -275,11 +283,18 @@ func (r *IdentityTrustedIdpResourceModel) ToSharedReplaceTrustedIdpBody(ctx cont
 			} else {
 				displayName1 = nil
 			}
+			identifier := new(string)
+			if !r.Jit.Mapping.Identifier.IsUnknown() && !r.Jit.Mapping.Identifier.IsNull() {
+				*identifier = r.Jit.Mapping.Identifier.ValueString()
+			} else {
+				identifier = nil
+			}
 			mapping = &shared.TrustedIdpJitMapping{
 				Metadata:    metadata,
 				Email:       email,
 				Groups:      groups,
 				DisplayName: displayName1,
+				Identifier:  identifier,
 			}
 		}
 		jit = &shared.TrustedIdpJit{

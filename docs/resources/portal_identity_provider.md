@@ -66,7 +66,7 @@ Optional:
 - `oidc_identity_provider_config` (Attributes) The properties of an OIDC identity provider to update. Only the provided properties are updated. When
 provided, `scopes` must include `openid`. (see [below for nested schema](#nestedatt--config--oidc_identity_provider_config))
 - `saml_identity_provider_config` (Attributes) The properties of a SAML identity provider to update. Exactly one of `idp_metadata_url` or
-`idp_metadata_xml` must be provided. (see [below for nested schema](#nestedatt--config--saml_identity_provider_config))
+`idp_metadata_xml` must be provided with a non-empty value. An empty string is treated as not provided. (see [below for nested schema](#nestedatt--config--saml_identity_provider_config))
 
 <a id="nestedatt--config--oidc_identity_provider_config"></a>
 ### Nested Schema for `config.oidc_identity_provider_config`

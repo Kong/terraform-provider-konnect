@@ -48,11 +48,12 @@ func (s *TrustedIDPs) CreateTrustedIdp(ctx context.Context, request operations.C
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.CreateTrustedIdpServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/trusted-idps", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -364,11 +365,12 @@ func (s *TrustedIDPs) GetTrustedIdp(ctx context.Context, request operations.GetT
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.GetTrustedIdpServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/trusted-idps/{trustedIdpId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -631,11 +633,12 @@ func (s *TrustedIDPs) UpdateTrustedIdp(ctx context.Context, request operations.U
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.UpdateTrustedIdpServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/trusted-idps/{trustedIdpId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -946,11 +949,12 @@ func (s *TrustedIDPs) DeleteTrustedIdp(ctx context.Context, request operations.D
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.DeleteTrustedIdpServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/trusted-idps/{trustedIdpId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)

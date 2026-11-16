@@ -251,43 +251,39 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.ConversionListener.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Logging.Payloads)
 			}
 			r.ConversionListener.Config.MaxRequestBodySize = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.MaxRequestBodySize)
-			if resp.AIGatewayMCPServerConversionListenerResponse.Config.Route == nil {
-				r.ConversionListener.Config.Route = nil
-			} else {
-				r.ConversionListener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-				if len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Headers) > 0 {
-					r.ConversionListener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Headers))
-					for key, value := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Headers {
-						result, _ := json.Marshal(value)
-						r.ConversionListener.Config.Route.Headers[key] = jsontypes.NewNormalizedValue(string(result))
-					}
+			r.ConversionListener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
+			if len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Headers) > 0 {
+				r.ConversionListener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Headers))
+				for key, value := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Headers {
+					result, _ := json.Marshal(value)
+					r.ConversionListener.Config.Route.Headers[key] = jsontypes.NewNormalizedValue(string(result))
 				}
-				r.ConversionListener.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Hosts))
-				for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Hosts {
-					r.ConversionListener.Config.Route.Hosts = append(r.ConversionListener.Config.Route.Hosts, types.StringValue(v))
-				}
-				r.ConversionListener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.HTTPSRedirectStatusCode)
-				r.ConversionListener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Methods))
-				for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Methods {
-					r.ConversionListener.Config.Route.Methods = append(r.ConversionListener.Config.Route.Methods, types.StringValue(v))
-				}
-				r.ConversionListener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Paths))
-				for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Paths {
-					r.ConversionListener.Config.Route.Paths = append(r.ConversionListener.Config.Route.Paths, types.StringValue(v))
-				}
-				r.ConversionListener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.PreserveHost)
-				r.ConversionListener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Protocols))
-				for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Protocols {
-					r.ConversionListener.Config.Route.Protocols = append(r.ConversionListener.Config.Route.Protocols, types.StringValue(v))
-				}
-				r.ConversionListener.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.RegexPriority)
-				r.ConversionListener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.RequestBuffering)
-				r.ConversionListener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.ResponseBuffering)
-				r.ConversionListener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.StripPath)
-				r.ConversionListener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Tags))
-				for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Tags {
-					r.ConversionListener.Config.Route.Tags = append(r.ConversionListener.Config.Route.Tags, types.StringValue(v))
-				}
+			}
+			r.ConversionListener.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Hosts))
+			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Hosts {
+				r.ConversionListener.Config.Route.Hosts = append(r.ConversionListener.Config.Route.Hosts, types.StringValue(v))
+			}
+			r.ConversionListener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.HTTPSRedirectStatusCode)
+			r.ConversionListener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Methods))
+			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Methods {
+				r.ConversionListener.Config.Route.Methods = append(r.ConversionListener.Config.Route.Methods, types.StringValue(v))
+			}
+			r.ConversionListener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Paths))
+			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Paths {
+				r.ConversionListener.Config.Route.Paths = append(r.ConversionListener.Config.Route.Paths, types.StringValue(v))
+			}
+			r.ConversionListener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.PreserveHost)
+			r.ConversionListener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Protocols))
+			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Protocols {
+				r.ConversionListener.Config.Route.Protocols = append(r.ConversionListener.Config.Route.Protocols, types.StringValue(v))
+			}
+			r.ConversionListener.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.RegexPriority)
+			r.ConversionListener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.RequestBuffering)
+			r.ConversionListener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.ResponseBuffering)
+			r.ConversionListener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.StripPath)
+			r.ConversionListener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Tags))
+			for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.Route.Tags {
+				r.ConversionListener.Config.Route.Tags = append(r.ConversionListener.Config.Route.Tags, types.StringValue(v))
 			}
 			if resp.AIGatewayMCPServerConversionListenerResponse.Config.Server == nil {
 				r.ConversionListener.Config.Server = nil
@@ -1478,43 +1474,39 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.Listener.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Logging.Payloads)
 			}
 			r.Listener.Config.MaxRequestBodySize = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.MaxRequestBodySize)
-			if resp.AIGatewayMCPServerListenerResponse.Config.Route == nil {
-				r.Listener.Config.Route = nil
-			} else {
-				r.Listener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-				if len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Headers) > 0 {
-					r.Listener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Headers))
-					for key8, value8 := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Headers {
-						result4, _ := json.Marshal(value8)
-						r.Listener.Config.Route.Headers[key8] = jsontypes.NewNormalizedValue(string(result4))
-					}
+			r.Listener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
+			if len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Headers) > 0 {
+				r.Listener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Headers))
+				for key8, value8 := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Headers {
+					result4, _ := json.Marshal(value8)
+					r.Listener.Config.Route.Headers[key8] = jsontypes.NewNormalizedValue(string(result4))
 				}
-				r.Listener.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Hosts))
-				for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Hosts {
-					r.Listener.Config.Route.Hosts = append(r.Listener.Config.Route.Hosts, types.StringValue(v))
-				}
-				r.Listener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.HTTPSRedirectStatusCode)
-				r.Listener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Methods))
-				for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Methods {
-					r.Listener.Config.Route.Methods = append(r.Listener.Config.Route.Methods, types.StringValue(v))
-				}
-				r.Listener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Paths))
-				for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Paths {
-					r.Listener.Config.Route.Paths = append(r.Listener.Config.Route.Paths, types.StringValue(v))
-				}
-				r.Listener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.PreserveHost)
-				r.Listener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Protocols))
-				for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Protocols {
-					r.Listener.Config.Route.Protocols = append(r.Listener.Config.Route.Protocols, types.StringValue(v))
-				}
-				r.Listener.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.RegexPriority)
-				r.Listener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.RequestBuffering)
-				r.Listener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.ResponseBuffering)
-				r.Listener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.StripPath)
-				r.Listener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Tags))
-				for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Tags {
-					r.Listener.Config.Route.Tags = append(r.Listener.Config.Route.Tags, types.StringValue(v))
-				}
+			}
+			r.Listener.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Hosts))
+			for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Hosts {
+				r.Listener.Config.Route.Hosts = append(r.Listener.Config.Route.Hosts, types.StringValue(v))
+			}
+			r.Listener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.HTTPSRedirectStatusCode)
+			r.Listener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Methods))
+			for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Methods {
+				r.Listener.Config.Route.Methods = append(r.Listener.Config.Route.Methods, types.StringValue(v))
+			}
+			r.Listener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Paths))
+			for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Paths {
+				r.Listener.Config.Route.Paths = append(r.Listener.Config.Route.Paths, types.StringValue(v))
+			}
+			r.Listener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.PreserveHost)
+			r.Listener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Protocols))
+			for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Protocols {
+				r.Listener.Config.Route.Protocols = append(r.Listener.Config.Route.Protocols, types.StringValue(v))
+			}
+			r.Listener.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.RegexPriority)
+			r.Listener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.RequestBuffering)
+			r.Listener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.ResponseBuffering)
+			r.Listener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Route.StripPath)
+			r.Listener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.Route.Tags))
+			for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.Route.Tags {
+				r.Listener.Config.Route.Tags = append(r.Listener.Config.Route.Tags, types.StringValue(v))
 			}
 			if resp.AIGatewayMCPServerListenerResponse.Config.Server == nil {
 				r.Listener.Config.Server = nil
@@ -2146,43 +2138,39 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					r.PassthroughListener.Config.Proxy.ProxyScheme = types.StringNull()
 				}
 			}
-			if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route == nil {
-				r.PassthroughListener.Config.Route = nil
-			} else {
-				r.PassthroughListener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-				if len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Headers) > 0 {
-					r.PassthroughListener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Headers))
-					for key11, value11 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Headers {
-						result5, _ := json.Marshal(value11)
-						r.PassthroughListener.Config.Route.Headers[key11] = jsontypes.NewNormalizedValue(string(result5))
-					}
+			r.PassthroughListener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
+			if len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Headers) > 0 {
+				r.PassthroughListener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Headers))
+				for key11, value11 := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Headers {
+					result5, _ := json.Marshal(value11)
+					r.PassthroughListener.Config.Route.Headers[key11] = jsontypes.NewNormalizedValue(string(result5))
 				}
-				r.PassthroughListener.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Hosts))
-				for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Hosts {
-					r.PassthroughListener.Config.Route.Hosts = append(r.PassthroughListener.Config.Route.Hosts, types.StringValue(v))
-				}
-				r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.HTTPSRedirectStatusCode)
-				r.PassthroughListener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Methods))
-				for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Methods {
-					r.PassthroughListener.Config.Route.Methods = append(r.PassthroughListener.Config.Route.Methods, types.StringValue(v))
-				}
-				r.PassthroughListener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Paths))
-				for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Paths {
-					r.PassthroughListener.Config.Route.Paths = append(r.PassthroughListener.Config.Route.Paths, types.StringValue(v))
-				}
-				r.PassthroughListener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.PreserveHost)
-				r.PassthroughListener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Protocols))
-				for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Protocols {
-					r.PassthroughListener.Config.Route.Protocols = append(r.PassthroughListener.Config.Route.Protocols, types.StringValue(v))
-				}
-				r.PassthroughListener.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.RegexPriority)
-				r.PassthroughListener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.RequestBuffering)
-				r.PassthroughListener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.ResponseBuffering)
-				r.PassthroughListener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.StripPath)
-				r.PassthroughListener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Tags))
-				for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Tags {
-					r.PassthroughListener.Config.Route.Tags = append(r.PassthroughListener.Config.Route.Tags, types.StringValue(v))
-				}
+			}
+			r.PassthroughListener.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Hosts))
+			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Hosts {
+				r.PassthroughListener.Config.Route.Hosts = append(r.PassthroughListener.Config.Route.Hosts, types.StringValue(v))
+			}
+			r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.HTTPSRedirectStatusCode)
+			r.PassthroughListener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Methods))
+			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Methods {
+				r.PassthroughListener.Config.Route.Methods = append(r.PassthroughListener.Config.Route.Methods, types.StringValue(v))
+			}
+			r.PassthroughListener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Paths))
+			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Paths {
+				r.PassthroughListener.Config.Route.Paths = append(r.PassthroughListener.Config.Route.Paths, types.StringValue(v))
+			}
+			r.PassthroughListener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.PreserveHost)
+			r.PassthroughListener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Protocols))
+			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Protocols {
+				r.PassthroughListener.Config.Route.Protocols = append(r.PassthroughListener.Config.Route.Protocols, types.StringValue(v))
+			}
+			r.PassthroughListener.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.RegexPriority)
+			r.PassthroughListener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.RequestBuffering)
+			r.PassthroughListener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.ResponseBuffering)
+			r.PassthroughListener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.StripPath)
+			r.PassthroughListener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Tags))
+			for _, v := range resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Route.Tags {
+				r.PassthroughListener.Config.Route.Tags = append(r.PassthroughListener.Config.Route.Tags, types.StringValue(v))
 			}
 			if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Server == nil {
 				r.PassthroughListener.Config.Server = nil
@@ -2680,43 +2668,39 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.UpstreamServer.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Logging.Payloads)
 			}
 			r.UpstreamServer.Config.MaxRequestBodySize = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.MaxRequestBodySize)
-			if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route == nil {
-				r.UpstreamServer.Config.Route = nil
-			} else {
-				r.UpstreamServer.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-				if len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Headers) > 0 {
-					r.UpstreamServer.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Headers))
-					for key14, value14 := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Headers {
-						result6, _ := json.Marshal(value14)
-						r.UpstreamServer.Config.Route.Headers[key14] = jsontypes.NewNormalizedValue(string(result6))
-					}
+			r.UpstreamServer.Config.Route = &tfTypes.AIGatewayRouteConfig{}
+			if len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Headers) > 0 {
+				r.UpstreamServer.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Headers))
+				for key14, value14 := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Headers {
+					result6, _ := json.Marshal(value14)
+					r.UpstreamServer.Config.Route.Headers[key14] = jsontypes.NewNormalizedValue(string(result6))
 				}
-				r.UpstreamServer.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Hosts))
-				for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Hosts {
-					r.UpstreamServer.Config.Route.Hosts = append(r.UpstreamServer.Config.Route.Hosts, types.StringValue(v))
-				}
-				r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.HTTPSRedirectStatusCode)
-				r.UpstreamServer.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Methods))
-				for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Methods {
-					r.UpstreamServer.Config.Route.Methods = append(r.UpstreamServer.Config.Route.Methods, types.StringValue(v))
-				}
-				r.UpstreamServer.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Paths))
-				for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Paths {
-					r.UpstreamServer.Config.Route.Paths = append(r.UpstreamServer.Config.Route.Paths, types.StringValue(v))
-				}
-				r.UpstreamServer.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.PreserveHost)
-				r.UpstreamServer.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Protocols))
-				for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Protocols {
-					r.UpstreamServer.Config.Route.Protocols = append(r.UpstreamServer.Config.Route.Protocols, types.StringValue(v))
-				}
-				r.UpstreamServer.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.RegexPriority)
-				r.UpstreamServer.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.RequestBuffering)
-				r.UpstreamServer.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.ResponseBuffering)
-				r.UpstreamServer.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.StripPath)
-				r.UpstreamServer.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Tags))
-				for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Tags {
-					r.UpstreamServer.Config.Route.Tags = append(r.UpstreamServer.Config.Route.Tags, types.StringValue(v))
-				}
+			}
+			r.UpstreamServer.Config.Route.Hosts = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Hosts))
+			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Hosts {
+				r.UpstreamServer.Config.Route.Hosts = append(r.UpstreamServer.Config.Route.Hosts, types.StringValue(v))
+			}
+			r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.HTTPSRedirectStatusCode)
+			r.UpstreamServer.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Methods))
+			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Methods {
+				r.UpstreamServer.Config.Route.Methods = append(r.UpstreamServer.Config.Route.Methods, types.StringValue(v))
+			}
+			r.UpstreamServer.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Paths))
+			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Paths {
+				r.UpstreamServer.Config.Route.Paths = append(r.UpstreamServer.Config.Route.Paths, types.StringValue(v))
+			}
+			r.UpstreamServer.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.PreserveHost)
+			r.UpstreamServer.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Protocols))
+			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Protocols {
+				r.UpstreamServer.Config.Route.Protocols = append(r.UpstreamServer.Config.Route.Protocols, types.StringValue(v))
+			}
+			r.UpstreamServer.Config.Route.RegexPriority = types.Int64PointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.RegexPriority)
+			r.UpstreamServer.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.RequestBuffering)
+			r.UpstreamServer.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.ResponseBuffering)
+			r.UpstreamServer.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.StripPath)
+			r.UpstreamServer.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Tags))
+			for _, v := range resp.AIGatewayMCPServerUpstreamServerResponse.Config.Route.Tags {
+				r.UpstreamServer.Config.Route.Tags = append(r.UpstreamServer.Config.Route.Tags, types.StringValue(v))
 			}
 			if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server == nil {
 				r.UpstreamServer.Config.Server = nil
@@ -4141,84 +4125,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerConversionListener *shared.AIGatewayMCPServerConversionListener
 	if r.ConversionListener != nil {
-		var route1 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.ConversionListener.Config.Route != nil {
-			headers2 := make(map[string]interface{})
-			for headersKey1 := range r.ConversionListener.Config.Route.Headers {
-				var headersInst1 interface{}
-				_ = json.Unmarshal([]byte(r.ConversionListener.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
-				headers2[headersKey1] = headersInst1
-			}
-			hosts1 := make([]string, 0, len(r.ConversionListener.Config.Route.Hosts))
-			for hostsIndex1 := range r.ConversionListener.Config.Route.Hosts {
-				hosts1 = append(hosts1, r.ConversionListener.Config.Route.Hosts[hostsIndex1].ValueString())
-			}
-			httpsRedirectStatusCode1 := new(int64)
-			if !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode1 = r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode1 = nil
-			}
-			methods1 := make([]string, 0, len(r.ConversionListener.Config.Route.Methods))
-			for methodsIndex1 := range r.ConversionListener.Config.Route.Methods {
-				methods1 = append(methods1, r.ConversionListener.Config.Route.Methods[methodsIndex1].ValueString())
-			}
-			paths1 := make([]string, 0, len(r.ConversionListener.Config.Route.Paths))
-			for pathsIndex1 := range r.ConversionListener.Config.Route.Paths {
-				paths1 = append(paths1, r.ConversionListener.Config.Route.Paths[pathsIndex1].ValueString())
-			}
-			preserveHost1 := new(bool)
-			if !r.ConversionListener.Config.Route.PreserveHost.IsUnknown() && !r.ConversionListener.Config.Route.PreserveHost.IsNull() {
-				*preserveHost1 = r.ConversionListener.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost1 = nil
-			}
-			protocols1 := make([]string, 0, len(r.ConversionListener.Config.Route.Protocols))
-			for protocolsIndex1 := range r.ConversionListener.Config.Route.Protocols {
-				protocols1 = append(protocols1, r.ConversionListener.Config.Route.Protocols[protocolsIndex1].ValueString())
-			}
-			regexPriority1 := new(int64)
-			if !r.ConversionListener.Config.Route.RegexPriority.IsUnknown() && !r.ConversionListener.Config.Route.RegexPriority.IsNull() {
-				*regexPriority1 = r.ConversionListener.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority1 = nil
-			}
-			requestBuffering1 := new(bool)
-			if !r.ConversionListener.Config.Route.RequestBuffering.IsUnknown() && !r.ConversionListener.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering1 = r.ConversionListener.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering1 = nil
-			}
-			responseBuffering1 := new(bool)
-			if !r.ConversionListener.Config.Route.ResponseBuffering.IsUnknown() && !r.ConversionListener.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering1 = r.ConversionListener.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering1 = nil
-			}
-			stripPath1 := new(bool)
-			if !r.ConversionListener.Config.Route.StripPath.IsUnknown() && !r.ConversionListener.Config.Route.StripPath.IsNull() {
-				*stripPath1 = r.ConversionListener.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath1 = nil
-			}
-			tags1 := make([]string, 0, len(r.ConversionListener.Config.Route.Tags))
-			for tagsIndex1 := range r.ConversionListener.Config.Route.Tags {
-				tags1 = append(tags1, r.ConversionListener.Config.Route.Tags[tagsIndex1].ValueString())
-			}
-			route1 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers2,
-				Hosts:                   hosts1,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode1,
-				Methods:                 methods1,
-				Paths:                   paths1,
-				PreserveHost:            preserveHost1,
-				Protocols:               protocols1,
-				RegexPriority:           regexPriority1,
-				RequestBuffering:        requestBuffering1,
-				ResponseBuffering:       responseBuffering1,
-				StripPath:               stripPath1,
-				Tags:                    tags1,
-			}
+		headers2 := make(map[string]interface{})
+		for headersKey1 := range r.ConversionListener.Config.Route.Headers {
+			var headersInst1 interface{}
+			_ = json.Unmarshal([]byte(r.ConversionListener.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
+			headers2[headersKey1] = headersInst1
+		}
+		hosts1 := make([]string, 0, len(r.ConversionListener.Config.Route.Hosts))
+		for hostsIndex1 := range r.ConversionListener.Config.Route.Hosts {
+			hosts1 = append(hosts1, r.ConversionListener.Config.Route.Hosts[hostsIndex1].ValueString())
+		}
+		httpsRedirectStatusCode1 := new(int64)
+		if !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode1 = r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode1 = nil
+		}
+		methods1 := make([]string, 0, len(r.ConversionListener.Config.Route.Methods))
+		for methodsIndex1 := range r.ConversionListener.Config.Route.Methods {
+			methods1 = append(methods1, r.ConversionListener.Config.Route.Methods[methodsIndex1].ValueString())
+		}
+		paths1 := make([]string, 0, len(r.ConversionListener.Config.Route.Paths))
+		for pathsIndex1 := range r.ConversionListener.Config.Route.Paths {
+			paths1 = append(paths1, r.ConversionListener.Config.Route.Paths[pathsIndex1].ValueString())
+		}
+		preserveHost1 := new(bool)
+		if !r.ConversionListener.Config.Route.PreserveHost.IsUnknown() && !r.ConversionListener.Config.Route.PreserveHost.IsNull() {
+			*preserveHost1 = r.ConversionListener.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost1 = nil
+		}
+		protocols1 := make([]string, 0, len(r.ConversionListener.Config.Route.Protocols))
+		for protocolsIndex1 := range r.ConversionListener.Config.Route.Protocols {
+			protocols1 = append(protocols1, r.ConversionListener.Config.Route.Protocols[protocolsIndex1].ValueString())
+		}
+		regexPriority1 := new(int64)
+		if !r.ConversionListener.Config.Route.RegexPriority.IsUnknown() && !r.ConversionListener.Config.Route.RegexPriority.IsNull() {
+			*regexPriority1 = r.ConversionListener.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority1 = nil
+		}
+		requestBuffering1 := new(bool)
+		if !r.ConversionListener.Config.Route.RequestBuffering.IsUnknown() && !r.ConversionListener.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering1 = r.ConversionListener.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering1 = nil
+		}
+		responseBuffering1 := new(bool)
+		if !r.ConversionListener.Config.Route.ResponseBuffering.IsUnknown() && !r.ConversionListener.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering1 = r.ConversionListener.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering1 = nil
+		}
+		stripPath1 := new(bool)
+		if !r.ConversionListener.Config.Route.StripPath.IsUnknown() && !r.ConversionListener.Config.Route.StripPath.IsNull() {
+			*stripPath1 = r.ConversionListener.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath1 = nil
+		}
+		tags1 := make([]string, 0, len(r.ConversionListener.Config.Route.Tags))
+		for tagsIndex1 := range r.ConversionListener.Config.Route.Tags {
+			tags1 = append(tags1, r.ConversionListener.Config.Route.Tags[tagsIndex1].ValueString())
+		}
+		route1 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers2,
+			Hosts:                   hosts1,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode1,
+			Methods:                 methods1,
+			Paths:                   paths1,
+			PreserveHost:            preserveHost1,
+			Protocols:               protocols1,
+			RegexPriority:           regexPriority1,
+			RequestBuffering:        requestBuffering1,
+			ResponseBuffering:       responseBuffering1,
+			StripPath:               stripPath1,
+			Tags:                    tags1,
 		}
 		var logging1 *shared.AIGatewayMCPServerConversionListenerLogging
 		if r.ConversionListener.Config.Logging != nil {
@@ -5670,84 +5651,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerListener *shared.AIGatewayMCPServerListener
 	if r.Listener != nil {
-		var route2 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.Listener.Config.Route != nil {
-			headers4 := make(map[string]interface{})
-			for headersKey2 := range r.Listener.Config.Route.Headers {
-				var headersInst2 interface{}
-				_ = json.Unmarshal([]byte(r.Listener.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
-				headers4[headersKey2] = headersInst2
-			}
-			hosts2 := make([]string, 0, len(r.Listener.Config.Route.Hosts))
-			for hostsIndex2 := range r.Listener.Config.Route.Hosts {
-				hosts2 = append(hosts2, r.Listener.Config.Route.Hosts[hostsIndex2].ValueString())
-			}
-			httpsRedirectStatusCode2 := new(int64)
-			if !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode2 = r.Listener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode2 = nil
-			}
-			methods2 := make([]string, 0, len(r.Listener.Config.Route.Methods))
-			for methodsIndex2 := range r.Listener.Config.Route.Methods {
-				methods2 = append(methods2, r.Listener.Config.Route.Methods[methodsIndex2].ValueString())
-			}
-			paths2 := make([]string, 0, len(r.Listener.Config.Route.Paths))
-			for pathsIndex2 := range r.Listener.Config.Route.Paths {
-				paths2 = append(paths2, r.Listener.Config.Route.Paths[pathsIndex2].ValueString())
-			}
-			preserveHost2 := new(bool)
-			if !r.Listener.Config.Route.PreserveHost.IsUnknown() && !r.Listener.Config.Route.PreserveHost.IsNull() {
-				*preserveHost2 = r.Listener.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost2 = nil
-			}
-			protocols2 := make([]string, 0, len(r.Listener.Config.Route.Protocols))
-			for protocolsIndex2 := range r.Listener.Config.Route.Protocols {
-				protocols2 = append(protocols2, r.Listener.Config.Route.Protocols[protocolsIndex2].ValueString())
-			}
-			regexPriority2 := new(int64)
-			if !r.Listener.Config.Route.RegexPriority.IsUnknown() && !r.Listener.Config.Route.RegexPriority.IsNull() {
-				*regexPriority2 = r.Listener.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority2 = nil
-			}
-			requestBuffering2 := new(bool)
-			if !r.Listener.Config.Route.RequestBuffering.IsUnknown() && !r.Listener.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering2 = r.Listener.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering2 = nil
-			}
-			responseBuffering2 := new(bool)
-			if !r.Listener.Config.Route.ResponseBuffering.IsUnknown() && !r.Listener.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering2 = r.Listener.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering2 = nil
-			}
-			stripPath2 := new(bool)
-			if !r.Listener.Config.Route.StripPath.IsUnknown() && !r.Listener.Config.Route.StripPath.IsNull() {
-				*stripPath2 = r.Listener.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath2 = nil
-			}
-			tags2 := make([]string, 0, len(r.Listener.Config.Route.Tags))
-			for tagsIndex2 := range r.Listener.Config.Route.Tags {
-				tags2 = append(tags2, r.Listener.Config.Route.Tags[tagsIndex2].ValueString())
-			}
-			route2 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers4,
-				Hosts:                   hosts2,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode2,
-				Methods:                 methods2,
-				Paths:                   paths2,
-				PreserveHost:            preserveHost2,
-				Protocols:               protocols2,
-				RegexPriority:           regexPriority2,
-				RequestBuffering:        requestBuffering2,
-				ResponseBuffering:       responseBuffering2,
-				StripPath:               stripPath2,
-				Tags:                    tags2,
-			}
+		headers4 := make(map[string]interface{})
+		for headersKey2 := range r.Listener.Config.Route.Headers {
+			var headersInst2 interface{}
+			_ = json.Unmarshal([]byte(r.Listener.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
+			headers4[headersKey2] = headersInst2
+		}
+		hosts2 := make([]string, 0, len(r.Listener.Config.Route.Hosts))
+		for hostsIndex2 := range r.Listener.Config.Route.Hosts {
+			hosts2 = append(hosts2, r.Listener.Config.Route.Hosts[hostsIndex2].ValueString())
+		}
+		httpsRedirectStatusCode2 := new(int64)
+		if !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode2 = r.Listener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode2 = nil
+		}
+		methods2 := make([]string, 0, len(r.Listener.Config.Route.Methods))
+		for methodsIndex2 := range r.Listener.Config.Route.Methods {
+			methods2 = append(methods2, r.Listener.Config.Route.Methods[methodsIndex2].ValueString())
+		}
+		paths2 := make([]string, 0, len(r.Listener.Config.Route.Paths))
+		for pathsIndex2 := range r.Listener.Config.Route.Paths {
+			paths2 = append(paths2, r.Listener.Config.Route.Paths[pathsIndex2].ValueString())
+		}
+		preserveHost2 := new(bool)
+		if !r.Listener.Config.Route.PreserveHost.IsUnknown() && !r.Listener.Config.Route.PreserveHost.IsNull() {
+			*preserveHost2 = r.Listener.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost2 = nil
+		}
+		protocols2 := make([]string, 0, len(r.Listener.Config.Route.Protocols))
+		for protocolsIndex2 := range r.Listener.Config.Route.Protocols {
+			protocols2 = append(protocols2, r.Listener.Config.Route.Protocols[protocolsIndex2].ValueString())
+		}
+		regexPriority2 := new(int64)
+		if !r.Listener.Config.Route.RegexPriority.IsUnknown() && !r.Listener.Config.Route.RegexPriority.IsNull() {
+			*regexPriority2 = r.Listener.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority2 = nil
+		}
+		requestBuffering2 := new(bool)
+		if !r.Listener.Config.Route.RequestBuffering.IsUnknown() && !r.Listener.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering2 = r.Listener.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering2 = nil
+		}
+		responseBuffering2 := new(bool)
+		if !r.Listener.Config.Route.ResponseBuffering.IsUnknown() && !r.Listener.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering2 = r.Listener.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering2 = nil
+		}
+		stripPath2 := new(bool)
+		if !r.Listener.Config.Route.StripPath.IsUnknown() && !r.Listener.Config.Route.StripPath.IsNull() {
+			*stripPath2 = r.Listener.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath2 = nil
+		}
+		tags2 := make([]string, 0, len(r.Listener.Config.Route.Tags))
+		for tagsIndex2 := range r.Listener.Config.Route.Tags {
+			tags2 = append(tags2, r.Listener.Config.Route.Tags[tagsIndex2].ValueString())
+		}
+		route2 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers4,
+			Hosts:                   hosts2,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode2,
+			Methods:                 methods2,
+			Paths:                   paths2,
+			PreserveHost:            preserveHost2,
+			Protocols:               protocols2,
+			RegexPriority:           regexPriority2,
+			RequestBuffering:        requestBuffering2,
+			ResponseBuffering:       responseBuffering2,
+			StripPath:               stripPath2,
+			Tags:                    tags2,
 		}
 		var logging2 *shared.AIGatewayMCPServerListenerLogging
 		if r.Listener.Config.Logging != nil {
@@ -6920,84 +6898,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerPassthroughListener *shared.AIGatewayMCPServerPassthroughListener
 	if r.PassthroughListener != nil {
-		var route3 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.PassthroughListener.Config.Route != nil {
-			headers5 := make(map[string]interface{})
-			for headersKey3 := range r.PassthroughListener.Config.Route.Headers {
-				var headersInst3 interface{}
-				_ = json.Unmarshal([]byte(r.PassthroughListener.Config.Route.Headers[headersKey3].ValueString()), &headersInst3)
-				headers5[headersKey3] = headersInst3
-			}
-			hosts3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Hosts))
-			for hostsIndex3 := range r.PassthroughListener.Config.Route.Hosts {
-				hosts3 = append(hosts3, r.PassthroughListener.Config.Route.Hosts[hostsIndex3].ValueString())
-			}
-			httpsRedirectStatusCode3 := new(int64)
-			if !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode3 = r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode3 = nil
-			}
-			methods3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Methods))
-			for methodsIndex3 := range r.PassthroughListener.Config.Route.Methods {
-				methods3 = append(methods3, r.PassthroughListener.Config.Route.Methods[methodsIndex3].ValueString())
-			}
-			paths3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Paths))
-			for pathsIndex3 := range r.PassthroughListener.Config.Route.Paths {
-				paths3 = append(paths3, r.PassthroughListener.Config.Route.Paths[pathsIndex3].ValueString())
-			}
-			preserveHost3 := new(bool)
-			if !r.PassthroughListener.Config.Route.PreserveHost.IsUnknown() && !r.PassthroughListener.Config.Route.PreserveHost.IsNull() {
-				*preserveHost3 = r.PassthroughListener.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost3 = nil
-			}
-			protocols3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Protocols))
-			for protocolsIndex3 := range r.PassthroughListener.Config.Route.Protocols {
-				protocols3 = append(protocols3, r.PassthroughListener.Config.Route.Protocols[protocolsIndex3].ValueString())
-			}
-			regexPriority3 := new(int64)
-			if !r.PassthroughListener.Config.Route.RegexPriority.IsUnknown() && !r.PassthroughListener.Config.Route.RegexPriority.IsNull() {
-				*regexPriority3 = r.PassthroughListener.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority3 = nil
-			}
-			requestBuffering3 := new(bool)
-			if !r.PassthroughListener.Config.Route.RequestBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering3 = r.PassthroughListener.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering3 = nil
-			}
-			responseBuffering3 := new(bool)
-			if !r.PassthroughListener.Config.Route.ResponseBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering3 = r.PassthroughListener.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering3 = nil
-			}
-			stripPath3 := new(bool)
-			if !r.PassthroughListener.Config.Route.StripPath.IsUnknown() && !r.PassthroughListener.Config.Route.StripPath.IsNull() {
-				*stripPath3 = r.PassthroughListener.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath3 = nil
-			}
-			tags3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Tags))
-			for tagsIndex3 := range r.PassthroughListener.Config.Route.Tags {
-				tags3 = append(tags3, r.PassthroughListener.Config.Route.Tags[tagsIndex3].ValueString())
-			}
-			route3 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers5,
-				Hosts:                   hosts3,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode3,
-				Methods:                 methods3,
-				Paths:                   paths3,
-				PreserveHost:            preserveHost3,
-				Protocols:               protocols3,
-				RegexPriority:           regexPriority3,
-				RequestBuffering:        requestBuffering3,
-				ResponseBuffering:       responseBuffering3,
-				StripPath:               stripPath3,
-				Tags:                    tags3,
-			}
+		headers5 := make(map[string]interface{})
+		for headersKey3 := range r.PassthroughListener.Config.Route.Headers {
+			var headersInst3 interface{}
+			_ = json.Unmarshal([]byte(r.PassthroughListener.Config.Route.Headers[headersKey3].ValueString()), &headersInst3)
+			headers5[headersKey3] = headersInst3
+		}
+		hosts3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Hosts))
+		for hostsIndex3 := range r.PassthroughListener.Config.Route.Hosts {
+			hosts3 = append(hosts3, r.PassthroughListener.Config.Route.Hosts[hostsIndex3].ValueString())
+		}
+		httpsRedirectStatusCode3 := new(int64)
+		if !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode3 = r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode3 = nil
+		}
+		methods3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Methods))
+		for methodsIndex3 := range r.PassthroughListener.Config.Route.Methods {
+			methods3 = append(methods3, r.PassthroughListener.Config.Route.Methods[methodsIndex3].ValueString())
+		}
+		paths3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Paths))
+		for pathsIndex3 := range r.PassthroughListener.Config.Route.Paths {
+			paths3 = append(paths3, r.PassthroughListener.Config.Route.Paths[pathsIndex3].ValueString())
+		}
+		preserveHost3 := new(bool)
+		if !r.PassthroughListener.Config.Route.PreserveHost.IsUnknown() && !r.PassthroughListener.Config.Route.PreserveHost.IsNull() {
+			*preserveHost3 = r.PassthroughListener.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost3 = nil
+		}
+		protocols3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Protocols))
+		for protocolsIndex3 := range r.PassthroughListener.Config.Route.Protocols {
+			protocols3 = append(protocols3, r.PassthroughListener.Config.Route.Protocols[protocolsIndex3].ValueString())
+		}
+		regexPriority3 := new(int64)
+		if !r.PassthroughListener.Config.Route.RegexPriority.IsUnknown() && !r.PassthroughListener.Config.Route.RegexPriority.IsNull() {
+			*regexPriority3 = r.PassthroughListener.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority3 = nil
+		}
+		requestBuffering3 := new(bool)
+		if !r.PassthroughListener.Config.Route.RequestBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering3 = r.PassthroughListener.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering3 = nil
+		}
+		responseBuffering3 := new(bool)
+		if !r.PassthroughListener.Config.Route.ResponseBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering3 = r.PassthroughListener.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering3 = nil
+		}
+		stripPath3 := new(bool)
+		if !r.PassthroughListener.Config.Route.StripPath.IsUnknown() && !r.PassthroughListener.Config.Route.StripPath.IsNull() {
+			*stripPath3 = r.PassthroughListener.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath3 = nil
+		}
+		tags3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Tags))
+		for tagsIndex3 := range r.PassthroughListener.Config.Route.Tags {
+			tags3 = append(tags3, r.PassthroughListener.Config.Route.Tags[tagsIndex3].ValueString())
+		}
+		route3 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers5,
+			Hosts:                   hosts3,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode3,
+			Methods:                 methods3,
+			Paths:                   paths3,
+			PreserveHost:            preserveHost3,
+			Protocols:               protocols3,
+			RegexPriority:           regexPriority3,
+			RequestBuffering:        requestBuffering3,
+			ResponseBuffering:       responseBuffering3,
+			StripPath:               stripPath3,
+			Tags:                    tags3,
 		}
 		var logging3 *shared.AIGatewayMCPServerWithUpstreamConfigLogging
 		if r.PassthroughListener.Config.Logging != nil {
@@ -8351,84 +8326,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerUpstreamServer *shared.AIGatewayMCPServerUpstreamServer
 	if r.UpstreamServer != nil {
-		var route4 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.UpstreamServer.Config.Route != nil {
-			headers6 := make(map[string]interface{})
-			for headersKey4 := range r.UpstreamServer.Config.Route.Headers {
-				var headersInst4 interface{}
-				_ = json.Unmarshal([]byte(r.UpstreamServer.Config.Route.Headers[headersKey4].ValueString()), &headersInst4)
-				headers6[headersKey4] = headersInst4
-			}
-			hosts4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Hosts))
-			for hostsIndex4 := range r.UpstreamServer.Config.Route.Hosts {
-				hosts4 = append(hosts4, r.UpstreamServer.Config.Route.Hosts[hostsIndex4].ValueString())
-			}
-			httpsRedirectStatusCode4 := new(int64)
-			if !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode4 = r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode4 = nil
-			}
-			methods4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Methods))
-			for methodsIndex4 := range r.UpstreamServer.Config.Route.Methods {
-				methods4 = append(methods4, r.UpstreamServer.Config.Route.Methods[methodsIndex4].ValueString())
-			}
-			paths4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Paths))
-			for pathsIndex4 := range r.UpstreamServer.Config.Route.Paths {
-				paths4 = append(paths4, r.UpstreamServer.Config.Route.Paths[pathsIndex4].ValueString())
-			}
-			preserveHost4 := new(bool)
-			if !r.UpstreamServer.Config.Route.PreserveHost.IsUnknown() && !r.UpstreamServer.Config.Route.PreserveHost.IsNull() {
-				*preserveHost4 = r.UpstreamServer.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost4 = nil
-			}
-			protocols4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Protocols))
-			for protocolsIndex4 := range r.UpstreamServer.Config.Route.Protocols {
-				protocols4 = append(protocols4, r.UpstreamServer.Config.Route.Protocols[protocolsIndex4].ValueString())
-			}
-			regexPriority4 := new(int64)
-			if !r.UpstreamServer.Config.Route.RegexPriority.IsUnknown() && !r.UpstreamServer.Config.Route.RegexPriority.IsNull() {
-				*regexPriority4 = r.UpstreamServer.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority4 = nil
-			}
-			requestBuffering4 := new(bool)
-			if !r.UpstreamServer.Config.Route.RequestBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering4 = r.UpstreamServer.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering4 = nil
-			}
-			responseBuffering4 := new(bool)
-			if !r.UpstreamServer.Config.Route.ResponseBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering4 = r.UpstreamServer.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering4 = nil
-			}
-			stripPath4 := new(bool)
-			if !r.UpstreamServer.Config.Route.StripPath.IsUnknown() && !r.UpstreamServer.Config.Route.StripPath.IsNull() {
-				*stripPath4 = r.UpstreamServer.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath4 = nil
-			}
-			tags4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Tags))
-			for tagsIndex4 := range r.UpstreamServer.Config.Route.Tags {
-				tags4 = append(tags4, r.UpstreamServer.Config.Route.Tags[tagsIndex4].ValueString())
-			}
-			route4 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers6,
-				Hosts:                   hosts4,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode4,
-				Methods:                 methods4,
-				Paths:                   paths4,
-				PreserveHost:            preserveHost4,
-				Protocols:               protocols4,
-				RegexPriority:           regexPriority4,
-				RequestBuffering:        requestBuffering4,
-				ResponseBuffering:       responseBuffering4,
-				StripPath:               stripPath4,
-				Tags:                    tags4,
-			}
+		headers6 := make(map[string]interface{})
+		for headersKey4 := range r.UpstreamServer.Config.Route.Headers {
+			var headersInst4 interface{}
+			_ = json.Unmarshal([]byte(r.UpstreamServer.Config.Route.Headers[headersKey4].ValueString()), &headersInst4)
+			headers6[headersKey4] = headersInst4
+		}
+		hosts4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Hosts))
+		for hostsIndex4 := range r.UpstreamServer.Config.Route.Hosts {
+			hosts4 = append(hosts4, r.UpstreamServer.Config.Route.Hosts[hostsIndex4].ValueString())
+		}
+		httpsRedirectStatusCode4 := new(int64)
+		if !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode4 = r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode4 = nil
+		}
+		methods4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Methods))
+		for methodsIndex4 := range r.UpstreamServer.Config.Route.Methods {
+			methods4 = append(methods4, r.UpstreamServer.Config.Route.Methods[methodsIndex4].ValueString())
+		}
+		paths4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Paths))
+		for pathsIndex4 := range r.UpstreamServer.Config.Route.Paths {
+			paths4 = append(paths4, r.UpstreamServer.Config.Route.Paths[pathsIndex4].ValueString())
+		}
+		preserveHost4 := new(bool)
+		if !r.UpstreamServer.Config.Route.PreserveHost.IsUnknown() && !r.UpstreamServer.Config.Route.PreserveHost.IsNull() {
+			*preserveHost4 = r.UpstreamServer.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost4 = nil
+		}
+		protocols4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Protocols))
+		for protocolsIndex4 := range r.UpstreamServer.Config.Route.Protocols {
+			protocols4 = append(protocols4, r.UpstreamServer.Config.Route.Protocols[protocolsIndex4].ValueString())
+		}
+		regexPriority4 := new(int64)
+		if !r.UpstreamServer.Config.Route.RegexPriority.IsUnknown() && !r.UpstreamServer.Config.Route.RegexPriority.IsNull() {
+			*regexPriority4 = r.UpstreamServer.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority4 = nil
+		}
+		requestBuffering4 := new(bool)
+		if !r.UpstreamServer.Config.Route.RequestBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering4 = r.UpstreamServer.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering4 = nil
+		}
+		responseBuffering4 := new(bool)
+		if !r.UpstreamServer.Config.Route.ResponseBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering4 = r.UpstreamServer.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering4 = nil
+		}
+		stripPath4 := new(bool)
+		if !r.UpstreamServer.Config.Route.StripPath.IsUnknown() && !r.UpstreamServer.Config.Route.StripPath.IsNull() {
+			*stripPath4 = r.UpstreamServer.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath4 = nil
+		}
+		tags4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Tags))
+		for tagsIndex4 := range r.UpstreamServer.Config.Route.Tags {
+			tags4 = append(tags4, r.UpstreamServer.Config.Route.Tags[tagsIndex4].ValueString())
+		}
+		route4 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers6,
+			Hosts:                   hosts4,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode4,
+			Methods:                 methods4,
+			Paths:                   paths4,
+			PreserveHost:            preserveHost4,
+			Protocols:               protocols4,
+			RegexPriority:           regexPriority4,
+			RequestBuffering:        requestBuffering4,
+			ResponseBuffering:       responseBuffering4,
+			StripPath:               stripPath4,
+			Tags:                    tags4,
 		}
 		var logging4 *shared.AIGatewayMCPServerUpstreamServerConfigLogging
 		if r.UpstreamServer.Config.Logging != nil {
@@ -10406,84 +10378,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerConversionListener *shared.AIGatewayMCPServerConversionListener
 	if r.ConversionListener != nil {
-		var route1 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.ConversionListener.Config.Route != nil {
-			headers2 := make(map[string]interface{})
-			for headersKey1 := range r.ConversionListener.Config.Route.Headers {
-				var headersInst1 interface{}
-				_ = json.Unmarshal([]byte(r.ConversionListener.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
-				headers2[headersKey1] = headersInst1
-			}
-			hosts1 := make([]string, 0, len(r.ConversionListener.Config.Route.Hosts))
-			for hostsIndex1 := range r.ConversionListener.Config.Route.Hosts {
-				hosts1 = append(hosts1, r.ConversionListener.Config.Route.Hosts[hostsIndex1].ValueString())
-			}
-			httpsRedirectStatusCode1 := new(int64)
-			if !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode1 = r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode1 = nil
-			}
-			methods1 := make([]string, 0, len(r.ConversionListener.Config.Route.Methods))
-			for methodsIndex1 := range r.ConversionListener.Config.Route.Methods {
-				methods1 = append(methods1, r.ConversionListener.Config.Route.Methods[methodsIndex1].ValueString())
-			}
-			paths1 := make([]string, 0, len(r.ConversionListener.Config.Route.Paths))
-			for pathsIndex1 := range r.ConversionListener.Config.Route.Paths {
-				paths1 = append(paths1, r.ConversionListener.Config.Route.Paths[pathsIndex1].ValueString())
-			}
-			preserveHost1 := new(bool)
-			if !r.ConversionListener.Config.Route.PreserveHost.IsUnknown() && !r.ConversionListener.Config.Route.PreserveHost.IsNull() {
-				*preserveHost1 = r.ConversionListener.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost1 = nil
-			}
-			protocols1 := make([]string, 0, len(r.ConversionListener.Config.Route.Protocols))
-			for protocolsIndex1 := range r.ConversionListener.Config.Route.Protocols {
-				protocols1 = append(protocols1, r.ConversionListener.Config.Route.Protocols[protocolsIndex1].ValueString())
-			}
-			regexPriority1 := new(int64)
-			if !r.ConversionListener.Config.Route.RegexPriority.IsUnknown() && !r.ConversionListener.Config.Route.RegexPriority.IsNull() {
-				*regexPriority1 = r.ConversionListener.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority1 = nil
-			}
-			requestBuffering1 := new(bool)
-			if !r.ConversionListener.Config.Route.RequestBuffering.IsUnknown() && !r.ConversionListener.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering1 = r.ConversionListener.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering1 = nil
-			}
-			responseBuffering1 := new(bool)
-			if !r.ConversionListener.Config.Route.ResponseBuffering.IsUnknown() && !r.ConversionListener.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering1 = r.ConversionListener.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering1 = nil
-			}
-			stripPath1 := new(bool)
-			if !r.ConversionListener.Config.Route.StripPath.IsUnknown() && !r.ConversionListener.Config.Route.StripPath.IsNull() {
-				*stripPath1 = r.ConversionListener.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath1 = nil
-			}
-			tags1 := make([]string, 0, len(r.ConversionListener.Config.Route.Tags))
-			for tagsIndex1 := range r.ConversionListener.Config.Route.Tags {
-				tags1 = append(tags1, r.ConversionListener.Config.Route.Tags[tagsIndex1].ValueString())
-			}
-			route1 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers2,
-				Hosts:                   hosts1,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode1,
-				Methods:                 methods1,
-				Paths:                   paths1,
-				PreserveHost:            preserveHost1,
-				Protocols:               protocols1,
-				RegexPriority:           regexPriority1,
-				RequestBuffering:        requestBuffering1,
-				ResponseBuffering:       responseBuffering1,
-				StripPath:               stripPath1,
-				Tags:                    tags1,
-			}
+		headers2 := make(map[string]interface{})
+		for headersKey1 := range r.ConversionListener.Config.Route.Headers {
+			var headersInst1 interface{}
+			_ = json.Unmarshal([]byte(r.ConversionListener.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
+			headers2[headersKey1] = headersInst1
+		}
+		hosts1 := make([]string, 0, len(r.ConversionListener.Config.Route.Hosts))
+		for hostsIndex1 := range r.ConversionListener.Config.Route.Hosts {
+			hosts1 = append(hosts1, r.ConversionListener.Config.Route.Hosts[hostsIndex1].ValueString())
+		}
+		httpsRedirectStatusCode1 := new(int64)
+		if !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode1 = r.ConversionListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode1 = nil
+		}
+		methods1 := make([]string, 0, len(r.ConversionListener.Config.Route.Methods))
+		for methodsIndex1 := range r.ConversionListener.Config.Route.Methods {
+			methods1 = append(methods1, r.ConversionListener.Config.Route.Methods[methodsIndex1].ValueString())
+		}
+		paths1 := make([]string, 0, len(r.ConversionListener.Config.Route.Paths))
+		for pathsIndex1 := range r.ConversionListener.Config.Route.Paths {
+			paths1 = append(paths1, r.ConversionListener.Config.Route.Paths[pathsIndex1].ValueString())
+		}
+		preserveHost1 := new(bool)
+		if !r.ConversionListener.Config.Route.PreserveHost.IsUnknown() && !r.ConversionListener.Config.Route.PreserveHost.IsNull() {
+			*preserveHost1 = r.ConversionListener.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost1 = nil
+		}
+		protocols1 := make([]string, 0, len(r.ConversionListener.Config.Route.Protocols))
+		for protocolsIndex1 := range r.ConversionListener.Config.Route.Protocols {
+			protocols1 = append(protocols1, r.ConversionListener.Config.Route.Protocols[protocolsIndex1].ValueString())
+		}
+		regexPriority1 := new(int64)
+		if !r.ConversionListener.Config.Route.RegexPriority.IsUnknown() && !r.ConversionListener.Config.Route.RegexPriority.IsNull() {
+			*regexPriority1 = r.ConversionListener.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority1 = nil
+		}
+		requestBuffering1 := new(bool)
+		if !r.ConversionListener.Config.Route.RequestBuffering.IsUnknown() && !r.ConversionListener.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering1 = r.ConversionListener.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering1 = nil
+		}
+		responseBuffering1 := new(bool)
+		if !r.ConversionListener.Config.Route.ResponseBuffering.IsUnknown() && !r.ConversionListener.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering1 = r.ConversionListener.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering1 = nil
+		}
+		stripPath1 := new(bool)
+		if !r.ConversionListener.Config.Route.StripPath.IsUnknown() && !r.ConversionListener.Config.Route.StripPath.IsNull() {
+			*stripPath1 = r.ConversionListener.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath1 = nil
+		}
+		tags1 := make([]string, 0, len(r.ConversionListener.Config.Route.Tags))
+		for tagsIndex1 := range r.ConversionListener.Config.Route.Tags {
+			tags1 = append(tags1, r.ConversionListener.Config.Route.Tags[tagsIndex1].ValueString())
+		}
+		route1 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers2,
+			Hosts:                   hosts1,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode1,
+			Methods:                 methods1,
+			Paths:                   paths1,
+			PreserveHost:            preserveHost1,
+			Protocols:               protocols1,
+			RegexPriority:           regexPriority1,
+			RequestBuffering:        requestBuffering1,
+			ResponseBuffering:       responseBuffering1,
+			StripPath:               stripPath1,
+			Tags:                    tags1,
 		}
 		var logging1 *shared.AIGatewayMCPServerConversionListenerLogging
 		if r.ConversionListener.Config.Logging != nil {
@@ -11935,84 +11904,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerListener *shared.AIGatewayMCPServerListener
 	if r.Listener != nil {
-		var route2 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.Listener.Config.Route != nil {
-			headers4 := make(map[string]interface{})
-			for headersKey2 := range r.Listener.Config.Route.Headers {
-				var headersInst2 interface{}
-				_ = json.Unmarshal([]byte(r.Listener.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
-				headers4[headersKey2] = headersInst2
-			}
-			hosts2 := make([]string, 0, len(r.Listener.Config.Route.Hosts))
-			for hostsIndex2 := range r.Listener.Config.Route.Hosts {
-				hosts2 = append(hosts2, r.Listener.Config.Route.Hosts[hostsIndex2].ValueString())
-			}
-			httpsRedirectStatusCode2 := new(int64)
-			if !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode2 = r.Listener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode2 = nil
-			}
-			methods2 := make([]string, 0, len(r.Listener.Config.Route.Methods))
-			for methodsIndex2 := range r.Listener.Config.Route.Methods {
-				methods2 = append(methods2, r.Listener.Config.Route.Methods[methodsIndex2].ValueString())
-			}
-			paths2 := make([]string, 0, len(r.Listener.Config.Route.Paths))
-			for pathsIndex2 := range r.Listener.Config.Route.Paths {
-				paths2 = append(paths2, r.Listener.Config.Route.Paths[pathsIndex2].ValueString())
-			}
-			preserveHost2 := new(bool)
-			if !r.Listener.Config.Route.PreserveHost.IsUnknown() && !r.Listener.Config.Route.PreserveHost.IsNull() {
-				*preserveHost2 = r.Listener.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost2 = nil
-			}
-			protocols2 := make([]string, 0, len(r.Listener.Config.Route.Protocols))
-			for protocolsIndex2 := range r.Listener.Config.Route.Protocols {
-				protocols2 = append(protocols2, r.Listener.Config.Route.Protocols[protocolsIndex2].ValueString())
-			}
-			regexPriority2 := new(int64)
-			if !r.Listener.Config.Route.RegexPriority.IsUnknown() && !r.Listener.Config.Route.RegexPriority.IsNull() {
-				*regexPriority2 = r.Listener.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority2 = nil
-			}
-			requestBuffering2 := new(bool)
-			if !r.Listener.Config.Route.RequestBuffering.IsUnknown() && !r.Listener.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering2 = r.Listener.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering2 = nil
-			}
-			responseBuffering2 := new(bool)
-			if !r.Listener.Config.Route.ResponseBuffering.IsUnknown() && !r.Listener.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering2 = r.Listener.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering2 = nil
-			}
-			stripPath2 := new(bool)
-			if !r.Listener.Config.Route.StripPath.IsUnknown() && !r.Listener.Config.Route.StripPath.IsNull() {
-				*stripPath2 = r.Listener.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath2 = nil
-			}
-			tags2 := make([]string, 0, len(r.Listener.Config.Route.Tags))
-			for tagsIndex2 := range r.Listener.Config.Route.Tags {
-				tags2 = append(tags2, r.Listener.Config.Route.Tags[tagsIndex2].ValueString())
-			}
-			route2 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers4,
-				Hosts:                   hosts2,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode2,
-				Methods:                 methods2,
-				Paths:                   paths2,
-				PreserveHost:            preserveHost2,
-				Protocols:               protocols2,
-				RegexPriority:           regexPriority2,
-				RequestBuffering:        requestBuffering2,
-				ResponseBuffering:       responseBuffering2,
-				StripPath:               stripPath2,
-				Tags:                    tags2,
-			}
+		headers4 := make(map[string]interface{})
+		for headersKey2 := range r.Listener.Config.Route.Headers {
+			var headersInst2 interface{}
+			_ = json.Unmarshal([]byte(r.Listener.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
+			headers4[headersKey2] = headersInst2
+		}
+		hosts2 := make([]string, 0, len(r.Listener.Config.Route.Hosts))
+		for hostsIndex2 := range r.Listener.Config.Route.Hosts {
+			hosts2 = append(hosts2, r.Listener.Config.Route.Hosts[hostsIndex2].ValueString())
+		}
+		httpsRedirectStatusCode2 := new(int64)
+		if !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.Listener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode2 = r.Listener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode2 = nil
+		}
+		methods2 := make([]string, 0, len(r.Listener.Config.Route.Methods))
+		for methodsIndex2 := range r.Listener.Config.Route.Methods {
+			methods2 = append(methods2, r.Listener.Config.Route.Methods[methodsIndex2].ValueString())
+		}
+		paths2 := make([]string, 0, len(r.Listener.Config.Route.Paths))
+		for pathsIndex2 := range r.Listener.Config.Route.Paths {
+			paths2 = append(paths2, r.Listener.Config.Route.Paths[pathsIndex2].ValueString())
+		}
+		preserveHost2 := new(bool)
+		if !r.Listener.Config.Route.PreserveHost.IsUnknown() && !r.Listener.Config.Route.PreserveHost.IsNull() {
+			*preserveHost2 = r.Listener.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost2 = nil
+		}
+		protocols2 := make([]string, 0, len(r.Listener.Config.Route.Protocols))
+		for protocolsIndex2 := range r.Listener.Config.Route.Protocols {
+			protocols2 = append(protocols2, r.Listener.Config.Route.Protocols[protocolsIndex2].ValueString())
+		}
+		regexPriority2 := new(int64)
+		if !r.Listener.Config.Route.RegexPriority.IsUnknown() && !r.Listener.Config.Route.RegexPriority.IsNull() {
+			*regexPriority2 = r.Listener.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority2 = nil
+		}
+		requestBuffering2 := new(bool)
+		if !r.Listener.Config.Route.RequestBuffering.IsUnknown() && !r.Listener.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering2 = r.Listener.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering2 = nil
+		}
+		responseBuffering2 := new(bool)
+		if !r.Listener.Config.Route.ResponseBuffering.IsUnknown() && !r.Listener.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering2 = r.Listener.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering2 = nil
+		}
+		stripPath2 := new(bool)
+		if !r.Listener.Config.Route.StripPath.IsUnknown() && !r.Listener.Config.Route.StripPath.IsNull() {
+			*stripPath2 = r.Listener.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath2 = nil
+		}
+		tags2 := make([]string, 0, len(r.Listener.Config.Route.Tags))
+		for tagsIndex2 := range r.Listener.Config.Route.Tags {
+			tags2 = append(tags2, r.Listener.Config.Route.Tags[tagsIndex2].ValueString())
+		}
+		route2 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers4,
+			Hosts:                   hosts2,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode2,
+			Methods:                 methods2,
+			Paths:                   paths2,
+			PreserveHost:            preserveHost2,
+			Protocols:               protocols2,
+			RegexPriority:           regexPriority2,
+			RequestBuffering:        requestBuffering2,
+			ResponseBuffering:       responseBuffering2,
+			StripPath:               stripPath2,
+			Tags:                    tags2,
 		}
 		var logging2 *shared.AIGatewayMCPServerListenerLogging
 		if r.Listener.Config.Logging != nil {
@@ -13185,84 +13151,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerPassthroughListener *shared.AIGatewayMCPServerPassthroughListener
 	if r.PassthroughListener != nil {
-		var route3 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.PassthroughListener.Config.Route != nil {
-			headers5 := make(map[string]interface{})
-			for headersKey3 := range r.PassthroughListener.Config.Route.Headers {
-				var headersInst3 interface{}
-				_ = json.Unmarshal([]byte(r.PassthroughListener.Config.Route.Headers[headersKey3].ValueString()), &headersInst3)
-				headers5[headersKey3] = headersInst3
-			}
-			hosts3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Hosts))
-			for hostsIndex3 := range r.PassthroughListener.Config.Route.Hosts {
-				hosts3 = append(hosts3, r.PassthroughListener.Config.Route.Hosts[hostsIndex3].ValueString())
-			}
-			httpsRedirectStatusCode3 := new(int64)
-			if !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode3 = r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode3 = nil
-			}
-			methods3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Methods))
-			for methodsIndex3 := range r.PassthroughListener.Config.Route.Methods {
-				methods3 = append(methods3, r.PassthroughListener.Config.Route.Methods[methodsIndex3].ValueString())
-			}
-			paths3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Paths))
-			for pathsIndex3 := range r.PassthroughListener.Config.Route.Paths {
-				paths3 = append(paths3, r.PassthroughListener.Config.Route.Paths[pathsIndex3].ValueString())
-			}
-			preserveHost3 := new(bool)
-			if !r.PassthroughListener.Config.Route.PreserveHost.IsUnknown() && !r.PassthroughListener.Config.Route.PreserveHost.IsNull() {
-				*preserveHost3 = r.PassthroughListener.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost3 = nil
-			}
-			protocols3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Protocols))
-			for protocolsIndex3 := range r.PassthroughListener.Config.Route.Protocols {
-				protocols3 = append(protocols3, r.PassthroughListener.Config.Route.Protocols[protocolsIndex3].ValueString())
-			}
-			regexPriority3 := new(int64)
-			if !r.PassthroughListener.Config.Route.RegexPriority.IsUnknown() && !r.PassthroughListener.Config.Route.RegexPriority.IsNull() {
-				*regexPriority3 = r.PassthroughListener.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority3 = nil
-			}
-			requestBuffering3 := new(bool)
-			if !r.PassthroughListener.Config.Route.RequestBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering3 = r.PassthroughListener.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering3 = nil
-			}
-			responseBuffering3 := new(bool)
-			if !r.PassthroughListener.Config.Route.ResponseBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering3 = r.PassthroughListener.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering3 = nil
-			}
-			stripPath3 := new(bool)
-			if !r.PassthroughListener.Config.Route.StripPath.IsUnknown() && !r.PassthroughListener.Config.Route.StripPath.IsNull() {
-				*stripPath3 = r.PassthroughListener.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath3 = nil
-			}
-			tags3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Tags))
-			for tagsIndex3 := range r.PassthroughListener.Config.Route.Tags {
-				tags3 = append(tags3, r.PassthroughListener.Config.Route.Tags[tagsIndex3].ValueString())
-			}
-			route3 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers5,
-				Hosts:                   hosts3,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode3,
-				Methods:                 methods3,
-				Paths:                   paths3,
-				PreserveHost:            preserveHost3,
-				Protocols:               protocols3,
-				RegexPriority:           regexPriority3,
-				RequestBuffering:        requestBuffering3,
-				ResponseBuffering:       responseBuffering3,
-				StripPath:               stripPath3,
-				Tags:                    tags3,
-			}
+		headers5 := make(map[string]interface{})
+		for headersKey3 := range r.PassthroughListener.Config.Route.Headers {
+			var headersInst3 interface{}
+			_ = json.Unmarshal([]byte(r.PassthroughListener.Config.Route.Headers[headersKey3].ValueString()), &headersInst3)
+			headers5[headersKey3] = headersInst3
+		}
+		hosts3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Hosts))
+		for hostsIndex3 := range r.PassthroughListener.Config.Route.Hosts {
+			hosts3 = append(hosts3, r.PassthroughListener.Config.Route.Hosts[hostsIndex3].ValueString())
+		}
+		httpsRedirectStatusCode3 := new(int64)
+		if !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode3 = r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode3 = nil
+		}
+		methods3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Methods))
+		for methodsIndex3 := range r.PassthroughListener.Config.Route.Methods {
+			methods3 = append(methods3, r.PassthroughListener.Config.Route.Methods[methodsIndex3].ValueString())
+		}
+		paths3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Paths))
+		for pathsIndex3 := range r.PassthroughListener.Config.Route.Paths {
+			paths3 = append(paths3, r.PassthroughListener.Config.Route.Paths[pathsIndex3].ValueString())
+		}
+		preserveHost3 := new(bool)
+		if !r.PassthroughListener.Config.Route.PreserveHost.IsUnknown() && !r.PassthroughListener.Config.Route.PreserveHost.IsNull() {
+			*preserveHost3 = r.PassthroughListener.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost3 = nil
+		}
+		protocols3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Protocols))
+		for protocolsIndex3 := range r.PassthroughListener.Config.Route.Protocols {
+			protocols3 = append(protocols3, r.PassthroughListener.Config.Route.Protocols[protocolsIndex3].ValueString())
+		}
+		regexPriority3 := new(int64)
+		if !r.PassthroughListener.Config.Route.RegexPriority.IsUnknown() && !r.PassthroughListener.Config.Route.RegexPriority.IsNull() {
+			*regexPriority3 = r.PassthroughListener.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority3 = nil
+		}
+		requestBuffering3 := new(bool)
+		if !r.PassthroughListener.Config.Route.RequestBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering3 = r.PassthroughListener.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering3 = nil
+		}
+		responseBuffering3 := new(bool)
+		if !r.PassthroughListener.Config.Route.ResponseBuffering.IsUnknown() && !r.PassthroughListener.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering3 = r.PassthroughListener.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering3 = nil
+		}
+		stripPath3 := new(bool)
+		if !r.PassthroughListener.Config.Route.StripPath.IsUnknown() && !r.PassthroughListener.Config.Route.StripPath.IsNull() {
+			*stripPath3 = r.PassthroughListener.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath3 = nil
+		}
+		tags3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Tags))
+		for tagsIndex3 := range r.PassthroughListener.Config.Route.Tags {
+			tags3 = append(tags3, r.PassthroughListener.Config.Route.Tags[tagsIndex3].ValueString())
+		}
+		route3 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers5,
+			Hosts:                   hosts3,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode3,
+			Methods:                 methods3,
+			Paths:                   paths3,
+			PreserveHost:            preserveHost3,
+			Protocols:               protocols3,
+			RegexPriority:           regexPriority3,
+			RequestBuffering:        requestBuffering3,
+			ResponseBuffering:       responseBuffering3,
+			StripPath:               stripPath3,
+			Tags:                    tags3,
 		}
 		var logging3 *shared.AIGatewayMCPServerWithUpstreamConfigLogging
 		if r.PassthroughListener.Config.Logging != nil {
@@ -14616,84 +14579,81 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 	}
 	var aiGatewayMCPServerUpstreamServer *shared.AIGatewayMCPServerUpstreamServer
 	if r.UpstreamServer != nil {
-		var route4 *shared.AIGatewayMCPServerRouteWithMatcher
-		if r.UpstreamServer.Config.Route != nil {
-			headers6 := make(map[string]interface{})
-			for headersKey4 := range r.UpstreamServer.Config.Route.Headers {
-				var headersInst4 interface{}
-				_ = json.Unmarshal([]byte(r.UpstreamServer.Config.Route.Headers[headersKey4].ValueString()), &headersInst4)
-				headers6[headersKey4] = headersInst4
-			}
-			hosts4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Hosts))
-			for hostsIndex4 := range r.UpstreamServer.Config.Route.Hosts {
-				hosts4 = append(hosts4, r.UpstreamServer.Config.Route.Hosts[hostsIndex4].ValueString())
-			}
-			httpsRedirectStatusCode4 := new(int64)
-			if !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsNull() {
-				*httpsRedirectStatusCode4 = r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
-			} else {
-				httpsRedirectStatusCode4 = nil
-			}
-			methods4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Methods))
-			for methodsIndex4 := range r.UpstreamServer.Config.Route.Methods {
-				methods4 = append(methods4, r.UpstreamServer.Config.Route.Methods[methodsIndex4].ValueString())
-			}
-			paths4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Paths))
-			for pathsIndex4 := range r.UpstreamServer.Config.Route.Paths {
-				paths4 = append(paths4, r.UpstreamServer.Config.Route.Paths[pathsIndex4].ValueString())
-			}
-			preserveHost4 := new(bool)
-			if !r.UpstreamServer.Config.Route.PreserveHost.IsUnknown() && !r.UpstreamServer.Config.Route.PreserveHost.IsNull() {
-				*preserveHost4 = r.UpstreamServer.Config.Route.PreserveHost.ValueBool()
-			} else {
-				preserveHost4 = nil
-			}
-			protocols4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Protocols))
-			for protocolsIndex4 := range r.UpstreamServer.Config.Route.Protocols {
-				protocols4 = append(protocols4, r.UpstreamServer.Config.Route.Protocols[protocolsIndex4].ValueString())
-			}
-			regexPriority4 := new(int64)
-			if !r.UpstreamServer.Config.Route.RegexPriority.IsUnknown() && !r.UpstreamServer.Config.Route.RegexPriority.IsNull() {
-				*regexPriority4 = r.UpstreamServer.Config.Route.RegexPriority.ValueInt64()
-			} else {
-				regexPriority4 = nil
-			}
-			requestBuffering4 := new(bool)
-			if !r.UpstreamServer.Config.Route.RequestBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.RequestBuffering.IsNull() {
-				*requestBuffering4 = r.UpstreamServer.Config.Route.RequestBuffering.ValueBool()
-			} else {
-				requestBuffering4 = nil
-			}
-			responseBuffering4 := new(bool)
-			if !r.UpstreamServer.Config.Route.ResponseBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.ResponseBuffering.IsNull() {
-				*responseBuffering4 = r.UpstreamServer.Config.Route.ResponseBuffering.ValueBool()
-			} else {
-				responseBuffering4 = nil
-			}
-			stripPath4 := new(bool)
-			if !r.UpstreamServer.Config.Route.StripPath.IsUnknown() && !r.UpstreamServer.Config.Route.StripPath.IsNull() {
-				*stripPath4 = r.UpstreamServer.Config.Route.StripPath.ValueBool()
-			} else {
-				stripPath4 = nil
-			}
-			tags4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Tags))
-			for tagsIndex4 := range r.UpstreamServer.Config.Route.Tags {
-				tags4 = append(tags4, r.UpstreamServer.Config.Route.Tags[tagsIndex4].ValueString())
-			}
-			route4 = &shared.AIGatewayMCPServerRouteWithMatcher{
-				Headers:                 headers6,
-				Hosts:                   hosts4,
-				HTTPSRedirectStatusCode: httpsRedirectStatusCode4,
-				Methods:                 methods4,
-				Paths:                   paths4,
-				PreserveHost:            preserveHost4,
-				Protocols:               protocols4,
-				RegexPriority:           regexPriority4,
-				RequestBuffering:        requestBuffering4,
-				ResponseBuffering:       responseBuffering4,
-				StripPath:               stripPath4,
-				Tags:                    tags4,
-			}
+		headers6 := make(map[string]interface{})
+		for headersKey4 := range r.UpstreamServer.Config.Route.Headers {
+			var headersInst4 interface{}
+			_ = json.Unmarshal([]byte(r.UpstreamServer.Config.Route.Headers[headersKey4].ValueString()), &headersInst4)
+			headers6[headersKey4] = headersInst4
+		}
+		hosts4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Hosts))
+		for hostsIndex4 := range r.UpstreamServer.Config.Route.Hosts {
+			hosts4 = append(hosts4, r.UpstreamServer.Config.Route.Hosts[hostsIndex4].ValueString())
+		}
+		httpsRedirectStatusCode4 := new(int64)
+		if !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsUnknown() && !r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.IsNull() {
+			*httpsRedirectStatusCode4 = r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode.ValueInt64()
+		} else {
+			httpsRedirectStatusCode4 = nil
+		}
+		methods4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Methods))
+		for methodsIndex4 := range r.UpstreamServer.Config.Route.Methods {
+			methods4 = append(methods4, r.UpstreamServer.Config.Route.Methods[methodsIndex4].ValueString())
+		}
+		paths4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Paths))
+		for pathsIndex4 := range r.UpstreamServer.Config.Route.Paths {
+			paths4 = append(paths4, r.UpstreamServer.Config.Route.Paths[pathsIndex4].ValueString())
+		}
+		preserveHost4 := new(bool)
+		if !r.UpstreamServer.Config.Route.PreserveHost.IsUnknown() && !r.UpstreamServer.Config.Route.PreserveHost.IsNull() {
+			*preserveHost4 = r.UpstreamServer.Config.Route.PreserveHost.ValueBool()
+		} else {
+			preserveHost4 = nil
+		}
+		protocols4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Protocols))
+		for protocolsIndex4 := range r.UpstreamServer.Config.Route.Protocols {
+			protocols4 = append(protocols4, r.UpstreamServer.Config.Route.Protocols[protocolsIndex4].ValueString())
+		}
+		regexPriority4 := new(int64)
+		if !r.UpstreamServer.Config.Route.RegexPriority.IsUnknown() && !r.UpstreamServer.Config.Route.RegexPriority.IsNull() {
+			*regexPriority4 = r.UpstreamServer.Config.Route.RegexPriority.ValueInt64()
+		} else {
+			regexPriority4 = nil
+		}
+		requestBuffering4 := new(bool)
+		if !r.UpstreamServer.Config.Route.RequestBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.RequestBuffering.IsNull() {
+			*requestBuffering4 = r.UpstreamServer.Config.Route.RequestBuffering.ValueBool()
+		} else {
+			requestBuffering4 = nil
+		}
+		responseBuffering4 := new(bool)
+		if !r.UpstreamServer.Config.Route.ResponseBuffering.IsUnknown() && !r.UpstreamServer.Config.Route.ResponseBuffering.IsNull() {
+			*responseBuffering4 = r.UpstreamServer.Config.Route.ResponseBuffering.ValueBool()
+		} else {
+			responseBuffering4 = nil
+		}
+		stripPath4 := new(bool)
+		if !r.UpstreamServer.Config.Route.StripPath.IsUnknown() && !r.UpstreamServer.Config.Route.StripPath.IsNull() {
+			*stripPath4 = r.UpstreamServer.Config.Route.StripPath.ValueBool()
+		} else {
+			stripPath4 = nil
+		}
+		tags4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Tags))
+		for tagsIndex4 := range r.UpstreamServer.Config.Route.Tags {
+			tags4 = append(tags4, r.UpstreamServer.Config.Route.Tags[tagsIndex4].ValueString())
+		}
+		route4 := shared.AIGatewayMCPServerRouteWithMatcher{
+			Headers:                 headers6,
+			Hosts:                   hosts4,
+			HTTPSRedirectStatusCode: httpsRedirectStatusCode4,
+			Methods:                 methods4,
+			Paths:                   paths4,
+			PreserveHost:            preserveHost4,
+			Protocols:               protocols4,
+			RegexPriority:           regexPriority4,
+			RequestBuffering:        requestBuffering4,
+			ResponseBuffering:       responseBuffering4,
+			StripPath:               stripPath4,
+			Tags:                    tags4,
 		}
 		var logging4 *shared.AIGatewayMCPServerUpstreamServerConfigLogging
 		if r.UpstreamServer.Config.Logging != nil {

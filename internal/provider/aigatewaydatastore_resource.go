@@ -198,6 +198,7 @@ func (r *AIGatewayDatastoreResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"password": schema.StringAttribute{
@@ -287,7 +288,9 @@ func (r *AIGatewayDatastoreResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
@@ -403,6 +406,7 @@ func (r *AIGatewayDatastoreResource) Schema(ctx context.Context, req resource.Sc
 											Description: `Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
 											},
 										},
 										"port": schema.Int64Attribute{
@@ -433,6 +437,7 @@ func (r *AIGatewayDatastoreResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"keepalive_backlog": schema.Int64Attribute{
@@ -491,6 +496,7 @@ func (r *AIGatewayDatastoreResource) Schema(ctx context.Context, req resource.Sc
 											Description: `Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
 											},
 										},
 										"port": schema.Int64Attribute{
@@ -590,7 +596,9 @@ func (r *AIGatewayDatastoreResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
@@ -633,6 +641,7 @@ func (r *AIGatewayDatastoreResource) Schema(ctx context.Context, req resource.Sc
 								Description: `The version of the encryption key used to encrypt new tokens. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"directory": schema.StringAttribute{
@@ -641,6 +650,7 @@ func (r *AIGatewayDatastoreResource) Schema(ctx context.Context, req resource.Sc
 								Description: `The name of the directory in which tokens are stored. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"keys": schema.ListNestedAttribute{
@@ -664,6 +674,7 @@ func (r *AIGatewayDatastoreResource) Schema(ctx context.Context, req resource.Sc
 											Description: `The identifier of this key version. Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
 											},
 										},
 									},
@@ -735,7 +746,9 @@ func (r *AIGatewayDatastoreResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
@@ -785,6 +798,7 @@ func (r *AIGatewayDatastoreResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"host": schema.StringAttribute{
@@ -793,6 +807,7 @@ func (r *AIGatewayDatastoreResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"password": schema.StringAttribute{
@@ -910,7 +925,9 @@ func (r *AIGatewayDatastoreResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,

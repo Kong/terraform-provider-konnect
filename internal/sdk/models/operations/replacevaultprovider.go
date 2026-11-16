@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-var ReplaceVaultProviderServerList = []string{
-	"https://us.api.konghq.com/",
-}
-
 type ReplaceVaultProviderRequest struct {
 	// ID of the directory
 	DirectoryID string `pathParam:"style=simple,explode=false,name=directoryId"`

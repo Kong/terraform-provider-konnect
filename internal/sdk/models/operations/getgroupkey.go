@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-var GetGroupKeyServerList = []string{
-	"https://us.api.konghq.com/",
-}
-
 type GetGroupKeyRequest struct {
 	// ID of the directory
 	DirectoryID string `pathParam:"style=simple,explode=false,name=directoryId"`

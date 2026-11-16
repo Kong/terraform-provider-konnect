@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -57,7 +56,6 @@ type PortalResourceModel struct {
 	NotificationsDeveloperPiiVisibilityEnabled types.Bool              `tfsdk:"notifications_developer_pii_visibility_enabled"`
 	RbacEnabled                                types.Bool              `tfsdk:"rbac_enabled"`
 	SiprEnabled                                types.Bool              `tfsdk:"sipr_enabled"`
-	ThemeName                                  types.String            `tfsdk:"theme_name"`
 	UpdatedAt                                  types.String            `tfsdk:"updated_at"`
 }
 
@@ -83,19 +81,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
-							"ai_search": schema.SingleNestedAttribute{
-								Computed: true,
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"enabled": schema.BoolAttribute{
-										Computed:    true,
-										Optional:    true,
-										Default:     booldefault.StaticBool(false),
-										Description: `Whether AI Search is enabled or not. Default: false`,
-									},
-								},
-								Description: `AI Search config`,
-							},
 							"mcp_server": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -247,13 +232,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:    true,
 				Default:     booldefault.StaticBool(false),
 				Description: `Whether ip allow list is enabled for the portal. Default: false`,
-			},
-			"theme_name": schema.StringAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `Name of the theme to use for the default content created upon creation of this portal. Must match an available theme name; if omitted or unrecognized, the default theme is used. Only applies when ` + "`" + `create_default_content` + "`" + ` is true. Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

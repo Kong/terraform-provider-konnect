@@ -44,6 +44,10 @@ resource "konnect_team_role" "my_teamrole" {
 ### Read-Only
 
 - `id` (String) The ID of the role assignment.
+- `konnect_managed` (Boolean) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Indicates that the role is assigned and removed only by Konnect.
 
 ## Import
 

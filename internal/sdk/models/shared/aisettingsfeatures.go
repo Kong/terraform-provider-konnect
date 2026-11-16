@@ -6,30 +6,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// AiSearch - AI Search config
-type AiSearch struct {
-	// Whether AI Search is enabled or not
-	Enabled *bool `default:"false" json:"enabled"`
-}
-
-func (a AiSearch) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AiSearch) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AiSearch) GetEnabled() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.Enabled
-}
-
 // McpServer - AI Features config
 type McpServer struct {
 	// Whether the MCP Server is enabled or not
@@ -65,8 +41,6 @@ func (m *McpServer) GetWriteOperationsEnabled() *bool {
 
 // AISettingsFeatures - AI features configuration. When top-level `enabled` is false, every feature toggle here is automatically reset to false.
 type AISettingsFeatures struct {
-	// AI Search config
-	AiSearch *AiSearch `json:"ai_search,omitempty"`
 	// AI Features config
 	McpServer *McpServer `json:"mcp_server,omitempty"`
 }
@@ -80,13 +54,6 @@ func (a *AISettingsFeatures) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (a *AISettingsFeatures) GetAiSearch() *AiSearch {
-	if a == nil {
-		return nil
-	}
-	return a.AiSearch
 }
 
 func (a *AISettingsFeatures) GetMcpServer() *McpServer {

@@ -99,11 +99,10 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			},
 			"system_team": schema.BoolAttribute{
 				Computed: true,
-				Default:  booldefault.StaticBool(false),
 				PlanModifiers: []planmodifier.Bool{
 					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 				},
-				Description: `Returns True if a user belongs to a ` + "`" + `system_team` + "`" + `. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service". Default: false`,
+				Description: `Returns True if a user belongs to a ` + "`" + `system_team` + "`" + `. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

@@ -41,11 +41,13 @@ type KongGroup struct {
 	UpdatedAt time.Time `json:"updated_at"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by"`
 	// Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user's behalf (for example, `developer_portal` or `trusted_idp`).
-	ProvisionedBy *ProvisionedBy `default:"konnect_user" json:"provisioned_by"`
+	ProvisionedBy ProvisionedBy `json:"provisioned_by"`
 	// The manager of a team, set through the team's `team_manager` custom identity. Always null for plain groups, and for teams without a manager.
 	//
 	TeamManager *KongTeamManager `json:"team_manager"`
@@ -56,7 +58,7 @@ func (k KongGroup) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KongGroup) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"id", "name", "description", "metadata", "labels", "created_at", "updated_at", "managed_by"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"id", "name", "description", "metadata", "labels", "created_at", "updated_at", "managed_by", "provisioned_by"}); err != nil {
 		return err
 	}
 	return nil
@@ -125,9 +127,9 @@ func (k *KongGroup) GetManagedBy() map[string]string {
 	return k.ManagedBy
 }
 
-func (k *KongGroup) GetProvisionedBy() *ProvisionedBy {
+func (k *KongGroup) GetProvisionedBy() ProvisionedBy {
 	if k == nil {
-		return nil
+		return ProvisionedBy("")
 	}
 	return k.ProvisionedBy
 }
