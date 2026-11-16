@@ -30,3 +30,19 @@ output "workspace_id" {
 output "workspace_name" {
   value = data.konnect_gateway_workspace.by_name.name
 }
+
+
+data "konnect_gateway_workspace_list" "by_name" {
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+  filter = {
+    name = {
+      eq = konnect_gateway_workspace.ds.name
+    }
+  }
+
+  depends_on = [konnect_gateway_workspace.ds]
+}
+
+output "workspace_list_name" {
+  value = data.konnect_gateway_workspace_list.by_name.data[0].name
+}

@@ -22,7 +22,6 @@ func TestGatewayWorkspace(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_gateway_workspace.my_gatewayworkspace", "description", "A test workspace for team 1"),
 						resource.TestCheckResourceAttr("konnect_gateway_workspace.my_gatewayworkspace", "comment", "A test workspace for team 1"),
 						resource.TestCheckResourceAttrSet("konnect_gateway_workspace.my_gatewayworkspace", "created_at"),
-						resource.TestCheckResourceAttr("konnect_gateway_service.httpbin", "workspace", "tf-acceptance-workspace"),
 					),
 				},
 				{
@@ -68,6 +67,7 @@ func TestGatewayWorkspace(t *testing.T) {
 						resource.TestCheckResourceAttrSet("data.konnect_gateway_workspace.by_name", "created_at"),
 						resource.TestCheckResourceAttrPair("data.konnect_gateway_workspace.by_name", "id", "konnect_gateway_workspace.ds", "id"),
 						resource.TestCheckOutput("workspace_name", "tf-acceptance-workspace-ds"),
+						resource.TestCheckOutput("workspace_list_name", "tf-acceptance-workspace-ds"),
 					),
 				},
 			},

@@ -7,12 +7,12 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
-	"github.com/kong/terraform-provider-konnect/v3/internal/provider"
+	"github.com/kong/terraform-provider-konnect/internal/provider"
 )
 
 var (
 	providerFactory = map[string]func() (tfprotov6.ProviderServer, error){
-		"konnect": providerserver.NewProtocol6WithError(provider.New("999.99.9")()),
+		"konnect": providerserver.NewProtocol6WithError(provider.New()),
 	}
 
 	providerConfigUs = `provider "konnect" {

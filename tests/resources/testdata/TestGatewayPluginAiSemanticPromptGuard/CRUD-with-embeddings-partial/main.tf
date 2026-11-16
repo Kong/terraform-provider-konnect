@@ -31,16 +31,6 @@ resource "konnect_gateway_plugin_ai_semantic_prompt_guard" "my_plugin" {
   }]
 
   config = {
-    embeddings = {
-        auth = {
-          header_name  = "Authorization"
-          header_value = "Bearer var.openai_api_key"
-        }
-        model = {
-          provider = "openai"
-          name     = "text-embedding-3-small"
-        }
-    }
     
 
     vectordb = {

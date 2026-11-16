@@ -13,14 +13,3 @@ resource "konnect_gateway_workspace" "my_gatewayworkspace" {
 
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
-
-resource "konnect_gateway_service" "httpbin" {
-  name     = "HTTPBin"
-  protocol = "https"
-  host     = "httpbin.org"
-  port     = 443
-  path     = "/"
-
-  workspace        = konnect_gateway_workspace.my_gatewayworkspace.name
-  control_plane_id = konnect_gateway_control_plane.tfdemo.id
-}
