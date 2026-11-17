@@ -49,5 +49,17 @@ jobs:
         env:
           KONNECT_SPAT: ${{ secrets.KONNECT_SPAT_DEV }}
           KONG_CUSTOM_DOMAIN: konghq.tech
-          ACC_SKIP: ${{ inputs.skip }}
-        run: make acceptance
+          INPUT_SKIP: ${{ inputs.skip }}
+          # Tests that are always skipped on dev, one go test -skip pattern per
+          # line (regex, matched per slash-separated name element). Add a short
+          # reason above each entry. Currently none, for example:
+          #   # needs a feature not enabled on dev
+          #   TestVault
+          #   TestPortalV2/auth
+          ALWAYS_SKIP: |
+        run: |
+          # Join the list above and the optional `skip` input into one regex.
+          patterns=$(printf '%s\n%s\n' "$ALWAYS_SKIP" "$INPUT_SKIP" | sed '/^[[:space:]]*#/d;/^[[:space:]]*$/d' | paste -sd'|' -)
+          export ACC_SKIP="$patterns"
+          echo "ACC_SKIP=${ACC_SKIP:-<none>}"
+          make acceptance
