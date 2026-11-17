@@ -144,8 +144,8 @@ func (r *IdentityPrincipalResource) Schema(ctx context.Context, req resource.Sch
 				Computed: true,
 				Optional: true,
 				MarkdownDescription: `Classifies the kind of principal. ` + "`" + `agent` + "`" + ` is a deployed AI agent,` + "\n" +
-					`` + "`" + `user` + "`" + ` is a human in the organization.` + "\n" +
-					`When omitted or null, the principal is not classified.` + "\n" +
+					`` + "`" + `user` + "`" + ` is a human in the organization, and null means not classified.` + "\n" +
+					`Immutable after creation: on update or replace, omit it or send the current value.` + "\n" +
 					`possible known values include one of ["agent", "user"]`,
 			},
 			"updated_at": schema.StringAttribute{

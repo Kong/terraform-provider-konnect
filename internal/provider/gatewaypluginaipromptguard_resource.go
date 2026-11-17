@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -107,11 +108,17 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Array of valid regex patterns, or valid questions from the 'user' role in chat.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtMost(10),
+						},
 					},
 					"deny_patterns": schema.ListAttribute{
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Array of invalid regex patterns, or invalid questions from the 'user' role in chat.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtMost(10),
+						},
 					},
 					"genai_category": schema.StringAttribute{
 						Computed:    true,

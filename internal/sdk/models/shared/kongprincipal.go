@@ -19,8 +19,8 @@ type KongPrincipal struct {
 	//
 	Description string `json:"description"`
 	// Classifies the kind of principal. `agent` is a deployed AI agent,
-	// `user` is a human in the organization.
-	// When omitted or null, the principal is not classified.
+	// `user` is a human in the organization, and null means not classified.
+	// Immutable after creation: on update or replace, omit it or send the current value.
 	//
 	Type *KongPrincipalType `json:"type,omitempty"`
 	// A map of metadata key-value pairs associated with this entity. This metadata is passed to the data plane to enrich the execution context. During authentication, metadata is inherited and overridden in a hierarchical manner: Directory metadata is inherited by Principals, which is then inherited and overridden by Credentials.

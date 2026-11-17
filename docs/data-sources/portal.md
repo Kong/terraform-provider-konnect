@@ -242,7 +242,16 @@ Read-Only:
 
 Read-Only:
 
+- `ai_search` (Attributes) AI Search config (see [below for nested schema](#nestedatt--ai--features--ai_search))
 - `mcp_server` (Attributes) AI Features config (see [below for nested schema](#nestedatt--ai--features--mcp_server))
+
+<a id="nestedatt--ai--features--ai_search"></a>
+### Nested Schema for `ai.features.ai_search`
+
+Read-Only:
+
+- `enabled` (Boolean) Whether AI Search is enabled or not
+
 
 <a id="nestedatt--ai--features--mcp_server"></a>
 ### Nested Schema for `ai.features.mcp_server`

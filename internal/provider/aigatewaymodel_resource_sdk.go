@@ -332,10 +332,10 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster = &tfTypes.Cluster{}
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.MaxRedirections)
 							if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes != nil {
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.API.Config.Balancer.Semantic.Vectordb.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem := range resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes {
-									var nodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes.IP = types.StringPointerValue(nodesItem.IP)
 									nodes.Port = types.Int64PointerValue(nodesItem.Port)
@@ -369,10 +369,10 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Master)
 							if resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes != nil {
-								r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.API.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem1 := range resp.AIGatewayModelAIGatewayModelAPI.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes {
-									var nodes1 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes1 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes1.Host = types.StringPointerValue(nodesItem1.Host)
 									nodes1.Port = types.Int64PointerValue(nodesItem1.Port)
@@ -2668,10 +2668,10 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster = &tfTypes.Cluster{}
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.MaxRedirections)
 							if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes != nil {
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem2 := range resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Cluster.Nodes {
-									var nodes2 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes2 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes2.IP = types.StringPointerValue(nodesItem2.IP)
 									nodes2.Port = types.Int64PointerValue(nodesItem2.Port)
@@ -2705,10 +2705,10 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Master)
 							if resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes != nil {
-								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Model.Config.Balancer.Semantic.Vectordb.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem3 := range resp.AIGatewayModelAIGatewayModelModel.Config.Balancer.AIGatewayModelBalancerSemanticConfigOutput.Vectordb.AIGatewayModelVectorDBConfigRedisOutput.Sentinel.Nodes {
-									var nodes3 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes3 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes3.Host = types.StringPointerValue(nodesItem3.Host)
 									nodes3.Port = types.Int64PointerValue(nodesItem3.Port)

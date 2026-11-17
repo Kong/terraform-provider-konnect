@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGWOpenIDConnectGeneratedConfigCache struct {
-	Enabled types.Bool  `tfsdk:"enabled"`
-	TTL     types.Int64 `tfsdk:"ttl"`
+type AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes struct {
+	Host types.String `tfsdk:"host"`
+	Port types.Int64  `tfsdk:"port"`
 }

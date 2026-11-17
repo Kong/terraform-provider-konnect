@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -112,6 +113,10 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											Optional:    true,
 											ElementType: types.StringType,
 											Description: `nodes to execute if the input condition is ` + "`" + `false` + "`" + ``,
+											Validators: []validator.List{
+												listvalidator.SizeAtLeast(1),
+												listvalidator.SizeAtMost(64),
+											},
 										},
 										"input": schema.StringAttribute{
 											Optional:    true,
@@ -163,6 +168,10 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											Optional:    true,
 											ElementType: types.StringType,
 											Description: `nodes to execute if the input condition is ` + "`" + `true` + "`" + ``,
+											Validators: []validator.List{
+												listvalidator.SizeAtLeast(1),
+												listvalidator.SizeAtMost(64),
+											},
 										},
 									},
 									Description: `Execute different nodes based on some input condition`,
@@ -1235,6 +1244,10 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 								},
 							},
 						},
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(64),
+						},
 					},
 					"resources": schema.SingleNestedAttribute{
 						Computed: true,
@@ -1760,6 +1773,9 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 													},
 												},
 												Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+												Validators: []validator.List{
+													listvalidator.SizeAtLeast(1),
+												},
 											},
 											"connect_timeout": schema.Int64Attribute{
 												Computed:    true,
@@ -1861,6 +1877,9 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 													},
 												},
 												Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+												Validators: []validator.List{
+													listvalidator.SizeAtLeast(1),
+												},
 											},
 											"sentinel_password": schema.StringAttribute{
 												Optional:    true,

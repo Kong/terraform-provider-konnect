@@ -11,7 +11,7 @@ import (
 type GetAuthServerClientRequest struct {
 	// The auth server ID
 	AuthServerID string `pathParam:"style=simple,explode=false,name=authServerId"`
-	// The OAuth 2.0 client ID
+	// The OAuth 2.0 client ID. A client whose client_id is the URL of its Client ID Metadata Document is registered and managed by that document: it is not addressable through these endpoints, and any request that targets it is rejected.
 	ClientID string `pathParam:"style=simple,explode=false,name=clientId"`
 }
 

@@ -187,7 +187,7 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 				}
 			}
 		}
-		r.Config.URL = types.StringValue(resp.Config.URL)
+		r.Config.URL = types.StringPointerValue(resp.Config.URL)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -363,9 +363,12 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 			AuthStrategies:    authStrategies,
 		}
 	}
-	var url string
-	url = r.Config.URL.ValueString()
-
+	url := new(string)
+	if !r.Config.URL.IsUnknown() && !r.Config.URL.IsNull() {
+		*url = r.Config.URL.ValueString()
+	} else {
+		url = nil
+	}
 	var upstream *shared.AIGatewayUpstreamConfig
 	if r.Config.Upstream != nil {
 		var auth *shared.Auth
@@ -731,9 +734,12 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 			AuthStrategies:    authStrategies,
 		}
 	}
-	var url string
-	url = r.Config.URL.ValueString()
-
+	url := new(string)
+	if !r.Config.URL.IsUnknown() && !r.Config.URL.IsNull() {
+		*url = r.Config.URL.ValueString()
+	} else {
+		url = nil
+	}
 	var upstream *shared.AIGatewayUpstreamConfig
 	if r.Config.Upstream != nil {
 		var auth *shared.Auth

@@ -293,6 +293,11 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 			"theme": schema.SingleNestedAttribute{
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
+					"border_radius": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The corner roundness to apply to this portal's theme. possible known values include one of ["soft", "sharp", "round"]`,
+					},
 					"colors": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{

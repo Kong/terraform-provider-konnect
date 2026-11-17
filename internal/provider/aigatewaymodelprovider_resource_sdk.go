@@ -177,10 +177,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Anthropic.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Anthropic.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Anthropic.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Anthropic.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem := range resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes.IP = types.StringPointerValue(nodesItem.IP)
 									nodes.Port = types.Int64PointerValue(nodesItem.Port)
@@ -212,10 +212,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Anthropic.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Anthropic.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Anthropic.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Anthropic.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem1 := range resp.AIGatewayModelProviderAIGatewayModelProviderAnthropic.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes1 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes1 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes1.Host = types.StringPointerValue(nodesItem1.Host)
 									nodes1.Port = types.Int64PointerValue(nodesItem1.Port)
@@ -488,10 +488,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Azure.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Azure.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderAzure.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Azure.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Azure.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem2 := range resp.AIGatewayModelProviderAIGatewayModelProviderAzure.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes2 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes2 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes2.IP = types.StringPointerValue(nodesItem2.IP)
 									nodes2.Port = types.Int64PointerValue(nodesItem2.Port)
@@ -523,10 +523,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Azure.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Azure.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderAzure.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderAzure.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Azure.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Azure.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem3 := range resp.AIGatewayModelProviderAIGatewayModelProviderAzure.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes3 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes3 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes3.Host = types.StringPointerValue(nodesItem3.Host)
 									nodes3.Port = types.Int64PointerValue(nodesItem3.Port)
@@ -767,10 +767,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Baseten.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Baseten.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Baseten.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Baseten.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem4 := range resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes4 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes4 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes4.IP = types.StringPointerValue(nodesItem4.IP)
 									nodes4.Port = types.Int64PointerValue(nodesItem4.Port)
@@ -802,10 +802,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Baseten.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Baseten.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Baseten.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Baseten.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem5 := range resp.AIGatewayModelProviderAIGatewayModelProviderBaseten.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes5 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes5 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes5.Host = types.StringPointerValue(nodesItem5.Host)
 									nodes5.Port = types.Int64PointerValue(nodesItem5.Port)
@@ -1068,10 +1068,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Bedrock.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Bedrock.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Bedrock.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Bedrock.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem6 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes6 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes6 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes6.IP = types.StringPointerValue(nodesItem6.IP)
 									nodes6.Port = types.Int64PointerValue(nodesItem6.Port)
@@ -1103,10 +1103,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Bedrock.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Bedrock.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Bedrock.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Bedrock.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem7 := range resp.AIGatewayModelProviderAIGatewayModelProviderBedrock.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes7 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes7 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes7.Host = types.StringPointerValue(nodesItem7.Host)
 									nodes7.Port = types.Int64PointerValue(nodesItem7.Port)
@@ -1347,10 +1347,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Cerebras.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Cerebras.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Cerebras.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Cerebras.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem8 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes8 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes8 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes8.IP = types.StringPointerValue(nodesItem8.IP)
 									nodes8.Port = types.Int64PointerValue(nodesItem8.Port)
@@ -1382,10 +1382,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Cerebras.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Cerebras.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Cerebras.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Cerebras.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem9 := range resp.AIGatewayModelProviderAIGatewayModelProviderCerebras.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes9 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes9 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes9.Host = types.StringPointerValue(nodesItem9.Host)
 									nodes9.Port = types.Int64PointerValue(nodesItem9.Port)
@@ -1626,10 +1626,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Cohere.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Cohere.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderCohere.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Cohere.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Cohere.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem10 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes10 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes10 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes10.IP = types.StringPointerValue(nodesItem10.IP)
 									nodes10.Port = types.Int64PointerValue(nodesItem10.Port)
@@ -1661,10 +1661,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Cohere.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Cohere.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderCohere.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderCohere.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Cohere.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Cohere.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem11 := range resp.AIGatewayModelProviderAIGatewayModelProviderCohere.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes11 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes11 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes11.Host = types.StringPointerValue(nodesItem11.Host)
 									nodes11.Port = types.Int64PointerValue(nodesItem11.Port)
@@ -1905,10 +1905,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Dashscope.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Dashscope.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Dashscope.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Dashscope.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem12 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes12 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes12 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes12.IP = types.StringPointerValue(nodesItem12.IP)
 									nodes12.Port = types.Int64PointerValue(nodesItem12.Port)
@@ -1940,10 +1940,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Dashscope.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Dashscope.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Dashscope.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Dashscope.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem13 := range resp.AIGatewayModelProviderAIGatewayModelProviderDashscope.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes13 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes13 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes13.Host = types.StringPointerValue(nodesItem13.Host)
 									nodes13.Port = types.Int64PointerValue(nodesItem13.Port)
@@ -2184,10 +2184,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Databricks.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Databricks.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Databricks.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Databricks.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem14 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes14 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes14 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes14.IP = types.StringPointerValue(nodesItem14.IP)
 									nodes14.Port = types.Int64PointerValue(nodesItem14.Port)
@@ -2219,10 +2219,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Databricks.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Databricks.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Databricks.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Databricks.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem15 := range resp.AIGatewayModelProviderAIGatewayModelProviderDatabricks.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes15 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes15 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes15.Host = types.StringPointerValue(nodesItem15.Host)
 									nodes15.Port = types.Int64PointerValue(nodesItem15.Port)
@@ -2463,10 +2463,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Deepseek.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Deepseek.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Deepseek.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Deepseek.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem16 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes16 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes16 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes16.IP = types.StringPointerValue(nodesItem16.IP)
 									nodes16.Port = types.Int64PointerValue(nodesItem16.Port)
@@ -2498,10 +2498,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Deepseek.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Deepseek.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Deepseek.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Deepseek.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem17 := range resp.AIGatewayModelProviderAIGatewayModelProviderDeepseek.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes17 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes17 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes17.Host = types.StringPointerValue(nodesItem17.Host)
 									nodes17.Port = types.Int64PointerValue(nodesItem17.Port)
@@ -2794,10 +2794,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Gemini.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Gemini.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderGemini.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Gemini.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Gemini.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem18 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes18 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes18 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes18.IP = types.StringPointerValue(nodesItem18.IP)
 									nodes18.Port = types.Int64PointerValue(nodesItem18.Port)
@@ -2829,10 +2829,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Gemini.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Gemini.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderGemini.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderGemini.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Gemini.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Gemini.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem19 := range resp.AIGatewayModelProviderAIGatewayModelProviderGemini.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes19 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes19 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes19.Host = types.StringPointerValue(nodesItem19.Host)
 									nodes19.Port = types.Int64PointerValue(nodesItem19.Port)
@@ -3073,10 +3073,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Huggingface.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Huggingface.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Huggingface.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Huggingface.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem20 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes20 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes20 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes20.IP = types.StringPointerValue(nodesItem20.IP)
 									nodes20.Port = types.Int64PointerValue(nodesItem20.Port)
@@ -3108,10 +3108,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Huggingface.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Huggingface.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Huggingface.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Huggingface.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem21 := range resp.AIGatewayModelProviderAIGatewayModelProviderHuggingface.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes21 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes21 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes21.Host = types.StringPointerValue(nodesItem21.Host)
 									nodes21.Port = types.Int64PointerValue(nodesItem21.Port)
@@ -3352,10 +3352,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Kimi.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Kimi.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderKimi.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Kimi.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Kimi.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem22 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes22 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes22 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes22.IP = types.StringPointerValue(nodesItem22.IP)
 									nodes22.Port = types.Int64PointerValue(nodesItem22.Port)
@@ -3387,10 +3387,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Kimi.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Kimi.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderKimi.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderKimi.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Kimi.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Kimi.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem23 := range resp.AIGatewayModelProviderAIGatewayModelProviderKimi.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes23 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes23 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes23.Host = types.StringPointerValue(nodesItem23.Host)
 									nodes23.Port = types.Int64PointerValue(nodesItem23.Port)
@@ -3631,10 +3631,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Llama2.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Llama2.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Llama2.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Llama2.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem24 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes24 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes24 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes24.IP = types.StringPointerValue(nodesItem24.IP)
 									nodes24.Port = types.Int64PointerValue(nodesItem24.Port)
@@ -3666,10 +3666,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Llama2.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Llama2.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Llama2.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Llama2.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem25 := range resp.AIGatewayModelProviderAIGatewayModelProviderLlama2.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes25 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes25 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes25.Host = types.StringPointerValue(nodesItem25.Host)
 									nodes25.Port = types.Int64PointerValue(nodesItem25.Port)
@@ -3910,10 +3910,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Mistral.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Mistral.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderMistral.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Mistral.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Mistral.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem26 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes26 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes26 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes26.IP = types.StringPointerValue(nodesItem26.IP)
 									nodes26.Port = types.Int64PointerValue(nodesItem26.Port)
@@ -3945,10 +3945,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Mistral.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Mistral.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderMistral.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderMistral.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Mistral.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Mistral.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem27 := range resp.AIGatewayModelProviderAIGatewayModelProviderMistral.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes27 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes27 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes27.Host = types.StringPointerValue(nodesItem27.Host)
 									nodes27.Port = types.Int64PointerValue(nodesItem27.Port)
@@ -4189,10 +4189,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Ollama.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Ollama.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderOllama.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Ollama.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Ollama.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem28 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes28 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes28 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes28.IP = types.StringPointerValue(nodesItem28.IP)
 									nodes28.Port = types.Int64PointerValue(nodesItem28.Port)
@@ -4224,10 +4224,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Ollama.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Ollama.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderOllama.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderOllama.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Ollama.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Ollama.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem29 := range resp.AIGatewayModelProviderAIGatewayModelProviderOllama.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes29 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes29 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes29.Host = types.StringPointerValue(nodesItem29.Host)
 									nodes29.Port = types.Int64PointerValue(nodesItem29.Port)
@@ -4468,10 +4468,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Openai.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Openai.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Openai.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Openai.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem30 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes30 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes30 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes30.IP = types.StringPointerValue(nodesItem30.IP)
 									nodes30.Port = types.Int64PointerValue(nodesItem30.Port)
@@ -4503,10 +4503,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Openai.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Openai.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Openai.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Openai.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem31 := range resp.AIGatewayModelProviderAIGatewayModelProviderOpenai.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes31 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes31 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes31.Host = types.StringPointerValue(nodesItem31.Host)
 									nodes31.Port = types.Int64PointerValue(nodesItem31.Port)
@@ -4775,10 +4775,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Sagemaker.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Sagemaker.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Sagemaker.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Sagemaker.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem32 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes32 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes32 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes32.IP = types.StringPointerValue(nodesItem32.IP)
 									nodes32.Port = types.Int64PointerValue(nodesItem32.Port)
@@ -4810,10 +4810,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Sagemaker.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Sagemaker.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Sagemaker.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Sagemaker.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem33 := range resp.AIGatewayModelProviderAIGatewayModelProviderSagemaker.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes33 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes33 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes33.Host = types.StringPointerValue(nodesItem33.Host)
 									nodes33.Port = types.Int64PointerValue(nodesItem33.Port)
@@ -5054,10 +5054,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Typesafe.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Typesafe.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Typesafe.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Typesafe.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem34 := range resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes34 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes34 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes34.IP = types.StringPointerValue(nodesItem34.IP)
 									nodes34.Port = types.Int64PointerValue(nodesItem34.Port)
@@ -5089,10 +5089,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Typesafe.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Typesafe.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Typesafe.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Typesafe.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem35 := range resp.AIGatewayModelProviderAIGatewayModelProviderTypesafe.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes35 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes35 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes35.Host = types.StringPointerValue(nodesItem35.Host)
 									nodes35.Port = types.Int64PointerValue(nodesItem35.Port)
@@ -5333,10 +5333,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Vercel.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Vercel.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderVercel.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Vercel.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Vercel.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem36 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes36 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes36 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes36.IP = types.StringPointerValue(nodesItem36.IP)
 									nodes36.Port = types.Int64PointerValue(nodesItem36.Port)
@@ -5368,10 +5368,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Vercel.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Vercel.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderVercel.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderVercel.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Vercel.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Vercel.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem37 := range resp.AIGatewayModelProviderAIGatewayModelProviderVercel.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes37 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes37 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes37.Host = types.StringPointerValue(nodesItem37.Host)
 									nodes37.Port = types.Int64PointerValue(nodesItem37.Port)
@@ -5612,10 +5612,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Vllm.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Vllm.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderVllm.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Vllm.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Vllm.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem38 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes38 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes38 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes38.IP = types.StringPointerValue(nodesItem38.IP)
 									nodes38.Port = types.Int64PointerValue(nodesItem38.Port)
@@ -5647,10 +5647,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Vllm.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Vllm.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderVllm.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderVllm.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Vllm.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Vllm.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem39 := range resp.AIGatewayModelProviderAIGatewayModelProviderVllm.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes39 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes39 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes39.Host = types.StringPointerValue(nodesItem39.Host)
 									nodes39.Port = types.Int64PointerValue(nodesItem39.Port)
@@ -5891,10 +5891,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Xai.TokenVault.Cache.Redis.Cluster = &tfTypes.Cluster{}
 							r.Xai.TokenVault.Cache.Redis.Cluster.MaxRedirections = types.Int64PointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderXai.TokenVault.Cache.Redis.Cluster.MaxRedirections)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderXai.TokenVault.Cache.Redis.Cluster.Nodes != nil {
-								r.Xai.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+								r.Xai.TokenVault.Cache.Redis.Cluster.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 								for _, nodesItem40 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.TokenVault.Cache.Redis.Cluster.Nodes {
-									var nodes40 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+									var nodes40 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 									nodes40.IP = types.StringPointerValue(nodesItem40.IP)
 									nodes40.Port = types.Int64PointerValue(nodesItem40.Port)
@@ -5926,10 +5926,10 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 							r.Xai.TokenVault.Cache.Redis.Sentinel = &tfTypes.Sentinel{}
 							r.Xai.TokenVault.Cache.Redis.Sentinel.Master = types.StringPointerValue(resp.AIGatewayModelProviderAIGatewayModelProviderXai.TokenVault.Cache.Redis.Sentinel.Master)
 							if resp.AIGatewayModelProviderAIGatewayModelProviderXai.TokenVault.Cache.Redis.Sentinel.Nodes != nil {
-								r.Xai.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+								r.Xai.TokenVault.Cache.Redis.Sentinel.Nodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 								for _, nodesItem41 := range resp.AIGatewayModelProviderAIGatewayModelProviderXai.TokenVault.Cache.Redis.Sentinel.Nodes {
-									var nodes41 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+									var nodes41 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 									nodes41.Host = types.StringPointerValue(nodesItem41.Host)
 									nodes41.Port = types.Int64PointerValue(nodesItem41.Port)

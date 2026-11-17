@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGWOpenIDConnectGeneratedConfigPrincipals struct {
+type AIGatewayAuthStrategyOpenIDConnectPrincipals struct {
 	Directory           types.String   `tfsdk:"directory"`
 	Enabled             types.Bool     `tfsdk:"enabled"`
 	ErrorOnMiss         types.Bool     `tfsdk:"error_on_miss"`

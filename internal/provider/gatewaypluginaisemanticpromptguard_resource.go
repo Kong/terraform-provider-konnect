@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -419,11 +420,17 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `List of prompts to allow.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtMost(100),
+								},
 							},
 							"deny_prompts": schema.ListAttribute{
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `List of prompts to deny.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtMost(100),
+								},
 							},
 							"match_all_conversation_history": schema.BoolAttribute{
 								Computed:    true,
@@ -881,6 +888,9 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 											},
 										},
 										Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
 									},
 									"connect_timeout": schema.Int64Attribute{
 										Computed:    true,
@@ -982,6 +992,9 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 											},
 										},
 										Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
 									},
 									"sentinel_password": schema.StringAttribute{
 										Optional:    true,

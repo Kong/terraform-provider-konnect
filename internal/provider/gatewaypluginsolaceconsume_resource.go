@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -116,6 +117,9 @@ func (r *GatewayPluginSolaceConsumeResource) Schema(ctx context.Context, req res
 											},
 										},
 									},
+								},
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
 								},
 							},
 							"functions": schema.ListAttribute{

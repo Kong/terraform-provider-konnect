@@ -7,10 +7,10 @@ import (
 )
 
 type TokenExchange struct {
-	Cache               *AIGWOpenIDConnectGeneratedConfigCache `tfsdk:"cache"`
-	GrantType           types.String                           `tfsdk:"grant_type"`
-	MapIdentitiesFrom   types.String                           `tfsdk:"map_identities_from"`
-	Provider            types.String                           `tfsdk:"provider"`
-	Request             *Request                               `tfsdk:"request"`
-	SubjectTokenIssuers []SubjectTokenIssuers                  `tfsdk:"subject_token_issuers"`
+	Cache               *AIGatewayAuthStrategyOpenIDConnectCache   `tfsdk:"cache"`
+	GrantType           types.String                               `tfsdk:"grant_type"`
+	MapIdentitiesFrom   types.String                               `tfsdk:"map_identities_from"`
+	Provider            types.String                               `tfsdk:"provider"`
+	Request             *AIGatewayAuthStrategyOpenIDConnectRequest `tfsdk:"request"`
+	SubjectTokenIssuers []SubjectTokenIssuers                      `tfsdk:"subject_token_issuers"`
 }

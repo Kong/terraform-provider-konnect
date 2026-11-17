@@ -73,6 +73,16 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 					"features": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
+							"ai_search": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Description: `Whether AI Search is enabled or not`,
+									},
+								},
+								Description: `AI Search config`,
+							},
 							"mcp_server": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{

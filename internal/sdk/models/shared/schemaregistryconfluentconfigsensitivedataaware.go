@@ -44,6 +44,8 @@ type SchemaRegistryConfluentConfigSensitiveDataAware struct {
 	//
 	TimeoutSeconds *int64 `default:"10" json:"timeout_seconds"`
 	// The authentication configuration for the schema registry.
+	// The Event Gateway only requires read-only access to the schema registry to fetch schemas for validation, so we recommend using credentials with read-only scope.
+	//
 	Authentication *SchemaRegistryAuthenticationSensitiveDataAwareScheme `json:"authentication,omitempty"`
 }
 

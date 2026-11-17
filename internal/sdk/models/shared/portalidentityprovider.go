@@ -12,23 +12,23 @@ import (
 type PortalIdentityProviderConfigType string
 
 const (
-	PortalIdentityProviderConfigTypeOIDCIdentityProviderConfigOutput PortalIdentityProviderConfigType = "OIDCIdentityProviderConfig_output"
-	PortalIdentityProviderConfigTypeSAMLIdentityProviderConfig1      PortalIdentityProviderConfigType = "SAMLIdentityProviderConfig1"
+	PortalIdentityProviderConfigTypeOIDCIdentityProviderConfigOutput1 PortalIdentityProviderConfigType = "OIDCIdentityProviderConfig_output1"
+	PortalIdentityProviderConfigTypeSAMLIdentityProviderConfig1       PortalIdentityProviderConfigType = "SAMLIdentityProviderConfig1"
 )
 
 type PortalIdentityProviderConfig struct {
-	OIDCIdentityProviderConfigOutput *OIDCIdentityProviderConfigOutput `queryParam:"inline" union:"member"`
-	SAMLIdentityProviderConfig1      *SAMLIdentityProviderConfig1      `queryParam:"inline" union:"member"`
+	OIDCIdentityProviderConfigOutput1 *OIDCIdentityProviderConfigOutput1 `queryParam:"inline" union:"member"`
+	SAMLIdentityProviderConfig1       *SAMLIdentityProviderConfig1       `queryParam:"inline" union:"member"`
 
 	Type PortalIdentityProviderConfigType
 }
 
-func CreatePortalIdentityProviderConfigOIDCIdentityProviderConfigOutput(oidcIdentityProviderConfigOutput OIDCIdentityProviderConfigOutput) PortalIdentityProviderConfig {
-	typ := PortalIdentityProviderConfigTypeOIDCIdentityProviderConfigOutput
+func CreatePortalIdentityProviderConfigOIDCIdentityProviderConfigOutput1(oidcIdentityProviderConfigOutput1 OIDCIdentityProviderConfigOutput1) PortalIdentityProviderConfig {
+	typ := PortalIdentityProviderConfigTypeOIDCIdentityProviderConfigOutput1
 
 	return PortalIdentityProviderConfig{
-		OIDCIdentityProviderConfigOutput: &oidcIdentityProviderConfigOutput,
-		Type:                             typ,
+		OIDCIdentityProviderConfigOutput1: &oidcIdentityProviderConfigOutput1,
+		Type:                              typ,
 	}
 }
 
@@ -53,11 +53,11 @@ func (u *PortalIdentityProviderConfig) UnmarshalJSON(data []byte) (err error) {
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
-	var oidcIdentityProviderConfigOutput OIDCIdentityProviderConfigOutput = OIDCIdentityProviderConfigOutput{}
-	if err := utils.UnmarshalJSON(data, &oidcIdentityProviderConfigOutput, "", true, nil); err == nil {
+	var oidcIdentityProviderConfigOutput1 OIDCIdentityProviderConfigOutput1 = OIDCIdentityProviderConfigOutput1{}
+	if err := utils.UnmarshalJSON(data, &oidcIdentityProviderConfigOutput1, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  PortalIdentityProviderConfigTypeOIDCIdentityProviderConfigOutput,
-			Value: &oidcIdentityProviderConfigOutput,
+			Type:  PortalIdentityProviderConfigTypeOIDCIdentityProviderConfigOutput1,
+			Value: &oidcIdentityProviderConfigOutput1,
 		})
 	}
 
@@ -82,8 +82,8 @@ func (u *PortalIdentityProviderConfig) UnmarshalJSON(data []byte) (err error) {
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(PortalIdentityProviderConfigType)
 	switch best.Type {
-	case PortalIdentityProviderConfigTypeOIDCIdentityProviderConfigOutput:
-		u.OIDCIdentityProviderConfigOutput = best.Value.(*OIDCIdentityProviderConfigOutput)
+	case PortalIdentityProviderConfigTypeOIDCIdentityProviderConfigOutput1:
+		u.OIDCIdentityProviderConfigOutput1 = best.Value.(*OIDCIdentityProviderConfigOutput1)
 		return nil
 	case PortalIdentityProviderConfigTypeSAMLIdentityProviderConfig1:
 		u.SAMLIdentityProviderConfig1 = best.Value.(*SAMLIdentityProviderConfig1)
@@ -94,8 +94,8 @@ func (u *PortalIdentityProviderConfig) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (u PortalIdentityProviderConfig) MarshalJSON() ([]byte, error) {
-	if u.OIDCIdentityProviderConfigOutput != nil {
-		return utils.MarshalJSON(u.OIDCIdentityProviderConfigOutput, "", true)
+	if u.OIDCIdentityProviderConfigOutput1 != nil {
+		return utils.MarshalJSON(u.OIDCIdentityProviderConfigOutput1, "", true)
 	}
 
 	if u.SAMLIdentityProviderConfig1 != nil {

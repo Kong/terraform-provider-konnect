@@ -158,11 +158,6 @@ Keys and values must not contain spaces or control characters.
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
-Required:
-
-- `url` (String) Helper field to set protocol, host, port and path of the upstream A2A Agent using a URL.
-This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-
 Optional:
 
 - `ca_certificates` (List of String) CA certificates used to verify the TLS certificate of the upstream agent endpoint,
@@ -188,6 +183,8 @@ If unset, no client certificate is presented to the upstream.
 - `proxy` (Attributes) HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider. (see [below for nested schema](#nestedatt--config--proxy))
 - `route` (Attributes) Configuration for an AI Gateway route. (see [below for nested schema](#nestedatt--config--route))
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--config--upstream))
+- `url` (String) Helper field to set protocol, host, port and path of the upstream A2A Agent using a URL.
+This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 
 <a id="nestedatt--config--logging"></a>
 ### Nested Schema for `config.logging`

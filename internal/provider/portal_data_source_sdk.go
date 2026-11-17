@@ -38,6 +38,12 @@ func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponsePortal(ctx c
 	r.Ai = &tfTypes.AISettings{}
 	r.Ai.Enabled = types.BoolPointerValue(resp.Ai.Enabled)
 	r.Ai.Features = &tfTypes.AISettingsFeatures{}
+	if resp.Ai.Features.AiSearch == nil {
+		r.Ai.Features.AiSearch = nil
+	} else {
+		r.Ai.Features.AiSearch = &tfTypes.AuthStrategyPrincipals{}
+		r.Ai.Features.AiSearch.Enabled = types.BoolPointerValue(resp.Ai.Features.AiSearch.Enabled)
+	}
 	if resp.Ai.Features.McpServer == nil {
 		r.Ai.Features.McpServer = nil
 	} else {

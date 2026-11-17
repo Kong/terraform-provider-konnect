@@ -88,7 +88,8 @@ possible known values include one of ["avro", "json", "any"]
 
 Optional:
 
-- `authentication` (Attributes) The authentication configuration for the schema registry. (see [below for nested schema](#nestedatt--confluent--config--authentication))
+- `authentication` (Attributes) The authentication configuration for the schema registry.
+The Event Gateway only requires read-only access to the schema registry to fetch schemas for validation, so we recommend using credentials with read-only scope. (see [below for nested schema](#nestedatt--confluent--config--authentication))
 - `timeout_seconds` (Number) Total time in seconds from establishing connection to receive a response from schema registry. Default: 10
 
 <a id="nestedatt--confluent--config--authentication"></a>

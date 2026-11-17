@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -458,6 +459,9 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Schema(ctx context.Context, re
 									},
 								},
 								Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 							"connect_timeout": schema.Int64Attribute{
 								Computed:    true,
@@ -559,6 +563,9 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Schema(ctx context.Context, re
 									},
 								},
 								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 							"sentinel_password": schema.StringAttribute{
 								Optional:    true,
@@ -615,6 +622,9 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Schema(ctx context.Context, re
 						})),
 						ElementType: types.Int64Type,
 						Description: `Upstream response status code considered cacheable. The integers must be a value between 100 and 900. Default: [200,301,404]`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+						},
 					},
 					"response_headers": schema.SingleNestedAttribute{
 						Computed: true,
