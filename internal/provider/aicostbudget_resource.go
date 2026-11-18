@@ -276,7 +276,10 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 						MarkdownDescription: `What the budget declares should happen when spend reaches the limit. Nothing enforces it.` + "\n" +
 							`` + "\n" +
 							`Defaults to ` + "`" + `advisory` + "`" + `.` + "\n" +
-							`possible known values include one of ["advisory", "enforce"]; Default: "advisory"`,
+							`Default: "advisory"; must be "advisory"`,
+						Validators: []validator.String{
+							stringvalidator.OneOf("advisory"),
+						},
 					},
 					"priority": schema.Int64Attribute{
 						Computed: true,

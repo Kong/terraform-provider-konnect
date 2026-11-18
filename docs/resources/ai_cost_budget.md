@@ -125,7 +125,7 @@ Not Null
 - `posture` (String) What the budget declares should happen when spend reaches the limit. Nothing enforces it.
 
 Defaults to `advisory`.
-possible known values include one of ["advisory", "enforce"]; Default: "advisory"
+Default: "advisory"; must be "advisory"
 - `priority` (Number) The budget's priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don't use it.
 
 Defaults to `100`.
