@@ -11,10 +11,6 @@ import (
 // directory is exercised against a single directory in one test.
 func TestIdentityDirectory(t *testing.T) {
 	t.Run("CRUD", func(t *testing.T) {
-		// ConfigDirectory steps cannot be combined with an inline provider block
-		// (Config is ignored), so without this the provider falls back to the global
-		// URL, which does not serve identity APIs.
-		t.Setenv("KONNECT_SERVER_URL", "https://us.api.konghq.com")
 
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,

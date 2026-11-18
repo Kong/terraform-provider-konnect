@@ -27,9 +27,8 @@ func TestTeamRole(t *testing.T) {
 		})
 	})
 
-	// entity_ids carries the same single control plane id as entity_id does in
-	// the CRUD test. The API mirrors it back into entity_id, which is computed,
-	// so the step's implicit second plan must come back empty.
+	// entity_ids carries the one control plane id, mirrored back into computed
+	// entity_id, so the implicit second plan stays empty.
 	t.Run("entity-ids", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
@@ -51,8 +50,7 @@ func TestTeamRole(t *testing.T) {
 					),
 				},
 				{
-					// The API echoes entity_id back on every read. Second plan must
-					// be empty, otherwise the attribute is not computed.
+					// entity_id is echoed on read, so the second plan must be empty.
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestNameDirectory(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
@@ -65,8 +63,7 @@ func TestTeamRole(t *testing.T) {
 		})
 	})
 
-	// Workspace scoped assignment: two positional ids, parent control plane
-	// first, then the workspace.
+	// Workspace scoped: two positional ids, control plane then workspace.
 	t.Run("workspace-role", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
@@ -84,8 +81,7 @@ func TestTeamRole(t *testing.T) {
 							"konnect_team_role.my_teamrole", "entity_ids.1",
 							"konnect_gateway_workspace.team_payments", "id",
 						),
-						// The API mirrors the first positional id into entity_id.
-						// entity_id is computed, so this does not replan.
+						// entity_id mirrors the first id, and is computed.
 						resource.TestCheckResourceAttrPair(
 							"konnect_team_role.my_teamrole", "entity_id",
 							"konnect_gateway_control_plane.my_konnect_cp", "id",
@@ -94,8 +90,7 @@ func TestTeamRole(t *testing.T) {
 					),
 				},
 				{
-					// entity_ids is ordered and the API echoes both ids back, so a
-					// second plan must be empty.
+					// entity_ids is ordered, so the second plan must be empty.
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestNameDirectory(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
@@ -108,7 +103,7 @@ func TestTeamRole(t *testing.T) {
 		})
 	})
 
-	// A config that sets both ids is rejected at plan time, before any API call.
+	// Rejected at plan time: both ids set.
 	t.Run("mutually-exclusive", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,

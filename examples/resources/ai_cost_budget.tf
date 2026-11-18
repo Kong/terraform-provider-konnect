@@ -1,17 +1,16 @@
-# A limit budget caps spend for the usage its scope selects, per window. `scope`
-# and `window` change in place, and a change applies to the whole current budget
-# window.
+# A limit budget caps spend per window for the usage its scope selects.
+# `posture` is `advisory` because a write rejects `enforce` today.
 resource "konnect_ai_cost_budget" "team_models" {
   limit = {
     name     = "team-models-monthly"
     priority = 10
-    posture  = "enforce"
+    posture  = "advisory"
 
     currency = "USD"
     value    = "5000"
 
     window = {
-      interval = "P1M"
+      interval    = "P1M"
       anchored_at = "2026-01-01T00:00:00+01:00[Europe/Budapest]"
     }
 
@@ -31,9 +30,7 @@ resource "konnect_ai_cost_budget" "team_models" {
   }
 }
 
-# An exemption declares that usage in its scope is exempt from limits for a
-# period. It sets no limit, so it takes `validity` instead of `limit`, `window`
-# and `posture`.
+# An exemption takes `validity` instead of `limit`, `window` and `posture`.
 resource "konnect_ai_cost_budget" "free_tier" {
   exempt = {
     name     = "free-tier-exemption"

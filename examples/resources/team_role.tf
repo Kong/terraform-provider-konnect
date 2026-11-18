@@ -14,7 +14,7 @@ resource "konnect_team" "my_team" {
   description = "My team description."
 }
 
-# Organization wide: one wildcard id, no particular entity.
+# Organization wide: wildcard id.
 resource "konnect_team_role" "my_team_role" {
   entity_ids       = ["*"]
   entity_region    = "us"
@@ -23,8 +23,7 @@ resource "konnect_team_role" "my_team_role" {
   team_id          = konnect_team.my_team.id
 }
 
-# A role that acts inside a single workspace takes two ids, parent first:
-# [<control_plane_id>, <workspace_id>]
+# Workspace scoped: [control_plane_id, workspace_id].
 resource "konnect_team_role" "my_team_role_workspace" {
   entity_ids = [
     konnect_gateway_control_plane.my_konnect_cp.id,

@@ -45,7 +45,7 @@ func TestUserRole(t *testing.T) {
 		})
 	})
 
-	// A config that sets both ids is rejected at plan time, before any API call.
+	// Rejected at plan time: both ids set.
 	t.Run("mutually-exclusive", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,

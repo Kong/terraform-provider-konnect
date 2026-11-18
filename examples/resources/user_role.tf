@@ -29,8 +29,7 @@ resource "konnect_user_role" "my_userrole" {
   user_id          = konnect_team_user.my_teamuser.user_id
 }
 
-# A role that acts inside a single workspace takes two ids, parent first:
-# [<control_plane_id>, <workspace_id>]
+# Workspace scoped: [control_plane_id, workspace_id].
 resource "konnect_user_role" "my_userrole_workspace" {
   entity_ids = [
     konnect_gateway_control_plane.my_konnect_cp.id,

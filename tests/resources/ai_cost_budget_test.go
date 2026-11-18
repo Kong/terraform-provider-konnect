@@ -36,13 +36,13 @@ const (
 		}
 	`
 
-	// The same budget after an update. `scope` and `window` change in place, so the
-	// update sends them again and the budget keeps its identifier.
+	// Updated in place, so the budget keeps its identifier.
+	// `posture` stays `advisory`: a write rejects `enforce`.
 	aiCostLimitBudgetUpdated = `
 		resource "konnect_ai_cost_budget" "test_limit_budget" {
 			limit = {
 				name     = "tf-test-limit-budget-updated"
-				posture  = "enforce"
+				posture  = "advisory"
 				priority = 25
 
 				currency = "USD"
@@ -63,13 +63,13 @@ const (
 		}
 	`
 
-	// A change to `window` updates the budget in place and moves the current window's
-	// start and end. Only an export schedule's `cadence` and `time_zone` replace.
+	// `window` changes in place. Only an export schedule's `cadence` and
+	// `time_zone` replace.
 	aiCostLimitBudgetRewindowed = `
 		resource "konnect_ai_cost_budget" "test_limit_budget" {
 			limit = {
 				name     = "tf-test-limit-budget-daily"
-				posture  = "enforce"
+				posture  = "advisory"
 				priority = 25
 
 				currency = "USD"
@@ -134,8 +134,7 @@ const (
 func TestAICostBudget(t *testing.T) {
 	serverHost, serverPort, serverScheme := providerConfigFromEnv()
 
-	// A new parent builder per step: the resource blocks are shared by pointer,
-	// so reusing one parent would duplicate them.
+	// A new parent builder per step: resource blocks are shared by pointer.
 	newConfig := func(t *testing.T, resources ...string) string {
 		builder := hclbuilder.NewWithProvider(
 			hclbuilder.Konnect,
@@ -178,8 +177,7 @@ func TestAICostBudget(t *testing.T) {
 					),
 				},
 				{
-					// The API echoes the stored budget back, so an identical config must
-					// produce an empty plan. A diff here means the schema does not converge.
+					// An identical config must plan empty: the API echoes the budget.
 					Config: newConfig(t, aiCostLimitBudget),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
@@ -195,18 +193,17 @@ func TestAICostBudget(t *testing.T) {
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						// The hoisted top-level `name`, `posture` and `priority` mirrors keep
-						// their previous value on an update (the plan modifier prefers the
-						// state value), so the assertions use the nested attributes.
+						// The hoisted top-level `name`, `posture` and `priority` mirrors
+						// keep their creation value, so assert the nested attributes.
 						resource.TestCheckResourceAttr(address, "limit.name", "tf-test-limit-budget-updated"),
-						resource.TestCheckResourceAttr(address, "limit.posture", "enforce"),
+						// `limit.posture` cannot change on a write: only `advisory` is accepted.
+						resource.TestCheckResourceAttr(address, "limit.posture", "advisory"),
 						resource.TestCheckResourceAttr(address, "limit.priority", "25"),
 						resource.TestCheckResourceAttr(address, "limit.value", "7500"),
 					),
 				},
 				{
-					// `window` changes in place, so the provider sends an update and the
-					// budget keeps its identifier.
+					// `window` changes in place, so the budget keeps its identifier.
 					Config: newConfig(t, aiCostLimitBudgetRewindowed),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
@@ -219,8 +216,7 @@ func TestAICostBudget(t *testing.T) {
 					),
 				},
 				{
-					// The in-place rewindow has to converge too: a window the API
-					// normalises on read would diff on every plan from here on.
+					// The in-place rewindow must converge: a normalised window would diff.
 					Config: newConfig(t, aiCostLimitBudgetRewindowed),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
@@ -270,9 +266,8 @@ func TestAICostBudget(t *testing.T) {
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						// The top-level `name`, `priority` and `posture` are computed mirrors
-						// hoisted from the variant block. They keep the values from creation and
-						// do not refresh on update, so assert the nested attributes instead.
+						// The top-level mirrors keep their creation values, so assert
+						// the nested attributes.
 						resource.TestCheckResourceAttr(address, "exempt.name", "tf-test-exempt-budget-updated"),
 						resource.TestCheckResourceAttr(address, "exempt.priority", "60"),
 						resource.TestCheckResourceAttr(address, "exempt.validity.ends_at", "2037-01-01T00:00:00Z"),

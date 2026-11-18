@@ -16,9 +16,7 @@ resource "konnect_team" "my_team" {
   name = "TFAcceptanceTeamRoleWorkspace"
 }
 
-# Workspace scoped roles take two positional ids: the control plane, then the
-# workspace. "Workspace Admin" is not in the role_name enum, so it is passed
-# through because role_name allows unknown values.
+# Workspace scoped: [control_plane_id, workspace_id].
 resource "konnect_team_role" "my_teamrole" {
   entity_ids = [
     konnect_gateway_control_plane.my_konnect_cp.id,

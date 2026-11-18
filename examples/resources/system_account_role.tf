@@ -15,7 +15,7 @@ resource "konnect_system_account" "my_systemaccount" {
   konnect_managed = false
 }
 
-# Organization wide: one wildcard id, no particular entity.
+# Organization wide: wildcard id.
 resource "konnect_system_account_role" "my_systemaccountrole" {
   entity_ids       = ["*"]
   entity_region    = "us"
@@ -24,8 +24,7 @@ resource "konnect_system_account_role" "my_systemaccountrole" {
   account_id       = konnect_system_account.my_systemaccount.id
 }
 
-# A role that acts inside a single workspace takes two ids, parent first:
-# [<control_plane_id>, <workspace_id>]
+# Workspace scoped: [control_plane_id, workspace_id].
 resource "konnect_system_account_role" "my_systemaccountrole_workspace" {
   entity_ids = [
     konnect_gateway_control_plane.my_konnect_cp.id,
