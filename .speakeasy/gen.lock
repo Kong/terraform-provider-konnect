@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 341a851713183d1de6278c10bec59196
+  docChecksum: 1ea645e9c97b9366eb18b48d5467376e
   docVersion: 2.0.0
   speakeasyVersion: 1.804.0
   generationVersion: 2.952.5
   releaseVersion: 3.28.0
   configChecksum: e7751a2040e456710a0430261e0e28b5
 persistentEdits:
-  generation_id: 47c08afa-7b95-4adf-bc72-8b84061e8f87
-  pristine_commit_hash: 17b8e85f59e1c67c1e3c62d91c5724e807741666
-  pristine_tree_hash: fe6c811c2f692b7aea1ec647c09371274652960e
+  generation_id: 29d51af6-621c-40f3-9bad-917a5341db65
+  pristine_commit_hash: 4fbddfa1aa800a2d3e94ea12b0cc67b3e479a075
+  pristine_tree_hash: a06a51f8a335cb881f564190e8deefb92a371a45
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -3533,8 +3533,8 @@ trackedFiles:
     pristine_git_object: 0ea64fbeb1fd7709d7241a8e06d34bfe9d0323d3
   internal/provider/aicostbudget_resource.go:
     id: 6eeeb406b66c
-    last_write_checksum: sha1:6fef11e59a9855ae4001aba7d165195b01e607f2
-    pristine_git_object: f7c5d1e7be4e0731db77d8fb43c8d2f473acab3d
+    last_write_checksum: sha1:ce0b4b630c38de8c887f8edd346b8e18f8ed140d
+    pristine_git_object: cb8af8db2f793d29c1a19a8cf64d2cfedb3c6ecf
   internal/provider/aicostbudget_resource_sdk.go:
     id: a15994cfb4e1
     last_write_checksum: sha1:bc8c4395907d9eebd4e8e81c88afa191dad11348
@@ -14041,8 +14041,8 @@ trackedFiles:
     pristine_git_object: 94b6ec8c30ba5072b0ef347e1e6c34ced5c39e5c
   internal/sdk/models/shared/aicostlimitbudgetinput.go:
     id: 2aa9313c5648
-    last_write_checksum: sha1:26bd3e5fc8c7e50e62efe205b13d316db82a8673
-    pristine_git_object: 4d086a1226acd2310d6fc108cf2a14ad4e1c3871
+    last_write_checksum: sha1:1c959fcb1539adbe8539cf4a2ad9c1d63ac9d6b6
+    pristine_git_object: e8652fe2d1647a98e73d4e9605d0b11e46102fd8
   internal/sdk/models/shared/aicostnotificationchannel.go:
     id: 9e5985ef089a
     last_write_checksum: sha1:258cb325131dd9e2d1159be6dcd53af6a378d6bc

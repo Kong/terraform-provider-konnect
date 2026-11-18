@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -100,23 +98,22 @@ type Posture string
 
 const (
 	PostureAdvisory Posture = "advisory"
+	PostureEnforce  Posture = "enforce"
 )
 
 func (e Posture) ToPointer() *Posture {
 	return &e
 }
-func (e *Posture) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Posture) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "advisory", "enforce":
+			return true
+		}
 	}
-	switch v {
-	case "advisory":
-		*e = Posture(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Posture: %v", v)
-	}
+	return false
 }
 
 // AICostLimitBudgetInput - The body of a request that creates or replaces a limit budget.

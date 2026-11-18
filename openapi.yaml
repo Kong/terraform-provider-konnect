@@ -69648,6 +69648,8 @@ components:
           default: advisory
           enum:
             - advisory
+            - enforce
+          x-speakeasy-unknown-values: allow
         value:
           description: |-
             The amount of the limit in major units of `currency`, as a decimal string such as `5000` or `0.2`.
