@@ -11,6 +11,8 @@
 #                                           against the test inventory, optionally diff
 #                                           against a baseline results file
 #   acceptance-shard.sh summarize <json>... print "<test> <outcome>" lines
+#   acceptance-shard.sh report <dir> [base-ref]  markdown table of results per shard (for
+#                                           $GITHUB_STEP_SUMMARY); base-ref adds a before/after count
 set -euo pipefail
 
 ROOT=tests/resources
@@ -51,6 +53,39 @@ summarize() {
   cat "$@" | jq -r 'select(.Test != null and (.Action=="pass" or .Action=="fail" or .Action=="skip")) | "\(.Test) \(.Action)"' | sort
 }
 
+# Markdown report: one row per shard plus totals, and an optional comparison
+# with the number of tests defined on <base-ref> (the "before" layout).
+cmd_report() {
+  local dir=$1 base_ref=${2:-} f name t p fl sk sub tp tf ts tt=0 inv
+  tp=0; tf=0; ts=0
+  echo "## Acceptance test results"
+  echo
+  echo "| Shard | Tests | Passed | Failed | Skipped | Subtests run |"
+  echo "|---|---:|---:|---:|---:|---:|"
+  for f in "$dir"/shard-*.json; do
+    [[ -e "$f" ]] || continue
+    name=$(basename "$f" .json); name=${name#shard-}
+    read -r p fl sk sub < <(jq -rs '
+      [.[] | select(.Test != null and (.Action=="pass" or .Action=="fail" or .Action=="skip"))] as $r
+      | [($r|map(select((.Test|contains("/")|not) and .Action=="pass"))|length),
+         ($r|map(select((.Test|contains("/")|not) and .Action=="fail"))|length),
+         ($r|map(select((.Test|contains("/")|not) and .Action=="skip"))|length),
+         ($r|map(select(.Test|contains("/")))|length)] | @tsv' "$f")
+    t=$((p+fl+sk)); tt=$((tt+t)); tp=$((tp+p)); tf=$((tf+fl)); ts=$((ts+sk))
+    echo "| $name | $t | $p | $fl | $sk | $sub |"
+  done
+  echo "| **Total** | **$tt** | **$tp** | **$tf** | **$ts** | |"
+  echo
+  inv=$(all_tests | wc -l | tr -d ' ')
+  echo "- Tests defined in this branch: **$inv**; tests that ran: **$tt**."
+  if [[ -n "$base_ref" ]] && git rev-parse -q --verify "$base_ref" > /dev/null; then
+    local before; before=$(git grep -h '^func Test' "$base_ref" -- "$ROOT" | wc -l | tr -d ' ')
+    echo "- Tests defined on \`$base_ref\` (single job, before sharding): **$before**."
+    if [[ "$before" -eq "$inv" ]]; then echo "- Same number of tests before and after sharding."
+    else echo "- Number of tests differs from \`$base_ref\` by $((inv-before)) (expected only if this branch adds or removes tests)."; fi
+  fi
+}
+
 cmd_verify() {
   local dir=$1 base=${2:-} res; res=$(mktemp)
   summarize "$dir"/*.json > "$res"
@@ -77,7 +112,8 @@ case "${1:-}" in
   shards)    shard_names ;;
   check)     cmd_check ;;
   run)       cmd_run "${2:?shard}" ;;
+  report)    cmd_report "${2:?dir}" "${3:-}" ;;
   verify)    cmd_verify "${2:?dir}" "${3:-}" ;;
   summarize) shift; summarize "$@" ;;
-  *) sed -n '2,15p' "$0"; exit 2 ;;
+  *) sed -n '2,17p' "$0"; exit 2 ;;
 esac

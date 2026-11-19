@@ -1,5 +1,19 @@
 name: Terraform Provider Tests
 
+# How this workflow runs the acceptance tests
+# -------------------------------------------
+# The tests used to run one after another in a single job. They are now split
+# into "shards": each directory under tests/resources/ (gateway, aigateway,
+# eventgateway, portalapi, identityorg) is one shard and runs as its own
+# parallel job. See tests/resources/README.md.
+#
+#   1. check-shards       - cheap layout check, no credentials needed.
+#   2. acceptance (x5)    - one job per shard; uploads its results as JSON.
+#   3. acceptance-summary - collects all shard results, prints a table of
+#                           pass/fail/skip counts per shard, and fails if any
+#                           test failed, did not run, or ran twice. Its name is
+#                           the required status check, same as the old single job.
+
 on:
   pull_request:
     paths:
@@ -16,6 +30,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # 1. Fails if a test file is outside a shard directory, or a test name is duplicated.
   check-shards:
     name: Check test shards
     runs-on: ubuntu-latest
@@ -28,9 +43,10 @@ jobs:
       - uses: actions/setup-go@cd53bc84d5e2fd85362f4cb840513e06427082d3 # v4
         with:
           go-version-file: "go.mod"
-      - name: Every test is in exactly one shard
-        run: make check-shards
+      - run: make check-shards
 
+  # 2. Run every shard in parallel. To add a shard, create the directory under
+  #    tests/resources/ and add its name here.
   acceptance:
     name: Acceptance (${{ matrix.shard }})
     needs: check-shards
@@ -61,18 +77,19 @@ jobs:
         with:
           terraform_version: ${{ matrix.terraform-version }}
           terraform_wrapper: false
-      - env:
+      - name: Run the ${{ matrix.shard }} tests
+        env:
           KONNECT_SPAT: ${{ secrets.KONNECT_SPAT }}
           OUT_DIR: shard-results
         run: make acceptance-shard SHARD=${{ matrix.shard }}
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - name: Upload results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: shard-${{ matrix.shard }}
           path: shard-results/*.json
 
-  # Stable name for branch protection: it replaces the old single job's check
-  # name. Fails if any shard failed, or if a test was skipped by the split.
+  # 3. The single check to require in branch protection.
   acceptance-summary:
     name: Acceptance Tests (Terraform 1.13.*)
     needs: acceptance
@@ -84,23 +101,31 @@ jobs:
         with:
           egress-policy: audit
       - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+        with:
+          fetch-depth: 0 # the base branch is needed to count the tests "before"
       - uses: actions/setup-go@cd53bc84d5e2fd85362f4cb840513e06427082d3 # v4
         with:
           go-version-file: "go.mod"
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - name: Download all shard results
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           pattern: shard-*
           path: shard-results
           merge-multiple: true
-      - name: Verify every test ran and passed
+      - name: Show pass/fail counts per shard
+        # Writes a table to the run summary page, and compares the number of
+        # tests with the PR's base branch (what the single job used to run).
+        run: scripts/acceptance-shard.sh report shard-results ${{ github.base_ref && format('origin/{0}', github.base_ref) || '' }} >> "$GITHUB_STEP_SUMMARY"
+      - name: Fail unless every test ran once and passed
         run: |
-          rc=0
-          scripts/acceptance-shard.sh verify shard-results || rc=1
+          failed=0
+          scripts/acceptance-shard.sh verify shard-results || failed=1
           if [ "${{ needs.acceptance.result }}" != "success" ]; then
-            echo "one or more shards failed or were cancelled"; rc=1
+            echo "a shard job failed or was cancelled"; failed=1
           fi
-          exit $rc
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+          exit $failed
+      - name: Upload combined results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: sharded-results
