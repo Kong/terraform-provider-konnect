@@ -1,4 +1,4 @@
-package tests
+package portalapi
 
 import (
 	"encoding/json"
