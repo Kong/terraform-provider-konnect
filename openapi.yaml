@@ -273,7 +273,7 @@ paths:
       description: |-
         Replaces a budget's `name`, `labels`, `priority`, and `scope`, with `limit`, `window`, and `posture` on a limit budget or `validity` on an exemption, and returns the result. The request carries the full budget. The budget keeps its identifier, notification rule, and recorded firings.
 
-        - An omitted `labels`, `priority`, or `posture` resets to its default.
+        - An omitted `labels`, `managed_by`, `priority`, or `posture` resets to its default.
         - `effect` can't change. If the request changes it, it fails with `400` naming `effect`.
         - A changed `limit`, `scope`, or `window` applies to the whole current budget window.
         - Removing `scope.each` while the notification rule's message uses `{{entity.field}}` or `{{entity.value}}` fails with `400` naming `scope.each`. Change the message first.
@@ -441,7 +441,7 @@ paths:
         Creates a limit budget's notification rule, or replaces its `thresholds`, `channels`, and `message`, and returns the rule. The response status is `201` when the request creates the rule and `200` when it replaces one.
 
         - The service evaluates the rule at once, so a threshold that spend in the current budget window has already reached fires right away. A threshold already recorded for this budget window, derived budget, and limit doesn't fire again. The evaluation runs after the rule is stored, so if it fails, retrying the same request completes it.
-        - Omitting `message` or sending `null` restores the built-in wording.
+        - Omitting `message` or sending `null` restores the built-in wording. An omitted `managed_by` resets to `{}`.
         - Removing a threshold or channel keeps the firings and deliveries already recorded, and pending deliveries are still sent.
         - If a listed channel doesn't exist in the organization, the request fails with `400`, and `invalid_parameters` names `channels[i].id` with the rule `missing_reference`.
         - If `message` has an unknown placeholder or a `{{` without a closing `}}`, the request fails with `400`. It fails the same way when `message` uses `{{entity.field}}` or `{{entity.value}}` on a budget without `each`.
@@ -575,6 +575,11 @@ paths:
                     - subject
                     - body
                   x-speakeasy-param-computed: false
+                managed_by:
+                  description: 'Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.'
+                  default: {}
+                  allOf:
+                    - $ref: '#/components/schemas/ManagedBy'
               additionalProperties: false
               required:
                 - thresholds
@@ -771,7 +776,7 @@ paths:
       description: |-
         Replaces an export schedule's `name`, `status`, `dataset`, `focus`, `format`, `compression`, and `filters`, and returns the result. The schedule keeps its identifier.
 
-        - The request carries the full schedule, so an omitted `filters` clears the filters, and an omitted `status` resumes a paused schedule.
+        - The request carries the full schedule, so an omitted `filters` clears the filters, an omitted `status` resumes a paused schedule, and an omitted `managed_by` resets to `{}`.
         - Setting `status` to `paused` pauses the schedule, and setting it to `active` resumes it.
         - The replacement applies to the periods that end after it. Exports that the schedule already created don't change. If runs are late, the replacement first creates the missed exports with the earlier settings, within the schedule's limit of 31 periods.
         - `cadence` and `time_zone` can't change, so the body repeats their stored values. If either differs, the request fails with `400` naming the field. Redefining a schedule's periods takes a delete and a create.
@@ -971,7 +976,7 @@ paths:
       description: |-
         Replaces a notification channel's `name`, `labels`, and settings, and returns the result. The channel keeps its identifier and type.
 
-        - The request carries the full channel, so an omitted `labels` clears the channel's labels.
+        - The request carries the full channel, so an omitted `labels` or `managed_by` clears it.
         - A Slack channel keeps its stored webhook URL when the request omits `slack.webhook_url`. This is the only exception to full replacement, because reads never return the full URL.
         - If `type` differs from the stored type, the request fails with `400`, and `invalid_parameters` names `type`.
         - If the organization has no notification channel with this identifier, or the identifier isn't a valid UUID, the request fails with `404`. The request never creates a channel.
@@ -9228,7 +9233,7 @@ paths:
           schema:
             type: integer
             const: 100
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/ControlPlanePageNumber'
         - $ref: '#/components/parameters/ControlPlaneFilter'
         - $ref: '#/components/parameters/FilterByLabels'
         - $ref: '#/components/parameters/ControlPlaneSort'
@@ -26299,6 +26304,120 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Developers
+  '/v3/portals/{portalId}/forms':
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalForm#create
+        terraform-datasource: null
+      operationId: create-portal-form
+      summary: Create Form
+      description: |
+        Creates a custom form for a portal.
+
+        * `developer_registration` forms appear in the portal's developer signup flow
+        * `api_registration` forms are shown to developers when they request access to a specific API.
+
+        Requirements:
+
+        * Every form's `fields` array must include exactly one `submit` field.
+        * `developer_registration` forms must also include the built-in `full_name` and `email` fields.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalForm'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalForm'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Forms
+  '/v3/portals/{portalId}/forms/{formId}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalForm#read
+        terraform-datasource: null
+      operationId: get-portal-form
+      summary: Get Form
+      description: Retrieves a single custom form by ID.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/FormIdToMatchResourceID'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalForm'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Forms
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalForm#update
+        terraform-datasource: null
+      operationId: replace-portal-form
+      summary: Replace Form
+      description: |
+        Replaces a custom form with the supplied fields and settings.
+
+        To remove a field, leave it out of the `fields` array; to rename a
+        field, change its `label` (a field's `name` can't change once set).
+
+        The form's `type` can't be changed. Its `name` is fixed for
+        `developer_registration` forms but can be changed for
+        `api_registration` forms.
+
+        `developer_registration` forms must include the built-in `full_name` and `email` fields.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/FormIdToMatchResourceID'
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalForm'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalForm'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Forms
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalForm#delete
+        terraform-datasource: null
+      operationId: delete-portal-form
+      summary: Delete Form
+      description: Deletes a custom form. Any API publications linked to this form are unlinked. Responses developers already submitted are kept and remain viewable.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/FormIdToMatchResourceID'
+      responses:
+        '204':
+          description: The form has been deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Forms
   '/v3/portals/{portalId}/identity-providers':
     parameters:
       - $ref: '#/components/parameters/PortalId'
@@ -28548,6 +28667,17 @@ components:
         format: uuid
         example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
       description: The UUID of your control plane. This variable is available in the Konnect manager.
+    ControlPlanePageNumber:
+      name: 'page[number]'
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 1
+        minimum: 1
+      x-speakeasy-terraform-ignore: true
     ControlPlaneSort:
       name: sort
       description: |
@@ -28556,7 +28686,7 @@ components:
       required: false
       in: query
       schema:
-        $ref: '#/components/schemas/SortQuery'
+        $ref: '#/components/schemas/ControlPlaneSortQuery'
     CustomDomainId:
       name: customDomainId
       description: ID of the custom domain to operate on.
@@ -28664,6 +28794,16 @@ components:
       schema:
         type: string
         example: 'key:value,existCheck'
+    FormIdToMatchResourceID:
+      name: formId
+      in: path
+      required: true
+      description: ID of the portal form.
+      schema:
+        type: string
+        format: uuid
+        example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      x-speakeasy-match: id
     gatewayId:
       name: gatewayId
       in: path
@@ -29218,6 +29358,15 @@ components:
         $ref: '#/components/schemas/WorkspaceFilterParameters'
       style: deepObject
   schemas:
+    ControlPlaneSortQuery:
+      type: string
+      example: created_at desc
+      enum:
+        - created_at
+        - created_at asc
+        - created_at desc
+      title: SortQuery
+      x-speakeasy-unknown-values: allow
     GroupMembership:
       x-speakeasy-entity: GatewayControlPlaneMembership
       type: object
@@ -29646,15 +29795,6 @@ components:
       description: Filter by a boolean value (true/false).
       type: boolean
       title: BooleanFieldFilter
-    SortQuery:
-      description: |
-        The `asc` suffix is optional as the default sort order is ascending.
-        The `desc` suffix is used to specify a descending order.
-        Multiple sort attributes may be provided via a comma separated list.
-        JSONPath notation may be used to specify a sub-attribute (eg: 'foo.bar desc').
-      type: string
-      example: created_at desc
-      title: SortQuery
     PageMeta:
       description: Contains pagination query parameters and the total number of objects returned.
       type: object
@@ -38130,6 +38270,9 @@ components:
         - full_name
         - status
       title: PortalDeveloper
+      x-speakeasy-transform-from-api:
+        jq: |
+          .additional_data |= (if . == null then . else map_values(.value) end)
     DeveloperStatus:
       description: 'The status of a developer in a portal. Approved developers can log in, create applications, and view and register for products they have access to. Pending, revoked, and rejected developers cannot login or view any non-public portal information, or create or modify applications or registrations.'
       type: string
@@ -38381,6 +38524,170 @@ components:
         - name
         - content
       title: CreatePortalSnippetRequest
+    CreatePortalFormRequest:
+      description: |-
+        Request body for creating a form, discriminated by `type`.
+        The required fields in `fields` depend on the form type.
+        * `full_name` and `email` are required for `developer_registration` forms.
+        * `api_id` is required for `api_registration` forms.
+        Returns a 400 error if a required field is missing.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          developer_registration: '#/components/schemas/CreateDeveloperRegistrationFormRequest'
+          api_registration: '#/components/schemas/CreateApiRegistrationFormRequest'
+      oneOf:
+        - $ref: '#/components/schemas/CreateDeveloperRegistrationFormRequest'
+        - $ref: '#/components/schemas/CreateApiRegistrationFormRequest'
+    CreateDeveloperRegistrationFormRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          example: developer_registration
+          const: developer_registration
+        name:
+          description: |
+            The form's name. Only `developer-registration` is accepted at this time
+          type: string
+          example: developer-registration
+          enum:
+            - developer-registration
+        status:
+          type: string
+          example: unpublished
+          default: unpublished
+          enum:
+            - published
+            - unpublished
+          x-speakeasy-unknown-values: allow
+        fields:
+          description: |
+            The form's fields, in display order. Must include the built-in `full_name` (type `text`) and `email` (type `email`) fields, plus exactly one `submit` field.
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFormFieldInput'
+          maxItems: 20
+          minItems: 3
+      additionalProperties: false
+      required:
+        - type
+        - fields
+    CreateApiRegistrationFormRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          example: api_registration
+          const: api_registration
+        name:
+          description: 'A unique name for the form that you choose (lowercase letters, digits, and hyphens).'
+          type: string
+          example: flights-api-registration
+          maxLength: 128
+          pattern: '^[a-z0-9-]+$'
+        status:
+          type: string
+          example: unpublished
+          default: unpublished
+          enum:
+            - published
+            - unpublished
+          x-speakeasy-unknown-values: allow
+        fields:
+          description: |
+            The form's fields, in display order. Must include exactly one `submit` field and a field named `api_id` of type `text`.
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFormFieldInput'
+          maxItems: 20
+          minItems: 2
+      additionalProperties: false
+      required:
+        - type
+        - name
+        - fields
+    UpdatePortalFormRequest:
+      description: |
+        Request body for updating a form.
+
+        The `type` must match the form's existing type — it can't be changed.
+
+        To remove a field, leave it out of `fields`; to rename a field, edit its `label`.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          developer_registration: '#/components/schemas/UpdateDeveloperRegistrationFormRequest'
+          api_registration: '#/components/schemas/UpdateApiRegistrationFormRequest'
+      oneOf:
+        - $ref: '#/components/schemas/UpdateDeveloperRegistrationFormRequest'
+        - $ref: '#/components/schemas/UpdateApiRegistrationFormRequest'
+    UpdateDeveloperRegistrationFormRequest:
+      type: object
+      properties:
+        type:
+          description: The form's type. Must match the existing value — it can't be changed.
+          type: string
+          example: developer_registration
+          const: developer_registration
+        status:
+          type: string
+          example: published
+          enum:
+            - published
+            - unpublished
+          x-speakeasy-unknown-values: allow
+        fields:
+          description: |
+            The form's complete set of fields — this replaces the existing array, so any field left out is removed. Must include the built-in `full_name` (type `text`) and `email` (type `email`) fields, plus exactly one `submit` field.
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFormFieldInput'
+          maxItems: 20
+          minItems: 3
+      additionalProperties: false
+      required:
+        - type
+        - fields
+    UpdateApiRegistrationFormRequest:
+      type: object
+      properties:
+        type:
+          description: The form's type. Must match the existing value — it can't be changed.
+          type: string
+          example: api_registration
+          const: api_registration
+        name:
+          description: |
+            The form's name. You can rename `api_registration` forms; if the new name is already used by another form in the portal, the request fails with a 409 error.
+          type: string
+          example: flights-api-registration
+          default: null
+          maxLength: 128
+          nullable: true
+          pattern: '^[a-z0-9-]+$'
+          x-speakeasy-param-computed: false
+        status:
+          type: string
+          example: published
+          enum:
+            - published
+            - unpublished
+          x-speakeasy-unknown-values: allow
+        fields:
+          description: |
+            The form's complete set of fields — this replaces the existing array, so any field left out is removed. Must include exactly one `submit` field and a field named `api_id` of type `text`.
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFormFieldInput'
+          maxItems: 20
+          minItems: 2
+      additionalProperties: false
+      required:
+        - type
+        - fields
     CreateApplicationRequest:
       type: object
       properties:
@@ -38388,10 +38695,12 @@ components:
           description: The name of the application.
           type: string
           maxLength: 255
+          minLength: 1
         description:
           description: A description of the application.
           type: string
           maxLength: 255
+          minLength: 1
           nullable: false
         labels:
           $ref: '#/components/schemas/LabelsUpdate'
@@ -38745,6 +39054,7 @@ components:
           . + {
             application_id: .application.id
           }
+          | .additional_data |= (if . == null then . else map_values(.value) end)
     ApplicationRegistrationStatus:
       description: |-
         The status of an application registration request. Each registration is linked to a single API, and application credentials will not grant access to the API until the registration is approved.
@@ -39769,6 +40079,7 @@ components:
             - portal
       additionalProperties:
         $ref: '#/components/schemas/FormResponseEntry'
+      x-speakeasy-type-override: any
     EntityType:
       description: The type of entity that is being published. Can be either an API or an API Package.
       type: string
@@ -39797,15 +40108,15 @@ components:
           - type: array
             items:
               type: string
-      x-speakeasy-terraform-ignore: true
+      x-speakeasy-type-override: any
     OIDCIdentityProviderBackChannelLogoutEnabled:
       description: |
         Indicates whether back-channel logout is enabled. When enabled, the identity provider can notify
         the portal to end a user's session when they log out of the identity provider.
 
         Configure your identity provider's back-channel logout URL as your portal's URL followed by
-        `/api/v3/oauth/backchannel-logout`, for example
-        `https://my-portal.example.com/api/v3/oauth/backchannel-logout`.
+        `/api/v3/developer/backchannel-logout`, for example
+        `https://my-portal.example.com/api/v3/developer/backchannel-logout`.
       type: boolean
       example: false
       default: false
@@ -39837,8 +40148,8 @@ components:
       description: |
         The back-channel logout settings for the OIDC identity provider. To receive logout notifications, set
         your identity provider's back-channel logout URL to your portal's URL followed by
-        `/api/v3/oauth/backchannel-logout`, for example
-        `https://my-portal.example.com/api/v3/oauth/backchannel-logout`.
+        `/api/v3/developer/backchannel-logout`, for example
+        `https://my-portal.example.com/api/v3/developer/backchannel-logout`.
       type: object
       properties:
         enabled:
@@ -39901,6 +40212,12 @@ components:
       additionalProperties: false
       title: Portal SAML Identity Provider Config
       x-speakeasy-name-override: SAMLIdentityProviderConfig
+    PortalIdentityProviderConfig:
+      description: The configuration data for the authentication integration.
+      oneOf:
+        - $ref: '#/components/schemas/PortalOIDCIdentityProviderConfig'
+        - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+      title: Portal Identity Provider Config
     PortalIdentityProvider:
       description: The identity provider that contains configuration data for authentication integration.
       type: object
@@ -39912,15 +40229,18 @@ components:
         enabled:
           $ref: '#/components/schemas/IdentityProviderEnabled'
         config:
-          type: object
-          oneOf:
-            - $ref: '#/components/schemas/PortalOIDCIdentityProviderConfig'
-            - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+          $ref: '#/components/schemas/PortalIdentityProviderConfig'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
       title: Portal Identity Provider
+    CreateOIDCIdentityProviderScopes:
+      description: The scopes requested by your application when authenticating with the identity provider. Must include `openid`.
+      allOf:
+        - $ref: '#/components/schemas/OIDCIdentityProviderScopes'
+        - minItems: 1
+      title: Create OIDC Identity Provider Scopes
     CreateOIDCIdentityProviderConfig:
       description: The configuration data for creating an OIDC authentication integration.
       type: object
@@ -39932,9 +40252,7 @@ components:
         client_secret:
           $ref: '#/components/schemas/OIDCIdentityProviderClientSecret'
         scopes:
-          allOf:
-            - $ref: '#/components/schemas/OIDCIdentityProviderScopes'
-            - minItems: 1
+          $ref: '#/components/schemas/CreateOIDCIdentityProviderScopes'
         claim_mappings:
           $ref: '#/components/schemas/OIDCIdentityProviderClaimMappings'
       additionalProperties: false
@@ -39944,6 +40262,12 @@ components:
         - client_secret
       title: Create OIDC Identity Provider Config
       x-speakeasy-name-override: OIDCIdentityProviderConfig
+    PortalCreateIdentityProviderConfig:
+      description: The configuration data for creating an authentication integration.
+      oneOf:
+        - $ref: '#/components/schemas/CreateOIDCIdentityProviderConfig'
+        - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+      title: Portal Create Identity Provider Config
     PortalCreateIdentityProvider:
       description: The identity provider that contains configuration data for creating an authentication integration.
       type: object
@@ -39953,10 +40277,7 @@ components:
         type:
           $ref: '#/components/schemas/IdentityProviderType'
         config:
-          type: object
-          oneOf:
-            - $ref: '#/components/schemas/CreateOIDCIdentityProviderConfig'
-            - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+          $ref: '#/components/schemas/PortalCreateIdentityProviderConfig'
       title: Portal Identity Provider
     UpdateOIDCIdentityProviderClaimMappings:
       description: |
@@ -40088,6 +40409,13 @@ components:
       minProperties: 1
       title: Update SAML Identity Provider Config
       x-speakeasy-name-override: SAMLIdentityProviderConfig
+    PortalUpdateIdentityProviderConfig:
+      description: The configuration data to update for the authentication integration.
+      minProperties: 1
+      oneOf:
+        - $ref: '#/components/schemas/UpdateOIDCIdentityProviderConfig'
+        - $ref: '#/components/schemas/UpdateSAMLIdentityProviderConfig'
+      title: Portal Update Identity Provider Config
     PortalUpdateIdentityProvider:
       description: The identity provider that contains configuration data for updating an authentication integration.
       type: object
@@ -40095,11 +40423,7 @@ components:
         enabled:
           $ref: '#/components/schemas/UpdateIdentityProviderEnabled'
         config:
-          type: object
-          minProperties: 1
-          oneOf:
-            - $ref: '#/components/schemas/UpdateOIDCIdentityProviderConfig'
-            - $ref: '#/components/schemas/UpdateSAMLIdentityProviderConfig'
+          $ref: '#/components/schemas/PortalUpdateIdentityProviderConfig'
       additionalProperties: false
       minProperties: 1
       title: Portal Identity Provider
@@ -40130,6 +40454,913 @@ components:
       required:
         - id
         - allowed_ips
+    CustomFormName:
+      description: |
+        A unique, URL-friendly identifier for the form (lowercase letters, digits, and hyphens). For `developer_registration` forms, this is always `developer-registration`. For `api_registration` forms, you choose the name when creating the form and can change it later.
+      type: string
+      example: flights-api-registration
+      maxLength: 128
+      pattern: '^[a-z0-9-]+$'
+    CustomFormStatus:
+      description: |
+        Whether the form is visible to developers on the portal. `unpublished` forms aren't shown to developers; for the `developer_registration` form, a default form is shown instead.
+      type: string
+      example: unpublished
+      default: unpublished
+      enum:
+        - published
+        - unpublished
+      x-speakeasy-unknown-values: allow
+    CustomFormContentFieldInput:
+      description: 'A block of Markdown content, displayed between or above the form''s input fields.'
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: content
+          const: content
+        value:
+          description: The Markdown content to display.
+          type: string
+          example: '## Tell us about your project'
+          maxLength: 4096
+          minLength: 1
+      additionalProperties: false
+      required:
+        - type
+        - value
+    CustomFormTextFieldInput:
+      description: A single-line text field.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: text
+          const: text
+        label:
+          type: string
+          example: Full Name
+          maxLength: 256
+          minLength: 1
+        placeholder:
+          type: string
+          example: Enter your full name
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          description: Help text displayed with the field. Supports Markdown formatting.
+          type: string
+          example: As it appears on your account.
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: true
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - type
+        - label
+      x-terraform-no-default-null: true
+    CustomFormEmailFieldInput:
+      description: An email address field. Rejects values that aren't a valid email format.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: email
+          const: email
+        label:
+          type: string
+          example: Email Address
+          maxLength: 256
+          minLength: 1
+        placeholder:
+          type: string
+          example: you@example.com
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          type: string
+          example: We will use this email to respond to your inquiry. Supports MDC markdown.
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: true
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - type
+        - label
+      x-terraform-no-default-null: true
+    CustomFormNumberFieldInput:
+      description: A numeric field.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: number
+          const: number
+        label:
+          type: string
+          example: Age
+          maxLength: 256
+          minLength: 1
+        placeholder:
+          type: string
+          example: Enter your age
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          description: Must be a positive number.
+          type: string
+          example: The age of the person registering. Used for KYC checks
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: false
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - type
+        - label
+      x-terraform-no-default-null: true
+    CustomFormTextareaFieldInput:
+      description: A multi-line text field.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: textarea
+          const: textarea
+        label:
+          type: string
+          example: Message
+          maxLength: 256
+          minLength: 1
+        placeholder:
+          type: string
+          example: Tell us what you need...
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          type: string
+          example: Please provide as much detail as possible. Supports MDC markdown.
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: true
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - type
+        - label
+      x-terraform-no-default-null: true
+    CustomFormSelectOptionInput:
+      description: One selectable option in a dropdown field.
+      type: object
+      properties:
+        value:
+          description: The value submitted when this option is chosen.
+          type: string
+          example: sales
+          maxLength: 256
+          minLength: 1
+        label:
+          description: The text shown to the developer for this option.
+          type: string
+          example: Sales
+          maxLength: 256
+          minLength: 1
+        selected:
+          description: |
+            When `true`, this option is pre-selected when the form is displayed.
+
+            For a single-select field, at most one option may have `selected: true`.
+
+            Marking more than one option as selected is rejected as invalid.
+          type: boolean
+          example: false
+          default: false
+      additionalProperties: false
+      required:
+        - value
+        - label
+    CustomFormSingleSelectFieldInput:
+      description: |
+        A dropdown field where the developer chooses exactly one option. Requires at least 1 option.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: select
+          const: select
+        mode:
+          description: Single selection — the developer chooses exactly one option.
+          type: string
+          example: single_select
+          const: single_select
+        label:
+          type: string
+          example: Department
+          maxLength: 256
+          minLength: 1
+        placeholder:
+          type: string
+          example: Select a department
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          type: string
+          example: Choose the department best suited to your inquiry. Supports MDC markdown.
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: true
+          nullable: true
+          x-speakeasy-param-computed: false
+        options:
+          description: Available choices presented to the developer.
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFormSelectOptionInput'
+          example:
+            - value: sales
+              label: Sales
+            - value: support
+              label: Support
+            - value: engineering
+              label: Engineering
+          maxItems: 20
+          minItems: 1
+      additionalProperties: false
+      required:
+        - type
+        - mode
+        - label
+        - options
+      x-terraform-no-default-null: true
+    CustomFormMultiSelectFieldInput:
+      description: |
+        A dropdown field where the developer can choose multiple options. Requires at least 2 options.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: select
+          const: select
+        mode:
+          description: Multiple selection — the developer can choose more than one option.
+          type: string
+          example: multi_select
+          const: multi_select
+        label:
+          type: string
+          example: Departments
+          maxLength: 256
+          minLength: 1
+        placeholder:
+          type: string
+          example: Select departments
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          type: string
+          example: Choose the departments best suited to your inquiry. Supports MDC markdown.
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: true
+          x-speakeasy-param-computed: true
+        options:
+          description: Available choices presented to the developer.
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFormSelectOptionInput'
+          example:
+            - value: sales
+              label: Sales
+            - value: support
+              label: Support
+            - value: engineering
+              label: Engineering
+          maxItems: 20
+          minItems: 2
+      additionalProperties: false
+      required:
+        - type
+        - mode
+        - label
+        - options
+      x-terraform-no-default-null: true
+    CustomFormSelectFieldInput:
+      description: |
+        A dropdown field. Set `mode` to one of:
+
+        * `single_select` — the developer chooses one option (at least 1 option required)
+        * `multi_select` — the developer can choose multiple options (at least 2 options required)
+      type: object
+      properties:
+        type:
+          type: string
+          example: select
+          const: select
+      discriminator:
+        propertyName: mode
+        mapping:
+          single_select: '#/components/schemas/CustomFormSingleSelectFieldInput'
+          multi_select: '#/components/schemas/CustomFormMultiSelectFieldInput'
+      oneOf:
+        - $ref: '#/components/schemas/CustomFormSingleSelectFieldInput'
+        - $ref: '#/components/schemas/CustomFormMultiSelectFieldInput'
+      required:
+        - type
+    CustomFormCheckboxFieldInput:
+      description: A single checkbox.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: checkbox
+          const: checkbox
+        label:
+          type: string
+          example: I agree to the terms and conditions
+          maxLength: 256
+          minLength: 1
+        description:
+          description: Supports Markdown formatting — useful for linking to terms and conditions.
+          type: string
+          example: 'Click to view the [terms](https://example.com).'
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: true
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - type
+        - label
+      x-terraform-no-default-null: true
+    CustomFormSubmitFieldInput:
+      description: |
+        The form's submit button. Every form must include exactly one. Its `name` is always `submit`.
+      type: object
+      properties:
+        name:
+          type: string
+          example: submit
+          enum:
+            - submit
+        type:
+          type: string
+          example: submit
+          const: submit
+        value:
+          description: The text displayed on the button.
+          type: string
+          example: Create account
+          maxLength: 64
+          minLength: 1
+      additionalProperties: false
+      required:
+        - name
+        - type
+        - value
+    CustomFormFieldInput:
+      description: A field definition used when creating or updating a form.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          content: '#/components/schemas/CustomFormContentFieldInput'
+          text: '#/components/schemas/CustomFormTextFieldInput'
+          email: '#/components/schemas/CustomFormEmailFieldInput'
+          number: '#/components/schemas/CustomFormNumberFieldInput'
+          textarea: '#/components/schemas/CustomFormTextareaFieldInput'
+          select: '#/components/schemas/CustomFormSelectFieldInput'
+          checkbox: '#/components/schemas/CustomFormCheckboxFieldInput'
+          submit: '#/components/schemas/CustomFormSubmitFieldInput'
+      oneOf:
+        - $ref: '#/components/schemas/CustomFormContentFieldInput'
+        - $ref: '#/components/schemas/CustomFormTextFieldInput'
+        - $ref: '#/components/schemas/CustomFormEmailFieldInput'
+        - $ref: '#/components/schemas/CustomFormNumberFieldInput'
+        - $ref: '#/components/schemas/CustomFormTextareaFieldInput'
+        - $ref: '#/components/schemas/CustomFormSelectFieldInput'
+        - $ref: '#/components/schemas/CustomFormCheckboxFieldInput'
+        - $ref: '#/components/schemas/CustomFormSubmitFieldInput'
+    CustomFormFieldBuiltIn:
+      description: |
+        Marks a field that comes with the form by default.
+
+        Built-in fields can't be removed, retyped, or relabeled, but their
+        Built-in fields can't be removed, retyped, or relabeled, and built-in
+        inputs are always `required`. Their `placeholder` and `description`
+        settings can still be changed.
+
+        This flag is read-only — it's returned by the API but can't be set when
+        creating or updating a form.
+      type: boolean
+      example: true
+      readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
+    CustomFormContentField:
+      description: 'A block of Markdown content, displayed between or above the form''s input fields.'
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: content
+          const: content
+        value:
+          description: The Markdown content to display.
+          type: string
+          example: '## Tell us about your project'
+          maxLength: 4096
+          minLength: 1
+        built_in:
+          $ref: '#/components/schemas/CustomFormFieldBuiltIn'
+      additionalProperties: false
+      required:
+        - type
+        - value
+        - name
+        - built_in
+    CustomFormTextField:
+      description: A single-line text field.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: text
+          const: text
+        label:
+          type: string
+          example: Full Name
+          maxLength: 256
+          minLength: 1
+        placeholder:
+          type: string
+          example: Enter your full name
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          description: Help text displayed with the field. Supports Markdown formatting.
+          type: string
+          example: As it appears on your account.
+          default: null
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: true
+          x-speakeasy-param-computed: true
+        built_in:
+          $ref: '#/components/schemas/CustomFormFieldBuiltIn'
+      additionalProperties: false
+      required:
+        - type
+        - label
+        - name
+        - built_in
+        - required
+    CustomFormEmailField:
+      description: An email address field. Rejects values that aren't a valid email format.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: email
+          const: email
+        label:
+          type: string
+          example: Email Address
+          maxLength: 256
+          minLength: 1
+        placeholder:
+          type: string
+          example: you@example.com
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          type: string
+          example: We will use this email to respond to your inquiry. Supports MDC markdown.
+          default: null
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: true
+          x-speakeasy-param-computed: true
+        built_in:
+          $ref: '#/components/schemas/CustomFormFieldBuiltIn'
+      additionalProperties: false
+      required:
+        - type
+        - label
+        - name
+        - built_in
+        - required
+    CustomFormNumberField:
+      description: A numeric field.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: number
+          const: number
+        label:
+          type: string
+          example: Age
+          maxLength: 256
+          minLength: 1
+        placeholder:
+          type: string
+          example: Enter your age
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          type: string
+          example: Must be a positive number. Supports MDC markdown.
+          default: null
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: false
+          x-speakeasy-param-computed: true
+        built_in:
+          $ref: '#/components/schemas/CustomFormFieldBuiltIn'
+      additionalProperties: false
+      required:
+        - type
+        - label
+        - name
+        - built_in
+        - required
+    CustomFormTextareaField:
+      description: A multi-line text field.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: textarea
+          const: textarea
+        label:
+          type: string
+          example: Message
+          maxLength: 256
+          minLength: 1
+        placeholder:
+          type: string
+          example: Tell us what you need...
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          type: string
+          example: Please provide as much detail as possible. Supports MDC markdown.
+          default: null
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: true
+          x-speakeasy-param-computed: true
+        built_in:
+          $ref: '#/components/schemas/CustomFormFieldBuiltIn'
+      additionalProperties: false
+      required:
+        - type
+        - label
+        - name
+        - built_in
+        - required
+    CustomFormSelectOption:
+      description: One selectable option in a dropdown field.
+      type: object
+      properties:
+        value:
+          description: The value submitted when this option is chosen.
+          type: string
+          example: sales
+          maxLength: 256
+          minLength: 1
+        label:
+          description: The text shown to the developer for this option.
+          type: string
+          example: Sales
+          maxLength: 256
+          minLength: 1
+        selected:
+          description: |
+            When `true`, this option is pre-selected when the form is displayed.
+
+            For a single-select field, at most one option may have `selected: true`.
+
+            Marking more than one option as selected is rejected as invalid.
+          type: boolean
+          example: false
+          default: false
+      additionalProperties: false
+      required:
+        - value
+        - label
+        - selected
+    CustomFormSingleSelectField:
+      description: |
+        A dropdown field where the developer chooses exactly one option. Requires at least 1 option.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: select
+          const: select
+        mode:
+          description: Single selection — the developer chooses exactly one option.
+          type: string
+          example: single_select
+          const: single_select
+        label:
+          type: string
+          example: Department
+          maxLength: 256
+          minLength: 1
+        placeholder:
+          type: string
+          example: Select a department
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          type: string
+          example: Choose the department best suited to your inquiry. Supports MDC markdown.
+          default: null
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: true
+          x-speakeasy-param-computed: true
+        built_in:
+          $ref: '#/components/schemas/CustomFormFieldBuiltIn'
+        options:
+          description: Available choices presented to the developer.
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFormSelectOption'
+          example:
+            - value: sales
+              label: Sales
+              selected: false
+            - value: support
+              label: Support
+              selected: false
+            - value: engineering
+              label: Engineering
+              selected: true
+          maxItems: 20
+          minItems: 1
+      additionalProperties: false
+      required:
+        - type
+        - mode
+        - label
+        - options
+        - name
+        - built_in
+        - required
+    CustomFormMultiSelectField:
+      description: |
+        A dropdown field where the developer can choose multiple options. Requires at least 2 options.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: select
+          const: select
+        mode:
+          description: Multiple selection — the developer can choose more than one option.
+          type: string
+          example: multi_select
+          const: multi_select
+        label:
+          type: string
+          example: Departments
+          maxLength: 256
+          minLength: 1
+        placeholder:
+          type: string
+          example: Select departments
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          type: string
+          example: Choose the departments best suited to your inquiry. Supports MDC markdown.
+          default: null
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: true
+          x-speakeasy-param-computed: true
+        built_in:
+          $ref: '#/components/schemas/CustomFormFieldBuiltIn'
+        options:
+          description: Available choices presented to the developer.
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFormSelectOption'
+          example:
+            - value: sales
+              label: Sales
+              selected: false
+            - value: support
+              label: Support
+              selected: false
+            - value: engineering
+              label: Engineering
+              selected: true
+          maxItems: 20
+          minItems: 2
+      additionalProperties: false
+      required:
+        - type
+        - mode
+        - label
+        - options
+        - name
+        - built_in
+        - required
+    CustomFormSelectField:
+      description: |
+        A dropdown field. Set `mode` to one of:
+
+        * `single_select` — the developer chooses one option (at least 1 option required)
+        * `multi_select` — the developer can choose multiple options (at least 2 options required)
+      type: object
+      properties:
+        type:
+          type: string
+          example: select
+          const: select
+      discriminator:
+        propertyName: mode
+        mapping:
+          single_select: '#/components/schemas/CustomFormSingleSelectField'
+          multi_select: '#/components/schemas/CustomFormMultiSelectField'
+      oneOf:
+        - $ref: '#/components/schemas/CustomFormSingleSelectField'
+        - $ref: '#/components/schemas/CustomFormMultiSelectField'
+      required:
+        - type
+    CustomFormCheckboxField:
+      description: A single checkbox.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CustomFormFieldName'
+        type:
+          type: string
+          example: checkbox
+          const: checkbox
+        label:
+          type: string
+          example: I agree to the terms and conditions
+          maxLength: 256
+          minLength: 1
+        description:
+          description: Supports Markdown formatting — useful for linking to terms and conditions.
+          type: string
+          example: 'Click to view the [terms](https://example.com).'
+          default: null
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          type: boolean
+          example: true
+          x-speakeasy-param-computed: true
+        built_in:
+          $ref: '#/components/schemas/CustomFormFieldBuiltIn'
+      additionalProperties: false
+      required:
+        - type
+        - label
+        - name
+        - built_in
+        - required
+    CustomFormSubmitField:
+      description: |
+        The form's submit button. Every form must include exactly one. Its `name` is always `submit`.
+      type: object
+      properties:
+        name:
+          type: string
+          example: submit
+          enum:
+            - submit
+        type:
+          type: string
+          example: submit
+          const: submit
+        value:
+          description: The text displayed on the button.
+          type: string
+          example: Create account
+          maxLength: 64
+          minLength: 1
+        built_in:
+          $ref: '#/components/schemas/CustomFormFieldBuiltIn'
+      additionalProperties: false
+      required:
+        - name
+        - type
+        - value
+        - built_in
+    CustomFormField:
+      description: |
+        A field on a form, as returned by the API. The `type` property determines what kind of field it is. Fields that came with the form by default carry a `built_in` flag.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          content: '#/components/schemas/CustomFormContentField'
+          text: '#/components/schemas/CustomFormTextField'
+          email: '#/components/schemas/CustomFormEmailField'
+          number: '#/components/schemas/CustomFormNumberField'
+          textarea: '#/components/schemas/CustomFormTextareaField'
+          select: '#/components/schemas/CustomFormSelectField'
+          checkbox: '#/components/schemas/CustomFormCheckboxField'
+          submit: '#/components/schemas/CustomFormSubmitField'
+      oneOf:
+        - $ref: '#/components/schemas/CustomFormContentField'
+        - $ref: '#/components/schemas/CustomFormTextField'
+        - $ref: '#/components/schemas/CustomFormEmailField'
+        - $ref: '#/components/schemas/CustomFormNumberField'
+        - $ref: '#/components/schemas/CustomFormTextareaField'
+        - $ref: '#/components/schemas/CustomFormSelectField'
+        - $ref: '#/components/schemas/CustomFormCheckboxField'
+        - $ref: '#/components/schemas/CustomFormSubmitField'
     ApiResponseSchema:
       type: object
       properties:
@@ -49575,6 +50806,23 @@ components:
       additionalProperties: false
       required:
         - name
+    AIGatewayModelDatastoreRef:
+      description: 'A reference to an existing datastore, and the model feature that uses it.'
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/AIGatewayDatastoreName'
+        purpose:
+          description: |
+            The model feature that uses the datastore. `semantic-balancer` supplies the connection of the
+            model vector store.
+          type: string
+          default: semantic-balancer
+          enum:
+            - semantic-balancer
+      additionalProperties: false
+      required:
+        - name
     AIGatewayProxyURL:
       description: Proxy URL associated with reaching the data-planes connected to a control-plane.
       type: object
@@ -50393,12 +51641,13 @@ components:
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
         datastores:
-          description: Names of the Datastores this model references.
+          description: 'The Datastores this model references, with the feature that uses each one.'
           type: array
           items:
-            $ref: '#/components/schemas/AIGatewayDatastoreRef'
+            $ref: '#/components/schemas/AIGatewayModelDatastoreRef'
           example:
             - name: kong-managed
+              purpose: semantic-balancer
           x-speakeasy-param-computed: true
         type:
           type: string
@@ -50485,12 +51734,13 @@ components:
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
         datastores:
-          description: Names of the Datastores this model references.
+          description: 'The Datastores this model references, with the feature that uses each one.'
           type: array
           items:
-            $ref: '#/components/schemas/AIGatewayDatastoreRef'
+            $ref: '#/components/schemas/AIGatewayModelDatastoreRef'
           example:
             - name: kong-managed
+              purpose: semantic-balancer
           x-speakeasy-param-computed: true
         type:
           type: string
@@ -58645,6 +59895,8 @@ components:
               format: uri
               example: 'https://mcp.internal.kongair.com'
               minLength: 1
+              nullable: true
+              x-speakeasy-param-computed: false
             upstream:
               $ref: '#/components/schemas/AIGatewayUpstreamConfig'
             certificates:
@@ -58715,7 +59967,6 @@ components:
               x-speakeasy-param-computed: false
           required:
             - route
-            - url
           title: AIGatewayMCPServerKongListenerConfig
           x-terraform-no-default-null: true
         tools:
@@ -60025,7 +61276,10 @@ components:
           type: string
           format: uri
           example: 'https://mcp.internal.kongair.com'
+          default: null
           minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
         upstream:
           $ref: '#/components/schemas/AIGatewayUpstreamConfig'
         certificates:
@@ -60059,8 +61313,6 @@ components:
             $ref: '#/components/schemas/AIGatewayCACertificateReference'
           x-speakeasy-param-computed: true
       additionalProperties: false
-      required:
-        - url
     AIGatewayMCPServerWithUpstreamConfig:
       description: 'Routing, logging, and server configuration for the MCP Server.'
       type: object
@@ -60159,7 +61411,10 @@ components:
           type: string
           format: uri
           example: 'https://mcp.internal.kongair.com'
+          default: null
           minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
         upstream:
           $ref: '#/components/schemas/AIGatewayUpstreamConfig'
         certificates:
@@ -60197,7 +61452,6 @@ components:
       additionalProperties: false
       required:
         - route
-        - url
     AIGatewayMCPServerRouteWithMatcher:
       description: |
         Route configuration for an MCP Server that terminates its own listener. At least one
@@ -60239,7 +61493,10 @@ components:
           type: string
           format: uri
           example: 'https://mcp.internal.kongair.com'
+          default: null
           minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
         upstream:
           $ref: '#/components/schemas/AIGatewayUpstreamConfig'
         certificates:
@@ -60281,7 +61538,6 @@ components:
       additionalProperties: false
       required:
         - route
-        - url
         - tools_cache_ttl_seconds
     AIGatewayMCPServerServerConfigBase:
       description: Server-side configuration for the MCP Server.
@@ -60717,6 +61973,8 @@ components:
               format: uri
               example: 'https://mcp.internal.kongair.com'
               minLength: 1
+              nullable: true
+              x-speakeasy-param-computed: false
             upstream:
               $ref: '#/components/schemas/AIGatewayUpstreamConfig'
             certificates:
@@ -60787,7 +62045,6 @@ components:
               x-speakeasy-param-computed: false
           required:
             - route
-            - url
           title: AIGatewayMCPServerKongListenerConfig
           x-terraform-no-default-null: true
         tools:
@@ -68289,6 +69546,10 @@ components:
           description: Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.
           allOf:
             - $ref: '#/components/schemas/Labels'
+        managed_by:
+          description: 'Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it.'
+          allOf:
+            - $ref: '#/components/schemas/ManagedBy'
         scope:
           description: The usage the budget covers.
           type: object
@@ -68314,7 +69575,7 @@ components:
             - filters
             - each
         priority:
-          description: 'The budget''s priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don''t use it.'
+          description: 'The budget''s priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.'
           type: integer
           maximum: 100
           minimum: 1
@@ -68359,7 +69620,7 @@ components:
             - interval
             - anchored_at
         posture:
-          description: What the budget declares should happen when spend reaches the limit. Nothing enforces it.
+          description: How the budget responds when spend reaches its limit.
           allOf:
             - $ref: '#/components/schemas/AICostBudgetPosture'
         validity:
@@ -68617,10 +69878,7 @@ components:
         - op
         - filters
     AICostBudgetPosture:
-      description: |-
-        What a limit budget declares should happen when spend reaches its limit. `advisory` declares that spend can continue past the limit, and `enforce` declares that requests should stop at it.
-
-        Nothing enforces posture: it blocks no request, and balances and notification rules ignore it. The service validates, stores, filters by, and returns it.
+      description: 'How the budget responds when spend reaches its limit. With `advisory`, requests continue past the limit.'
       type: string
       enum:
         - advisory
@@ -68639,6 +69897,10 @@ components:
           description: Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.
           allOf:
             - $ref: '#/components/schemas/Labels'
+        managed_by:
+          description: 'Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it.'
+          allOf:
+            - $ref: '#/components/schemas/ManagedBy'
         scope:
           description: The usage the budget covers.
           type: object
@@ -68664,7 +69926,7 @@ components:
             - filters
             - each
         priority:
-          description: 'The budget''s priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don''t use it.'
+          description: 'The budget''s priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.'
           type: integer
           maximum: 100
           minimum: 1
@@ -68724,6 +69986,7 @@ components:
         - id
         - name
         - labels
+        - managed_by
         - scope
         - priority
         - created_by
@@ -68796,6 +70059,10 @@ components:
             - subject
             - body
           x-speakeasy-param-computed: false
+        managed_by:
+          description: 'Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it.'
+          allOf:
+            - $ref: '#/components/schemas/ManagedBy'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -68805,6 +70072,7 @@ components:
         - thresholds
         - channels
         - message
+        - managed_by
         - created_at
         - updated_at
     AICostNotificationThreshold:
@@ -68848,6 +70116,10 @@ components:
           description: Key-value metadata on the channel. The channel list can filter by label.
           allOf:
             - $ref: '#/components/schemas/Labels'
+        managed_by:
+          description: 'Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it.'
+          allOf:
+            - $ref: '#/components/schemas/ManagedBy'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -68893,6 +70165,10 @@ components:
           description: Key-value metadata on the channel. The channel list can filter by label.
           allOf:
             - $ref: '#/components/schemas/Labels'
+        managed_by:
+          description: 'Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it.'
+          allOf:
+            - $ref: '#/components/schemas/ManagedBy'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -69066,6 +70342,10 @@ components:
               description: Key-value metadata on the schedule. The schedule list can filter by label. Each export that the schedule creates copies the labels as they are at that moment.
               allOf:
                 - $ref: '#/components/schemas/Labels'
+            managed_by:
+              description: 'Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it.'
+              allOf:
+                - $ref: '#/components/schemas/ManagedBy'
             next_run_at:
               description: |-
                 When the period in progress ends and the schedule creates its export, as an RFC 3339 timestamp in UTC. That export starts 6 hours later, so that events that arrive late can be stored first.
@@ -69093,6 +70373,7 @@ components:
             - compression
             - filters
             - labels
+            - managed_by
             - next_run_at
             - created_at
             - updated_at
@@ -69308,6 +70589,11 @@ components:
           default: {}
           allOf:
             - $ref: '#/components/schemas/Labels'
+        managed_by:
+          description: 'Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.'
+          default: {}
+          allOf:
+            - $ref: '#/components/schemas/ManagedBy'
         type:
           description: 'Always `email` for an email channel, which carries its settings in `email`.'
           type: string
@@ -69349,9 +70635,14 @@ components:
           default: {}
           allOf:
             - $ref: '#/components/schemas/Labels'
+        managed_by:
+          description: 'Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.'
+          default: {}
+          allOf:
+            - $ref: '#/components/schemas/ManagedBy'
         priority:
           description: |-
-            The budget's priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don't use it.
+            The budget's priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.
 
             Defaults to `100`.
           type: integer
@@ -69505,6 +70796,11 @@ components:
               default: {}
               allOf:
                 - $ref: '#/components/schemas/Labels'
+            managed_by:
+              description: 'Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.'
+              default: {}
+              allOf:
+                - $ref: '#/components/schemas/ManagedBy'
           required:
             - name
             - cadence
@@ -69562,9 +70858,14 @@ components:
           default: {}
           allOf:
             - $ref: '#/components/schemas/Labels'
+        managed_by:
+          description: 'Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.'
+          default: {}
+          allOf:
+            - $ref: '#/components/schemas/ManagedBy'
         priority:
           description: |-
-            The budget's priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don't use it.
+            The budget's priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.
 
             Defaults to `100`.
           type: integer
@@ -69640,10 +70941,7 @@ components:
             - interval
             - anchored_at
         posture:
-          description: |-
-            What the budget declares should happen when spend reaches the limit. Nothing enforces it.
-
-            Defaults to `advisory`.
+          description: 'How the budget responds when spend reaches its limit. With `advisory`, the default, requests continue past the limit.'
           type: string
           default: advisory
           enum:
@@ -69687,6 +70985,11 @@ components:
           default: {}
           allOf:
             - $ref: '#/components/schemas/Labels'
+        managed_by:
+          description: 'Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.'
+          default: {}
+          allOf:
+            - $ref: '#/components/schemas/ManagedBy'
         type:
           description: 'Always `slack` for a Slack channel, which carries its settings in `slack`.'
           type: string
@@ -69728,6 +71031,11 @@ components:
           default: {}
           allOf:
             - $ref: '#/components/schemas/Labels'
+        managed_by:
+          description: 'Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.'
+          default: {}
+          allOf:
+            - $ref: '#/components/schemas/ManagedBy'
         type:
           description: 'Always `slack` for a Slack channel, which carries its settings in `slack`.'
           type: string
@@ -114646,6 +115954,87 @@ components:
           type: boolean
           nullable: false
       additionalProperties: false
+    PortalFormResponse:
+      description: 'A custom form configured for a developer portal, including its fields.'
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          developer_registration: '#/components/schemas/PortalFormDeveloperRegistrationResponse'
+          api_registration: '#/components/schemas/PortalFormApiRegistrationResponse'
+      oneOf:
+        - $ref: '#/components/schemas/PortalFormDeveloperRegistrationResponse'
+        - $ref: '#/components/schemas/PortalFormApiRegistrationResponse'
+    PortalFormDeveloperRegistrationResponse:
+      description: The form shown in the portal's developer signup flow.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        type:
+          type: string
+          const: developer_registration
+        name:
+          $ref: '#/components/schemas/CustomFormName'
+        status:
+          $ref: '#/components/schemas/CustomFormStatus'
+        fields:
+          description: |
+            The form's fields, in the order they're displayed. Includes the built-in `full_name` and `email` fields, plus exactly one `submit` field.
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFormField'
+          maxItems: 20
+          minItems: 1
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - type
+        - name
+        - status
+        - fields
+      x-speakeasy-name-override: developer_registration
+    PortalFormApiRegistrationResponse:
+      description: A form shown to developers when they request access to a specific API.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        type:
+          type: string
+          const: api_registration
+        name:
+          $ref: '#/components/schemas/CustomFormName'
+        status:
+          $ref: '#/components/schemas/CustomFormStatus'
+        fields:
+          description: |
+            The form's fields, in the order they're displayed. Includes exactly one `submit` field and a field named `api_id` of type `text`.
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFormField'
+          maxItems: 20
+          minItems: 1
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - type
+        - name
+        - status
+        - fields
+      x-speakeasy-name-override: api_registration
     PortalAppearanceImageDataUri:
       description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
       type: string
@@ -116001,6 +117390,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/V2UpdatePortalAppearanceRequest'
+    CreatePortalForm:
+      description: Create a custom form for a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalFormRequest'
+    ReplacePortalForm:
+      description: Replace a custom form for a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalFormRequest'
     CreatePortalIdpTeamGroupMapping:
       description: Create a team group mapping for an identity provider.
       required: true
@@ -118520,6 +119923,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/V2UpdatePortalAppearanceResponse'
+    PortalForm:
+      description: A custom form belonging to a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalFormResponse'
     PortalIdpTeamGroupMapping:
       description: A team group mapping for an identity provider.
       content:
