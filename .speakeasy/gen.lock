@@ -5,12 +5,12 @@ management:
   docVersion: 2.0.0
   speakeasyVersion: 1.810.0
   generationVersion: 2.961.1
-  releaseVersion: 3.28.0
-  configChecksum: e7751a2040e456710a0430261e0e28b5
+  releaseVersion: 3.29.0
+  configChecksum: 99c3c3d13dac4fca5defa2086be29e5d
 persistentEdits:
-  generation_id: fd30332b-0058-45b5-89d2-66e192606684
-  pristine_commit_hash: c1eaf0ecb687134a026b8c83ceb16ecf7e555908
-  pristine_tree_hash: 033c2fb9ce056dcd969f0f5b47102034688eacac
+  generation_id: 127b7c2d-a44e-4116-9a2e-f340f179d6a8
+  pristine_commit_hash: 7a53567d2779aed4c2e5665823a280f38c11b5a4
+  pristine_tree_hash: 2ac667b12df7bf4ed719a6ddba6e1510e43410c1
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -109,8 +109,8 @@ trackedFiles:
     pristine_git_object: 789a06eeee2dbb35228b4769d2ee9b62c99349b5
   examples/provider/provider.tf:
     id: 954e955c0240
-    last_write_checksum: sha1:4b5d587183357e161af1efba57f2766043261b04
-    pristine_git_object: e86c1739ede6939981f3a0206c921f2f848bae89
+    last_write_checksum: sha1:6266dda6ad4f44036770f7ddd3ab024fbd6c8565
+    pristine_git_object: 130746de42d1f43184b655c470b5fd2b069416c0
   examples/resources/konnect_ai_cost_budget/import-by-string-id.tf:
     id: 89b0262e3675
     last_write_checksum: sha1:22da3ed2a37be034f22412bd96ed571dab991d1a
@@ -9681,8 +9681,8 @@ trackedFiles:
     pristine_git_object: 0cc33c05be457d0aa9e62887de89994dc15832e6
   internal/sdk/konnect.go:
     id: defee4f1aaf8
-    last_write_checksum: sha1:5939c2b3342c1f20d92a25e5c7085f1ef800233c
-    pristine_git_object: 3b5397d1810954ff658308776dbdfe86f99951ac
+    last_write_checksum: sha1:aca3dd40ecec1709da7f0340e18d347a1266280c
+    pristine_git_object: 2b7757dc114acf08463adcea6f0d18d9e59ae6e7
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:debb643dd2f4706132d47584ec6eaea61339bd17

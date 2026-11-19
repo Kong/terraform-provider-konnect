@@ -4,8 +4,8 @@
 > Released 2026/11/19
 
 # Features
-* Add support for provisioning Developer Portal Forms. Users can now set up these forms using `konnect_portal_forms` and configure these fields while provisioning Portal Developer and registering Applications
-* Add support for Role Assignment for Workspaces. Users can now assign Users, Teams and System Accounts roles over Workspaces in Konnect.
+* Add support for provisioning Developer Portal Forms. Users can now set up these forms using `konnect_portal_form` and configure these fields while provisioning Portal Developer and registering Applications
+* Add support for Role Assignment for Workspaces. Users can now assign Users, Teams and System Accounts roles on Workspaces in Konnect.
 
 ## 3.28.0
 > Released 2026/11/06
