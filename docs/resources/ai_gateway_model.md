@@ -459,7 +459,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
 - `targets` (Attributes List) One or more backend models that this model entry routes to. Not Null (see [below for nested schema](#nestedatt--api--targets))
@@ -2866,7 +2868,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
 - `targets` (Attributes List) One or more backend models that this model entry routes to. Not Null (see [below for nested schema](#nestedatt--model--targets))

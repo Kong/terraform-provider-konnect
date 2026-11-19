@@ -35,25 +35,21 @@ func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponse(ctx context
 func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponsePortal(ctx context.Context, resp *shared.ListPortalsResponsePortal) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	if resp.Ai == nil {
-		r.Ai = nil
+	r.Ai = &tfTypes.AISettings{}
+	r.Ai.Enabled = types.BoolPointerValue(resp.Ai.Enabled)
+	r.Ai.Features = &tfTypes.AISettingsFeatures{}
+	if resp.Ai.Features.AiSearch == nil {
+		r.Ai.Features.AiSearch = nil
 	} else {
-		r.Ai = &tfTypes.AISettings{}
-		r.Ai.Enabled = types.BoolPointerValue(resp.Ai.Enabled)
-		r.Ai.Features = &tfTypes.AISettingsFeatures{}
-		if resp.Ai.Features.AiSearch == nil {
-			r.Ai.Features.AiSearch = nil
-		} else {
-			r.Ai.Features.AiSearch = &tfTypes.AuthStrategyPrincipals{}
-			r.Ai.Features.AiSearch.Enabled = types.BoolPointerValue(resp.Ai.Features.AiSearch.Enabled)
-		}
-		if resp.Ai.Features.McpServer == nil {
-			r.Ai.Features.McpServer = nil
-		} else {
-			r.Ai.Features.McpServer = &tfTypes.McpServer{}
-			r.Ai.Features.McpServer.Enabled = types.BoolPointerValue(resp.Ai.Features.McpServer.Enabled)
-			r.Ai.Features.McpServer.WriteOperationsEnabled = types.BoolPointerValue(resp.Ai.Features.McpServer.WriteOperationsEnabled)
-		}
+		r.Ai.Features.AiSearch = &tfTypes.AuthStrategyPrincipals{}
+		r.Ai.Features.AiSearch.Enabled = types.BoolPointerValue(resp.Ai.Features.AiSearch.Enabled)
+	}
+	if resp.Ai.Features.McpServer == nil {
+		r.Ai.Features.McpServer = nil
+	} else {
+		r.Ai.Features.McpServer = &tfTypes.McpServer{}
+		r.Ai.Features.McpServer.Enabled = types.BoolPointerValue(resp.Ai.Features.McpServer.Enabled)
+		r.Ai.Features.McpServer.WriteOperationsEnabled = types.BoolPointerValue(resp.Ai.Features.McpServer.WriteOperationsEnabled)
 	}
 	r.AuthenticationEnabled = types.BoolPointerValue(resp.AuthenticationEnabled)
 	r.AutoApproveApplications = types.BoolPointerValue(resp.AutoApproveApplications)

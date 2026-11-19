@@ -53,6 +53,8 @@ type PostSystemAccountsAccountIDAssignedRolesResponse struct {
 	RawResponse *http.Response
 	// A get action response of a single assigned role.
 	AssignedRole *shared.AssignedRole
+	// Bad Request
+	BadRequestError *shared.BadRequestError
 	// Unauthenticated
 	UnauthorizedError *shared.UnauthorizedError
 	// Not Found
@@ -98,6 +100,13 @@ func (p *PostSystemAccountsAccountIDAssignedRolesResponse) GetAssignedRole() *sh
 		return nil
 	}
 	return p.AssignedRole
+}
+
+func (p *PostSystemAccountsAccountIDAssignedRolesResponse) GetBadRequestError() *shared.BadRequestError {
+	if p == nil {
+		return nil
+	}
+	return p.BadRequestError
 }
 
 func (p *PostSystemAccountsAccountIDAssignedRolesResponse) GetUnauthorizedError() *shared.UnauthorizedError {

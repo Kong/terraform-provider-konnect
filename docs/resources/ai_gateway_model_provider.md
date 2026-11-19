@@ -2100,7 +2100,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -2409,7 +2411,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -2760,7 +2764,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
 `token-vault` Datastore this entity references, and are returned read-only in `storage`.
@@ -3071,7 +3077,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -3409,7 +3417,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -3718,7 +3728,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -4027,7 +4039,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -4336,7 +4350,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -4645,7 +4661,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -4954,7 +4972,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -5330,7 +5350,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -5639,7 +5661,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -5948,7 +5972,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -6257,7 +6283,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -6566,7 +6594,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -6875,7 +6905,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -7184,7 +7216,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -7525,7 +7559,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
 `token-vault` Datastore this entity references, and are returned read-only in `storage`.
@@ -7836,7 +7872,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -8145,7 +8183,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the
@@ -8454,7 +8494,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
 credential. The directory credentials live in, and the keys that encrypt them, come from the

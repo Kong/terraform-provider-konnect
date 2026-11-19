@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -132,6 +133,9 @@ func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resourc
 				})),
 				ElementType: types.StringType,
 				Description: `An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only ` + "`" + `"https"` + "`" + `, HTTP requests are answered with an upgrade error. When set to only ` + "`" + `"http"` + "`" + `, HTTPS requests are answered with an error. Default: ["http","https"]`,
+				Validators: []validator.List{
+					listvalidator.SizeAtLeast(1),
+				},
 			},
 			"request_buffering": schema.BoolAttribute{
 				Computed:    true,

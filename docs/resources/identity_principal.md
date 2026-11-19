@@ -48,11 +48,13 @@ Setting it to `false` sets `provisioned_by` to `konnect_user`. Principals provis
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `metadata` (String) A map of metadata key-value pairs associated with this entity. This metadata is passed to the data plane to enrich the execution context. During authentication, metadata is inherited and overridden in a hierarchical manner: Directory metadata is inherited by Principals, which is then inherited and overridden by Credentials. Parsed as JSON.
 - `type` (String) Classifies the kind of principal. `agent` is a deployed AI agent,
-`user` is a human in the organization.
-When omitted or null, the principal is not classified.
+`user` is a human in the organization, and null means not classified.
+Immutable after creation: on update or replace, omit it or send the current value.
 possible known values include one of ["agent", "user"]
 
 ### Read-Only
@@ -60,7 +62,7 @@ possible known values include one of ["agent", "user"]
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `groups` (List of String) List of IDs of the groups this principal is a member of.
 - `id` (String) Contains a unique identifier used for this resource.
-- `provisioned_by` (String) Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user's behalf (for example, `developer_portal` or `trusted_idp`). Default: "konnect_user"
+- `provisioned_by` (String) Identifies the actor that provisioned this principal. Defaults to `konnect_user` for principals created directly by a user; other values identify a service that provisioned the principal on a user's behalf (for example, `developer_portal` or `trusted_idp`).
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 ## Import

@@ -7,8 +7,10 @@ import (
 )
 
 type OIDCIdentityProviderConfig1 struct {
-	ClaimMappings *OIDCIdentityProviderClaimMappings `tfsdk:"claim_mappings"`
-	ClientID      types.String                       `tfsdk:"client_id"`
-	IssuerURL     types.String                       `tfsdk:"issuer_url"`
-	Scopes        []types.String                     `tfsdk:"scopes"`
+	BackchannelLogout *OIDCIdentityProviderBackChannelLogout `tfsdk:"backchannel_logout"`
+	ClaimMappings     *OIDCIdentityProviderClaimMappings     `tfsdk:"claim_mappings"`
+	ClientID          types.String                           `tfsdk:"client_id"`
+	ClientSecret      types.String                           `tfsdk:"client_secret"`
+	IssuerURL         types.String                           `tfsdk:"issuer_url"`
+	Scopes            []types.String                         `tfsdk:"scopes"`
 }

@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
@@ -103,8 +104,12 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"anonymous": schema.StringAttribute{
-								Optional:    true,
-								Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure ` + "`" + `4xx` + "`" + `.`,
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
+								MarkdownDescription: `The read-only anonymous consumer value used when authentication fails.` + "\n" +
+									`AI Gateway always sets this value to ` + "`" + `anonymous` + "`" + `.`,
 							},
 							"hide_credentials": schema.BoolAttribute{
 								Computed:    true,
@@ -171,6 +176,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 										Optional:    true,
 										Default:     stringdefault.StaticString(`default`),
 										Description: `The Kong Identity directory instance to authenticate against. Default: "default"`,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`^[a-zA-Z0-9_-]+$`), "must match pattern "+regexp.MustCompile(`^[a-zA-Z0-9_-]+$`).String()),
+										},
 									},
 									"enabled": schema.BoolAttribute{
 										Computed:    true,
@@ -197,6 +205,7 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 								Description: `A boolean value that indicates whether the plugin should run (and try to authenticate) on ` + "`" + `OPTIONS` + "`" + ` preflight requests. If set to ` + "`" + `false` + "`" + `, then ` + "`" + `OPTIONS` + "`" + ` requests are always allowed. Default: true`,
 							},
 						},
+						Description: `Configuration for the key-auth auth strategy.`,
 					},
 					"created_at": schema.StringAttribute{
 						Computed: true,
@@ -267,7 +276,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -714,6 +725,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 											},
 										},
 										Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
 									},
 									"connect_timeout": schema.Int64Attribute{
 										Computed:    true,
@@ -815,6 +829,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 											},
 										},
 										Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
 									},
 									"sentinel_password": schema.StringAttribute{
 										Optional:    true,
@@ -894,8 +911,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 							"credential_claim": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("sub")})),
 								ElementType: types.StringType,
-								Description: `Claim path used to derive virtual credentials when consumer mapping is not used.`,
+								Description: `Claim path used to derive virtual credentials when consumer mapping is not used. Default: ["sub"]`,
 							},
 							"credential_claims": schema.ListAttribute{
 								Optional: true,
@@ -962,6 +980,7 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 											Description: `The path of the header value. Not Null`,
 											Validators: []validator.List{
 												speakeasy_listvalidators.NotNull(),
+												listvalidator.SizeAtLeast(1),
 											},
 										},
 									},
@@ -1232,6 +1251,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 								Optional:    true,
 								Default:     float64default.StaticFloat64(0),
 								Description: `Defines leeway time (in seconds) for ` + "`" + `auth_time` + "`" + `, ` + "`" + `exp` + "`" + `, ` + "`" + `iat` + "`" + `, and ` + "`" + `nbf` + "`" + ` claims. Default: 0`,
+								Validators: []validator.Float64{
+									float64validator.AtLeast(0),
+								},
 							},
 							"login_action": schema.StringAttribute{
 								Computed:    true,
@@ -1358,6 +1380,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 										Optional:    true,
 										Default:     stringdefault.StaticString(`default`),
 										Description: `The Kong Identity directory instance to look up against. Default: "default"`,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`^[a-zA-Z0-9_-]+$`), "must match pattern "+regexp.MustCompile(`^[a-zA-Z0-9_-]+$`).String()),
+										},
 									},
 									"enabled": schema.BoolAttribute{
 										Computed:    true,
@@ -1384,6 +1409,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `Send only the named token claims with the Kong Identity principal lookup. The claims are picked from the same source the principal claim is read from. Set all_claims to send every verified claim instead.`,
+												Validators: []validator.List{
+													listvalidator.SizeAtLeast(1),
+												},
 											},
 										},
 										MarkdownDescription: `Token claims to share with the Kong Identity principal lookup. Kong Identity, not this plugin, decides whether the claims are used: a trusted IdP with JIT provisioning enabled in Konnect maps them onto a principal provisioned just in time. By default the lookup only carries the principal claim (e.g. 'sub') and no additional claims are shared.` + "\n" +
@@ -1413,6 +1441,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `Token claim to use for the Kong Identity lookup. If multiple values are set, it means the claim is inside a nested object of the token payload. When principal_by is also set, performs a custom identity lookup (type=custom). When set alone, performs an OIDC lookup using this claim name instead of the default 'sub'.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
 									},
 								},
 								Description: `Configuration for Kong Identity principal hydration after token verification.`,
@@ -1445,6 +1476,7 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 										Description: `List of authorization server issuer URIs to advertise in the RFC 9728 metadata document. Not Null`,
 										Validators: []validator.List{
 											speakeasy_listvalidators.NotNull(),
+											listvalidator.SizeAtLeast(1),
 										},
 									},
 									"metadata_endpoint": schema.StringAttribute{
@@ -1463,6 +1495,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `Scopes supported by this protected resource. Included in the RFC 9728 metadata document and in the scope attribute of WWW-Authenticate challenge headers on 401 responses.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
 									},
 								},
 								MarkdownDescription: `When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.` + "\n" +
@@ -1573,6 +1608,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 											},
 										},
 										Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
 									},
 									"connect_timeout": schema.Int64Attribute{
 										Computed:    true,
@@ -1678,6 +1716,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 											},
 										},
 										Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
 									},
 									"sentinel_password": schema.StringAttribute{
 										Optional:    true,
@@ -2012,6 +2053,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 								Optional:    true,
 								Default:     float64default.StaticFloat64(10000),
 								Description: `Network IO timeout in milliseconds. Default: 10000`,
+								Validators: []validator.Float64{
+									float64validator.AtLeast(0),
+								},
 							},
 							"tls_client_auth_cert_id": schema.StringAttribute{
 								Optional:    true,
@@ -2257,6 +2301,7 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 										Description: `Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged. Not Null`,
 										Validators: []validator.List{
 											speakeasy_listvalidators.NotNull(),
+											listvalidator.SizeAtLeast(1),
 										},
 									},
 								},
@@ -2364,6 +2409,7 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 											Description: `The path of the header value. Not Null`,
 											Validators: []validator.List{
 												speakeasy_listvalidators.NotNull(),
+												listvalidator.SizeAtLeast(1),
 											},
 										},
 									},
@@ -2483,6 +2529,7 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 								Description: `Verify the cryptographic signature of tokens. Disabling this skips verification for every token source, including tokens presented directly by clients (bearer); this is insecure for that path. To trust only tokens fetched from the identity provider for specific grants, use ` + "`" + `ignore_signature` + "`" + ` instead, which never affects bearer tokens. Default: true`,
 							},
 						},
+						Description: `Configuration for the OpenID Connect auth strategy.`,
 					},
 					"created_at": schema.StringAttribute{
 						Computed: true,
@@ -2553,7 +2600,9 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,

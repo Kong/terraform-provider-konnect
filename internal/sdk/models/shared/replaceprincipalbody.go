@@ -15,8 +15,8 @@ type ReplacePrincipalBody struct {
 	//
 	Description *string `json:"description,omitempty"`
 	// Classifies the kind of principal. `agent` is a deployed AI agent,
-	// `user` is a human in the organization.
-	// When omitted or null, the principal is not classified.
+	// `user` is a human in the organization, and null means not classified.
+	// Immutable after creation: on update or replace, omit it or send the current value.
 	//
 	Type *KongPrincipalType `json:"type,omitempty"`
 	// A map of metadata key-value pairs associated with this entity. This metadata is passed to the data plane to enrich the execution context. During authentication, metadata is inherited and overridden in a hierarchical manner: Directory metadata is inherited by Principals, which is then inherited and overridden by Credentials.
@@ -28,7 +28,9 @@ type ReplacePrincipalBody struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// Whether the principal is active. Inactive principals are treated as nonexistent when authenticating.

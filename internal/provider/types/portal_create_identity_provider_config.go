@@ -3,6 +3,6 @@
 package types
 
 type PortalCreateIdentityProviderConfig struct {
-	OIDCIdentityProviderConfig *OIDCIdentityProviderConfig  `queryParam:"inline" tfsdk:"oidc_identity_provider_config"`
+	OIDCIdentityProviderConfig *OIDCIdentityProviderConfig1 `queryParam:"inline" tfsdk:"oidc_identity_provider_config"`
 	SAMLIdentityProviderConfig *SAMLIdentityProviderConfig1 `queryParam:"inline" tfsdk:"saml_identity_provider_config"`
 }

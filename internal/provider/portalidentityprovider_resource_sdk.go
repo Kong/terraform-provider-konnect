@@ -19,24 +19,32 @@ func (r *PortalIdentityProviderResourceModel) RefreshFromSharedPortalIdentityPro
 		if resp.Config != nil {
 			configPriorData := r.Config
 			r.Config = &tfTypes.PortalCreateIdentityProviderConfig{}
-			if resp.Config.OIDCIdentityProviderConfigOutput != nil {
-				var oidcIdentityProviderConfigPriorData *tfTypes.OIDCIdentityProviderConfig
+			if resp.Config.OIDCIdentityProviderConfigOutput1 != nil {
+				var oidcIdentityProviderConfigPriorData *tfTypes.OIDCIdentityProviderConfig1
 				if configPriorData != nil {
 					oidcIdentityProviderConfigPriorData = configPriorData.OIDCIdentityProviderConfig
 				}
-				r.Config.OIDCIdentityProviderConfig = &tfTypes.OIDCIdentityProviderConfig{}
-				if resp.Config.OIDCIdentityProviderConfigOutput.ClaimMappings == nil {
+				r.Config.OIDCIdentityProviderConfig = &tfTypes.OIDCIdentityProviderConfig1{}
+				if resp.Config.OIDCIdentityProviderConfigOutput1.BackchannelLogout == nil {
+					r.Config.OIDCIdentityProviderConfig.BackchannelLogout = nil
+				} else {
+					r.Config.OIDCIdentityProviderConfig.BackchannelLogout = &tfTypes.OIDCIdentityProviderBackChannelLogout{}
+					r.Config.OIDCIdentityProviderConfig.BackchannelLogout.Enabled = types.BoolPointerValue(resp.Config.OIDCIdentityProviderConfigOutput1.BackchannelLogout.Enabled)
+					r.Config.OIDCIdentityProviderConfig.BackchannelLogout.SessionSupported = types.BoolPointerValue(resp.Config.OIDCIdentityProviderConfigOutput1.BackchannelLogout.SessionSupported)
+					r.Config.OIDCIdentityProviderConfig.BackchannelLogout.Supported = types.BoolPointerValue(resp.Config.OIDCIdentityProviderConfigOutput1.BackchannelLogout.Supported)
+				}
+				if resp.Config.OIDCIdentityProviderConfigOutput1.ClaimMappings == nil {
 					r.Config.OIDCIdentityProviderConfig.ClaimMappings = nil
 				} else {
 					r.Config.OIDCIdentityProviderConfig.ClaimMappings = &tfTypes.OIDCIdentityProviderClaimMappings{}
-					r.Config.OIDCIdentityProviderConfig.ClaimMappings.Email = types.StringPointerValue(resp.Config.OIDCIdentityProviderConfigOutput.ClaimMappings.Email)
-					r.Config.OIDCIdentityProviderConfig.ClaimMappings.Groups = types.StringPointerValue(resp.Config.OIDCIdentityProviderConfigOutput.ClaimMappings.Groups)
-					r.Config.OIDCIdentityProviderConfig.ClaimMappings.Name = types.StringPointerValue(resp.Config.OIDCIdentityProviderConfigOutput.ClaimMappings.Name)
+					r.Config.OIDCIdentityProviderConfig.ClaimMappings.Email = types.StringPointerValue(resp.Config.OIDCIdentityProviderConfigOutput1.ClaimMappings.Email)
+					r.Config.OIDCIdentityProviderConfig.ClaimMappings.Groups = types.StringPointerValue(resp.Config.OIDCIdentityProviderConfigOutput1.ClaimMappings.Groups)
+					r.Config.OIDCIdentityProviderConfig.ClaimMappings.Name = types.StringPointerValue(resp.Config.OIDCIdentityProviderConfigOutput1.ClaimMappings.Name)
 				}
-				r.Config.OIDCIdentityProviderConfig.ClientID = types.StringValue(resp.Config.OIDCIdentityProviderConfigOutput.ClientID)
-				r.Config.OIDCIdentityProviderConfig.IssuerURL = types.StringValue(resp.Config.OIDCIdentityProviderConfigOutput.IssuerURL)
-				r.Config.OIDCIdentityProviderConfig.Scopes = make([]types.String, 0, len(resp.Config.OIDCIdentityProviderConfigOutput.Scopes))
-				for _, v := range resp.Config.OIDCIdentityProviderConfigOutput.Scopes {
+				r.Config.OIDCIdentityProviderConfig.ClientID = types.StringValue(resp.Config.OIDCIdentityProviderConfigOutput1.ClientID)
+				r.Config.OIDCIdentityProviderConfig.IssuerURL = types.StringValue(resp.Config.OIDCIdentityProviderConfigOutput1.IssuerURL)
+				r.Config.OIDCIdentityProviderConfig.Scopes = make([]types.String, 0, len(resp.Config.OIDCIdentityProviderConfigOutput1.Scopes))
+				for _, v := range resp.Config.OIDCIdentityProviderConfigOutput1.Scopes {
 					r.Config.OIDCIdentityProviderConfig.Scopes = append(r.Config.OIDCIdentityProviderConfig.Scopes, types.StringValue(v))
 				}
 				if oidcIdentityProviderConfigPriorData != nil {
@@ -163,7 +171,7 @@ func (r *PortalIdentityProviderResourceModel) ToSharedPortalCreateIdentityProvid
 	}
 	var config *shared.PortalCreateIdentityProviderConfig
 	if r.Config != nil {
-		var oidcIdentityProviderConfig *shared.OIDCIdentityProviderConfig
+		var oidcIdentityProviderConfig1 *shared.OIDCIdentityProviderConfig1
 		if r.Config.OIDCIdentityProviderConfig != nil {
 			var issuerURL string
 			issuerURL = r.Config.OIDCIdentityProviderConfig.IssuerURL.ValueString()
@@ -171,12 +179,9 @@ func (r *PortalIdentityProviderResourceModel) ToSharedPortalCreateIdentityProvid
 			var clientID string
 			clientID = r.Config.OIDCIdentityProviderConfig.ClientID.ValueString()
 
-			clientSecret := new(string)
-			if !r.Config.OIDCIdentityProviderConfig.ClientSecret.IsUnknown() && !r.Config.OIDCIdentityProviderConfig.ClientSecret.IsNull() {
-				*clientSecret = r.Config.OIDCIdentityProviderConfig.ClientSecret.ValueString()
-			} else {
-				clientSecret = nil
-			}
+			var clientSecret string
+			clientSecret = r.Config.OIDCIdentityProviderConfig.ClientSecret.ValueString()
+
 			scopes := make([]string, 0, len(r.Config.OIDCIdentityProviderConfig.Scopes))
 			for scopesIndex := range r.Config.OIDCIdentityProviderConfig.Scopes {
 				scopes = append(scopes, r.Config.OIDCIdentityProviderConfig.Scopes[scopesIndex].ValueString())
@@ -207,7 +212,7 @@ func (r *PortalIdentityProviderResourceModel) ToSharedPortalCreateIdentityProvid
 					Groups: groups,
 				}
 			}
-			oidcIdentityProviderConfig = &shared.OIDCIdentityProviderConfig{
+			oidcIdentityProviderConfig1 = &shared.OIDCIdentityProviderConfig1{
 				IssuerURL:     issuerURL,
 				ClientID:      clientID,
 				ClientSecret:  clientSecret,
@@ -215,9 +220,9 @@ func (r *PortalIdentityProviderResourceModel) ToSharedPortalCreateIdentityProvid
 				ClaimMappings: claimMappings,
 			}
 		}
-		if oidcIdentityProviderConfig != nil {
+		if oidcIdentityProviderConfig1 != nil {
 			config = &shared.PortalCreateIdentityProviderConfig{
-				OIDCIdentityProviderConfig: oidcIdentityProviderConfig,
+				OIDCIdentityProviderConfig1: oidcIdentityProviderConfig1,
 			}
 		}
 		var samlIdentityProviderConfigInput *shared.SAMLIdentityProviderConfigInput
@@ -265,7 +270,7 @@ func (r *PortalIdentityProviderResourceModel) ToSharedPortalUpdateIdentityProvid
 	}
 	var config *shared.PortalUpdateIdentityProviderConfig
 	if r.Config != nil {
-		var oidcIdentityProviderConfig1 *shared.OIDCIdentityProviderConfig1
+		var oidcIdentityProviderConfig2 *shared.OIDCIdentityProviderConfig2
 		if r.Config.OIDCIdentityProviderConfig != nil {
 			issuerURL := new(string)
 			if !r.Config.OIDCIdentityProviderConfig.IssuerURL.IsUnknown() && !r.Config.OIDCIdentityProviderConfig.IssuerURL.IsNull() {
@@ -318,17 +323,30 @@ func (r *PortalIdentityProviderResourceModel) ToSharedPortalUpdateIdentityProvid
 					Groups: groups,
 				}
 			}
-			oidcIdentityProviderConfig1 = &shared.OIDCIdentityProviderConfig1{
-				IssuerURL:     issuerURL,
-				ClientID:      clientID,
-				ClientSecret:  clientSecret,
-				Scopes:        scopes,
-				ClaimMappings: claimMappings,
+			var backchannelLogout *shared.UpdateOIDCIdentityProviderBackChannelLogout
+			if r.Config.OIDCIdentityProviderConfig.BackchannelLogout != nil {
+				enabled1 := new(bool)
+				if !r.Config.OIDCIdentityProviderConfig.BackchannelLogout.Enabled.IsUnknown() && !r.Config.OIDCIdentityProviderConfig.BackchannelLogout.Enabled.IsNull() {
+					*enabled1 = r.Config.OIDCIdentityProviderConfig.BackchannelLogout.Enabled.ValueBool()
+				} else {
+					enabled1 = nil
+				}
+				backchannelLogout = &shared.UpdateOIDCIdentityProviderBackChannelLogout{
+					Enabled: enabled1,
+				}
+			}
+			oidcIdentityProviderConfig2 = &shared.OIDCIdentityProviderConfig2{
+				IssuerURL:         issuerURL,
+				ClientID:          clientID,
+				ClientSecret:      clientSecret,
+				Scopes:            scopes,
+				ClaimMappings:     claimMappings,
+				BackchannelLogout: backchannelLogout,
 			}
 		}
-		if oidcIdentityProviderConfig1 != nil {
+		if oidcIdentityProviderConfig2 != nil {
 			config = &shared.PortalUpdateIdentityProviderConfig{
-				OIDCIdentityProviderConfig1: oidcIdentityProviderConfig1,
+				OIDCIdentityProviderConfig2: oidcIdentityProviderConfig2,
 			}
 		}
 		var samlIdentityProviderConfig2 *shared.SAMLIdentityProviderConfig2

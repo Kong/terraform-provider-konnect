@@ -14,7 +14,7 @@ type ReplaceTrustedIdpBody struct {
 	DisplayName *string `default:"null" json:"display_name"`
 	// JWKS URI of the trusted IdP. Overrides OIDC discovery when set.
 	JwksURI *string `default:"null" json:"jwks_uri"`
-	// Whether a principal is provisioned just-in-time on first exchange when no principal matches the subject_token's issuer and sub claim.
+	// Whether a principal is provisioned just-in-time on first exchange when no principal matches the subject_token's issuer and its identifier claim — `sub` by default, or the claim `jit.mapping.identifier` names.
 	//
 	JitProvisioningEnabled *bool `default:"true" json:"jit_provisioning_enabled"`
 	// Whether vault token exchange is enabled for principals provisioned by this trusted IdP. Defaults to false; it can be set on create, is reset to false when omitted in the replace operation, and can be changed via the patch operation.

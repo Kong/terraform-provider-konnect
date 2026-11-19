@@ -10,10 +10,6 @@ import (
 	"net/http"
 )
 
-var DeleteDirectoryServerList = []string{
-	"https://us.api.konghq.com/",
-}
-
 // DeleteDirectoryQueryParamForce - If true, delete the specified directory and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server.
 type DeleteDirectoryQueryParamForce string
 

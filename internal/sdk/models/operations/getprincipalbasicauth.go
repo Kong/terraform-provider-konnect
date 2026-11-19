@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-var GetPrincipalBasicAuthServerList = []string{
-	"https://us.api.konghq.com/",
-}
-
 type GetPrincipalBasicAuthRequest struct {
 	// ID of the directory
 	DirectoryID string `pathParam:"style=simple,explode=false,name=directoryId"`

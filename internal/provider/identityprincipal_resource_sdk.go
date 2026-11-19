@@ -40,11 +40,7 @@ func (r *IdentityPrincipalResourceModel) RefreshFromSharedKongPrincipal(ctx cont
 		}
 		metadataResult, _ := json.Marshal(resp.Metadata)
 		r.Metadata = jsontypes.NewNormalizedValue(string(metadataResult))
-		if resp.ProvisionedBy != nil {
-			r.ProvisionedBy = types.StringValue(string(*resp.ProvisionedBy))
-		} else {
-			r.ProvisionedBy = types.StringNull()
-		}
+		r.ProvisionedBy = types.StringValue(string(resp.ProvisionedBy))
 		if resp.Type != nil {
 			r.Type = types.StringValue(string(*resp.Type))
 		} else {

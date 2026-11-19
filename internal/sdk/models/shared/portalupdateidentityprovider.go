@@ -11,22 +11,22 @@ import (
 type PortalUpdateIdentityProviderConfigType string
 
 const (
-	PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig1 PortalUpdateIdentityProviderConfigType = "OIDCIdentityProviderConfig1"
+	PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig2 PortalUpdateIdentityProviderConfigType = "OIDCIdentityProviderConfig2"
 	PortalUpdateIdentityProviderConfigTypeSAMLIdentityProviderConfig2 PortalUpdateIdentityProviderConfigType = "SAMLIdentityProviderConfig2"
 )
 
 type PortalUpdateIdentityProviderConfig struct {
-	OIDCIdentityProviderConfig1 *OIDCIdentityProviderConfig1 `queryParam:"inline" union:"member"`
+	OIDCIdentityProviderConfig2 *OIDCIdentityProviderConfig2 `queryParam:"inline" union:"member"`
 	SAMLIdentityProviderConfig2 *SAMLIdentityProviderConfig2 `queryParam:"inline" union:"member"`
 
 	Type PortalUpdateIdentityProviderConfigType
 }
 
-func CreatePortalUpdateIdentityProviderConfigOIDCIdentityProviderConfig1(oidcIdentityProviderConfig1 OIDCIdentityProviderConfig1) PortalUpdateIdentityProviderConfig {
-	typ := PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig1
+func CreatePortalUpdateIdentityProviderConfigOIDCIdentityProviderConfig2(oidcIdentityProviderConfig2 OIDCIdentityProviderConfig2) PortalUpdateIdentityProviderConfig {
+	typ := PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig2
 
 	return PortalUpdateIdentityProviderConfig{
-		OIDCIdentityProviderConfig1: &oidcIdentityProviderConfig1,
+		OIDCIdentityProviderConfig2: &oidcIdentityProviderConfig2,
 		Type:                        typ,
 	}
 }
@@ -52,11 +52,11 @@ func (u *PortalUpdateIdentityProviderConfig) UnmarshalJSON(data []byte) (err err
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
-	var oidcIdentityProviderConfig1 OIDCIdentityProviderConfig1 = OIDCIdentityProviderConfig1{}
-	if err := utils.UnmarshalJSON(data, &oidcIdentityProviderConfig1, "", true, nil); err == nil {
+	var oidcIdentityProviderConfig2 OIDCIdentityProviderConfig2 = OIDCIdentityProviderConfig2{}
+	if err := utils.UnmarshalJSON(data, &oidcIdentityProviderConfig2, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig1,
-			Value: &oidcIdentityProviderConfig1,
+			Type:  PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig2,
+			Value: &oidcIdentityProviderConfig2,
 		})
 	}
 
@@ -81,8 +81,8 @@ func (u *PortalUpdateIdentityProviderConfig) UnmarshalJSON(data []byte) (err err
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(PortalUpdateIdentityProviderConfigType)
 	switch best.Type {
-	case PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig1:
-		u.OIDCIdentityProviderConfig1 = best.Value.(*OIDCIdentityProviderConfig1)
+	case PortalUpdateIdentityProviderConfigTypeOIDCIdentityProviderConfig2:
+		u.OIDCIdentityProviderConfig2 = best.Value.(*OIDCIdentityProviderConfig2)
 		return nil
 	case PortalUpdateIdentityProviderConfigTypeSAMLIdentityProviderConfig2:
 		u.SAMLIdentityProviderConfig2 = best.Value.(*SAMLIdentityProviderConfig2)
@@ -93,8 +93,8 @@ func (u *PortalUpdateIdentityProviderConfig) UnmarshalJSON(data []byte) (err err
 }
 
 func (u PortalUpdateIdentityProviderConfig) MarshalJSON() ([]byte, error) {
-	if u.OIDCIdentityProviderConfig1 != nil {
-		return utils.MarshalJSON(u.OIDCIdentityProviderConfig1, "", true)
+	if u.OIDCIdentityProviderConfig2 != nil {
+		return utils.MarshalJSON(u.OIDCIdentityProviderConfig2, "", true)
 	}
 
 	if u.SAMLIdentityProviderConfig2 != nil {

@@ -35,7 +35,7 @@ func (r *TeamListDataSourceModel) RefreshFromSharedTeamCollectionResponse(ctx co
 					}
 				}
 				data.Name = types.StringValue(dataItem.Name)
-				data.SystemTeam = types.BoolPointerValue(dataItem.SystemTeam)
+				data.SystemTeam = types.BoolValue(dataItem.SystemTeam)
 				data.UpdatedAt = types.StringValue(typeconvert.TimeToString(dataItem.UpdatedAt))
 
 				r.Data = append(r.Data, data)

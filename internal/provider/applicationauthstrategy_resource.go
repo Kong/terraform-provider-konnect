@@ -221,13 +221,11 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					},
 					"supports_multiple_credentials": schema.BoolAttribute{
 						Computed: true,
-						Default:  booldefault.StaticBool(true),
 						PlanModifiers: []planmodifier.Bool{
 							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 						},
 						MarkdownDescription: `Indicates whether this auth strategy supports multiple credentials.` + "\n" +
-							`Always ` + "`" + `true` + "`" + ` for KEY_AUTH.` + "\n" +
-							`Default: true`,
+							`Always ` + "`" + `true` + "`" + ` for KEY_AUTH.`,
 					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,

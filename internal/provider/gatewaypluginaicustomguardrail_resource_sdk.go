@@ -49,7 +49,7 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) RefreshFromSharedAiCustomG
 				r.Config.Params[key2] = types.StringValue(value2)
 			}
 		}
-		r.Config.Request = &tfTypes.AiCustomGuardrailPluginRequest{}
+		r.Config.Request = &tfTypes.Request{}
 		if resp.Config.Request.Auth == nil {
 			r.Config.Request.Auth = nil
 		} else {
@@ -499,7 +499,7 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToSharedAiCustomGuardrailP
 	var url string
 	url = r.Config.Request.URL.ValueString()
 
-	request := shared.AiCustomGuardrailPluginRequest{
+	request := shared.Request{
 		Auth:    auth,
 		Body:    body,
 		Headers: headers,

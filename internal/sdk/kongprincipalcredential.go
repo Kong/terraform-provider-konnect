@@ -49,11 +49,12 @@ func (s *KongPrincipalCredential) CreatePrincipalKey(ctx context.Context, reques
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.CreatePrincipalKeyServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}/api-keys", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -346,11 +347,12 @@ func (s *KongPrincipalCredential) UpdatePrincipalKey(ctx context.Context, reques
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.UpdatePrincipalKeyServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}/api-keys/{apiKeyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -642,11 +644,12 @@ func (s *KongPrincipalCredential) GetIdentityKey(ctx context.Context, request op
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.GetIdentityKeyServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}/api-keys/{apiKeyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -909,11 +912,12 @@ func (s *KongPrincipalCredential) DeletePrincipalKey(ctx context.Context, reques
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.DeletePrincipalKeyServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}/api-keys/{apiKeyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -1173,11 +1177,12 @@ func (s *KongPrincipalCredential) CreatePrincipalBasicAuth(ctx context.Context, 
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.CreatePrincipalBasicAuthServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}/basic-auths", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -1468,11 +1473,12 @@ func (s *KongPrincipalCredential) GetPrincipalBasicAuth(ctx context.Context, req
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.GetPrincipalBasicAuthServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -1735,11 +1741,12 @@ func (s *KongPrincipalCredential) ReplacePrincipalBasicAuth(ctx context.Context,
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.ReplacePrincipalBasicAuthServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -2030,11 +2037,12 @@ func (s *KongPrincipalCredential) DeletePrincipalBasicAuth(ctx context.Context, 
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.DeletePrincipalBasicAuthServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -2295,11 +2303,12 @@ func (s *KongPrincipalCredential) CreatePassword(ctx context.Context, request op
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.CreatePasswordServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}/passwords", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -2591,11 +2600,12 @@ func (s *KongPrincipalCredential) GetPassword(ctx context.Context, request opera
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.GetPasswordServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}/passwords/{passwordId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -2858,11 +2868,12 @@ func (s *KongPrincipalCredential) ReplacePassword(ctx context.Context, request o
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.ReplacePasswordServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}/passwords/{passwordId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -3154,11 +3165,12 @@ func (s *KongPrincipalCredential) DeletePassword(ctx context.Context, request op
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.DeletePasswordServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/principals/{principalId}/basic-auths/{basicAuthId}/passwords/{passwordId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)

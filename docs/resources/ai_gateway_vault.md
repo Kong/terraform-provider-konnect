@@ -196,7 +196,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
@@ -253,7 +255,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
@@ -313,7 +317,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
@@ -365,7 +371,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
@@ -403,7 +411,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
@@ -454,7 +464,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
@@ -828,7 +840,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this vault instance, used as a stable human-readable reference.
 This value is immutable after creation.
 The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.

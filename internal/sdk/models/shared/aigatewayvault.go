@@ -27,7 +27,9 @@ type AIGatewayVaultHashiCorpVault struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
@@ -261,7 +263,9 @@ type AIGatewayVaultConjurVault struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
@@ -509,7 +513,9 @@ type AIGatewayVaultAzureKeyVault struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
@@ -683,7 +689,9 @@ type AIGatewayVaultGoogleSecretManagerVault struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
@@ -898,7 +906,9 @@ type AIGatewayVaultAwsSecretsManagerVault struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
@@ -1036,7 +1046,9 @@ type AIGatewayVaultEnvironmentVariableVault struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
@@ -1162,7 +1174,9 @@ type AIGatewayVaultKonnectConfigStoreVault struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling

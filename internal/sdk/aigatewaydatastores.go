@@ -660,8 +660,16 @@ func (s *AIGatewayDatastores) GetAiGatewayDatastore(ctx context.Context, request
 
 // UpdateAiGatewayDatastore - Update an AI Gateway Datastore
 // Updates the configuration of an existing AI Gateway Datastore.
-//
 // `name` and `type` are immutable after creation; attempting to change either is rejected.
+//
+// Write-only fields in `config`, such as passwords and cloud credentials, are never returned in responses.
+// On update, each write-only field follows these rules:
+//
+// - Omit the field to keep the stored value. A request built from a GET response therefore keeps every stored secret.
+// - Set the field to `null` to clear the stored value.
+// - Set the field to a new value to replace the stored value.
+//
+// If the request changes `config.cloud_authentication.auth_provider`, the stored cloud secrets of the previous provider are not kept.
 func (s *AIGatewayDatastores) UpdateAiGatewayDatastore(ctx context.Context, request operations.UpdateAiGatewayDatastoreRequest, opts ...operations.Option) (*operations.UpdateAiGatewayDatastoreResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

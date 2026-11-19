@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -136,6 +137,9 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 									},
 								},
 								Description: `The message destinations.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 							"dmq_eligible": schema.BoolAttribute{
 								Computed:    true,

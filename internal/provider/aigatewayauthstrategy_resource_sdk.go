@@ -21,7 +21,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 			if resp.AIGatewayAuthStrategyKeyAuthResponse.Config == nil {
 				r.KeyAuth.Config = nil
 			} else {
-				r.KeyAuth.Config = &tfTypes.AIGWKeyAuthGeneratedConfig{}
+				r.KeyAuth.Config = &tfTypes.AIGatewayAuthStrategyKeyAuthConfig{}
 				r.KeyAuth.Config.Anonymous = types.StringPointerValue(resp.AIGatewayAuthStrategyKeyAuthResponse.Config.Anonymous)
 				r.KeyAuth.Config.HideCredentials = types.BoolPointerValue(resp.AIGatewayAuthStrategyKeyAuthResponse.Config.HideCredentials)
 				if resp.AIGatewayAuthStrategyKeyAuthResponse.Config.IdentityRealms != nil {
@@ -103,11 +103,11 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 			if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config == nil {
 				r.OpenidConnect.Config = nil
 			} else {
-				var configPriorData *tfTypes.AIGWOpenIDConnectGeneratedConfig
+				var configPriorData *tfTypes.AIGatewayAuthStrategyOpenIDConnectConfig
 				if openidConnectPriorData != nil {
 					configPriorData = openidConnectPriorData.Config
 				}
-				r.OpenidConnect.Config = &tfTypes.AIGWOpenIDConnectGeneratedConfig{}
+				r.OpenidConnect.Config = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfig{}
 				r.OpenidConnect.Config.Anonymous = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Anonymous)
 				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Audience != nil {
 					r.OpenidConnect.Config.Audience = make([]types.String, 0, len(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Audience))
@@ -285,7 +285,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis.CloudAuthentication == nil {
 						r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication = nil
 					} else {
-						r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
+						r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
 						if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider != nil {
 							r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider))
 						} else {
@@ -305,10 +305,10 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 					}
 					r.OpenidConnect.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis.ClusterMaxRedirections)
 					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis.ClusterNodes != nil {
-						r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+						r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 						for _, clusterNodesItem := range resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis.ClusterNodes {
-							var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+							var clusterNodes tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 							clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 							clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -330,10 +330,10 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 					r.OpenidConnect.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis.SendTimeout)
 					r.OpenidConnect.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis.SentinelMaster)
 					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis.SentinelNodes != nil {
-						r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+						r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 						for _, sentinelNodesItem := range resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis.SentinelNodes {
-							var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+							var sentinelNodes tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 							sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 							sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -670,7 +670,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Principals == nil {
 					r.OpenidConnect.Config.Principals = nil
 				} else {
-					r.OpenidConnect.Config.Principals = &tfTypes.AIGWOpenIDConnectGeneratedConfigPrincipals{}
+					r.OpenidConnect.Config.Principals = &tfTypes.AIGatewayAuthStrategyOpenIDConnectPrincipals{}
 					r.OpenidConnect.Config.Principals.Directory = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Principals.Directory)
 					r.OpenidConnect.Config.Principals.Enabled = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Principals.Enabled)
 					r.OpenidConnect.Config.Principals.ErrorOnMiss = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Principals.ErrorOnMiss)
@@ -751,7 +751,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Redis.CloudAuthentication == nil {
 						r.OpenidConnect.Config.Redis.CloudAuthentication = nil
 					} else {
-						r.OpenidConnect.Config.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
+						r.OpenidConnect.Config.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
 						if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Redis.CloudAuthentication.AuthProvider != nil {
 							r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Redis.CloudAuthentication.AuthProvider))
 						} else {
@@ -771,10 +771,10 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 					}
 					r.OpenidConnect.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Redis.ClusterMaxRedirections)
 					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Redis.ClusterNodes != nil {
-						r.OpenidConnect.Config.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+						r.OpenidConnect.Config.Redis.ClusterNodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 						for _, clusterNodesItem1 := range resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Redis.ClusterNodes {
-							var clusterNodes1 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+							var clusterNodes1 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 							clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
 							clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
@@ -797,10 +797,10 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 					r.OpenidConnect.Config.Redis.SendTimeout = types.Int64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Redis.SendTimeout)
 					r.OpenidConnect.Config.Redis.SentinelMaster = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Redis.SentinelMaster)
 					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Redis.SentinelNodes != nil {
-						r.OpenidConnect.Config.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+						r.OpenidConnect.Config.Redis.SentinelNodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 						for _, sentinelNodesItem1 := range resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Redis.SentinelNodes {
-							var sentinelNodes1 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+							var sentinelNodes1 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 							sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
 							sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
@@ -957,7 +957,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TokenExchange.Cache == nil {
 						r.OpenidConnect.Config.TokenExchange.Cache = nil
 					} else {
-						r.OpenidConnect.Config.TokenExchange.Cache = &tfTypes.AIGWOpenIDConnectGeneratedConfigCache{}
+						r.OpenidConnect.Config.TokenExchange.Cache = &tfTypes.AIGatewayAuthStrategyOpenIDConnectCache{}
 						r.OpenidConnect.Config.TokenExchange.Cache.Enabled = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TokenExchange.Cache.Enabled)
 						r.OpenidConnect.Config.TokenExchange.Cache.TTL = types.Int64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TokenExchange.Cache.TTL)
 					}
@@ -979,7 +979,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TokenExchange.Request == nil {
 						r.OpenidConnect.Config.TokenExchange.Request = nil
 					} else {
-						r.OpenidConnect.Config.TokenExchange.Request = &tfTypes.Request{}
+						r.OpenidConnect.Config.TokenExchange.Request = &tfTypes.AIGatewayAuthStrategyOpenIDConnectRequest{}
 						if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TokenExchange.Request.ActorToken == nil {
 							r.OpenidConnect.Config.TokenExchange.Request.ActorToken = nil
 						} else {
@@ -1470,14 +1470,8 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				})
 			}
 		}
-		var config *shared.AIGWKeyAuthGeneratedConfig
+		var config *shared.AIGatewayAuthStrategyKeyAuthConfig
 		if r.KeyAuth.Config != nil {
-			anonymous := new(string)
-			if !r.KeyAuth.Config.Anonymous.IsUnknown() && !r.KeyAuth.Config.Anonymous.IsNull() {
-				*anonymous = r.KeyAuth.Config.Anonymous.ValueString()
-			} else {
-				anonymous = nil
-			}
 			hideCredentials := new(bool)
 			if !r.KeyAuth.Config.HideCredentials.IsUnknown() && !r.KeyAuth.Config.HideCredentials.IsNull() {
 				*hideCredentials = r.KeyAuth.Config.HideCredentials.ValueBool()
@@ -1500,9 +1494,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					} else {
 						region = nil
 					}
-					scope := new(shared.AIGWKeyAuthGeneratedConfigScope)
+					scope := new(shared.AIGatewayAuthStrategyKeyAuthScope)
 					if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsNull() {
-						*scope = shared.AIGWKeyAuthGeneratedConfigScope(r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
+						*scope = shared.AIGatewayAuthStrategyKeyAuthScope(r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
 					} else {
 						scope = nil
 					}
@@ -1573,8 +1567,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				runOnPreflight = nil
 			}
-			config = &shared.AIGWKeyAuthGeneratedConfig{
-				Anonymous:       anonymous,
+			config = &shared.AIGatewayAuthStrategyKeyAuthConfig{
 				HideCredentials: hideCredentials,
 				IdentityRealms:  identityRealms,
 				KeyInBody:       keyInBody,
@@ -1646,13 +1639,13 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				EnableCredentialManager: enableCredentialManager,
 			}
 		}
-		var config1 *shared.AIGWOpenIDConnectGeneratedConfig
+		var config1 *shared.AIGatewayAuthStrategyOpenIDConnectConfig
 		if r.OpenidConnect.Config != nil {
-			anonymous1 := new(string)
+			anonymous := new(string)
 			if !r.OpenidConnect.Config.Anonymous.IsUnknown() && !r.OpenidConnect.Config.Anonymous.IsNull() {
-				*anonymous1 = r.OpenidConnect.Config.Anonymous.ValueString()
+				*anonymous = r.OpenidConnect.Config.Anonymous.ValueString()
 			} else {
-				anonymous1 = nil
+				anonymous = nil
 			}
 			var audience []string
 			if r.OpenidConnect.Config.Audience != nil {
@@ -2060,11 +2053,11 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			}
 			var clusterCacheRedis *shared.ClusterCacheRedis
 			if r.OpenidConnect.Config.ClusterCacheRedis != nil {
-				var cloudAuthentication *shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication
+				var cloudAuthentication *shared.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication
 				if r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication != nil {
-					authProvider := new(shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider)
+					authProvider := new(shared.AIGatewayAuthStrategyOpenIDConnectConfigAuthProvider)
 					if !r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider.IsNull() {
-						*authProvider = shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider(r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider.ValueString())
+						*authProvider = shared.AIGatewayAuthStrategyOpenIDConnectConfigAuthProvider(r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider.ValueString())
 					} else {
 						authProvider = nil
 					}
@@ -2134,7 +2127,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					} else {
 						gcpServiceAccountJSON = nil
 					}
-					cloudAuthentication = &shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{
+					cloudAuthentication = &shared.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{
 						AuthProvider:          authProvider,
 						AwsAccessKeyID:        awsAccessKeyID,
 						AwsAssumeRoleArn:      awsAssumeRoleArn,
@@ -2155,9 +2148,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				} else {
 					clusterMaxRedirections = nil
 				}
-				var clusterNodes []shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+				var clusterNodes []shared.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 				if r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes != nil {
-					clusterNodes = make([]shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes))
+					clusterNodes = make([]shared.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes))
 					for clusterNodesIndex := range r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes {
 						ip := new(string)
 						if !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
@@ -2171,7 +2164,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 						} else {
 							port = nil
 						}
-						clusterNodes = append(clusterNodes, shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{
+						clusterNodes = append(clusterNodes, shared.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{
 							IP:   ip,
 							Port: port,
 						})
@@ -2243,9 +2236,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				} else {
 					sentinelMaster = nil
 				}
-				var sentinelNodes []shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+				var sentinelNodes []shared.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 				if r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes != nil {
-					sentinelNodes = make([]shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes))
+					sentinelNodes = make([]shared.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes))
 					for sentinelNodesIndex := range r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes {
 						host1 := new(string)
 						if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
@@ -2259,7 +2252,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 						} else {
 							port2 = nil
 						}
-						sentinelNodes = append(sentinelNodes, shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{
+						sentinelNodes = append(sentinelNodes, shared.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{
 							Host: host1,
 							Port: port2,
 						})
@@ -2271,9 +2264,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				} else {
 					sentinelPassword = nil
 				}
-				sentinelRole := new(shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole)
+				sentinelRole := new(shared.AIGatewayAuthStrategyOpenIDConnectConfigSentinelRole)
 				if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelRole.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelRole.IsNull() {
-					*sentinelRole = shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole(r.OpenidConnect.Config.ClusterCacheRedis.SentinelRole.ValueString())
+					*sentinelRole = shared.AIGatewayAuthStrategyOpenIDConnectConfigSentinelRole(r.OpenidConnect.Config.ClusterCacheRedis.SentinelRole.ValueString())
 				} else {
 					sentinelRole = nil
 				}
@@ -2870,7 +2863,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				preserveQueryArgs = nil
 			}
-			var principals1 *shared.AIGWOpenIDConnectGeneratedConfigPrincipals
+			var principals1 *shared.AIGatewayAuthStrategyOpenIDConnectPrincipals
 			if r.OpenidConnect.Config.Principals != nil {
 				directory1 := new(string)
 				if !r.OpenidConnect.Config.Principals.Directory.IsUnknown() && !r.OpenidConnect.Config.Principals.Directory.IsNull() {
@@ -2935,7 +2928,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 						principalClaim = append(principalClaim, r.OpenidConnect.Config.Principals.PrincipalClaim[principalClaimIndex].ValueString())
 					}
 				}
-				principals1 = &shared.AIGWOpenIDConnectGeneratedConfigPrincipals{
+				principals1 = &shared.AIGatewayAuthStrategyOpenIDConnectPrincipals{
 					Directory:           directory1,
 					Enabled:             enabled1,
 					ErrorOnMiss:         errorOnMiss1,
@@ -3014,11 +3007,11 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			}
 			var redis *shared.Redis
 			if r.OpenidConnect.Config.Redis != nil {
-				var cloudAuthentication1 *shared.AIGWOpenIDConnectGeneratedConfigCloudAuthentication
+				var cloudAuthentication1 *shared.AIGatewayAuthStrategyOpenIDConnectCloudAuthentication
 				if r.OpenidConnect.Config.Redis.CloudAuthentication != nil {
-					authProvider1 := new(shared.AIGWOpenIDConnectGeneratedConfigAuthProvider)
+					authProvider1 := new(shared.AIGatewayAuthStrategyOpenIDConnectAuthProvider)
 					if !r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.IsNull() {
-						*authProvider1 = shared.AIGWOpenIDConnectGeneratedConfigAuthProvider(r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.ValueString())
+						*authProvider1 = shared.AIGatewayAuthStrategyOpenIDConnectAuthProvider(r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.ValueString())
 					} else {
 						authProvider1 = nil
 					}
@@ -3088,7 +3081,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					} else {
 						gcpServiceAccountJson1 = nil
 					}
-					cloudAuthentication1 = &shared.AIGWOpenIDConnectGeneratedConfigCloudAuthentication{
+					cloudAuthentication1 = &shared.AIGatewayAuthStrategyOpenIDConnectCloudAuthentication{
 						AuthProvider:          authProvider1,
 						AwsAccessKeyID:        awsAccessKeyId1,
 						AwsAssumeRoleArn:      awsAssumeRoleArn1,
@@ -3109,9 +3102,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				} else {
 					clusterMaxRedirections1 = nil
 				}
-				var clusterNodes1 []shared.AIGWOpenIDConnectGeneratedConfigClusterNodes
+				var clusterNodes1 []shared.AIGatewayAuthStrategyOpenIDConnectClusterNodes
 				if r.OpenidConnect.Config.Redis.ClusterNodes != nil {
-					clusterNodes1 = make([]shared.AIGWOpenIDConnectGeneratedConfigClusterNodes, 0, len(r.OpenidConnect.Config.Redis.ClusterNodes))
+					clusterNodes1 = make([]shared.AIGatewayAuthStrategyOpenIDConnectClusterNodes, 0, len(r.OpenidConnect.Config.Redis.ClusterNodes))
 					for clusterNodesIndex1 := range r.OpenidConnect.Config.Redis.ClusterNodes {
 						ip1 := new(string)
 						if !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsUnknown() && !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsNull() {
@@ -3125,7 +3118,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 						} else {
 							port3 = nil
 						}
-						clusterNodes1 = append(clusterNodes1, shared.AIGWOpenIDConnectGeneratedConfigClusterNodes{
+						clusterNodes1 = append(clusterNodes1, shared.AIGatewayAuthStrategyOpenIDConnectClusterNodes{
 							IP:   ip1,
 							Port: port3,
 						})
@@ -3203,9 +3196,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				} else {
 					sentinelMaster1 = nil
 				}
-				var sentinelNodes1 []shared.AIGWOpenIDConnectGeneratedConfigSentinelNodes
+				var sentinelNodes1 []shared.AIGatewayAuthStrategyOpenIDConnectSentinelNodes
 				if r.OpenidConnect.Config.Redis.SentinelNodes != nil {
-					sentinelNodes1 = make([]shared.AIGWOpenIDConnectGeneratedConfigSentinelNodes, 0, len(r.OpenidConnect.Config.Redis.SentinelNodes))
+					sentinelNodes1 = make([]shared.AIGatewayAuthStrategyOpenIDConnectSentinelNodes, 0, len(r.OpenidConnect.Config.Redis.SentinelNodes))
 					for sentinelNodesIndex1 := range r.OpenidConnect.Config.Redis.SentinelNodes {
 						host3 := new(string)
 						if !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsNull() {
@@ -3219,7 +3212,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 						} else {
 							port5 = nil
 						}
-						sentinelNodes1 = append(sentinelNodes1, shared.AIGWOpenIDConnectGeneratedConfigSentinelNodes{
+						sentinelNodes1 = append(sentinelNodes1, shared.AIGatewayAuthStrategyOpenIDConnectSentinelNodes{
 							Host: host3,
 							Port: port5,
 						})
@@ -3231,9 +3224,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				} else {
 					sentinelPassword1 = nil
 				}
-				sentinelRole1 := new(shared.AIGWOpenIDConnectGeneratedConfigSentinelRole)
+				sentinelRole1 := new(shared.AIGatewayAuthStrategyOpenIDConnectSentinelRole)
 				if !r.OpenidConnect.Config.Redis.SentinelRole.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelRole.IsNull() {
-					*sentinelRole1 = shared.AIGWOpenIDConnectGeneratedConfigSentinelRole(r.OpenidConnect.Config.Redis.SentinelRole.ValueString())
+					*sentinelRole1 = shared.AIGatewayAuthStrategyOpenIDConnectSentinelRole(r.OpenidConnect.Config.Redis.SentinelRole.ValueString())
 				} else {
 					sentinelRole1 = nil
 				}
@@ -3631,15 +3624,15 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				tokenEndpoint = nil
 			}
-			tokenEndpointAuthMethod := new(shared.AIGWOpenIDConnectGeneratedConfigTokenEndpointAuthMethod)
+			tokenEndpointAuthMethod := new(shared.AIGatewayAuthStrategyOpenIDConnectTokenEndpointAuthMethod)
 			if !r.OpenidConnect.Config.TokenEndpointAuthMethod.IsUnknown() && !r.OpenidConnect.Config.TokenEndpointAuthMethod.IsNull() {
-				*tokenEndpointAuthMethod = shared.AIGWOpenIDConnectGeneratedConfigTokenEndpointAuthMethod(r.OpenidConnect.Config.TokenEndpointAuthMethod.ValueString())
+				*tokenEndpointAuthMethod = shared.AIGatewayAuthStrategyOpenIDConnectTokenEndpointAuthMethod(r.OpenidConnect.Config.TokenEndpointAuthMethod.ValueString())
 			} else {
 				tokenEndpointAuthMethod = nil
 			}
 			var tokenExchange *shared.TokenExchange
 			if r.OpenidConnect.Config.TokenExchange != nil {
-				var cache *shared.AIGWOpenIDConnectGeneratedConfigCache
+				var cache *shared.AIGatewayAuthStrategyOpenIDConnectCache
 				if r.OpenidConnect.Config.TokenExchange.Cache != nil {
 					enabled2 := new(bool)
 					if !r.OpenidConnect.Config.TokenExchange.Cache.Enabled.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.Cache.Enabled.IsNull() {
@@ -3653,14 +3646,14 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					} else {
 						ttl = nil
 					}
-					cache = &shared.AIGWOpenIDConnectGeneratedConfigCache{
+					cache = &shared.AIGatewayAuthStrategyOpenIDConnectCache{
 						Enabled: enabled2,
 						TTL:     ttl,
 					}
 				}
-				grantType := new(shared.AIGWOpenIDConnectGeneratedConfigGrantType)
+				grantType := new(shared.AIGatewayAuthStrategyOpenIDConnectGrantType)
 				if !r.OpenidConnect.Config.TokenExchange.GrantType.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.GrantType.IsNull() {
-					*grantType = shared.AIGWOpenIDConnectGeneratedConfigGrantType(r.OpenidConnect.Config.TokenExchange.GrantType.ValueString())
+					*grantType = shared.AIGatewayAuthStrategyOpenIDConnectGrantType(r.OpenidConnect.Config.TokenExchange.GrantType.ValueString())
 				} else {
 					grantType = nil
 				}
@@ -3676,7 +3669,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				} else {
 					provider = nil
 				}
-				var request *shared.Request
+				var request *shared.AIGatewayAuthStrategyOpenIDConnectRequest
 				if r.OpenidConnect.Config.TokenExchange.Request != nil {
 					var actorToken *shared.ActorToken
 					if r.OpenidConnect.Config.TokenExchange.Request.ActorToken != nil {
@@ -3686,9 +3679,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 						} else {
 							headerName = nil
 						}
-						source := new(shared.AIGWOpenIDConnectGeneratedConfigSource)
+						source := new(shared.AIGatewayAuthStrategyOpenIDConnectSource)
 						if !r.OpenidConnect.Config.TokenExchange.Request.ActorToken.Source.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.Request.ActorToken.Source.IsNull() {
-							*source = shared.AIGWOpenIDConnectGeneratedConfigSource(r.OpenidConnect.Config.TokenExchange.Request.ActorToken.Source.ValueString())
+							*source = shared.AIGatewayAuthStrategyOpenIDConnectSource(r.OpenidConnect.Config.TokenExchange.Request.ActorToken.Source.ValueString())
 						} else {
 							source = nil
 						}
@@ -3777,7 +3770,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 							scopes1 = append(scopes1, r.OpenidConnect.Config.TokenExchange.Request.Scopes[scopesIndex1].ValueString())
 						}
 					}
-					request = &shared.Request{
+					request = &shared.AIGatewayAuthStrategyOpenIDConnectRequest{
 						ActorToken:     actorToken,
 						Audience:       audience1,
 						EmptyAudience:  emptyAudience,
@@ -4141,8 +4134,8 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			for credentialClaimIndex := range r.OpenidConnect.Config.CredentialClaim {
 				credentialClaim = append(credentialClaim, r.OpenidConnect.Config.CredentialClaim[credentialClaimIndex].ValueString())
 			}
-			config1 = &shared.AIGWOpenIDConnectGeneratedConfig{
-				Anonymous:                              anonymous1,
+			config1 = &shared.AIGatewayAuthStrategyOpenIDConnectConfig{
+				Anonymous:                              anonymous,
 				Audience:                               audience,
 				AudienceClaim:                          audienceClaim,
 				AudienceRequired:                       audienceRequired,
@@ -4435,14 +4428,8 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				})
 			}
 		}
-		var config *shared.AIGWKeyAuthGeneratedConfig
+		var config *shared.AIGatewayAuthStrategyKeyAuthConfig
 		if r.KeyAuth.Config != nil {
-			anonymous := new(string)
-			if !r.KeyAuth.Config.Anonymous.IsUnknown() && !r.KeyAuth.Config.Anonymous.IsNull() {
-				*anonymous = r.KeyAuth.Config.Anonymous.ValueString()
-			} else {
-				anonymous = nil
-			}
 			hideCredentials := new(bool)
 			if !r.KeyAuth.Config.HideCredentials.IsUnknown() && !r.KeyAuth.Config.HideCredentials.IsNull() {
 				*hideCredentials = r.KeyAuth.Config.HideCredentials.ValueBool()
@@ -4465,9 +4452,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					} else {
 						region = nil
 					}
-					scope := new(shared.AIGWKeyAuthGeneratedConfigScope)
+					scope := new(shared.AIGatewayAuthStrategyKeyAuthScope)
 					if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsNull() {
-						*scope = shared.AIGWKeyAuthGeneratedConfigScope(r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
+						*scope = shared.AIGatewayAuthStrategyKeyAuthScope(r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
 					} else {
 						scope = nil
 					}
@@ -4538,8 +4525,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				runOnPreflight = nil
 			}
-			config = &shared.AIGWKeyAuthGeneratedConfig{
-				Anonymous:       anonymous,
+			config = &shared.AIGatewayAuthStrategyKeyAuthConfig{
 				HideCredentials: hideCredentials,
 				IdentityRealms:  identityRealms,
 				KeyInBody:       keyInBody,
@@ -4611,13 +4597,13 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				EnableCredentialManager: enableCredentialManager,
 			}
 		}
-		var config1 *shared.AIGWOpenIDConnectGeneratedConfig
+		var config1 *shared.AIGatewayAuthStrategyOpenIDConnectConfig
 		if r.OpenidConnect.Config != nil {
-			anonymous1 := new(string)
+			anonymous := new(string)
 			if !r.OpenidConnect.Config.Anonymous.IsUnknown() && !r.OpenidConnect.Config.Anonymous.IsNull() {
-				*anonymous1 = r.OpenidConnect.Config.Anonymous.ValueString()
+				*anonymous = r.OpenidConnect.Config.Anonymous.ValueString()
 			} else {
-				anonymous1 = nil
+				anonymous = nil
 			}
 			var audience []string
 			if r.OpenidConnect.Config.Audience != nil {
@@ -5025,11 +5011,11 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			}
 			var clusterCacheRedis *shared.ClusterCacheRedis
 			if r.OpenidConnect.Config.ClusterCacheRedis != nil {
-				var cloudAuthentication *shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication
+				var cloudAuthentication *shared.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication
 				if r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication != nil {
-					authProvider := new(shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider)
+					authProvider := new(shared.AIGatewayAuthStrategyOpenIDConnectConfigAuthProvider)
 					if !r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider.IsNull() {
-						*authProvider = shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisAuthProvider(r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider.ValueString())
+						*authProvider = shared.AIGatewayAuthStrategyOpenIDConnectConfigAuthProvider(r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider.ValueString())
 					} else {
 						authProvider = nil
 					}
@@ -5099,7 +5085,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					} else {
 						gcpServiceAccountJSON = nil
 					}
-					cloudAuthentication = &shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{
+					cloudAuthentication = &shared.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{
 						AuthProvider:          authProvider,
 						AwsAccessKeyID:        awsAccessKeyID,
 						AwsAssumeRoleArn:      awsAssumeRoleArn,
@@ -5120,9 +5106,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				} else {
 					clusterMaxRedirections = nil
 				}
-				var clusterNodes []shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+				var clusterNodes []shared.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 				if r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes != nil {
-					clusterNodes = make([]shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes))
+					clusterNodes = make([]shared.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes))
 					for clusterNodesIndex := range r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes {
 						ip := new(string)
 						if !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
@@ -5136,7 +5122,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 						} else {
 							port = nil
 						}
-						clusterNodes = append(clusterNodes, shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{
+						clusterNodes = append(clusterNodes, shared.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{
 							IP:   ip,
 							Port: port,
 						})
@@ -5208,9 +5194,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				} else {
 					sentinelMaster = nil
 				}
-				var sentinelNodes []shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+				var sentinelNodes []shared.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 				if r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes != nil {
-					sentinelNodes = make([]shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes))
+					sentinelNodes = make([]shared.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes, 0, len(r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes))
 					for sentinelNodesIndex := range r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes {
 						host1 := new(string)
 						if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
@@ -5224,7 +5210,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 						} else {
 							port2 = nil
 						}
-						sentinelNodes = append(sentinelNodes, shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{
+						sentinelNodes = append(sentinelNodes, shared.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{
 							Host: host1,
 							Port: port2,
 						})
@@ -5236,9 +5222,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				} else {
 					sentinelPassword = nil
 				}
-				sentinelRole := new(shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole)
+				sentinelRole := new(shared.AIGatewayAuthStrategyOpenIDConnectConfigSentinelRole)
 				if !r.OpenidConnect.Config.ClusterCacheRedis.SentinelRole.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SentinelRole.IsNull() {
-					*sentinelRole = shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelRole(r.OpenidConnect.Config.ClusterCacheRedis.SentinelRole.ValueString())
+					*sentinelRole = shared.AIGatewayAuthStrategyOpenIDConnectConfigSentinelRole(r.OpenidConnect.Config.ClusterCacheRedis.SentinelRole.ValueString())
 				} else {
 					sentinelRole = nil
 				}
@@ -5835,7 +5821,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				preserveQueryArgs = nil
 			}
-			var principals1 *shared.AIGWOpenIDConnectGeneratedConfigPrincipals
+			var principals1 *shared.AIGatewayAuthStrategyOpenIDConnectPrincipals
 			if r.OpenidConnect.Config.Principals != nil {
 				directory1 := new(string)
 				if !r.OpenidConnect.Config.Principals.Directory.IsUnknown() && !r.OpenidConnect.Config.Principals.Directory.IsNull() {
@@ -5900,7 +5886,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 						principalClaim = append(principalClaim, r.OpenidConnect.Config.Principals.PrincipalClaim[principalClaimIndex].ValueString())
 					}
 				}
-				principals1 = &shared.AIGWOpenIDConnectGeneratedConfigPrincipals{
+				principals1 = &shared.AIGatewayAuthStrategyOpenIDConnectPrincipals{
 					Directory:           directory1,
 					Enabled:             enabled1,
 					ErrorOnMiss:         errorOnMiss1,
@@ -5979,11 +5965,11 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			}
 			var redis *shared.Redis
 			if r.OpenidConnect.Config.Redis != nil {
-				var cloudAuthentication1 *shared.AIGWOpenIDConnectGeneratedConfigCloudAuthentication
+				var cloudAuthentication1 *shared.AIGatewayAuthStrategyOpenIDConnectCloudAuthentication
 				if r.OpenidConnect.Config.Redis.CloudAuthentication != nil {
-					authProvider1 := new(shared.AIGWOpenIDConnectGeneratedConfigAuthProvider)
+					authProvider1 := new(shared.AIGatewayAuthStrategyOpenIDConnectAuthProvider)
 					if !r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.IsNull() {
-						*authProvider1 = shared.AIGWOpenIDConnectGeneratedConfigAuthProvider(r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.ValueString())
+						*authProvider1 = shared.AIGatewayAuthStrategyOpenIDConnectAuthProvider(r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.ValueString())
 					} else {
 						authProvider1 = nil
 					}
@@ -6053,7 +6039,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					} else {
 						gcpServiceAccountJson1 = nil
 					}
-					cloudAuthentication1 = &shared.AIGWOpenIDConnectGeneratedConfigCloudAuthentication{
+					cloudAuthentication1 = &shared.AIGatewayAuthStrategyOpenIDConnectCloudAuthentication{
 						AuthProvider:          authProvider1,
 						AwsAccessKeyID:        awsAccessKeyId1,
 						AwsAssumeRoleArn:      awsAssumeRoleArn1,
@@ -6074,9 +6060,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				} else {
 					clusterMaxRedirections1 = nil
 				}
-				var clusterNodes1 []shared.AIGWOpenIDConnectGeneratedConfigClusterNodes
+				var clusterNodes1 []shared.AIGatewayAuthStrategyOpenIDConnectClusterNodes
 				if r.OpenidConnect.Config.Redis.ClusterNodes != nil {
-					clusterNodes1 = make([]shared.AIGWOpenIDConnectGeneratedConfigClusterNodes, 0, len(r.OpenidConnect.Config.Redis.ClusterNodes))
+					clusterNodes1 = make([]shared.AIGatewayAuthStrategyOpenIDConnectClusterNodes, 0, len(r.OpenidConnect.Config.Redis.ClusterNodes))
 					for clusterNodesIndex1 := range r.OpenidConnect.Config.Redis.ClusterNodes {
 						ip1 := new(string)
 						if !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsUnknown() && !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsNull() {
@@ -6090,7 +6076,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 						} else {
 							port3 = nil
 						}
-						clusterNodes1 = append(clusterNodes1, shared.AIGWOpenIDConnectGeneratedConfigClusterNodes{
+						clusterNodes1 = append(clusterNodes1, shared.AIGatewayAuthStrategyOpenIDConnectClusterNodes{
 							IP:   ip1,
 							Port: port3,
 						})
@@ -6168,9 +6154,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				} else {
 					sentinelMaster1 = nil
 				}
-				var sentinelNodes1 []shared.AIGWOpenIDConnectGeneratedConfigSentinelNodes
+				var sentinelNodes1 []shared.AIGatewayAuthStrategyOpenIDConnectSentinelNodes
 				if r.OpenidConnect.Config.Redis.SentinelNodes != nil {
-					sentinelNodes1 = make([]shared.AIGWOpenIDConnectGeneratedConfigSentinelNodes, 0, len(r.OpenidConnect.Config.Redis.SentinelNodes))
+					sentinelNodes1 = make([]shared.AIGatewayAuthStrategyOpenIDConnectSentinelNodes, 0, len(r.OpenidConnect.Config.Redis.SentinelNodes))
 					for sentinelNodesIndex1 := range r.OpenidConnect.Config.Redis.SentinelNodes {
 						host3 := new(string)
 						if !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsNull() {
@@ -6184,7 +6170,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 						} else {
 							port5 = nil
 						}
-						sentinelNodes1 = append(sentinelNodes1, shared.AIGWOpenIDConnectGeneratedConfigSentinelNodes{
+						sentinelNodes1 = append(sentinelNodes1, shared.AIGatewayAuthStrategyOpenIDConnectSentinelNodes{
 							Host: host3,
 							Port: port5,
 						})
@@ -6196,9 +6182,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				} else {
 					sentinelPassword1 = nil
 				}
-				sentinelRole1 := new(shared.AIGWOpenIDConnectGeneratedConfigSentinelRole)
+				sentinelRole1 := new(shared.AIGatewayAuthStrategyOpenIDConnectSentinelRole)
 				if !r.OpenidConnect.Config.Redis.SentinelRole.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelRole.IsNull() {
-					*sentinelRole1 = shared.AIGWOpenIDConnectGeneratedConfigSentinelRole(r.OpenidConnect.Config.Redis.SentinelRole.ValueString())
+					*sentinelRole1 = shared.AIGatewayAuthStrategyOpenIDConnectSentinelRole(r.OpenidConnect.Config.Redis.SentinelRole.ValueString())
 				} else {
 					sentinelRole1 = nil
 				}
@@ -6596,15 +6582,15 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				tokenEndpoint = nil
 			}
-			tokenEndpointAuthMethod := new(shared.AIGWOpenIDConnectGeneratedConfigTokenEndpointAuthMethod)
+			tokenEndpointAuthMethod := new(shared.AIGatewayAuthStrategyOpenIDConnectTokenEndpointAuthMethod)
 			if !r.OpenidConnect.Config.TokenEndpointAuthMethod.IsUnknown() && !r.OpenidConnect.Config.TokenEndpointAuthMethod.IsNull() {
-				*tokenEndpointAuthMethod = shared.AIGWOpenIDConnectGeneratedConfigTokenEndpointAuthMethod(r.OpenidConnect.Config.TokenEndpointAuthMethod.ValueString())
+				*tokenEndpointAuthMethod = shared.AIGatewayAuthStrategyOpenIDConnectTokenEndpointAuthMethod(r.OpenidConnect.Config.TokenEndpointAuthMethod.ValueString())
 			} else {
 				tokenEndpointAuthMethod = nil
 			}
 			var tokenExchange *shared.TokenExchange
 			if r.OpenidConnect.Config.TokenExchange != nil {
-				var cache *shared.AIGWOpenIDConnectGeneratedConfigCache
+				var cache *shared.AIGatewayAuthStrategyOpenIDConnectCache
 				if r.OpenidConnect.Config.TokenExchange.Cache != nil {
 					enabled2 := new(bool)
 					if !r.OpenidConnect.Config.TokenExchange.Cache.Enabled.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.Cache.Enabled.IsNull() {
@@ -6618,14 +6604,14 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					} else {
 						ttl = nil
 					}
-					cache = &shared.AIGWOpenIDConnectGeneratedConfigCache{
+					cache = &shared.AIGatewayAuthStrategyOpenIDConnectCache{
 						Enabled: enabled2,
 						TTL:     ttl,
 					}
 				}
-				grantType := new(shared.AIGWOpenIDConnectGeneratedConfigGrantType)
+				grantType := new(shared.AIGatewayAuthStrategyOpenIDConnectGrantType)
 				if !r.OpenidConnect.Config.TokenExchange.GrantType.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.GrantType.IsNull() {
-					*grantType = shared.AIGWOpenIDConnectGeneratedConfigGrantType(r.OpenidConnect.Config.TokenExchange.GrantType.ValueString())
+					*grantType = shared.AIGatewayAuthStrategyOpenIDConnectGrantType(r.OpenidConnect.Config.TokenExchange.GrantType.ValueString())
 				} else {
 					grantType = nil
 				}
@@ -6641,7 +6627,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				} else {
 					provider = nil
 				}
-				var request *shared.Request
+				var request *shared.AIGatewayAuthStrategyOpenIDConnectRequest
 				if r.OpenidConnect.Config.TokenExchange.Request != nil {
 					var actorToken *shared.ActorToken
 					if r.OpenidConnect.Config.TokenExchange.Request.ActorToken != nil {
@@ -6651,9 +6637,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 						} else {
 							headerName = nil
 						}
-						source := new(shared.AIGWOpenIDConnectGeneratedConfigSource)
+						source := new(shared.AIGatewayAuthStrategyOpenIDConnectSource)
 						if !r.OpenidConnect.Config.TokenExchange.Request.ActorToken.Source.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.Request.ActorToken.Source.IsNull() {
-							*source = shared.AIGWOpenIDConnectGeneratedConfigSource(r.OpenidConnect.Config.TokenExchange.Request.ActorToken.Source.ValueString())
+							*source = shared.AIGatewayAuthStrategyOpenIDConnectSource(r.OpenidConnect.Config.TokenExchange.Request.ActorToken.Source.ValueString())
 						} else {
 							source = nil
 						}
@@ -6742,7 +6728,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 							scopes1 = append(scopes1, r.OpenidConnect.Config.TokenExchange.Request.Scopes[scopesIndex1].ValueString())
 						}
 					}
-					request = &shared.Request{
+					request = &shared.AIGatewayAuthStrategyOpenIDConnectRequest{
 						ActorToken:     actorToken,
 						Audience:       audience1,
 						EmptyAudience:  emptyAudience,
@@ -7106,8 +7092,8 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			for credentialClaimIndex := range r.OpenidConnect.Config.CredentialClaim {
 				credentialClaim = append(credentialClaim, r.OpenidConnect.Config.CredentialClaim[credentialClaimIndex].ValueString())
 			}
-			config1 = &shared.AIGWOpenIDConnectGeneratedConfig{
-				Anonymous:                              anonymous1,
+			config1 = &shared.AIGatewayAuthStrategyOpenIDConnectConfig{
+				Anonymous:                              anonymous,
 				Audience:                               audience,
 				AudienceClaim:                          audienceClaim,
 				AudienceRequired:                       audienceRequired,

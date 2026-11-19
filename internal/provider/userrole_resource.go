@@ -7,15 +7,21 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	custom_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -34,12 +40,14 @@ type UserRoleResource struct {
 
 // UserRoleResourceModel describes the resource data model.
 type UserRoleResourceModel struct {
-	EntityID       types.String `tfsdk:"entity_id"`
-	EntityRegion   types.String `tfsdk:"entity_region"`
-	EntityTypeName types.String `tfsdk:"entity_type_name"`
-	ID             types.String `tfsdk:"id"`
-	RoleName       types.String `tfsdk:"role_name"`
-	UserID         types.String `tfsdk:"user_id"`
+	EntityID       types.String   `tfsdk:"entity_id"`
+	EntityIds      []types.String `tfsdk:"entity_ids"`
+	EntityRegion   types.String   `tfsdk:"entity_region"`
+	EntityTypeName types.String   `tfsdk:"entity_type_name"`
+	ID             types.String   `tfsdk:"id"`
+	KonnectManaged types.Bool     `tfsdk:"konnect_managed"`
+	RoleName       types.String   `tfsdk:"role_name"`
+	UserID         types.String   `tfsdk:"user_id"`
 }
 
 func (r *UserRoleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -51,11 +59,31 @@ func (r *UserRoleResource) Schema(ctx context.Context, req resource.SchemaReques
 		MarkdownDescription: "UserRole Resource",
 		Attributes: map[string]schema.Attribute{
 			"entity_id": schema.StringAttribute{
+				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The ID of the entity. Requires replacement if changed.`,
+				DeprecationMessage: `Use entity_ids instead. entity_id is deprecated and will be removed in a future release.`,
+				Description:        `The ID of the entity. Mutually exclusive with ` + "`" + `entity_ids` + "`" + `. Requires replacement if changed.`,
+				Validators: []validator.String{
+					custom_stringvalidators.EntityIDEntityIdsValidator(),
+				},
+			},
+			"entity_ids": schema.ListAttribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
+				ElementType: types.StringType,
+				Description: `The IDs of the entities associated with this role assignment. Mutually exclusive with entity_id; exactly one of entity_id or entity_ids must be provided. Requires replacement if changed.`,
+				Validators: []validator.List{
+					listvalidator.SizeAtLeast(1),
+					listvalidator.UniqueValues(),
+				},
 			},
 			"entity_region": schema.StringAttribute{
 				Computed: true,
@@ -76,6 +104,16 @@ func (r *UserRoleResource) Schema(ctx context.Context, req resource.SchemaReques
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The ID of the role assignment.`,
+			},
+			"konnect_managed": schema.BoolAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+				},
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`Indicates that the role is assigned and removed only by Konnect.`,
 			},
 			"role_name": schema.StringAttribute{
 				Optional: true,

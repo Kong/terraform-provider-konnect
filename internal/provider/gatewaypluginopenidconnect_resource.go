@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -641,6 +642,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 									},
 								},
 								Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 							"connect_timeout": schema.Int64Attribute{
 								Computed:    true,
@@ -742,6 +746,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 									},
 								},
 								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 							"sentinel_password": schema.StringAttribute{
 								Optional:    true,
@@ -887,6 +894,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 									Description: `The path of the header value. Not Null`,
 									Validators: []validator.List{
 										speakeasy_listvalidators.NotNull(),
+										listvalidator.SizeAtLeast(1),
 									},
 								},
 							},
@@ -1316,6 +1324,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `Token claim to use for the Kong Identity lookup. If multiple values are set, it means the claim is inside a nested object of the token payload. When principal_by is also set, performs a custom identity lookup (type=custom). When set alone, performs an OIDC lookup using this claim name instead of the default 'sub'.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 						},
 						Description: `Configuration for Kong Identity principal hydration after token verification.`,
@@ -1453,6 +1464,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								Required:    true,
 								ElementType: types.StringType,
 								Description: `List of authorization server issuer URIs to advertise in the RFC 9728 metadata document.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 							"metadata_endpoint": schema.StringAttribute{
 								Optional:    true,
@@ -1466,6 +1480,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `Scopes supported by this protected resource. Included in the RFC 9728 metadata document and in the scope attribute of WWW-Authenticate challenge headers on 401 responses.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 						},
 						Description: `When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.`,
@@ -1724,6 +1741,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 									},
 								},
 								Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 							"connect_timeout": schema.Int64Attribute{
 								Computed:    true,
@@ -1829,6 +1849,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 									},
 								},
 								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 							"sentinel_password": schema.StringAttribute{
 								Optional:    true,
@@ -2496,6 +2519,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 									},
 								},
 								Description: `Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 						},
 						Description: `Details on how to accept tokens from other identity providers.`,
@@ -2602,6 +2628,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 									Description: `The path of the header value. Not Null`,
 									Validators: []validator.List{
 										speakeasy_listvalidators.NotNull(),
+										listvalidator.SizeAtLeast(1),
 									},
 								},
 							},

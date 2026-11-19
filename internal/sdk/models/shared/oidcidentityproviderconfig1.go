@@ -6,21 +6,19 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// OIDCIdentityProviderConfig1 - The properties of an OIDC identity provider to update. Only the provided properties are updated. When
-// provided, `scopes` must include `openid`.
+// OIDCIdentityProviderConfig1 - The configuration data for creating an OIDC authentication integration.
 type OIDCIdentityProviderConfig1 struct {
 	// The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained.
-	IssuerURL *string `default:"null" json:"issuer_url"`
+	IssuerURL string `json:"issuer_url"`
 	// The client ID assigned to your application by the identity provider.
-	ClientID *string `default:"null" json:"client_id"`
+	ClientID string `json:"client_id"`
 	// The Client Secret assigned to your application by the identity provider.
-	ClientSecret *string `default:"null" json:"client_secret"`
-	// The scopes requested by your application when authenticating with the identity provider. Must include `openid`.
-	Scopes []string `json:"scopes"`
+	ClientSecret string   `json:"client_secret"`
+	Scopes       []string `json:"scopes,omitempty"`
 	// Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for
-	// authentication. Only the provided mappings are updated and provided values cannot be empty.
+	// authentication.
 	//
-	ClaimMappings *UpdateOIDCIdentityProviderClaimMappings `json:"claim_mappings,omitempty"`
+	ClaimMappings *OIDCIdentityProviderClaimMappings `json:"claim_mappings,omitempty"`
 }
 
 func (o OIDCIdentityProviderConfig1) MarshalJSON() ([]byte, error) {
@@ -28,29 +26,29 @@ func (o OIDCIdentityProviderConfig1) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OIDCIdentityProviderConfig1) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"issuer_url", "client_id", "client_secret"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *OIDCIdentityProviderConfig1) GetIssuerURL() *string {
+func (o *OIDCIdentityProviderConfig1) GetIssuerURL() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.IssuerURL
 }
 
-func (o *OIDCIdentityProviderConfig1) GetClientID() *string {
+func (o *OIDCIdentityProviderConfig1) GetClientID() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.ClientID
 }
 
-func (o *OIDCIdentityProviderConfig1) GetClientSecret() *string {
+func (o *OIDCIdentityProviderConfig1) GetClientSecret() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.ClientSecret
 }
@@ -62,7 +60,7 @@ func (o *OIDCIdentityProviderConfig1) GetScopes() []string {
 	return o.Scopes
 }
 
-func (o *OIDCIdentityProviderConfig1) GetClaimMappings() *UpdateOIDCIdentityProviderClaimMappings {
+func (o *OIDCIdentityProviderConfig1) GetClaimMappings() *OIDCIdentityProviderClaimMappings {
 	if o == nil {
 		return nil
 	}

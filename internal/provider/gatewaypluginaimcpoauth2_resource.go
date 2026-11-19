@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -92,6 +93,9 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 					"authorization_servers": schema.ListAttribute{
 						Required:    true,
 						ElementType: types.StringType,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+						},
 					},
 					"cache_introspection": schema.BoolAttribute{
 						Computed:    true,
@@ -125,6 +129,9 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 							},
 						},
 						Description: `Map top-level token claims to upstream headers. Mutually exclusive with upstream_headers.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+						},
 					},
 					"client_alg": schema.StringAttribute{
 						Computed:    true,
@@ -157,16 +164,25 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 						})),
 						ElementType: types.StringType,
 						Description: `Consumer fields used for mapping: - ` + "`" + `id` + "`" + `: try to find the matching Consumer by ` + "`" + `id` + "`" + ` - ` + "`" + `username` + "`" + `: try to find the matching Consumer by ` + "`" + `username` + "`" + ` - ` + "`" + `custom_id` + "`" + `: try to find the matching Consumer by ` + "`" + `custom_id` + "`" + `. Default: ["custom_id","username"]`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+						},
 					},
 					"consumer_claim": schema.ListAttribute{
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+						},
 					},
 					"consumer_groups_claim": schema.ListAttribute{
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+						},
 					},
 					"consumer_groups_optional": schema.BoolAttribute{
 						Computed:    true,
@@ -297,6 +313,9 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 					"scopes_supported": schema.ListAttribute{
 						Optional:    true,
 						ElementType: types.StringType,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+						},
 					},
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
@@ -443,6 +462,9 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `Audiences used in the token exchange request.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
 									},
 									"requested_token_type": schema.StringAttribute{
 										Computed:    true,
@@ -458,6 +480,9 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `Scopes used in the token exchange request.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
 									},
 									"subject_token_type": schema.StringAttribute{
 										Computed:    true,
@@ -496,6 +521,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 									Description: `The path of the header value. Not Null`,
 									Validators: []validator.List{
 										speakeasy_listvalidators.NotNull(),
+										listvalidator.SizeAtLeast(1),
 									},
 								},
 							},

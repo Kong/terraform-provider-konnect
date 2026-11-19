@@ -71,6 +71,9 @@ func (r *AIGatewayDataPlaneCertificateResource) Schema(ctx context.Context, req 
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `JSON escaped string of the certificate. Requires replacement if changed.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -137,7 +140,9 @@ func (r *AIGatewayDataPlaneCertificateResource) Schema(ctx context.Context, req 
 				ElementType: types.StringType,
 				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 					`` + "\n" +
-					`Keys must be 1–63 characters long and start with an alphanumeric character.` + "\n" +
+					`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+					`Values must be 1–127 characters long and must not be empty.` + "\n" +
+					`Keys and values must not contain spaces or control characters.` + "\n" +
 					`Requires replacement if changed.`,
 			},
 			"metadata": schema.SingleNestedAttribute{
