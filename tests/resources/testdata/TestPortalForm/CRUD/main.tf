@@ -14,13 +14,15 @@ resource "konnect_portal_form" "test_form" {
       {
         text = {
           name  = "full_name"
-          label = "nombre"
+          label = "name"
+          required = true
         }
       },
       {
         email = {
           name  = "email"
-          label = "emaile"
+          label = "email"
+          required = true
         }
       },
       {
