@@ -199,6 +199,8 @@ type CreateCostExportScheduleRequestBody struct {
 	// Defaults to `{}`.
 	Filters any                `json:"filters,omitempty"`
 	Labels  map[string]*string `json:"labels,omitempty"`
+	// Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }
 
 func (c CreateCostExportScheduleRequestBody) MarshalJSON() ([]byte, error) {
@@ -287,6 +289,13 @@ func (c *CreateCostExportScheduleRequestBody) GetLabels() map[string]*string {
 		return nil
 	}
 	return c.Labels
+}
+
+func (c *CreateCostExportScheduleRequestBody) GetManagedBy() map[string]string {
+	if c == nil {
+		return nil
+	}
+	return c.ManagedBy
 }
 
 // CreateCostExportScheduleCadence - The length of each period, which sets the range of each export.
@@ -539,6 +548,8 @@ type CreateCostExportScheduleResponseBody struct {
 	Filters any `json:"filters"`
 	// Key-value metadata on the schedule. The schedule list can filter by label. Each export that the schedule creates copies the labels as they are at that moment.
 	Labels map[string]*string `json:"labels"`
+	// Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it.
+	ManagedBy map[string]string `json:"managed_by"`
 	// When the period in progress ends and the schedule creates its export, as an RFC 3339 timestamp in UTC. That export starts 6 hours later, so that events that arrive late can be stored first.
 	//
 	// `null` while the schedule is `paused`. It's in the past while a run is late.
@@ -554,7 +565,7 @@ func (c CreateCostExportScheduleResponseBody) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateCostExportScheduleResponseBody) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "cadence", "time_zone", "status", "dataset", "schema_version", "format", "compression", "filters", "labels", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "cadence", "time_zone", "status", "dataset", "schema_version", "format", "compression", "filters", "labels", "managed_by", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -642,6 +653,13 @@ func (c *CreateCostExportScheduleResponseBody) GetLabels() map[string]*string {
 		return map[string]*string{}
 	}
 	return c.Labels
+}
+
+func (c *CreateCostExportScheduleResponseBody) GetManagedBy() map[string]string {
+	if c == nil {
+		return map[string]string{}
+	}
+	return c.ManagedBy
 }
 
 func (c *CreateCostExportScheduleResponseBody) GetNextRunAt() *time.Time {

@@ -51,6 +51,7 @@ type AICostExportScheduleResourceModel struct {
 	Format        types.String                     `tfsdk:"format"`
 	ID            types.String                     `tfsdk:"id"`
 	Labels        map[string]types.String          `tfsdk:"labels"`
+	ManagedBy     map[string]types.String          `tfsdk:"managed_by"`
 	Name          types.String                     `tfsdk:"name"`
 	NextRunAt     types.String                     `tfsdk:"next_run_at"`
 	SchemaVersion types.Int64                      `tfsdk:"schema_version"`
@@ -156,6 +157,12 @@ func (r *AICostExportScheduleResource) Schema(ctx context.Context, req resource.
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `Key-value metadata on the schedule. The schedule list can filter by label. Each export that the schedule creates copies the labels as they are at that moment.`,
+			},
+			"managed_by": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Identifies the tool that manages this resource, such as ` + "`" + `{"tool": "terraform-provider-konnect"}` + "`" + `. The service stores the value and never acts on it. An omitted value on replacement resets to ` + "`" + `{}` + "`" + `.`,
 			},
 			"name": schema.StringAttribute{
 				Required: true,

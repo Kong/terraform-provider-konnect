@@ -108,6 +108,12 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 						ElementType: types.StringType,
 						Description: `Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.`,
 					},
+					"managed_by": schema.MapAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Identifies the tool that manages this resource, such as ` + "`" + `{"tool": "terraform-provider-konnect"}` + "`" + `. The service stores the value and never acts on it. An omitted value on replacement resets to ` + "`" + `{}` + "`" + `.`,
+					},
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
@@ -128,7 +134,7 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 						Computed: true,
 						Optional: true,
 						Default:  int64default.StaticInt64(100),
-						MarkdownDescription: `The budget's priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don't use it.` + "\n" +
+						MarkdownDescription: `The budget's priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.` + "\n" +
 							`` + "\n" +
 							`Defaults to ` + "`" + `100` + "`" + `.` + "\n" +
 							`Default: 100`,
@@ -257,6 +263,12 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 						ElementType: types.StringType,
 						Description: `Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.`,
 					},
+					"managed_by": schema.MapAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Identifies the tool that manages this resource, such as ` + "`" + `{"tool": "terraform-provider-konnect"}` + "`" + `. The service stores the value and never acts on it. An omitted value on replacement resets to ` + "`" + `{}` + "`" + `.`,
+					},
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
@@ -270,19 +282,16 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 						},
 					},
 					"posture": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						Default:  stringdefault.StaticString(`advisory`),
-						MarkdownDescription: `What the budget declares should happen when spend reaches the limit. Nothing enforces it.` + "\n" +
-							`` + "\n" +
-							`Defaults to ` + "`" + `advisory` + "`" + `.` + "\n" +
-							`possible known values include one of ["advisory", "enforce"]; Default: "advisory"`,
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`advisory`),
+						Description: `How the budget responds when spend reaches its limit. With ` + "`" + `advisory` + "`" + `, the default, requests continue past the limit. possible known values include one of ["advisory", "enforce"]; Default: "advisory"`,
 					},
 					"priority": schema.Int64Attribute{
 						Computed: true,
 						Optional: true,
 						Default:  int64default.StaticInt64(100),
-						MarkdownDescription: `The budget's priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don't use it.` + "\n" +
+						MarkdownDescription: `The budget's priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.` + "\n" +
 							`` + "\n" +
 							`Defaults to ` + "`" + `100` + "`" + `.` + "\n" +
 							`Default: 100`,
@@ -399,14 +408,14 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("limit"), FieldPath: path.Root("limit").AtName("posture")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("exempt"), FieldPath: path.Root("exempt").AtName("posture")}}),
 				},
-				Description: `What the budget declares should happen when spend reaches the limit. Nothing enforces it.`,
+				Description: `How the budget responds when spend reaches its limit.`,
 			},
 			"priority": schema.Int64Attribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.Int64{
 					speakeasy_int64planmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("limit"), FieldPath: path.Root("limit").AtName("priority")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("exempt"), FieldPath: path.Root("exempt").AtName("priority")}}),
 				},
-				Description: `The budget's priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don't use it.`,
+				Description: `The budget's priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

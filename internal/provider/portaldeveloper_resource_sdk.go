@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
@@ -15,6 +17,12 @@ func (r *PortalDeveloperResourceModel) RefreshFromSharedPortalDeveloper(ctx cont
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.AdditionalData == nil {
+			r.AdditionalData = jsontypes.NewNormalizedNull()
+		} else {
+			additionalDataResult, _ := json.Marshal(resp.AdditionalData)
+			r.AdditionalData = jsontypes.NewNormalizedValue(string(additionalDataResult))
+		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Email = types.StringValue(resp.Email)
 		r.FullName = types.StringValue(resp.FullName)
@@ -127,11 +135,16 @@ func (r *PortalDeveloperResourceModel) ToSharedCreateDeveloperRequest(ctx contex
 	} else {
 		sendInvitationEmail = nil
 	}
+	var additionalData interface{}
+	if !r.AdditionalData.IsUnknown() && !r.AdditionalData.IsNull() {
+		_ = json.Unmarshal([]byte(r.AdditionalData.ValueString()), &additionalData)
+	}
 	out := shared.CreateDeveloperRequest{
 		Email:               email,
 		FullName:            fullName,
 		Status:              status,
 		SendInvitationEmail: sendInvitationEmail,
+		AdditionalData:      additionalData,
 	}
 
 	return &out, diags

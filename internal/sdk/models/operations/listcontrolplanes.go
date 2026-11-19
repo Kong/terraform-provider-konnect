@@ -21,7 +21,7 @@ type ListControlPlanesRequest struct {
 	// Sorts a collection of control-planes. Supported sort attributes are:
 	//   - created_at
 	//
-	Sort *string `queryParam:"style=form,explode=true,name=sort"`
+	Sort *shared.ControlPlaneSortQuery `queryParam:"style=form,explode=true,name=sort"`
 }
 
 func (l ListControlPlanesRequest) MarshalJSON() ([]byte, error) {
@@ -60,7 +60,7 @@ func (l *ListControlPlanesRequest) GetFilterLabels() *string {
 	return l.FilterLabels
 }
 
-func (l *ListControlPlanesRequest) GetSort() *string {
+func (l *ListControlPlanesRequest) GetSort() *shared.ControlPlaneSortQuery {
 	if l == nil {
 		return nil
 	}

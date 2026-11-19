@@ -80,8 +80,8 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 											`the portal to end a user's session when they log out of the identity provider.` + "\n" +
 											`` + "\n" +
 											`Configure your identity provider's back-channel logout URL as your portal's URL followed by` + "\n" +
-											`` + "`" + `/api/v3/oauth/backchannel-logout` + "`" + `, for example` + "\n" +
-											`` + "`" + `https://my-portal.example.com/api/v3/oauth/backchannel-logout` + "`" + `.` + "\n" +
+											`` + "`" + `/api/v3/developer/backchannel-logout` + "`" + `, for example` + "\n" +
+											`` + "`" + `https://my-portal.example.com/api/v3/developer/backchannel-logout` + "`" + `.` + "\n" +
 											`Default: false`,
 									},
 									"session_supported": schema.BoolAttribute{
@@ -248,6 +248,7 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 						},
 					},
 				},
+				Description: `The configuration data for creating an authentication integration.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,

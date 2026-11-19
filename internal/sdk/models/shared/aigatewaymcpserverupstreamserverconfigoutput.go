@@ -53,7 +53,7 @@ type AIGatewayMCPServerUpstreamServerConfigOutput struct {
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
-	URL string `json:"url"`
+	URL *string `default:"null" json:"url"`
 	// Configuration applied when proxying to the upstream service, including authentication.
 	Upstream *AIGatewayUpstreamConfigOutput `json:"upstream,omitempty"`
 	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
@@ -88,7 +88,7 @@ func (a AIGatewayMCPServerUpstreamServerConfigOutput) MarshalJSON() ([]byte, err
 }
 
 func (a *AIGatewayMCPServerUpstreamServerConfigOutput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"route", "url", "tools_cache_ttl_seconds"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"route", "tools_cache_ttl_seconds"}); err != nil {
 		return err
 	}
 	return nil
@@ -122,9 +122,9 @@ func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetServer() *AIGatewayMCP
 	return a.Server
 }
 
-func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetURL() string {
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetURL() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.URL
 }
@@ -173,7 +173,7 @@ type AIGatewayMCPServerUpstreamServerConfig struct {
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
-	URL string `json:"url"`
+	URL *string `default:"null" json:"url"`
 	// Configuration applied when proxying to the upstream service, including authentication.
 	Upstream *AIGatewayUpstreamConfig `json:"upstream,omitempty"`
 	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
@@ -208,7 +208,7 @@ func (a AIGatewayMCPServerUpstreamServerConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AIGatewayMCPServerUpstreamServerConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"route", "url", "tools_cache_ttl_seconds"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"route", "tools_cache_ttl_seconds"}); err != nil {
 		return err
 	}
 	return nil
@@ -242,9 +242,9 @@ func (a *AIGatewayMCPServerUpstreamServerConfig) GetServer() *AIGatewayMCPServer
 	return a.Server
 }
 
-func (a *AIGatewayMCPServerUpstreamServerConfig) GetURL() string {
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetURL() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.URL
 }

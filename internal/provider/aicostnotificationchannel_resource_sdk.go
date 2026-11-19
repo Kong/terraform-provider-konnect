@@ -28,6 +28,12 @@ func (r *AICostNotificationChannelResourceModel) RefreshFromSharedAICostNotifica
 					r.Email.Labels[key] = types.StringPointerValue(value)
 				}
 			}
+			if len(resp.AICostEmailNotificationChannel.ManagedBy) > 0 {
+				r.Email.ManagedBy = make(map[string]types.String, len(resp.AICostEmailNotificationChannel.ManagedBy))
+				for key1, value1 := range resp.AICostEmailNotificationChannel.ManagedBy {
+					r.Email.ManagedBy[key1] = types.StringValue(value1)
+				}
+			}
 			r.Email.Name = types.StringValue(resp.AICostEmailNotificationChannel.Name)
 			r.Name = r.Email.Name
 			r.Email.Recipients = make([]types.String, 0, len(resp.AICostEmailNotificationChannel.Recipients))
@@ -46,8 +52,14 @@ func (r *AICostNotificationChannelResourceModel) RefreshFromSharedAICostNotifica
 			r.ID = r.Slack.ID
 			if len(resp.AICostSlackNotificationChannel.Labels) > 0 {
 				r.Slack.Labels = make(map[string]types.String, len(resp.AICostSlackNotificationChannel.Labels))
-				for key1, value1 := range resp.AICostSlackNotificationChannel.Labels {
-					r.Slack.Labels[key1] = types.StringPointerValue(value1)
+				for key2, value2 := range resp.AICostSlackNotificationChannel.Labels {
+					r.Slack.Labels[key2] = types.StringPointerValue(value2)
+				}
+			}
+			if len(resp.AICostSlackNotificationChannel.ManagedBy) > 0 {
+				r.Slack.ManagedBy = make(map[string]types.String, len(resp.AICostSlackNotificationChannel.ManagedBy))
+				for key3, value3 := range resp.AICostSlackNotificationChannel.ManagedBy {
+					r.Slack.ManagedBy[key3] = types.StringValue(value3)
 				}
 			}
 			r.Slack.Name = types.StringValue(resp.AICostSlackNotificationChannel.Name)
@@ -82,6 +94,13 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsCreateCostNotificat
 			}
 			labels[labelsKey] = labelsInst
 		}
+		managedBy := make(map[string]string)
+		for managedByKey := range r.Email.ManagedBy {
+			var managedByInst string
+			managedByInst = r.Email.ManagedBy[managedByKey].ValueString()
+
+			managedBy[managedByKey] = managedByInst
+		}
 		recipients := make([]string, 0, len(r.Email.Recipients))
 		for recipientsIndex := range r.Email.Recipients {
 			recipients = append(recipients, r.Email.Recipients[recipientsIndex].ValueString())
@@ -89,6 +108,7 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsCreateCostNotificat
 		aiCostEmailNotificationChannelInput = &shared.AICostEmailNotificationChannelInput{
 			Name:       name,
 			Labels:     labels,
+			ManagedBy:  managedBy,
 			Recipients: recipients,
 		}
 	}
@@ -112,12 +132,20 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsCreateCostNotificat
 			}
 			labels1[labelsKey1] = labelsInst1
 		}
+		managedBy1 := make(map[string]string)
+		for managedByKey1 := range r.Slack.ManagedBy {
+			var managedByInst1 string
+			managedByInst1 = r.Slack.ManagedBy[managedByKey1].ValueString()
+
+			managedBy1[managedByKey1] = managedByInst1
+		}
 		var webhookURL string
 		webhookURL = r.Slack.WebhookURL.ValueString()
 
 		aiCostSlackNotificationChannelInput = &shared.AICostSlackNotificationChannelInput{
 			Name:       name1,
 			Labels:     labels1,
+			ManagedBy:  managedBy1,
 			WebhookURL: webhookURL,
 		}
 	}
@@ -196,6 +224,13 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsUpsertCostNotificat
 			}
 			labels[labelsKey] = labelsInst
 		}
+		managedBy := make(map[string]string)
+		for managedByKey := range r.Email.ManagedBy {
+			var managedByInst string
+			managedByInst = r.Email.ManagedBy[managedByKey].ValueString()
+
+			managedBy[managedByKey] = managedByInst
+		}
 		recipients := make([]string, 0, len(r.Email.Recipients))
 		for recipientsIndex := range r.Email.Recipients {
 			recipients = append(recipients, r.Email.Recipients[recipientsIndex].ValueString())
@@ -203,6 +238,7 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsUpsertCostNotificat
 		aiCostEmailNotificationChannelInput = &shared.AICostEmailNotificationChannelInput{
 			Name:       name,
 			Labels:     labels,
+			ManagedBy:  managedBy,
 			Recipients: recipients,
 		}
 	}
@@ -226,6 +262,13 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsUpsertCostNotificat
 			}
 			labels1[labelsKey1] = labelsInst1
 		}
+		managedBy1 := make(map[string]string)
+		for managedByKey1 := range r.Slack.ManagedBy {
+			var managedByInst1 string
+			managedByInst1 = r.Slack.ManagedBy[managedByKey1].ValueString()
+
+			managedBy1[managedByKey1] = managedByInst1
+		}
 		webhookURL := new(string)
 		if !r.Slack.WebhookURL.IsUnknown() && !r.Slack.WebhookURL.IsNull() {
 			*webhookURL = r.Slack.WebhookURL.ValueString()
@@ -235,6 +278,7 @@ func (r *AICostNotificationChannelResourceModel) ToOperationsUpsertCostNotificat
 		aiCostSlackNotificationChannelReplaceInput = &shared.AICostSlackNotificationChannelReplaceInput{
 			Name:       name1,
 			Labels:     labels1,
+			ManagedBy:  managedBy1,
 			WebhookURL: webhookURL,
 		}
 	}

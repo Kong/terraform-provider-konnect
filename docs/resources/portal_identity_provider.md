@@ -46,7 +46,7 @@ resource "konnect_portal_identity_provider" "my_portalidentityprovider" {
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
+- `config` (Attributes) The configuration data for creating an authentication integration. (see [below for nested schema](#nestedatt--config))
 - `enabled` (Boolean) Indicates whether the identity provider is enabled.
 Only one identity provider can be active at a time, such as SAML or OIDC.
 Default: false
@@ -103,8 +103,8 @@ Read-Only:
 the portal to end a user's session when they log out of the identity provider.
 
 Configure your identity provider's back-channel logout URL as your portal's URL followed by
-`/api/v3/oauth/backchannel-logout`, for example
-`https://my-portal.example.com/api/v3/oauth/backchannel-logout`.
+`/api/v3/developer/backchannel-logout`, for example
+`https://my-portal.example.com/api/v3/developer/backchannel-logout`.
 Default: false
 - `session_supported` (Boolean) Indicates whether the OpenID Provider advertises that it includes the `sid` claim in logout tokens
 (`backchannel_logout_session_supported` in its discovery metadata). A provider that omits the value does

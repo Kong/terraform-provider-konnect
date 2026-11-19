@@ -3,107 +3,9 @@
 package shared
 
 import (
-	"errors"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
-
-type PortalIdentityProviderConfigType string
-
-const (
-	PortalIdentityProviderConfigTypeOIDCIdentityProviderConfigOutput1 PortalIdentityProviderConfigType = "OIDCIdentityProviderConfig_output1"
-	PortalIdentityProviderConfigTypeSAMLIdentityProviderConfig1       PortalIdentityProviderConfigType = "SAMLIdentityProviderConfig1"
-)
-
-type PortalIdentityProviderConfig struct {
-	OIDCIdentityProviderConfigOutput1 *OIDCIdentityProviderConfigOutput1 `queryParam:"inline" union:"member"`
-	SAMLIdentityProviderConfig1       *SAMLIdentityProviderConfig1       `queryParam:"inline" union:"member"`
-
-	Type PortalIdentityProviderConfigType
-}
-
-func CreatePortalIdentityProviderConfigOIDCIdentityProviderConfigOutput1(oidcIdentityProviderConfigOutput1 OIDCIdentityProviderConfigOutput1) PortalIdentityProviderConfig {
-	typ := PortalIdentityProviderConfigTypeOIDCIdentityProviderConfigOutput1
-
-	return PortalIdentityProviderConfig{
-		OIDCIdentityProviderConfigOutput1: &oidcIdentityProviderConfigOutput1,
-		Type:                              typ,
-	}
-}
-
-func CreatePortalIdentityProviderConfigSAMLIdentityProviderConfig1(samlIdentityProviderConfig1 SAMLIdentityProviderConfig1) PortalIdentityProviderConfig {
-	typ := PortalIdentityProviderConfigTypeSAMLIdentityProviderConfig1
-
-	return PortalIdentityProviderConfig{
-		SAMLIdentityProviderConfig1: &samlIdentityProviderConfig1,
-		Type:                        typ,
-	}
-}
-
-func (u *PortalIdentityProviderConfig) UnmarshalJSON(data []byte) (err error) {
-	previous := *u
-	*u = PortalIdentityProviderConfig{}
-	defer func() {
-		if err != nil {
-			*u = previous
-		}
-	}()
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var oidcIdentityProviderConfigOutput1 OIDCIdentityProviderConfigOutput1 = OIDCIdentityProviderConfigOutput1{}
-	if err := utils.UnmarshalJSON(data, &oidcIdentityProviderConfigOutput1, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  PortalIdentityProviderConfigTypeOIDCIdentityProviderConfigOutput1,
-			Value: &oidcIdentityProviderConfigOutput1,
-		})
-	}
-
-	var samlIdentityProviderConfig1 SAMLIdentityProviderConfig1 = SAMLIdentityProviderConfig1{}
-	if err := utils.UnmarshalJSON(data, &samlIdentityProviderConfig1, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  PortalIdentityProviderConfigTypeSAMLIdentityProviderConfig1,
-			Value: &samlIdentityProviderConfig1,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for PortalIdentityProviderConfig", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for PortalIdentityProviderConfig", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(PortalIdentityProviderConfigType)
-	switch best.Type {
-	case PortalIdentityProviderConfigTypeOIDCIdentityProviderConfigOutput1:
-		u.OIDCIdentityProviderConfigOutput1 = best.Value.(*OIDCIdentityProviderConfigOutput1)
-		return nil
-	case PortalIdentityProviderConfigTypeSAMLIdentityProviderConfig1:
-		u.SAMLIdentityProviderConfig1 = best.Value.(*SAMLIdentityProviderConfig1)
-		return nil
-	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for PortalIdentityProviderConfig", string(data))
-}
-
-func (u PortalIdentityProviderConfig) MarshalJSON() ([]byte, error) {
-	if u.OIDCIdentityProviderConfigOutput1 != nil {
-		return utils.MarshalJSON(u.OIDCIdentityProviderConfigOutput1, "", true)
-	}
-
-	if u.SAMLIdentityProviderConfig1 != nil {
-		return utils.MarshalJSON(u.SAMLIdentityProviderConfig1, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type PortalIdentityProviderConfig: all fields are null")
-}
 
 // PortalIdentityProvider - The identity provider that contains configuration data for authentication integration.
 type PortalIdentityProvider struct {
@@ -114,8 +16,9 @@ type PortalIdentityProvider struct {
 	// Indicates whether the identity provider is enabled.
 	// Only one identity provider can be active at a time, such as SAML or OIDC.
 	//
-	Enabled *bool                         `default:"false" json:"enabled"`
-	Config  *PortalIdentityProviderConfig `json:"config,omitempty"`
+	Enabled *bool `default:"false" json:"enabled"`
+	// The configuration data for the authentication integration.
+	Config *PortalIdentityProviderConfig `json:"config,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// An ISO-8601 timestamp representation of entity update date.

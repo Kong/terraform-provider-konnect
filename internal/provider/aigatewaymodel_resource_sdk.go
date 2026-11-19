@@ -501,12 +501,17 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 			}
 			r.API.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelAIGatewayModelAPI.CreatedAt))
 			r.CreatedAt = r.API.CreatedAt
-			r.API.Datastores = []tfTypes.AIGatewayDatastoreRef{}
+			r.API.Datastores = []tfTypes.AIGatewayModelDatastoreRef{}
 
 			for _, datastoresItem := range resp.AIGatewayModelAIGatewayModelAPI.Datastores {
-				var datastores tfTypes.AIGatewayDatastoreRef
+				var datastores tfTypes.AIGatewayModelDatastoreRef
 
 				datastores.Name = types.StringValue(datastoresItem.Name)
+				if datastoresItem.Purpose != nil {
+					datastores.Purpose = types.StringValue(string(*datastoresItem.Purpose))
+				} else {
+					datastores.Purpose = types.StringNull()
+				}
 
 				r.API.Datastores = append(r.API.Datastores, datastores)
 			}
@@ -2843,12 +2848,17 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 			}
 			r.Model.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayModelAIGatewayModelModel.CreatedAt))
 			r.CreatedAt = r.Model.CreatedAt
-			r.Model.Datastores = []tfTypes.AIGatewayDatastoreRef{}
+			r.Model.Datastores = []tfTypes.AIGatewayModelDatastoreRef{}
 
 			for _, datastoresItem1 := range resp.AIGatewayModelAIGatewayModelModel.Datastores {
-				var datastores1 tfTypes.AIGatewayDatastoreRef
+				var datastores1 tfTypes.AIGatewayModelDatastoreRef
 
 				datastores1.Name = types.StringValue(datastoresItem1.Name)
+				if datastoresItem1.Purpose != nil {
+					datastores1.Purpose = types.StringValue(string(*datastoresItem1.Purpose))
+				} else {
+					datastores1.Purpose = types.StringNull()
+				}
 
 				r.Model.Datastores = append(r.Model.Datastores, datastores1)
 			}
@@ -8570,13 +8580,20 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 
 			managedBy[managedByKey] = managedByInst
 		}
-		datastores := make([]shared.AIGatewayDatastoreRef, 0, len(r.API.Datastores))
+		datastores := make([]shared.AIGatewayModelDatastoreRef, 0, len(r.API.Datastores))
 		for datastoresIndex := range r.API.Datastores {
 			var name2 string
 			name2 = r.API.Datastores[datastoresIndex].Name.ValueString()
 
-			datastores = append(datastores, shared.AIGatewayDatastoreRef{
-				Name: name2,
+			purpose := new(shared.Purpose)
+			if !r.API.Datastores[datastoresIndex].Purpose.IsUnknown() && !r.API.Datastores[datastoresIndex].Purpose.IsNull() {
+				*purpose = shared.Purpose(r.API.Datastores[datastoresIndex].Purpose.ValueString())
+			} else {
+				purpose = nil
+			}
+			datastores = append(datastores, shared.AIGatewayModelDatastoreRef{
+				Name:    name2,
+				Purpose: purpose,
 			})
 		}
 		headers := make(map[string]interface{})
@@ -13753,13 +13770,20 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 
 			managedBy1[managedByKey1] = managedByInst1
 		}
-		datastores1 := make([]shared.AIGatewayDatastoreRef, 0, len(r.Model.Datastores))
+		datastores1 := make([]shared.AIGatewayModelDatastoreRef, 0, len(r.Model.Datastores))
 		for datastoresIndex1 := range r.Model.Datastores {
 			var name6 string
 			name6 = r.Model.Datastores[datastoresIndex1].Name.ValueString()
 
-			datastores1 = append(datastores1, shared.AIGatewayDatastoreRef{
-				Name: name6,
+			purpose1 := new(shared.Purpose)
+			if !r.Model.Datastores[datastoresIndex1].Purpose.IsUnknown() && !r.Model.Datastores[datastoresIndex1].Purpose.IsNull() {
+				*purpose1 = shared.Purpose(r.Model.Datastores[datastoresIndex1].Purpose.ValueString())
+			} else {
+				purpose1 = nil
+			}
+			datastores1 = append(datastores1, shared.AIGatewayModelDatastoreRef{
+				Name:    name6,
+				Purpose: purpose1,
 			})
 		}
 		headers1 := make(map[string]interface{})
@@ -18957,13 +18981,20 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 
 			managedBy[managedByKey] = managedByInst
 		}
-		datastores := make([]shared.AIGatewayDatastoreRef, 0, len(r.API.Datastores))
+		datastores := make([]shared.AIGatewayModelDatastoreRef, 0, len(r.API.Datastores))
 		for datastoresIndex := range r.API.Datastores {
 			var name2 string
 			name2 = r.API.Datastores[datastoresIndex].Name.ValueString()
 
-			datastores = append(datastores, shared.AIGatewayDatastoreRef{
-				Name: name2,
+			purpose := new(shared.Purpose)
+			if !r.API.Datastores[datastoresIndex].Purpose.IsUnknown() && !r.API.Datastores[datastoresIndex].Purpose.IsNull() {
+				*purpose = shared.Purpose(r.API.Datastores[datastoresIndex].Purpose.ValueString())
+			} else {
+				purpose = nil
+			}
+			datastores = append(datastores, shared.AIGatewayModelDatastoreRef{
+				Name:    name2,
+				Purpose: purpose,
 			})
 		}
 		headers := make(map[string]interface{})
@@ -24140,13 +24171,20 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 
 			managedBy1[managedByKey1] = managedByInst1
 		}
-		datastores1 := make([]shared.AIGatewayDatastoreRef, 0, len(r.Model.Datastores))
+		datastores1 := make([]shared.AIGatewayModelDatastoreRef, 0, len(r.Model.Datastores))
 		for datastoresIndex1 := range r.Model.Datastores {
 			var name6 string
 			name6 = r.Model.Datastores[datastoresIndex1].Name.ValueString()
 
-			datastores1 = append(datastores1, shared.AIGatewayDatastoreRef{
-				Name: name6,
+			purpose1 := new(shared.Purpose)
+			if !r.Model.Datastores[datastoresIndex1].Purpose.IsUnknown() && !r.Model.Datastores[datastoresIndex1].Purpose.IsNull() {
+				*purpose1 = shared.Purpose(r.Model.Datastores[datastoresIndex1].Purpose.ValueString())
+			} else {
+				purpose1 = nil
+			}
+			datastores1 = append(datastores1, shared.AIGatewayModelDatastoreRef{
+				Name:    name6,
+				Purpose: purpose1,
 			})
 		}
 		headers1 := make(map[string]interface{})

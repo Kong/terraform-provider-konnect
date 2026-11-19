@@ -85,9 +85,11 @@ type AICostExemptBudget struct {
 	Name string `json:"name"`
 	// Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.
 	Labels map[string]*string `json:"labels"`
+	// Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it.
+	ManagedBy map[string]string `json:"managed_by"`
 	// The usage the budget covers.
 	Scope AICostExemptBudgetScope `json:"scope"`
-	// The budget's priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don't use it.
+	// The budget's priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.
 	Priority int64 `json:"priority"`
 	// The `id` of the user or system account that created the budget, which the server records. A person with a budget of their own can replace and delete only the budgets they created.
 	//
@@ -117,7 +119,7 @@ func (a AICostExemptBudget) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AICostExemptBudget) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "labels", "scope", "priority", "created_at", "updated_at", "effect", "validity"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "labels", "managed_by", "scope", "priority", "created_at", "updated_at", "effect", "validity"}); err != nil {
 		return err
 	}
 	return nil
@@ -142,6 +144,13 @@ func (a *AICostExemptBudget) GetLabels() map[string]*string {
 		return map[string]*string{}
 	}
 	return a.Labels
+}
+
+func (a *AICostExemptBudget) GetManagedBy() map[string]string {
+	if a == nil {
+		return map[string]string{}
+	}
+	return a.ManagedBy
 }
 
 func (a *AICostExemptBudget) GetScope() AICostExemptBudgetScope {

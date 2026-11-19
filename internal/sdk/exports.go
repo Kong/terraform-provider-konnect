@@ -603,7 +603,7 @@ func (s *Exports) GetCostExportSchedule(ctx context.Context, request operations.
 // UpsertCostExportSchedule - Replace an export schedule
 // Replaces an export schedule's `name`, `status`, `dataset`, `focus`, `format`, `compression`, and `filters`, and returns the result. The schedule keeps its identifier.
 //
-// - The request carries the full schedule, so an omitted `filters` clears the filters, and an omitted `status` resumes a paused schedule.
+// - The request carries the full schedule, so an omitted `filters` clears the filters, an omitted `status` resumes a paused schedule, and an omitted `managed_by` resets to `{}`.
 // - Setting `status` to `paused` pauses the schedule, and setting it to `active` resumes it.
 // - The replacement applies to the periods that end after it. Exports that the schedule already created don't change. If runs are late, the replacement first creates the missed exports with the earlier settings, within the schedule's limit of 31 periods.
 // - `cadence` and `time_zone` can't change, so the body repeats their stored values. If either differs, the request fails with `400` naming the field. Redefining a schedule's periods takes a delete and a create.

@@ -114,7 +114,8 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
     }
     datastores = [
       {
-        name = "shared-redis"
+        name    = "shared-redis"
+        purpose = "semantic-balancer"
       }
     ]
     display_name = "My GPT 5 model"
@@ -330,7 +331,8 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
     }
     datastores = [
       {
-        name = "shared-redis"
+        name    = "shared-redis"
+        purpose = "semantic-balancer"
       }
     ]
     display_name = "My GPT 5 model"
@@ -448,7 +450,7 @@ min_runtime_version. A capability that needs a newer
 min_runtime_version is left out of `*`.
 Default: ["*"]
 - `config` (Attributes) Routing, logging, and load balancing configuration for the model. Not Null (see [below for nested schema](#nestedatt--api--config))
-- `datastores` (Attributes List) Names of the Datastores this model references. (see [below for nested schema](#nestedatt--api--datastores))
+- `datastores` (Attributes List) The Datastores this model references, with the feature that uses each one. (see [below for nested schema](#nestedatt--api--datastores))
 - `display_name` (String) The display name for this model instance. Not Null
 - `enabled` (Boolean) Whether the model is enabled. Default: true
 - `formats` (Attributes List) List of request/response formats supported by this model. (see [below for nested schema](#nestedatt--api--formats))
@@ -1009,6 +1011,9 @@ When no selector location is configured, the format default selector is used.
 Optional:
 
 - `name` (String) An immutable user-defined identifier for this resource. Not Null
+- `purpose` (String) The model feature that uses the datastore. `semantic-balancer` supplies the connection of the
+model vector store.
+Default: "semantic-balancer"; must be "semantic-balancer"
 
 
 <a id="nestedatt--api--formats"></a>
@@ -2857,7 +2862,7 @@ min_runtime_version. A capability that needs a newer
 min_runtime_version is left out of `*`.
 Default: ["*"]
 - `config` (Attributes) Routing, logging, and load balancing configuration for the model. Not Null (see [below for nested schema](#nestedatt--model--config))
-- `datastores` (Attributes List) Names of the Datastores this model references. (see [below for nested schema](#nestedatt--model--datastores))
+- `datastores` (Attributes List) The Datastores this model references, with the feature that uses each one. (see [below for nested schema](#nestedatt--model--datastores))
 - `display_name` (String) The display name for this model instance. Not Null
 - `enabled` (Boolean) Whether the model is enabled. Default: true
 - `formats` (Attributes List) List of request/response formats supported by this model. (see [below for nested schema](#nestedatt--model--formats))
@@ -3427,6 +3432,9 @@ When no selector location is configured, the format default selector is used.
 Optional:
 
 - `name` (String) An immutable user-defined identifier for this resource. Not Null
+- `purpose` (String) The model feature that uses the datastore. `semantic-balancer` supplies the connection of the
+model vector store.
+Default: "semantic-balancer"; must be "semantic-balancer"
 
 
 <a id="nestedatt--model--formats"></a>

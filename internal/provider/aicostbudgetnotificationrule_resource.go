@@ -47,6 +47,7 @@ type AICostBudgetNotificationRuleResourceModel struct {
 	BudgetID   types.String                          `tfsdk:"budget_id"`
 	Channels   []tfTypes.AICostBudgetReference       `tfsdk:"channels"`
 	CreatedAt  types.String                          `tfsdk:"created_at"`
+	ManagedBy  map[string]types.String               `tfsdk:"managed_by"`
 	Message    *tfTypes.Message                      `tfsdk:"message"`
 	Thresholds []tfTypes.AICostNotificationThreshold `tfsdk:"thresholds"`
 	UpdatedAt  types.String                          `tfsdk:"updated_at"`
@@ -109,6 +110,12 @@ func (r *AICostBudgetNotificationRuleResource) Schema(ctx context.Context, req r
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
+			},
+			"managed_by": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Identifies the tool that manages this resource, such as ` + "`" + `{"tool": "terraform-provider-konnect"}` + "`" + `. The service stores the value and never acts on it. An omitted value on replacement resets to ` + "`" + `{}` + "`" + `.`,
 			},
 			"message": schema.SingleNestedAttribute{
 				Computed: true,

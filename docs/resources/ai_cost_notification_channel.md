@@ -18,6 +18,9 @@ resource "konnect_ai_cost_notification_channel" "my_aicostnotificationchannel" {
     labels = {
       key = "value"
     }
+    managed_by = {
+      key = "value"
+    }
     name        = "...my_name..."
     webhook_url = "https://hooks.slack.com/services/T0000000/B0000000/XXXXXXXXXXXXXXXXXXXXXXXX"
   }
@@ -45,6 +48,7 @@ resource "konnect_ai_cost_notification_channel" "my_aicostnotificationchannel" {
 Optional:
 
 - `labels` (Map of String) Key-value metadata on the channel. The channel list can filter by label.
+- `managed_by` (Map of String) Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.
 - `name` (String) A human-readable name for the channel.
 
 1 to 100 characters after the server removes leading and trailing whitespace. Several channels can share a name.
@@ -67,6 +71,7 @@ Read-Only:
 Optional:
 
 - `labels` (Map of String) Key-value metadata on the channel. The channel list can filter by label.
+- `managed_by` (Map of String) Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.
 - `name` (String) A human-readable name for the channel.
 
 1 to 100 characters after the server removes leading and trailing whitespace. Several channels can share a name.

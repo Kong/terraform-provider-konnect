@@ -13,8 +13,9 @@ type OIDCIdentityProviderConfig1 struct {
 	// The client ID assigned to your application by the identity provider.
 	ClientID string `json:"client_id"`
 	// The Client Secret assigned to your application by the identity provider.
-	ClientSecret string   `json:"client_secret"`
-	Scopes       []string `json:"scopes,omitempty"`
+	ClientSecret string `json:"client_secret"`
+	// The scopes requested by your application when authenticating with the identity provider. Must include `openid`.
+	Scopes []string `json:"scopes,omitempty"`
 	// Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for
 	// authentication.
 	//

@@ -15,6 +15,8 @@ type AICostSlackNotificationChannel struct {
 	Name string `json:"name"`
 	// Key-value metadata on the channel. The channel list can filter by label.
 	Labels map[string]*string `json:"labels"`
+	// Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it.
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -54,6 +56,13 @@ func (a *AICostSlackNotificationChannel) GetLabels() map[string]*string {
 		return map[string]*string{}
 	}
 	return a.Labels
+}
+
+func (a *AICostSlackNotificationChannel) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
 }
 
 func (a *AICostSlackNotificationChannel) GetCreatedAt() time.Time {

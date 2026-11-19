@@ -16,7 +16,7 @@ type ListControlPlanesSingleResourceRequest struct {
 	// Sorts a collection of control-planes. Supported sort attributes are:
 	//   - created_at
 	//
-	Sort *string `queryParam:"style=form,explode=true,name=sort"`
+	Sort *shared.ControlPlaneSortQuery `queryParam:"style=form,explode=true,name=sort"`
 }
 
 func (l ListControlPlanesSingleResourceRequest) MarshalJSON() ([]byte, error) {
@@ -44,7 +44,7 @@ func (l *ListControlPlanesSingleResourceRequest) GetFilterLabels() *string {
 	return l.FilterLabels
 }
 
-func (l *ListControlPlanesSingleResourceRequest) GetSort() *string {
+func (l *ListControlPlanesSingleResourceRequest) GetSort() *shared.ControlPlaneSortQuery {
 	if l == nil {
 		return nil
 	}

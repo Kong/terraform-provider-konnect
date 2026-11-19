@@ -1,7 +1,14 @@
 # Changelog
 
+## 3.29.0
+> Released 2026/11/19
+
+# Features
+* Add support for provisioning Developer Portal Forms. Users can now set up these forms using `konnect_portal_forms` and configure these fields while provisioning Portal Developer and registering Applications
+* Add support for Role Assignment for Workspaces. Users can now assign Users, Teams and System Accounts roles over Workspaces in Konnect.
+
 ## 3.28.0
-> Released 2026/10/06
+> Released 2026/11/06
 
 # Features
 * Add support for AI Gateway 2.3, including support for baseten model provider, and token vault through `konnect_ai_gateway_datastores` resource

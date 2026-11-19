@@ -69,8 +69,8 @@ type AIGatewayModelModel struct {
 	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
-	// Names of the Datastores this model references.
-	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// The Datastores this model references, with the feature that uses each one.
+	Datastores []AIGatewayModelDatastoreRef `json:"datastores,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"model" json:"type"`
 	// Routing, logging, and load balancing configuration for the model.
@@ -158,7 +158,7 @@ func (a *AIGatewayModelModel) GetManagedBy() map[string]string {
 	return a.ManagedBy
 }
 
-func (a *AIGatewayModelModel) GetDatastores() []AIGatewayDatastoreRef {
+func (a *AIGatewayModelModel) GetDatastores() []AIGatewayModelDatastoreRef {
 	if a == nil {
 		return nil
 	}

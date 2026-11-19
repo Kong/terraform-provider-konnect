@@ -91,9 +91,7 @@ func (w *Window) GetAnchoredAt() string {
 	return w.AnchoredAt
 }
 
-// Posture - What the budget declares should happen when spend reaches the limit. Nothing enforces it.
-//
-// Defaults to `advisory`.
+// Posture - How the budget responds when spend reaches its limit. With `advisory`, the default, requests continue past the limit.
 type Posture string
 
 const (
@@ -123,7 +121,9 @@ type AICostLimitBudgetInput struct {
 	// 1 to 255 characters.
 	Name   string             `json:"name"`
 	Labels map[string]*string `json:"labels,omitempty"`
-	// The budget's priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don't use it.
+	// Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The budget's priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.
 	//
 	// Defaults to `100`.
 	Priority *int64 `default:"100" json:"priority"`
@@ -140,9 +140,7 @@ type AICostLimitBudgetInput struct {
 	//
 	// A replacement can change it, which can move the current window's start and end.
 	Window Window `json:"window"`
-	// What the budget declares should happen when spend reaches the limit. Nothing enforces it.
-	//
-	// Defaults to `advisory`.
+	// How the budget responds when spend reaches its limit. With `advisory`, the default, requests continue past the limit.
 	Posture *Posture `default:"advisory" json:"posture"`
 	// The amount of the limit in major units of `currency`, as a decimal string such as `5000` or `0.2`.
 	//
@@ -183,6 +181,13 @@ func (a *AICostLimitBudgetInput) GetLabels() map[string]*string {
 		return nil
 	}
 	return a.Labels
+}
+
+func (a *AICostLimitBudgetInput) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
 }
 
 func (a *AICostLimitBudgetInput) GetPriority() *int64 {

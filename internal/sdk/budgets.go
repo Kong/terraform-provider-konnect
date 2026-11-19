@@ -583,7 +583,7 @@ func (s *Budgets) GetCostBudget(ctx context.Context, request operations.GetCostB
 // UpsertCostBudget - Replace a budget's updatable fields
 // Replaces a budget's `name`, `labels`, `priority`, and `scope`, with `limit`, `window`, and `posture` on a limit budget or `validity` on an exemption, and returns the result. The request carries the full budget. The budget keeps its identifier, notification rule, and recorded firings.
 //
-// - An omitted `labels`, `priority`, or `posture` resets to its default.
+// - An omitted `labels`, `managed_by`, `priority`, or `posture` resets to its default.
 // - `effect` can't change. If the request changes it, it fails with `400` naming `effect`.
 // - A changed `limit`, `scope`, or `window` applies to the whole current budget window.
 // - Removing `scope.each` while the notification rule's message uses `{{entity.field}}` or `{{entity.value}}` fails with `400` naming `scope.each`. Change the message first.
@@ -1424,7 +1424,7 @@ func (s *Budgets) GetCostNotificationRule(ctx context.Context, request operation
 // Creates a limit budget's notification rule, or replaces its `thresholds`, `channels`, and `message`, and returns the rule. The response status is `201` when the request creates the rule and `200` when it replaces one.
 //
 // - The service evaluates the rule at once, so a threshold that spend in the current budget window has already reached fires right away. A threshold already recorded for this budget window, derived budget, and limit doesn't fire again. The evaluation runs after the rule is stored, so if it fails, retrying the same request completes it.
-// - Omitting `message` or sending `null` restores the built-in wording.
+// - Omitting `message` or sending `null` restores the built-in wording. An omitted `managed_by` resets to `{}`.
 // - Removing a threshold or channel keeps the firings and deliveries already recorded, and pending deliveries are still sent.
 // - If a listed channel doesn't exist in the organization, the request fails with `400`, and `invalid_parameters` names `channels[i].id` with the rule `missing_reference`.
 // - If `message` has an unknown placeholder or a `{{` without a closing `}}`, the request fails with `400`. It fails the same way when `message` uses `{{entity.field}}` or `{{entity.value}}` on a budget without `each`.

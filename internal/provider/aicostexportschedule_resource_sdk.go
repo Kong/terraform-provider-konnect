@@ -43,6 +43,12 @@ func (r *AICostExportScheduleResourceModel) RefreshFromOperationsCreateCostExpor
 				r.Labels[key] = types.StringPointerValue(value)
 			}
 		}
+		if len(resp.ManagedBy) > 0 {
+			r.ManagedBy = make(map[string]types.String, len(resp.ManagedBy))
+			for key1, value1 := range resp.ManagedBy {
+				r.ManagedBy[key1] = types.StringValue(value1)
+			}
+		}
 		r.Name = types.StringValue(resp.Name)
 		r.NextRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.NextRunAt))
 		r.SchemaVersion = types.Int64Value(int64(resp.SchemaVersion))
@@ -83,6 +89,12 @@ func (r *AICostExportScheduleResourceModel) RefreshFromOperationsGetCostExportSc
 				r.Labels[key] = types.StringPointerValue(value)
 			}
 		}
+		if len(resp.ManagedBy) > 0 {
+			r.ManagedBy = make(map[string]types.String, len(resp.ManagedBy))
+			for key1, value1 := range resp.ManagedBy {
+				r.ManagedBy[key1] = types.StringValue(value1)
+			}
+		}
 		r.Name = types.StringValue(resp.Name)
 		r.NextRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.NextRunAt))
 		r.SchemaVersion = types.Int64Value(int64(resp.SchemaVersion))
@@ -121,6 +133,12 @@ func (r *AICostExportScheduleResourceModel) RefreshFromOperationsUpsertCostExpor
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringPointerValue(value)
+			}
+		}
+		if len(resp.ManagedBy) > 0 {
+			r.ManagedBy = make(map[string]types.String, len(resp.ManagedBy))
+			for key1, value1 := range resp.ManagedBy {
+				r.ManagedBy[key1] = types.StringValue(value1)
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
@@ -195,6 +213,13 @@ func (r *AICostExportScheduleResourceModel) ToOperationsCreateCostExportSchedule
 		}
 		labels[labelsKey] = labelsInst
 	}
+	managedBy := make(map[string]string)
+	for managedByKey := range r.ManagedBy {
+		var managedByInst string
+		managedByInst = r.ManagedBy[managedByKey].ValueString()
+
+		managedBy[managedByKey] = managedByInst
+	}
 	out := operations.CreateCostExportScheduleRequestBody{
 		Name:          name,
 		Cadence:       cadence,
@@ -207,6 +232,7 @@ func (r *AICostExportScheduleResourceModel) ToOperationsCreateCostExportSchedule
 		Compression:   compression,
 		Filters:       filters,
 		Labels:        labels,
+		ManagedBy:     managedBy,
 	}
 
 	return &out, diags
@@ -320,6 +346,13 @@ func (r *AICostExportScheduleResourceModel) ToOperationsUpsertCostExportSchedule
 		}
 		labels[labelsKey] = labelsInst
 	}
+	managedBy := make(map[string]string)
+	for managedByKey := range r.ManagedBy {
+		var managedByInst string
+		managedByInst = r.ManagedBy[managedByKey].ValueString()
+
+		managedBy[managedByKey] = managedByInst
+	}
 	out := operations.UpsertCostExportScheduleRequestBody{
 		Name:          name,
 		Cadence:       cadence,
@@ -332,6 +365,7 @@ func (r *AICostExportScheduleResourceModel) ToOperationsUpsertCostExportSchedule
 		Compression:   compression,
 		Filters:       filters,
 		Labels:        labels,
+		ManagedBy:     managedBy,
 	}
 
 	return &out, diags

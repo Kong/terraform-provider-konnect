@@ -1542,7 +1542,6 @@ Not Null (see [below for nested schema](#nestedatt--conversion_listener--config-
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--conversion_listener--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-Not Null
 
 <a id="nestedatt--conversion_listener--config--cache"></a>
 ### Nested Schema for `conversion_listener.config.cache`
@@ -2205,7 +2204,6 @@ incoming requests. (see [below for nested schema](#nestedatt--conversion_only--c
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--conversion_only--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-Not Null
 
 <a id="nestedatt--conversion_only--config--logging"></a>
 ### Nested Schema for `conversion_only.config.logging`
@@ -3460,7 +3458,6 @@ Not Null (see [below for nested schema](#nestedatt--passthrough_listener--config
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-Not Null
 
 <a id="nestedatt--passthrough_listener--config--logging"></a>
 ### Nested Schema for `passthrough_listener.config.logging`
@@ -4096,7 +4093,6 @@ Not Null
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--upstream_server--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-Not Null
 
 <a id="nestedatt--upstream_server--config--logging"></a>
 ### Nested Schema for `upstream_server.config.logging`

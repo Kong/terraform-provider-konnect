@@ -20,6 +20,9 @@ resource "konnect_ai_cost_budget_notification_rule" "my_aicostbudgetnotification
       id = "8c219a7a-8116-4d1a-a1d5-98945f0141e4"
     }
   ]
+  managed_by = {
+    key = "value"
+  }
   message = {
     body    = "...my_body..."
     subject = "...my_subject..."
@@ -47,6 +50,7 @@ resource "konnect_ai_cost_budget_notification_rule" "my_aicostbudgetnotification
 - `channels` (Attributes Set) The channels that receive the rule's alerts.
 
 At most 10 channels, each listed once. Reads return them ordered by channel name. Defaults to `[]`. (see [below for nested schema](#nestedatt--channels))
+- `managed_by` (Map of String) Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.
 - `message` (Attributes) The wording of the rule's alerts on every channel, or `null` for the built-in wording.
 
 `subject` and `body` can contain placeholders, such as `{{budget.name}}`. A placeholder is `{{`, optional whitespace, a name from the list below, optional whitespace, and `}}`. There's no escaping, and a lone `}}` is text. Each alert fills the placeholders with its own values. Amounts appear in US dollars, such as `$4,125.50`.
