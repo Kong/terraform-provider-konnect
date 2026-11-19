@@ -282,6 +282,8 @@ type GetCostExportScheduleResponseBody struct {
 	Filters any `json:"filters"`
 	// Key-value metadata on the schedule. The schedule list can filter by label. Each export that the schedule creates copies the labels as they are at that moment.
 	Labels map[string]*string `json:"labels"`
+	// Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it.
+	ManagedBy map[string]string `json:"managed_by"`
 	// When the period in progress ends and the schedule creates its export, as an RFC 3339 timestamp in UTC. That export starts 6 hours later, so that events that arrive late can be stored first.
 	//
 	// `null` while the schedule is `paused`. It's in the past while a run is late.
@@ -297,7 +299,7 @@ func (g GetCostExportScheduleResponseBody) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetCostExportScheduleResponseBody) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"id", "name", "cadence", "time_zone", "status", "dataset", "schema_version", "format", "compression", "filters", "labels", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"id", "name", "cadence", "time_zone", "status", "dataset", "schema_version", "format", "compression", "filters", "labels", "managed_by", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -385,6 +387,13 @@ func (g *GetCostExportScheduleResponseBody) GetLabels() map[string]*string {
 		return map[string]*string{}
 	}
 	return g.Labels
+}
+
+func (g *GetCostExportScheduleResponseBody) GetManagedBy() map[string]string {
+	if g == nil {
+		return map[string]string{}
+	}
+	return g.ManagedBy
 }
 
 func (g *GetCostExportScheduleResponseBody) GetNextRunAt() *time.Time {

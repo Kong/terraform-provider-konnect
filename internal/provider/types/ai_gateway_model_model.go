@@ -7,19 +7,19 @@ import (
 )
 
 type AIGatewayModelModel struct {
-	Access       *AIGatewayAgentAccess      `tfsdk:"access"`
-	Capabilities []types.String             `tfsdk:"capabilities"`
-	Config       *AIGatewayModelModelConfig `tfsdk:"config"`
-	CreatedAt    types.String               `tfsdk:"created_at"`
-	Datastores   []AIGatewayDatastoreRef    `tfsdk:"datastores"`
-	DisplayName  types.String               `tfsdk:"display_name"`
-	Enabled      types.Bool                 `tfsdk:"enabled"`
-	Formats      []AIGatewayModelFormat     `tfsdk:"formats"`
-	ID           types.String               `tfsdk:"id"`
-	Labels       map[string]types.String    `tfsdk:"labels"`
-	ManagedBy    map[string]types.String    `tfsdk:"managed_by"`
-	Name         types.String               `tfsdk:"name"`
-	Policies     []types.String             `tfsdk:"policies"`
-	Targets      []AIGatewayTarget          `tfsdk:"targets"`
-	UpdatedAt    types.String               `tfsdk:"updated_at"`
+	Access       *AIGatewayAgentAccess        `tfsdk:"access"`
+	Capabilities []types.String               `tfsdk:"capabilities"`
+	Config       *AIGatewayModelModelConfig   `tfsdk:"config"`
+	CreatedAt    types.String                 `tfsdk:"created_at"`
+	Datastores   []AIGatewayModelDatastoreRef `tfsdk:"datastores"`
+	DisplayName  types.String                 `tfsdk:"display_name"`
+	Enabled      types.Bool                   `tfsdk:"enabled"`
+	Formats      []AIGatewayModelFormat       `tfsdk:"formats"`
+	ID           types.String                 `tfsdk:"id"`
+	Labels       map[string]types.String      `tfsdk:"labels"`
+	ManagedBy    map[string]types.String      `tfsdk:"managed_by"`
+	Name         types.String                 `tfsdk:"name"`
+	Policies     []types.String               `tfsdk:"policies"`
+	Targets      []AIGatewayTarget            `tfsdk:"targets"`
+	UpdatedAt    types.String                 `tfsdk:"updated_at"`
 }

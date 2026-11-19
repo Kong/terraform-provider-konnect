@@ -12,8 +12,8 @@ type UpdateOIDCIdentityProviderBackChannelLogout struct {
 	// the portal to end a user's session when they log out of the identity provider.
 	//
 	// Configure your identity provider's back-channel logout URL as your portal's URL followed by
-	// `/api/v3/oauth/backchannel-logout`, for example
-	// `https://my-portal.example.com/api/v3/oauth/backchannel-logout`.
+	// `/api/v3/developer/backchannel-logout`, for example
+	// `https://my-portal.example.com/api/v3/developer/backchannel-logout`.
 	//
 	Enabled *bool `default:"false" json:"enabled"`
 }

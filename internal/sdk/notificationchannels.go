@@ -581,7 +581,7 @@ func (s *NotificationChannels) GetCostNotificationChannel(ctx context.Context, r
 // UpsertCostNotificationChannel - Replace a notification channel
 // Replaces a notification channel's `name`, `labels`, and settings, and returns the result. The channel keeps its identifier and type.
 //
-// - The request carries the full channel, so an omitted `labels` clears the channel's labels.
+// - The request carries the full channel, so an omitted `labels` or `managed_by` clears it.
 // - A Slack channel keeps its stored webhook URL when the request omits `slack.webhook_url`. This is the only exception to full replacement, because reads never return the full URL.
 // - If `type` differs from the stored type, the request fails with `400`, and `invalid_parameters` names `type`.
 // - If the organization has no notification channel with this identifier, or the identifier isn't a valid UUID, the request fails with `404`. The request never creates a channel.

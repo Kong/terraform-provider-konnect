@@ -14,6 +14,7 @@ PortalDeveloper Resource
 
 ```terraform
 resource "konnect_portal_developer" "my_portaldeveloper" {
+  additional_data       = "{ \"see\": \"documentation\" }"
   email                 = "Rhiannon.Johnson21@yahoo.com"
   full_name             = "...my_full_name..."
   portal_id             = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
@@ -33,6 +34,7 @@ resource "konnect_portal_developer" "my_portaldeveloper" {
 
 ### Optional
 
+- `additional_data` (String) The developer's answers to the portal's `developer_registration` form, if it has one, as a map from each field's `name` to its value. Optional. Built-in fields like `full_name` and `email` go in their own top-level properties, not here. Ignored if the portal doesn't have a `developer_registration` form. Requires replacement if changed.; Parsed as JSON.
 - `send_invitation_email` (Boolean) When true, sends an invitation email to the developer. Default is false; no emails are sent unless explicitly requested. Default: false; Requires replacement if changed.
 - `status` (String) When omitted, the portal's `auto_approve_developers` setting determines the initial status. Set this property to override the portal default with any valid developer status. possible known values include one of ["approved", "pending", "revoked", "rejected"]
 

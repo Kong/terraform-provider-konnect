@@ -471,7 +471,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 				}
 			}
-			r.ConversionListener.Config.URL = types.StringValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.URL)
+			r.ConversionListener.Config.URL = types.StringPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.URL)
 			r.ConversionListener.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerConversionListenerResponse.CreatedAt))
 			r.CreatedAt = r.ConversionListener.CreatedAt
 			if resp.AIGatewayMCPServerConversionListenerResponse.Datastores != nil {
@@ -914,7 +914,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 				}
 			}
-			r.ConversionOnly.Config.URL = types.StringValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.URL)
+			r.ConversionOnly.Config.URL = types.StringPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.URL)
 			r.ConversionOnly.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerConversionOnlyResponse.CreatedAt))
 			r.CreatedAt = r.ConversionOnly.CreatedAt
 			if resp.AIGatewayMCPServerConversionOnlyResponse.Datastores != nil {
@@ -2358,7 +2358,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 				}
 			}
-			r.PassthroughListener.Config.URL = types.StringValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.URL)
+			r.PassthroughListener.Config.URL = types.StringPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.URL)
 			r.PassthroughListener.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerPassthroughListenerResponse.CreatedAt))
 			r.CreatedAt = r.PassthroughListener.CreatedAt
 			if resp.AIGatewayMCPServerPassthroughListenerResponse.Datastores != nil {
@@ -2920,7 +2920,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 				}
 			}
-			r.UpstreamServer.Config.URL = types.StringValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.URL)
+			r.UpstreamServer.Config.URL = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.URL)
 			r.UpstreamServer.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayMCPServerUpstreamServerResponse.CreatedAt))
 			r.CreatedAt = r.UpstreamServer.CreatedAt
 			if resp.AIGatewayMCPServerUpstreamServerResponse.Datastores != nil {
@@ -3411,9 +3411,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		} else {
 			maxRequestBodySize = nil
 		}
-		var url string
-		url = r.ConversionOnly.Config.URL.ValueString()
-
+		url := new(string)
+		if !r.ConversionOnly.Config.URL.IsUnknown() && !r.ConversionOnly.Config.URL.IsNull() {
+			*url = r.ConversionOnly.Config.URL.ValueString()
+		} else {
+			url = nil
+		}
 		var upstream *shared.AIGatewayUpstreamConfig
 		if r.ConversionOnly.Config.Upstream != nil {
 			var auth *shared.Auth
@@ -4600,9 +4603,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Timeout:              timeout,
 			}
 		}
-		var url1 string
-		url1 = r.ConversionListener.Config.URL.ValueString()
-
+		url1 := new(string)
+		if !r.ConversionListener.Config.URL.IsUnknown() && !r.ConversionListener.Config.URL.IsNull() {
+			*url1 = r.ConversionListener.Config.URL.ValueString()
+		} else {
+			url1 = nil
+		}
 		var upstream1 *shared.AIGatewayUpstreamConfig
 		if r.ConversionListener.Config.Upstream != nil {
 			var auth1 *shared.Auth
@@ -7373,9 +7379,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Timeout:              timeout2,
 			}
 		}
-		var url2 string
-		url2 = r.PassthroughListener.Config.URL.ValueString()
-
+		url2 := new(string)
+		if !r.PassthroughListener.Config.URL.IsUnknown() && !r.PassthroughListener.Config.URL.IsNull() {
+			*url2 = r.PassthroughListener.Config.URL.ValueString()
+		} else {
+			url2 = nil
+		}
 		var upstream2 *shared.AIGatewayUpstreamConfig
 		if r.PassthroughListener.Config.Upstream != nil {
 			var auth2 *shared.Auth
@@ -8896,9 +8905,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				UpstreamProtocolVersion:   upstreamProtocolVersion,
 			}
 		}
-		var url3 string
-		url3 = r.UpstreamServer.Config.URL.ValueString()
-
+		url3 := new(string)
+		if !r.UpstreamServer.Config.URL.IsUnknown() && !r.UpstreamServer.Config.URL.IsNull() {
+			*url3 = r.UpstreamServer.Config.URL.ValueString()
+		} else {
+			url3 = nil
+		}
 		var upstream3 *shared.AIGatewayUpstreamConfig
 		if r.UpstreamServer.Config.Upstream != nil {
 			var auth4 *shared.Auth
@@ -9664,9 +9676,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		} else {
 			maxRequestBodySize = nil
 		}
-		var url string
-		url = r.ConversionOnly.Config.URL.ValueString()
-
+		url := new(string)
+		if !r.ConversionOnly.Config.URL.IsUnknown() && !r.ConversionOnly.Config.URL.IsNull() {
+			*url = r.ConversionOnly.Config.URL.ValueString()
+		} else {
+			url = nil
+		}
 		var upstream *shared.AIGatewayUpstreamConfig
 		if r.ConversionOnly.Config.Upstream != nil {
 			var auth *shared.Auth
@@ -10853,9 +10868,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Timeout:              timeout,
 			}
 		}
-		var url1 string
-		url1 = r.ConversionListener.Config.URL.ValueString()
-
+		url1 := new(string)
+		if !r.ConversionListener.Config.URL.IsUnknown() && !r.ConversionListener.Config.URL.IsNull() {
+			*url1 = r.ConversionListener.Config.URL.ValueString()
+		} else {
+			url1 = nil
+		}
 		var upstream1 *shared.AIGatewayUpstreamConfig
 		if r.ConversionListener.Config.Upstream != nil {
 			var auth1 *shared.Auth
@@ -13626,9 +13644,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Timeout:              timeout2,
 			}
 		}
-		var url2 string
-		url2 = r.PassthroughListener.Config.URL.ValueString()
-
+		url2 := new(string)
+		if !r.PassthroughListener.Config.URL.IsUnknown() && !r.PassthroughListener.Config.URL.IsNull() {
+			*url2 = r.PassthroughListener.Config.URL.ValueString()
+		} else {
+			url2 = nil
+		}
 		var upstream2 *shared.AIGatewayUpstreamConfig
 		if r.PassthroughListener.Config.Upstream != nil {
 			var auth2 *shared.Auth
@@ -15149,9 +15170,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				UpstreamProtocolVersion:   upstreamProtocolVersion,
 			}
 		}
-		var url3 string
-		url3 = r.UpstreamServer.Config.URL.ValueString()
-
+		url3 := new(string)
+		if !r.UpstreamServer.Config.URL.IsUnknown() && !r.UpstreamServer.Config.URL.IsNull() {
+			*url3 = r.UpstreamServer.Config.URL.ValueString()
+		} else {
+			url3 = nil
+		}
 		var upstream3 *shared.AIGatewayUpstreamConfig
 		if r.UpstreamServer.Config.Upstream != nil {
 			var auth4 *shared.Auth

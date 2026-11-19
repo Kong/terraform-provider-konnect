@@ -1798,9 +1798,22 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
 									},
 								},
+								"purpose": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									Default:  stringdefault.StaticString(`semantic-balancer`),
+									MarkdownDescription: `The model feature that uses the datastore. ` + "`" + `semantic-balancer` + "`" + ` supplies the connection of the` + "\n" +
+										`model vector store.` + "\n" +
+										`Default: "semantic-balancer"; must be "semantic-balancer"`,
+									Validators: []validator.String{
+										stringvalidator.OneOf(
+											"semantic-balancer",
+										),
+									},
+								},
 							},
 						},
-						Description: `Names of the Datastores this model references.`,
+						Description: `The Datastores this model references, with the feature that uses each one.`,
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
@@ -9769,9 +9782,22 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
 									},
 								},
+								"purpose": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									Default:  stringdefault.StaticString(`semantic-balancer`),
+									MarkdownDescription: `The model feature that uses the datastore. ` + "`" + `semantic-balancer` + "`" + ` supplies the connection of the` + "\n" +
+										`model vector store.` + "\n" +
+										`Default: "semantic-balancer"; must be "semantic-balancer"`,
+									Validators: []validator.String{
+										stringvalidator.OneOf(
+											"semantic-balancer",
+										),
+									},
+								},
 							},
 						},
-						Description: `Names of the Datastores this model references.`,
+						Description: `The Datastores this model references, with the feature that uses each one.`,
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,

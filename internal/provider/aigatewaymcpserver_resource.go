@@ -1022,13 +1022,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
@@ -2082,13 +2079,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
@@ -5308,13 +5302,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
@@ -6746,13 +6737,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},

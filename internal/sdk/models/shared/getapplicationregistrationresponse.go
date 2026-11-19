@@ -155,7 +155,7 @@ type GetApplicationRegistrationResponse struct {
 	Status ApplicationRegistrationStatus `json:"status"`
 	// The developer's answers to the `api_registration` form linked to this API, captured when they registered.
 	//
-	AdditionalData map[string]FormResponseEntry `json:"additional_data,omitempty"`
+	AdditionalData any `json:"additional_data,omitempty"`
 	// Details about the API the application is registered to.
 	API API `json:"api"`
 	// Details about the application the registration is part of.
@@ -169,7 +169,7 @@ func (g GetApplicationRegistrationResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetApplicationRegistrationResponse) UnmarshalJSON(data []byte) error {
-	if out, err := utils.RunJQBytes(data, ". + { application_id: .application.id }"); err != nil {
+	if out, err := utils.RunJQBytes(data, ". + { application_id: .application.id } | .additional_data |= (if . == null then . else map_values(.value) end)"); err != nil {
 		return err
 	} else {
 		data = out
@@ -208,7 +208,7 @@ func (g *GetApplicationRegistrationResponse) GetStatus() ApplicationRegistration
 	return g.Status
 }
 
-func (g *GetApplicationRegistrationResponse) GetAdditionalData() map[string]FormResponseEntry {
+func (g *GetApplicationRegistrationResponse) GetAdditionalData() any {
 	if g == nil {
 		return nil
 	}

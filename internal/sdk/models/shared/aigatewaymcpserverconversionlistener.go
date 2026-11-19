@@ -113,7 +113,7 @@ type AIGatewayMCPServerKongListenerConfig struct {
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
-	URL string `json:"url"`
+	URL *string `json:"url,omitempty"`
 	// Configuration applied when proxying to the upstream service, including authentication.
 	Upstream *AIGatewayUpstreamConfig `json:"upstream,omitempty"`
 	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
@@ -156,7 +156,7 @@ func (a AIGatewayMCPServerKongListenerConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AIGatewayMCPServerKongListenerConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"route", "url"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"route"}); err != nil {
 		return err
 	}
 	return nil
@@ -190,9 +190,9 @@ func (a *AIGatewayMCPServerKongListenerConfig) GetServer() *AIGatewayMCPServerSe
 	return a.Server
 }
 
-func (a *AIGatewayMCPServerKongListenerConfig) GetURL() string {
+func (a *AIGatewayMCPServerKongListenerConfig) GetURL() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.URL
 }

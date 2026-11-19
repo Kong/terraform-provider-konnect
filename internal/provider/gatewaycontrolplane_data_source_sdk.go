@@ -173,9 +173,9 @@ func (r *GatewayControlPlaneDataSourceModel) ToOperationsListControlPlanesSingle
 	} else {
 		filterLabels = nil
 	}
-	sort := new(string)
+	sort := new(shared.ControlPlaneSortQuery)
 	if !r.Sort.IsUnknown() && !r.Sort.IsNull() {
-		*sort = r.Sort.ValueString()
+		*sort = shared.ControlPlaneSortQuery(r.Sort.ValueString())
 	} else {
 		sort = nil
 	}

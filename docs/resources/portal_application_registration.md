@@ -14,10 +14,11 @@ PortalApplicationRegistration Resource
 
 ```terraform
 resource "konnect_portal_application_registration" "my_portalapplicationregistration" {
-  api_id         = "15a8f0a0-e185-4b99-8591-c6319de5704a"
-  application_id = "f5e17ae7-79e1-4181-931f-143b2159d313"
-  portal_id      = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
-  status         = "approved"
+  additional_data = "{ \"see\": \"documentation\" }"
+  api_id          = "15a8f0a0-e185-4b99-8591-c6319de5704a"
+  application_id  = "f5e17ae7-79e1-4181-931f-143b2159d313"
+  portal_id       = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+  status          = "approved"
 }
 ```
 
@@ -32,6 +33,7 @@ resource "konnect_portal_application_registration" "my_portalapplicationregistra
 
 ### Optional
 
+- `additional_data` (String) The developer's answers to the `api_registration` form linked to this API, as a map from each field's `name` to its value. Optional, and ignored if no form is linked to the publication. Requires replacement if changed.; Parsed as JSON.
 - `status` (String) The status of the application registration. It must be a valid status value for a registration creation. possible known values include one of ["approved", "pending"]
 
 ### Read-Only

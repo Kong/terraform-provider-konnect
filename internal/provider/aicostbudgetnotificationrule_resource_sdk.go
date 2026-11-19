@@ -28,6 +28,12 @@ func (r *AICostBudgetNotificationRuleResourceModel) RefreshFromSharedAICostNotif
 			r.Channels = append(r.Channels, channels)
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		if len(resp.ManagedBy) > 0 {
+			r.ManagedBy = make(map[string]types.String, len(resp.ManagedBy))
+			for key, value := range resp.ManagedBy {
+				r.ManagedBy[key] = types.StringValue(value)
+			}
+		}
 		if resp.Message == nil {
 			r.Message = nil
 		} else {
@@ -131,10 +137,18 @@ func (r *AICostBudgetNotificationRuleResourceModel) ToOperationsUpsertCostNotifi
 			Body:    body,
 		}
 	}
+	managedBy := make(map[string]string)
+	for managedByKey := range r.ManagedBy {
+		var managedByInst string
+		managedByInst = r.ManagedBy[managedByKey].ValueString()
+
+		managedBy[managedByKey] = managedByInst
+	}
 	out := operations.UpsertCostNotificationRuleRequestBody{
 		Thresholds: thresholds,
 		Channels:   channels,
 		Message:    message,
+		ManagedBy:  managedBy,
 	}
 
 	return &out, diags

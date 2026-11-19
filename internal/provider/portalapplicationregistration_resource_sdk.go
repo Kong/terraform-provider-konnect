@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
@@ -16,6 +18,12 @@ func (r *PortalApplicationRegistrationResourceModel) RefreshFromSharedGetApplica
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.AdditionalData == nil {
+			r.AdditionalData = jsontypes.NewNormalizedNull()
+		} else {
+			additionalDataResult, _ := json.Marshal(resp.AdditionalData)
+			r.AdditionalData = jsontypes.NewNormalizedValue(string(additionalDataResult))
+		}
 		r.API = &tfTypes.API{}
 		r.API.EntityType = types.StringValue(string(resp.API.EntityType))
 		r.API.ID = types.StringValue(resp.API.ID)
@@ -150,9 +158,14 @@ func (r *PortalApplicationRegistrationResourceModel) ToSharedCreateApplicationRe
 	} else {
 		status = nil
 	}
+	var additionalData interface{}
+	if !r.AdditionalData.IsUnknown() && !r.AdditionalData.IsNull() {
+		_ = json.Unmarshal([]byte(r.AdditionalData.ValueString()), &additionalData)
+	}
 	out := shared.CreateApplicationRegistrationRequest{
-		APIID:  apiID,
-		Status: status,
+		APIID:          apiID,
+		Status:         status,
+		AdditionalData: additionalData,
 	}
 
 	return &out, diags

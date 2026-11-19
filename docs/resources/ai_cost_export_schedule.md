@@ -29,6 +29,9 @@ resource "konnect_ai_cost_export_schedule" "my_aicostexportschedule" {
   labels = {
     key = "value"
   }
+  managed_by = {
+    key = "value"
+  }
   name           = "...my_name..."
   schema_version = 1
   status         = "active"
@@ -65,6 +68,7 @@ Parsed as JSON.
 
 Required when `dataset` is `focus`, and isn't accepted for any other dataset. (see [below for nested schema](#nestedatt--focus))
 - `labels` (Map of String) Key-value metadata on the schedule. The schedule list can filter by label. Each export that the schedule creates copies the labels as they are at that moment.
+- `managed_by` (Map of String) Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.
 - `schema_version` (Number) The schema version of each export's data files within the dataset, which fixes their columns and values. Each export that the schedule creates copies it, so a newer schema version doesn't change the schedule's exports.
 
 Defaults to `1`, also once newer schema versions exist, so a replacement that omits `schema_version` sets `1`.

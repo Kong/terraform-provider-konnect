@@ -199,6 +199,8 @@ type UpsertCostExportScheduleRequestBody struct {
 	// Defaults to `{}`.
 	Filters any                `json:"filters,omitempty"`
 	Labels  map[string]*string `json:"labels,omitempty"`
+	// Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }
 
 func (u UpsertCostExportScheduleRequestBody) MarshalJSON() ([]byte, error) {
@@ -287,6 +289,13 @@ func (u *UpsertCostExportScheduleRequestBody) GetLabels() map[string]*string {
 		return nil
 	}
 	return u.Labels
+}
+
+func (u *UpsertCostExportScheduleRequestBody) GetManagedBy() map[string]string {
+	if u == nil {
+		return nil
+	}
+	return u.ManagedBy
 }
 
 type UpsertCostExportScheduleRequest struct {
@@ -570,6 +579,8 @@ type UpsertCostExportScheduleResponseBody struct {
 	Filters any `json:"filters"`
 	// Key-value metadata on the schedule. The schedule list can filter by label. Each export that the schedule creates copies the labels as they are at that moment.
 	Labels map[string]*string `json:"labels"`
+	// Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it.
+	ManagedBy map[string]string `json:"managed_by"`
 	// When the period in progress ends and the schedule creates its export, as an RFC 3339 timestamp in UTC. That export starts 6 hours later, so that events that arrive late can be stored first.
 	//
 	// `null` while the schedule is `paused`. It's in the past while a run is late.
@@ -585,7 +596,7 @@ func (u UpsertCostExportScheduleResponseBody) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpsertCostExportScheduleResponseBody) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"id", "name", "cadence", "time_zone", "status", "dataset", "schema_version", "format", "compression", "filters", "labels", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"id", "name", "cadence", "time_zone", "status", "dataset", "schema_version", "format", "compression", "filters", "labels", "managed_by", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -673,6 +684,13 @@ func (u *UpsertCostExportScheduleResponseBody) GetLabels() map[string]*string {
 		return map[string]*string{}
 	}
 	return u.Labels
+}
+
+func (u *UpsertCostExportScheduleResponseBody) GetManagedBy() map[string]string {
+	if u == nil {
+		return map[string]string{}
+	}
+	return u.ManagedBy
 }
 
 func (u *UpsertCostExportScheduleResponseBody) GetNextRunAt() *time.Time {

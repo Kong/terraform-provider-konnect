@@ -12,6 +12,7 @@ type AICostLimitBudget struct {
 	Currency  types.String                  `tfsdk:"currency"`
 	ID        types.String                  `tfsdk:"id"`
 	Labels    map[string]types.String       `tfsdk:"labels"`
+	ManagedBy map[string]types.String       `tfsdk:"managed_by"`
 	Name      types.String                  `tfsdk:"name"`
 	Posture   types.String                  `tfsdk:"posture"`
 	Priority  types.Int64                   `tfsdk:"priority"`

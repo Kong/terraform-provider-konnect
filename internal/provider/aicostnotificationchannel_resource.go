@@ -86,6 +86,12 @@ func (r *AICostNotificationChannelResource) Schema(ctx context.Context, req reso
 						ElementType: types.StringType,
 						Description: `Key-value metadata on the channel. The channel list can filter by label.`,
 					},
+					"managed_by": schema.MapAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Identifies the tool that manages this resource, such as ` + "`" + `{"tool": "terraform-provider-konnect"}` + "`" + `. The service stores the value and never acts on it. An omitted value on replacement resets to ` + "`" + `{}` + "`" + `.`,
+					},
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
@@ -164,6 +170,12 @@ func (r *AICostNotificationChannelResource) Schema(ctx context.Context, req reso
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Key-value metadata on the channel. The channel list can filter by label.`,
+					},
+					"managed_by": schema.MapAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Identifies the tool that manages this resource, such as ` + "`" + `{"tool": "terraform-provider-konnect"}` + "`" + `. The service stores the value and never acts on it. An omitted value on replacement resets to ` + "`" + `{}` + "`" + `.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
