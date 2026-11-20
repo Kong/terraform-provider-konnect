@@ -1,7 +1,10 @@
 # Changelog
 
 ## 3.29.0
-> Released 2026/11/19
+> Released 2026/11/20
+
+# BREAKING CHANGES
+* NA
 
 # Features
 * Add support for provisioning Developer Portal Forms. Users can now set up these forms using `konnect_portal_form` and configure these fields while provisioning Portal Developer and registering Applications
