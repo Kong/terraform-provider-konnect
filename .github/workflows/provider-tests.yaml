@@ -110,8 +110,6 @@ jobs:
         with:
           egress-policy: audit
       - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
-        with:
-          fetch-depth: 0 # the base branch is needed to count the tests "before"
       - uses: actions/setup-go@cd53bc84d5e2fd85362f4cb840513e06427082d3 # v4
         with:
           go-version-file: "go.mod"
@@ -122,9 +120,8 @@ jobs:
           path: shard-results
           merge-multiple: true
       - name: Show pass/fail counts per shard
-        # Writes a table to the run summary page, and compares the number of
-        # tests with the PR's base branch (what the single job used to run).
-        run: scripts/acceptance-shard.sh report shard-results ${{ github.base_ref && format('origin/{0}', github.base_ref) || '' }} >> "$GITHUB_STEP_SUMMARY"
+        # Writes a table to the run summary page.
+        run: scripts/acceptance-shard.sh report shard-results >> "$GITHUB_STEP_SUMMARY"
       - name: Fail unless every test ran once and passed
         run: |
           failed=0
