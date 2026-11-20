@@ -16,9 +16,18 @@ name: Terraform Provider Tests
 
 on:
   pull_request:
+    # Only changes that can affect the tests. Docs, markdown (CHANGELOG, README),
+    # examples and other workflows do not trigger a run. If a new kind of file
+    # starts to affect the tests, add it here.
     paths:
-      - ".github/workflows/provider-tests.yaml"
       - "**.go"
+      - "go.mod"
+      - "go.sum"
+      - "tests/**" # includes the testdata/*.tf configs
+      - "Makefile"
+      - "scripts/**"
+      - ".speakeasy/**"
+      - ".github/workflows/provider-tests.yaml"
 
 permissions:
   contents: read
