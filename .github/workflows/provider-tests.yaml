@@ -1,21 +1,74 @@
 name: Terraform Provider Tests
 
+# How this workflow runs the acceptance tests
+# -------------------------------------------
+# The tests used to run one after another in a single job. They are now split
+# into "shards": each directory under tests/resources/ (gateway, aigateway,
+# eventgateway, portalapi, identityorg) is one shard and runs as its own
+# parallel job. See tests/resources/README.md.
+#
+#   1. check-shards       - cheap layout check, no credentials needed.
+#   2. acceptance (x5)    - one job per shard; uploads its results as JSON.
+#   3. acceptance-summary - collects all shard results, prints a table of
+#                           pass/fail/skip counts per shard, and fails if any
+#                           test failed, did not run, or ran twice. Its name is
+#                           the required status check, same as the old single job.
+
 on:
   pull_request:
+    # Only changes that can affect the tests. Docs, markdown (CHANGELOG, README),
+    # examples and other workflows do not trigger a run. If a new kind of file
+    # starts to affect the tests, add it here.
     paths:
-      - ".github/workflows/provider-tests.yaml"
       - "**.go"
+      - "go.mod"
+      - "go.sum"
+      - "tests/**" # includes the testdata/*.tf configs
+      - "Makefile"
+      - "scripts/**"
+      - ".speakeasy/**"
+      - ".github/workflows/provider-tests.yaml"
 
 permissions:
   contents: read
 
+concurrency:
+  # The tests share one Konnect org (and its quotas, e.g. 4 portals), so only
+  # one run per ref may use it at a time. A newer push cancels the older run.
+  group: provider-tests-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  # 1. Fails if a test file is outside a shard directory, or a test name is duplicated.
+  check-shards:
+    name: Check test shards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+      - uses: actions/setup-go@cd53bc84d5e2fd85362f4cb840513e06427082d3 # v4
+        with:
+          go-version-file: "go.mod"
+      - run: make check-shards
+
+  # 2. Run every shard in parallel. To add a shard, create the directory under
+  #    tests/resources/ and add its name here.
   acceptance:
-    name: Acceptance Tests (Terraform ${{ matrix.terraform-version }})
+    name: Acceptance (${{ matrix.shard }})
+    needs: check-shards
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
+        shard:
+          - gateway
+          - aigateway
+          - eventgateway
+          - portalapi
+          - identityorg
         # Only test against one version for now as these tests are not
         # namespaced and will conflict
         terraform-version:
@@ -33,6 +86,53 @@ jobs:
         with:
           terraform_version: ${{ matrix.terraform-version }}
           terraform_wrapper: false
-      - env:
+      - name: Run the ${{ matrix.shard }} tests
+        env:
           KONNECT_SPAT: ${{ secrets.KONNECT_SPAT }}
-        run: make acceptance
+          OUT_DIR: shard-results
+        run: make acceptance-shard SHARD=${{ matrix.shard }}
+      - name: Upload results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: shard-${{ matrix.shard }}
+          path: shard-results/*.json
+
+  # 3. The single check to require in branch protection.
+  acceptance-summary:
+    name: Acceptance Tests (Terraform 1.13.*)
+    needs: acceptance
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+      - uses: actions/setup-go@cd53bc84d5e2fd85362f4cb840513e06427082d3 # v4
+        with:
+          go-version-file: "go.mod"
+      - name: Download all shard results
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: shard-*
+          path: shard-results
+          merge-multiple: true
+      - name: Show pass/fail counts per shard
+        # Writes a table to the run summary page.
+        run: scripts/acceptance-shard.sh report shard-results >> "$GITHUB_STEP_SUMMARY"
+      - name: Fail unless every test ran once and passed
+        run: |
+          failed=0
+          scripts/acceptance-shard.sh verify shard-results || failed=1
+          if [ "${{ needs.acceptance.result }}" != "success" ]; then
+            echo "a shard job failed or was cancelled"; failed=1
+          fi
+          exit $failed
+      - name: Upload combined results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: sharded-results
+          path: sharded-results.txt
