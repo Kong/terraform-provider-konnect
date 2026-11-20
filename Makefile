@@ -35,5 +35,7 @@ test:
 test-cleanup:
 	@cd tests/e2e; rm -rf local-plugins .terraform .terraform.lock.hcl terraform.tfstate terraform.tfstate.backup
 
+# ACC_SKIP is an optional regex of tests to skip, passed to `go test -skip`.
+# Matching is per slash-separated name element, e.g. ACC_SKIP='TestVault|TestPortalV2/auth'.
 acceptance:
-	@TF_ACC=1 go test -v -timeout 30m ./tests/resources
+	@TF_ACC=1 go test -v -timeout 30m $(if $(ACC_SKIP),-skip '$(ACC_SKIP)') ./tests/resources
