@@ -275,10 +275,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			}
 			r.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ClusterMaxRedirections)
 			if resp.Config.ClusterCacheRedis.ClusterNodes != nil {
-				r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+				r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 				for _, clusterNodesItem := range resp.Config.ClusterCacheRedis.ClusterNodes {
-					var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+					var clusterNodes tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -300,10 +300,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.SendTimeout)
 			r.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelMaster)
 			if resp.Config.ClusterCacheRedis.SentinelNodes != nil {
-				r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+				r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 				for _, sentinelNodesItem := range resp.Config.ClusterCacheRedis.SentinelNodes {
-					var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+					var sentinelNodes tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -794,10 +794,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 			if resp.Config.Redis.ClusterNodes != nil {
-				r.Config.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+				r.Config.Redis.ClusterNodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 				for _, clusterNodesItem1 := range resp.Config.Redis.ClusterNodes {
-					var clusterNodes1 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+					var clusterNodes1 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 					clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
 					clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
@@ -820,10 +820,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
 			if resp.Config.Redis.SentinelNodes != nil {
-				r.Config.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+				r.Config.Redis.SentinelNodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 				for _, sentinelNodesItem1 := range resp.Config.Redis.SentinelNodes {
-					var sentinelNodes1 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+					var sentinelNodes1 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 					sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
 					sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
@@ -984,7 +984,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			if resp.Config.TokenExchange.Cache == nil {
 				r.Config.TokenExchange.Cache = nil
 			} else {
-				r.Config.TokenExchange.Cache = &tfTypes.AIGWOpenIDConnectGeneratedConfigCache{}
+				r.Config.TokenExchange.Cache = &tfTypes.AIGatewayAuthStrategyOpenIDConnectCache{}
 				r.Config.TokenExchange.Cache.Enabled = types.BoolPointerValue(resp.Config.TokenExchange.Cache.Enabled)
 				r.Config.TokenExchange.Cache.TTL = types.Int64PointerValue(resp.Config.TokenExchange.Cache.TTL)
 			}

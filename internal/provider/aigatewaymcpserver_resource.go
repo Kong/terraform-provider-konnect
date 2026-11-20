@@ -586,7 +586,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -1018,13 +1022,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
@@ -1108,7 +1110,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -1576,6 +1580,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -1785,6 +1790,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												Description: `The name of the parameter. Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
 											},
 											"required": schema.BoolAttribute{
@@ -2073,13 +2079,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
@@ -2163,7 +2167,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -2572,6 +2578,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -2781,6 +2788,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												Description: `The name of the parameter. Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
 											},
 											"required": schema.BoolAttribute{
@@ -3365,7 +3373,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -3823,7 +3835,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -4246,6 +4260,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -4852,7 +4867,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Optional: true,
@@ -5283,13 +5302,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
@@ -5373,7 +5390,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -5841,6 +5860,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{
@@ -5971,6 +5991,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									Description: `Tool identifier used to match remote MCP Server tools for ACL enforcement. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthAtLeast(1),
 									},
 								},
 							},
@@ -6159,7 +6180,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -6565,6 +6590,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 													"client_secret": schema.StringAttribute{
@@ -6591,6 +6617,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 												},
@@ -6710,13 +6737,11 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
@@ -6800,7 +6825,9 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -7209,6 +7236,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"storage": schema.SingleNestedAttribute{

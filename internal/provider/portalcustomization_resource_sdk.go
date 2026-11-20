@@ -101,6 +101,11 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 			r.Theme = nil
 		} else {
 			r.Theme = &tfTypes.Theme{}
+			if resp.Theme.BorderRadius != nil {
+				r.Theme.BorderRadius = types.StringValue(string(*resp.Theme.BorderRadius))
+			} else {
+				r.Theme.BorderRadius = types.StringNull()
+			}
 			if resp.Theme.Colors == nil {
 				r.Theme.Colors = nil
 			} else {
@@ -182,10 +187,17 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 				Primary: primary,
 			}
 		}
+		borderRadius := new(shared.BorderRadius)
+		if !r.Theme.BorderRadius.IsUnknown() && !r.Theme.BorderRadius.IsNull() {
+			*borderRadius = shared.BorderRadius(r.Theme.BorderRadius.ValueString())
+		} else {
+			borderRadius = nil
+		}
 		theme = &shared.Theme{
-			Name:   name,
-			Mode:   mode,
-			Colors: colors,
+			Name:         name,
+			Mode:         mode,
+			Colors:       colors,
+			BorderRadius: borderRadius,
 		}
 	}
 	layout := new(string)

@@ -218,7 +218,8 @@ func (r *GatewayControlPlaneDataSource) Schema(ctx context.Context, req datasour
 			"sort": schema.StringAttribute{
 				Optional: true,
 				MarkdownDescription: `Sorts a collection of control-planes. Supported sort attributes are:` + "\n" +
-					`  - created_at`,
+					`  - created_at` + "\n" +
+					`possible known values include one of ["created_at", "created_at asc", "created_at desc"]`,
 			},
 		},
 	}

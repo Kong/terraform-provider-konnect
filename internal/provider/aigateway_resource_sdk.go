@@ -18,11 +18,7 @@ func (r *AIGatewayResourceModel) RefreshFromSharedAIGateway(ctx context.Context,
 	if resp != nil {
 		r.ConfigVersion = types.StringPointerValue(resp.ConfigVersion)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		if resp.DeploymentType != nil {
-			r.DeploymentType = types.StringValue(string(*resp.DeploymentType))
-		} else {
-			r.DeploymentType = types.StringNull()
-		}
+		r.DeploymentType = types.StringValue(string(resp.DeploymentType))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.Endpoints = &tfTypes.Endpoints{}

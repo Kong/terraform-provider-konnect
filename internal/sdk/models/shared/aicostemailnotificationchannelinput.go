@@ -13,6 +13,8 @@ type AICostEmailNotificationChannelInput struct {
 	// 1 to 100 characters after the server removes leading and trailing whitespace. Several channels can share a name.
 	Name   string             `json:"name"`
 	Labels map[string]*string `json:"labels,omitempty"`
+	// Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// Always `email` for an email channel, which carries its settings in `email`.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"email" json:"type"`
@@ -53,6 +55,13 @@ func (a *AICostEmailNotificationChannelInput) GetLabels() map[string]*string {
 		return nil
 	}
 	return a.Labels
+}
+
+func (a *AICostEmailNotificationChannelInput) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
 }
 
 func (a *AICostEmailNotificationChannelInput) GetType() string {

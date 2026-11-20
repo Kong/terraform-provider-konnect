@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -150,6 +151,9 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 						})),
 						ElementType: types.Int64Type,
 						Description: `Upstream response status code considered cacheable. Default: [200,301,404]`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+						},
 					},
 					"response_headers": schema.SingleNestedAttribute{
 						Computed: true,

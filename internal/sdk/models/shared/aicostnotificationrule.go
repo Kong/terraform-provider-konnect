@@ -76,6 +76,8 @@ type AICostNotificationRule struct {
 	Channels []Channels `json:"channels"`
 	// The wording of the rule's alerts, or `null` when the rule uses the built-in wording.
 	Message *Message `json:"message"`
+	// Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it.
+	ManagedBy map[string]string `json:"managed_by"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -87,7 +89,7 @@ func (a AICostNotificationRule) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AICostNotificationRule) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"budget", "thresholds", "channels", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"budget", "thresholds", "channels", "managed_by", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -119,6 +121,13 @@ func (a *AICostNotificationRule) GetMessage() *Message {
 		return nil
 	}
 	return a.Message
+}
+
+func (a *AICostNotificationRule) GetManagedBy() map[string]string {
+	if a == nil {
+		return map[string]string{}
+	}
+	return a.ManagedBy
 }
 
 func (a *AICostNotificationRule) GetCreatedAt() time.Time {

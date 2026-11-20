@@ -18,6 +18,9 @@ resource "konnect_ai_cost_budget" "my_aicostbudget" {
     labels = {
       key = "value"
     }
+    managed_by = {
+      key = "value"
+    }
     name     = "...my_name..."
     priority = 100
     scope = {
@@ -48,8 +51,8 @@ resource "konnect_ai_cost_budget" "my_aicostbudget" {
 `null` for a budget created before the service recorded creators.
 - `id` (String) Contains a unique identifier used for this resource.
 - `name` (String) A human-readable name for the budget.
-- `posture` (String) What the budget declares should happen when spend reaches the limit. Nothing enforces it.
-- `priority` (Number) The budget's priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don't use it.
+- `posture` (String) How the budget responds when spend reaches its limit.
+- `priority` (Number) The budget's priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--exempt"></a>
@@ -58,11 +61,12 @@ resource "konnect_ai_cost_budget" "my_aicostbudget" {
 Optional:
 
 - `labels` (Map of String) Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.
+- `managed_by` (Map of String) Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.
 - `name` (String) A human-readable name for the budget.
 
 1 to 255 characters.
 Not Null
-- `priority` (Number) The budget's priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don't use it.
+- `priority` (Number) The budget's priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.
 
 Defaults to `100`.
 Default: 100
@@ -118,15 +122,13 @@ Optional:
 
 - `currency` (String) The currency of `value`. Not Null; must be "USD"
 - `labels` (Map of String) Key-value metadata on the budget. The budget list can filter by label. Balances and notification rules ignore labels.
+- `managed_by` (Map of String) Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.
 - `name` (String) A human-readable name for the budget.
 
 1 to 255 characters.
 Not Null
-- `posture` (String) What the budget declares should happen when spend reaches the limit. Nothing enforces it.
-
-Defaults to `advisory`.
-possible known values include one of ["advisory", "enforce"]; Default: "advisory"
-- `priority` (Number) The budget's priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don't use it.
+- `posture` (String) How the budget responds when spend reaches its limit. With `advisory`, the default, requests continue past the limit. possible known values include one of ["advisory", "enforce"]; Default: "advisory"
+- `priority` (Number) The budget's priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.
 
 Defaults to `100`.
 Default: 100

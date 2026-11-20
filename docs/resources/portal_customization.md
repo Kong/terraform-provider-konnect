@@ -60,6 +60,7 @@ resource "konnect_portal_customization" "my_portalcustomization" {
     try_it_ui_audience       = "all"
   }
   theme = {
+    border_radius = "sharp"
     colors = {
       primary = "#000000"
     }
@@ -164,6 +165,7 @@ possible known values include one of ["all", "authenticated", "registered"]; Def
 
 Optional:
 
+- `border_radius` (String) The corner roundness to apply to this portal's theme. possible known values include one of ["soft", "sharp", "round"]
 - `colors` (Attributes) (see [below for nested schema](#nestedatt--theme--colors))
 - `mode` (String) possible known values include one of ["light", "dark", "system"]
 - `name` (String) The theme name to apply to this portal. Supported names are 'mesa', 'grove', 'pebble', or 'ocean'. If another name is provided or this property is omitted, the portal uses the default 'ocean' theme. Default: "ocean"

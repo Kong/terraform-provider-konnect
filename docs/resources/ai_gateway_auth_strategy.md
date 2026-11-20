@@ -17,7 +17,6 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
   gateway_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   key_auth = {
     config = {
-      anonymous        = "...my_anonymous..."
       hide_credentials = true
       identity_realms = [
         {
@@ -283,10 +282,10 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
         "..."
       ]
       hide_credentials          = true
-      http_proxy                = "...my_http_proxy..."
+      http_proxy                = "https://nifty-offset.org"
       http_proxy_authorization  = "...my_http_proxy_authorization..."
       http_version              = 9.47
-      https_proxy               = "...my_https_proxy..."
+      https_proxy               = "https://only-cook.com"
       https_proxy_authorization = "...my_https_proxy_authorization..."
       id_token_param_name       = "...my_id_token_param_name..."
       id_token_param_type = [
@@ -298,7 +297,7 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       introspect_jwt_tokens              = false
       introspection_accept               = "application/json"
       introspection_check_active         = true
-      introspection_endpoint             = "...my_introspection_endpoint..."
+      introspection_endpoint             = "https://unselfish-consistency.org"
       introspection_endpoint_auth_method = "client_secret_jwt"
       introspection_headers_client = [
         "..."
@@ -327,7 +326,7 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       issuers_allowed = [
         "..."
       ]
-      jwks_endpoint      = "...my_jwks_endpoint..."
+      jwks_endpoint      = "https://mammoth-hovel.com"
       jwt_session_claim  = "sid"
       jwt_session_cookie = "...my_jwt_session_cookie..."
       keepalive          = true
@@ -356,7 +355,7 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       logout_revoke_refresh_token = true
       logout_uri_suffix           = "...my_logout_uri_suffix..."
       max_age                     = 8.25
-      mtls_introspection_endpoint = "...my_mtls_introspection_endpoint..."
+      mtls_introspection_endpoint = "https://crushing-fit.name"
       mtls_revocation_endpoint    = "...my_mtls_revocation_endpoint..."
       mtls_token_endpoint         = "...my_mtls_token_endpoint..."
       no_proxy                    = "...my_no_proxy..."
@@ -715,7 +714,7 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
 
 Optional:
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--key_auth--config))
+- `config` (Attributes) Configuration for the key-auth auth strategy. (see [below for nested schema](#nestedatt--key_auth--config))
 - `datastores` (Attributes List) The Token Vault Datastore holding this entity's credential storage: the directory credentials
 are written to, and the encryption keys that seal them. Required when `token_vault` is set
 (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
@@ -730,7 +729,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 
 Read-Only:
@@ -744,7 +745,6 @@ Read-Only:
 
 Optional:
 
-- `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
 - `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request. Default: true
 - `identity_realms` (Attributes List) A configuration of Konnect Identity Realms that indicate where to source a consumer from. (see [below for nested schema](#nestedatt--key_auth--config--identity_realms))
 - `key_in_body` (Boolean) If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`. Default: false
@@ -754,6 +754,11 @@ Optional:
 - `principals` (Attributes) (see [below for nested schema](#nestedatt--key_auth--config--principals))
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 - `run_on_preflight` (Boolean) A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed. Default: true
+
+Read-Only:
+
+- `anonymous` (String) The read-only anonymous consumer value used when authentication fails.
+AI Gateway always sets this value to `anonymous`.
 
 <a id="nestedatt--key_auth--config--identity_realms"></a>
 ### Nested Schema for `key_auth.config.identity_realms`
@@ -790,7 +795,7 @@ Optional:
 
 Optional:
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--openid_connect--config))
+- `config` (Attributes) Configuration for the OpenID Connect auth strategy. (see [below for nested schema](#nestedatt--openid_connect--config))
 - `datastores` (Attributes List) The Token Vault Datastore holding this entity's credential storage: the directory credentials
 are written to, and the encryption keys that seal them. Required when `token_vault` is set
 (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
@@ -805,7 +810,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `token_vault` (Attributes) Enables enrollment protection for the Token Vault datastore linked to this auth strategy.
 Users of the linked Token Vault will need to authenticate using this OIDC auth strategy
@@ -883,7 +890,7 @@ Default: "authorization:bearer"
 - `consumer_groups_claim` (List of String) The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
 - `consumer_groups_optional` (Boolean) Do not terminate the request if consumer groups mapping fails. Default: false
 - `consumer_optional` (Boolean) Do not terminate the request if consumer mapping fails. Default: false
-- `credential_claim` (List of String) Claim path used to derive virtual credentials when consumer mapping is not used.
+- `credential_claim` (List of String) Claim path used to derive virtual credentials when consumer mapping is not used. Default: ["sub"]
 - `credential_claims` (List of List of String) The claims used to derive a virtual credential, for example to be consumed by the rate-limiting plugin, when consumer mapping is not used. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.
 
 **Requires a minimum runtime version of `2.3`**.

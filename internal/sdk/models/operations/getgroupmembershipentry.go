@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-var GetGroupMembershipEntryServerList = []string{
-	"https://us.api.konghq.com/",
-}
-
 type GetGroupMembershipEntryRequest struct {
 	// ID of the directory
 	DirectoryID string `pathParam:"style=simple,explode=false,name=directoryId"`

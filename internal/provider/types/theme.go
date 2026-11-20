@@ -7,7 +7,8 @@ import (
 )
 
 type Theme struct {
-	Colors *Colors      `tfsdk:"colors"`
-	Mode   types.String `tfsdk:"mode"`
-	Name   types.String `tfsdk:"name"`
+	BorderRadius types.String `tfsdk:"border_radius"`
+	Colors       *Colors      `tfsdk:"colors"`
+	Mode         types.String `tfsdk:"mode"`
+	Name         types.String `tfsdk:"name"`
 }

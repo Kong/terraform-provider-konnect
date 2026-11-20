@@ -7,7 +7,7 @@ import (
 )
 
 type OpenidConnectPluginTokenExchange struct {
-	Cache               *AIGWOpenIDConnectGeneratedConfigCache   `tfsdk:"cache"`
+	Cache               *AIGatewayAuthStrategyOpenIDConnectCache `tfsdk:"cache"`
 	GrantType           types.String                             `tfsdk:"grant_type"`
 	MapIdentitiesFrom   types.String                             `tfsdk:"map_identities_from"`
 	Provider            types.String                             `tfsdk:"provider"`

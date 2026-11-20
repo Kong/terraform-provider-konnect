@@ -1335,7 +1335,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
 - `rate_limiting` (Attributes) Rate limits applied to requests to this MCP Server, matched by MCP method or tool name.
@@ -1534,12 +1536,12 @@ If unset, no client certificate is presented to the upstream.
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
-incoming requests. (see [below for nested schema](#nestedatt--conversion_listener--config--route))
+incoming requests.
+Not Null (see [below for nested schema](#nestedatt--conversion_listener--config--route))
 - `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--conversion_listener--config--server))
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--conversion_listener--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-Not Null
 
 <a id="nestedatt--conversion_listener--config--cache"></a>
 ### Nested Schema for `conversion_listener.config.cache`
@@ -2150,7 +2152,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
@@ -2200,7 +2204,6 @@ incoming requests. (see [below for nested schema](#nestedatt--conversion_only--c
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--conversion_only--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-Not Null
 
 <a id="nestedatt--conversion_only--config--logging"></a>
 ### Nested Schema for `conversion_only.config.logging`
@@ -2594,7 +2597,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
 - `sources` (List of String) The explicit list of source MCP Servers whose tools this listener exposes.
@@ -2773,7 +2778,8 @@ revision that defines them receive them.
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
-incoming requests. (see [below for nested schema](#nestedatt--listener--config--route))
+incoming requests.
+Not Null (see [below for nested schema](#nestedatt--listener--config--route))
 - `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--listener--config--server))
 
 <a id="nestedatt--listener--config--cache"></a>
@@ -3256,7 +3262,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
 - `rate_limiting` (Attributes) Rate limits applied to requests to this MCP Server, matched by MCP method or tool name.
@@ -3444,12 +3452,12 @@ If unset, no client certificate is presented to the upstream.
 - `proxy` (Attributes) HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider. (see [below for nested schema](#nestedatt--passthrough_listener--config--proxy))
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
-incoming requests. (see [below for nested schema](#nestedatt--passthrough_listener--config--route))
+incoming requests.
+Not Null (see [below for nested schema](#nestedatt--passthrough_listener--config--route))
 - `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--passthrough_listener--config--server))
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-Not Null
 
 <a id="nestedatt--passthrough_listener--config--logging"></a>
 ### Nested Schema for `passthrough_listener.config.logging`
@@ -4028,7 +4036,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `name` (String) A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `policies` (List of String) List of policy references.
 - `token_vault` (Attributes) Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
@@ -4074,7 +4084,8 @@ If unset, no client certificate is presented to the upstream.
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
-incoming requests. (see [below for nested schema](#nestedatt--upstream_server--config--route))
+incoming requests.
+Not Null (see [below for nested schema](#nestedatt--upstream_server--config--route))
 - `server` (Attributes) Server-side configuration specific to `upstream-server` mode. (see [below for nested schema](#nestedatt--upstream_server--config--server))
 - `tools_cache_ttl_seconds` (Number) The time-to-live (TTL) for the upstream tools cache in seconds. Set to `0` to refresh on
 every client call.
@@ -4082,7 +4093,6 @@ Not Null
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--upstream_server--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
-Not Null
 
 <a id="nestedatt--upstream_server--config--logging"></a>
 ### Nested Schema for `upstream_server.config.logging`

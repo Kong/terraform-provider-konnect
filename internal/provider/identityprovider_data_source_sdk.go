@@ -19,7 +19,7 @@ func (r *IdentityProviderDataSourceModel) RefreshFromSharedIdentityProvider(ctx 
 		if resp.Config != nil {
 			r.Config = &tfTypes.IdentityProviderConfig{}
 			if resp.Config.OIDCIdentityProviderConfigOutput != nil {
-				r.Config.OIDCIdentityProviderConfig = &tfTypes.OIDCIdentityProviderConfig1{}
+				r.Config.OIDCIdentityProviderConfig = &tfTypes.OIDCIdentityProviderConfig2{}
 				if resp.Config.OIDCIdentityProviderConfigOutput.ClaimMappings == nil {
 					r.Config.OIDCIdentityProviderConfig.ClaimMappings = nil
 				} else {

@@ -39,7 +39,9 @@ resource "konnect_identity_principal_basic_auth_password" "my_identityprincipalb
 - `expires_at` (String) An ISO-8601 timestamp representation of entity expiration date.
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `secret` (String, Sensitive) The password secret value. This is only returned when the password is first created
 and cannot be retrieved again later.
 

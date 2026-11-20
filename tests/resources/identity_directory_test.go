@@ -11,6 +11,7 @@ import (
 // directory is exercised against a single directory in one test.
 func TestIdentityDirectory(t *testing.T) {
 	t.Run("CRUD", func(t *testing.T) {
+
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{

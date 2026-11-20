@@ -81,7 +81,6 @@ Read-Only:
 - `id` (String) Contains a unique identifier used for this resource.
 - `supports_multiple_credentials` (Boolean) Indicates whether this auth strategy supports multiple credentials.
 Always `true` for KEY_AUTH.
-Default: true
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--key_auth--configs"></a>

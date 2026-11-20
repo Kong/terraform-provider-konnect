@@ -16,6 +16,10 @@ func initHooks(h *Hooks) {
 	// Remove fields covered by partials so the server uses the partial's values
 	h.registerBeforeRequestHook(&PluginWithPartialHook{})
 
+	// Kong Identity is not served by the global endpoint, so send the default to the US region.
+	// Registered before CustomizeKongDomainHook, which rewrites the konghq.com host.
+	h.registerBeforeRequestHook(&KongIdentityDefaultRegionHook{})
+
 	// Domain customization - enable usage with non-prod domains
 	h.registerBeforeRequestHook(&CustomizeKongDomainHook{
 		Enabled:           os.Getenv("KONG_CUSTOM_DOMAIN") != "",

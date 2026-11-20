@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-var DeletePrincipalServerList = []string{
-	"https://us.api.konghq.com/",
-}
-
 type DeletePrincipalRequest struct {
 	// ID of the directory
 	DirectoryID string `pathParam:"style=simple,explode=false,name=directoryId"`

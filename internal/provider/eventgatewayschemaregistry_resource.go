@@ -96,7 +96,8 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 										Description: `Basic authentication scheme for the schema registry with username and password.`,
 									},
 								},
-								Description: `The authentication configuration for the schema registry.`,
+								MarkdownDescription: `The authentication configuration for the schema registry.` + "\n" +
+									`The Event Gateway only requires read-only access to the schema registry to fetch schemas for validation, so we recommend using credentials with read-only scope.`,
 							},
 							"endpoint": schema.StringAttribute{
 								Required:    true,

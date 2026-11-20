@@ -45,6 +45,7 @@ data "konnect_gateway_control_plane" "my_gatewaycontrolplane" {
 - `filter_labels` (String) Filter control planes in the response by associated labels.
 - `sort` (String) Sorts a collection of control-planes. Supported sort attributes are:
   - created_at
+possible known values include one of ["created_at", "created_at asc", "created_at desc"]
 
 ### Read-Only
 

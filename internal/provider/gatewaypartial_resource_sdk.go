@@ -465,10 +465,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			}
 			r.RedisEe.Config.ClusterMaxRedirections = types.Int64PointerValue(resp.PartialRedisEe.Config.ClusterMaxRedirections)
 			if resp.PartialRedisEe.Config.ClusterNodes != nil {
-				r.RedisEe.Config.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+				r.RedisEe.Config.ClusterNodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 				for _, clusterNodesItem := range resp.PartialRedisEe.Config.ClusterNodes {
-					var clusterNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+					var clusterNodes tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -490,10 +490,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			r.RedisEe.Config.SendTimeout = types.Int64PointerValue(resp.PartialRedisEe.Config.SendTimeout)
 			r.RedisEe.Config.SentinelMaster = types.StringPointerValue(resp.PartialRedisEe.Config.SentinelMaster)
 			if resp.PartialRedisEe.Config.SentinelNodes != nil {
-				r.RedisEe.Config.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+				r.RedisEe.Config.SentinelNodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 				for _, sentinelNodesItem := range resp.PartialRedisEe.Config.SentinelNodes {
-					var sentinelNodes tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+					var sentinelNodes tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -629,10 +629,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				}
 				r.Vectordb.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.ClusterMaxRedirections)
 				if resp.PartialVectordb.Config.Redis.ClusterNodes != nil {
-					r.Vectordb.Config.Redis.ClusterNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes{}
+					r.Vectordb.Config.Redis.ClusterNodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes{}
 
 					for _, clusterNodesItem1 := range resp.PartialVectordb.Config.Redis.ClusterNodes {
-						var clusterNodes1 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisClusterNodes
+						var clusterNodes1 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigClusterNodes
 
 						clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
 						clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
@@ -654,10 +654,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				r.Vectordb.Config.Redis.SendTimeout = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.SendTimeout)
 				r.Vectordb.Config.Redis.SentinelMaster = types.StringPointerValue(resp.PartialVectordb.Config.Redis.SentinelMaster)
 				if resp.PartialVectordb.Config.Redis.SentinelNodes != nil {
-					r.Vectordb.Config.Redis.SentinelNodes = []tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes{}
+					r.Vectordb.Config.Redis.SentinelNodes = []tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes{}
 
 					for _, sentinelNodesItem1 := range resp.PartialVectordb.Config.Redis.SentinelNodes {
-						var sentinelNodes1 tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisSentinelNodes
+						var sentinelNodes1 tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigSentinelNodes
 
 						sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
 						sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)

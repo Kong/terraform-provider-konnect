@@ -22,6 +22,7 @@ resource "konnect_identity_trusted_idp" "my_identitytrustedidp" {
       display_name = "name"
       email        = "email"
       groups       = "groups"
+      identifier   = "oid"
       metadata = {
         key = "value"
       }
@@ -45,7 +46,7 @@ resource "konnect_identity_trusted_idp" "my_identitytrustedidp" {
 
 - `display_name` (String) A human-friendly display name for the trusted IdP, distinct from its unique `issuer_url`.
 - `jit` (Attributes) Just-in-time provisioning configuration for this trusted IdP. The `mapping` decides how the OIDC claims a client presents to fetch-principal shape a principal provisioned just in time. (see [below for nested schema](#nestedatt--jit))
-- `jit_provisioning_enabled` (Boolean) Whether a principal is provisioned just-in-time on first exchange when no principal matches the subject_token's issuer and sub claim. Default: true
+- `jit_provisioning_enabled` (Boolean) Whether a principal is provisioned just-in-time on first exchange when no principal matches the subject_token's issuer and its identifier claim — `sub` by default, or the claim `jit.mapping.identifier` names. Default: true
 - `jwks_uri` (String) JWKS URI of the trusted IdP. Overrides OIDC discovery when set.
 - `vault_access_enabled` (Boolean) Whether vault token exchange is enabled for principals provisioned by this trusted IdP. Defaults to false; it can be set on create, is reset to false when omitted in the replace operation, and can be changed via the patch operation. Default: false
 
@@ -60,7 +61,7 @@ resource "konnect_identity_trusted_idp" "my_identitytrustedidp" {
 
 Optional:
 
-- `mapping` (Attributes) How the OIDC claims a client presents to fetch-principal map onto a principal provisioned just in time for this trusted IdP. Every field names one of those claims and is optional; a claim the mapping names but the lookup does not carry contributes nothing. An absent `mapping` — or an absent `jit` — means no claim mapping: provisioned principals get empty metadata and the lookup's claim value as display name. (see [below for nested schema](#nestedatt--jit--mapping))
+- `mapping` (Attributes) How the OIDC claims a client presents to fetch-principal map onto a principal provisioned just in time for this trusted IdP. Every field names one of those claims and is optional; a claim the mapping names but the lookup does not carry contributes nothing — except `identifier`, which the vault token exchange uses to look up the principal, and whose absence from the subject_token fails the exchange. An absent `mapping` — or an absent `jit` — means no claim mapping: provisioned principals get empty metadata and the lookup's claim value as display name. (see [below for nested schema](#nestedatt--jit--mapping))
 
 <a id="nestedatt--jit--mapping"></a>
 ### Nested Schema for `jit.mapping`
@@ -70,6 +71,7 @@ Optional:
 - `display_name` (String) Name of the claim whose string value becomes the provisioned principal's display name. When absent from the token, the lookup's claim value is used instead.
 - `email` (String) Name of the claim whose string value is attached to the provisioned principal as a custom identity keyed `email`. When a principal already carries it, that principal adopts the looked-up identity instead of a new one being provisioned.
 - `groups` (String) Name of the claim carrying the names of the groups the provisioned principal joins — a string is one group, an array is many. Groups that do not exist yet are created. At most 100 groups per token.
+- `identifier` (String) Name of the claim whose string value identifies the principal: the principal's OIDC identity keys on it, and an exchange looks the principal up by it. Defaults to `sub`. Set it when the IdP keys principals on another claim — Entra ID tokens, for example, carry the immutable object id in `oid`. The claim's value must identify one principal. When the claim is absent from the token, the lookup fails. Changing `identifier` re-keys existing principals' OIDC identities: they stop resolving, and the next exchange provisions anew or fails. Default: "sub"
 - `metadata` (Map of String) Maps a principal metadata key to the name of the claim whose value populates it: `metadata[key] = claims[claim]`, values narrowed to the shapes the metadata render paths accept. At most 64 entries.
 
 ## Import

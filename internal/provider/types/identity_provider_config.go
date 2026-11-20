@@ -3,6 +3,6 @@
 package types
 
 type IdentityProviderConfig struct {
-	OIDCIdentityProviderConfig *OIDCIdentityProviderConfig1 `queryParam:"inline" tfsdk:"oidc_identity_provider_config"`
+	OIDCIdentityProviderConfig *OIDCIdentityProviderConfig2 `queryParam:"inline" tfsdk:"oidc_identity_provider_config"`
 	SAMLIdentityProviderConfig *SAMLIdentityProviderConfig  `queryParam:"inline" tfsdk:"saml_identity_provider_config"`
 }

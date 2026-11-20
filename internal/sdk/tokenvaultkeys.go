@@ -50,11 +50,12 @@ func (s *TokenVaultKeys) CreateVaultKey(ctx context.Context, request operations.
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.CreateVaultKeyServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/vault/keys", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -366,11 +367,12 @@ func (s *TokenVaultKeys) GetVaultKey(ctx context.Context, request operations.Get
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.GetVaultKeyServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/vault/keys/{keyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -635,11 +637,12 @@ func (s *TokenVaultKeys) UpdateVaultKey(ctx context.Context, request operations.
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.UpdateVaultKeyServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/vault/keys/{keyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -931,11 +934,12 @@ func (s *TokenVaultKeys) DeleteVaultKey(ctx context.Context, request operations.
 		}
 	}
 
-	baseURL := utils.ReplaceParameters(operations.DeleteVaultKeyServerList[0], map[string]string{})
-	if o.ServerURL != nil {
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
 		baseURL = *o.ServerURL
 	}
-
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/directories/{directoryId}/vault/keys/{keyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)

@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-var DeleteVaultProviderServerList = []string{
-	"https://us.api.konghq.com/",
-}
-
 type DeleteVaultProviderRequest struct {
 	// ID of the directory
 	DirectoryID string `pathParam:"style=simple,explode=false,name=directoryId"`

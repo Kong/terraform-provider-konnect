@@ -46,7 +46,7 @@ resource "konnect_portal_identity_provider" "my_portalidentityprovider" {
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
+- `config` (Attributes) The configuration data for creating an authentication integration. (see [below for nested schema](#nestedatt--config))
 - `enabled` (Boolean) Indicates whether the identity provider is enabled.
 Only one identity provider can be active at a time, such as SAML or OIDC.
 Default: false
@@ -66,7 +66,7 @@ Optional:
 - `oidc_identity_provider_config` (Attributes) The properties of an OIDC identity provider to update. Only the provided properties are updated. When
 provided, `scopes` must include `openid`. (see [below for nested schema](#nestedatt--config--oidc_identity_provider_config))
 - `saml_identity_provider_config` (Attributes) The properties of a SAML identity provider to update. Exactly one of `idp_metadata_url` or
-`idp_metadata_xml` must be provided. (see [below for nested schema](#nestedatt--config--saml_identity_provider_config))
+`idp_metadata_xml` must be provided with a non-empty value. An empty string is treated as not provided. (see [below for nested schema](#nestedatt--config--saml_identity_provider_config))
 
 <a id="nestedatt--config--oidc_identity_provider_config"></a>
 ### Nested Schema for `config.oidc_identity_provider_config`
@@ -76,9 +76,13 @@ Optional:
 - `claim_mappings` (Attributes) Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for 
 authentication. (see [below for nested schema](#nestedatt--config--oidc_identity_provider_config--claim_mappings))
 - `client_id` (String) The client ID assigned to your application by the identity provider. Not Null
-- `client_secret` (String, Sensitive) The Client Secret assigned to your application by the identity provider.
+- `client_secret` (String, Sensitive) The Client Secret assigned to your application by the identity provider. Not Null
 - `issuer_url` (String) The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained. Not Null
-- `scopes` (List of String) The scopes requested by your application when authenticating with the identity provider. Default: ["email","openid","profile"]
+- `scopes` (List of String) The scopes requested by your application when authenticating with the identity provider. Must include `openid`. Default: ["email","openid","profile"]
+
+Read-Only:
+
+- `backchannel_logout` (Attributes) The back-channel logout settings to update. Only the provided properties are updated. (see [below for nested schema](#nestedatt--config--oidc_identity_provider_config--backchannel_logout))
 
 <a id="nestedatt--config--oidc_identity_provider_config--claim_mappings"></a>
 ### Nested Schema for `config.oidc_identity_provider_config.claim_mappings`
@@ -88,6 +92,27 @@ Optional:
 - `email` (String) The claim mapping for the user's email address. Default: "email"
 - `groups` (String) The claim mapping for the user's group membership information. Default: "groups"
 - `name` (String) The claim mapping for the user's name. Default: "name"
+
+
+<a id="nestedatt--config--oidc_identity_provider_config--backchannel_logout"></a>
+### Nested Schema for `config.oidc_identity_provider_config.backchannel_logout`
+
+Read-Only:
+
+- `enabled` (Boolean) Indicates whether back-channel logout is enabled. When enabled, the identity provider can notify
+the portal to end a user's session when they log out of the identity provider.
+
+Configure your identity provider's back-channel logout URL as your portal's URL followed by
+`/api/v3/developer/backchannel-logout`, for example
+`https://my-portal.example.com/api/v3/developer/backchannel-logout`.
+Default: false
+- `session_supported` (Boolean) Indicates whether the OpenID Provider advertises that it includes the `sid` claim in logout tokens
+(`backchannel_logout_session_supported` in its discovery metadata). A provider that omits the value does
+not include it. Null when the discovery metadata could not be retrieved or validated, in which case
+support is unknown.
+- `supported` (Boolean) Indicates whether the OpenID Provider advertises support for back-channel logout
+(`backchannel_logout_supported` in its discovery metadata). Null when the discovery metadata could not
+be retrieved or validated, in which case support is unknown.
 
 
 

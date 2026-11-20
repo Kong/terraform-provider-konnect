@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.952.5
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.961.1
 
 import (
 	"bytes"
@@ -419,6 +419,7 @@ type Konnect struct {
 	PortalCustomization *PortalCustomization
 	// APIs related to Konnect Developer Portal developers.
 	PortalDevelopers *PortalDevelopers
+	PortalForms      *PortalForms
 	// APIs related to Konnect Portal IP Allow List.
 	PortalsIPAllowList *PortalsIPAllowList
 	PortalPages        *PortalPages
@@ -512,11 +513,11 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		SDKVersion: "3.28.0",
+		SDKVersion: "3.29.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:         "speakeasy-sdk/terraform 3.28.0 2.952.5 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
-			SDKVersion:        "3.28.0",
-			GenVersion:        "2.952.5",
+			UserAgent:         "speakeasy-sdk/terraform 3.29.0 2.961.1 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
+			SDKVersion:        "3.29.0",
+			GenVersion:        "2.961.1",
 			OpenAPIDocVersion: "2.0.0",
 			ServerList:        ServerList,
 		},
@@ -658,6 +659,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalDevelopers = newPortalDevelopers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalForms = newPortalForms(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalsIPAllowList = newPortalsIPAllowList(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalPages = newPortalPages(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)

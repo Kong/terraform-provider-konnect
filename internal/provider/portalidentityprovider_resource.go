@@ -22,6 +22,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
@@ -69,6 +70,42 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 					"oidc_identity_provider_config": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"backchannel_logout": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed: true,
+										Default:  booldefault.StaticBool(false),
+										MarkdownDescription: `Indicates whether back-channel logout is enabled. When enabled, the identity provider can notify` + "\n" +
+											`the portal to end a user's session when they log out of the identity provider.` + "\n" +
+											`` + "\n" +
+											`Configure your identity provider's back-channel logout URL as your portal's URL followed by` + "\n" +
+											`` + "`" + `/api/v3/developer/backchannel-logout` + "`" + `, for example` + "\n" +
+											`` + "`" + `https://my-portal.example.com/api/v3/developer/backchannel-logout` + "`" + `.` + "\n" +
+											`Default: false`,
+									},
+									"session_supported": schema.BoolAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.Bool{
+											speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+										},
+										MarkdownDescription: `Indicates whether the OpenID Provider advertises that it includes the ` + "`" + `sid` + "`" + ` claim in logout tokens` + "\n" +
+											`(` + "`" + `backchannel_logout_session_supported` + "`" + ` in its discovery metadata). A provider that omits the value does` + "\n" +
+											`not include it. Null when the discovery metadata could not be retrieved or validated, in which case` + "\n" +
+											`support is unknown.`,
+									},
+									"supported": schema.BoolAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.Bool{
+											speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+										},
+										MarkdownDescription: `Indicates whether the OpenID Provider advertises support for back-channel logout` + "\n" +
+											`(` + "`" + `backchannel_logout_supported` + "`" + ` in its discovery metadata). Null when the discovery metadata could not` + "\n" +
+											`be retrieved or validated, in which case support is unknown.`,
+									},
+								},
+								Description: `The back-channel logout settings to update. Only the provided properties are updated.`,
+							},
 							"claim_mappings": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -123,8 +160,9 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.UseConfigValue(),
 								},
-								Description: `The Client Secret assigned to your application by the identity provider.`,
+								Description: `The Client Secret assigned to your application by the identity provider. Not Null`,
 								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtLeast(1),
 									stringvalidator.RegexMatches(regexp.MustCompile(`\S`), "must match pattern "+regexp.MustCompile(`\S`).String()),
 								},
@@ -148,7 +186,7 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 									types.StringValue("profile"),
 								})),
 								ElementType: types.StringType,
-								Description: `The scopes requested by your application when authenticating with the identity provider. Default: ["email","openid","profile"]`,
+								Description: `The scopes requested by your application when authenticating with the identity provider. Must include ` + "`" + `openid` + "`" + `. Default: ["email","openid","profile"]`,
 								Validators: []validator.List{
 									listvalidator.SizeAtLeast(1),
 								},
@@ -178,8 +216,7 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								Default:     stringdefault.StaticString(``),
 								Description: `The identity provider's metadata URL where the identity provider's metadata can be obtained. Default: ""`,
 								Validators: []validator.String{
-									stringvalidator.UTF8LengthAtLeast(1),
-									stringvalidator.RegexMatches(regexp.MustCompile(`^https?://\S+$`), "must match pattern "+regexp.MustCompile(`^https?://\S+$`).String()),
+									stringvalidator.RegexMatches(regexp.MustCompile(`^(https?://\S+)?$`), "must match pattern "+regexp.MustCompile(`^(https?://\S+)?$`).String()),
 								},
 							},
 							"idp_metadata_xml": schema.StringAttribute{
@@ -187,9 +224,6 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								Optional:    true,
 								Default:     stringdefault.StaticString(``),
 								Description: `The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the ` + "`" + `idp_metadata_url` + "`" + ` field instead. Default: ""`,
-								Validators: []validator.String{
-									stringvalidator.UTF8LengthAtLeast(1),
-								},
 							},
 							"sp_entity_id": schema.StringAttribute{
 								Computed: true,
@@ -206,7 +240,7 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 							},
 						},
 						MarkdownDescription: `The properties of a SAML identity provider to update. Exactly one of ` + "`" + `idp_metadata_url` + "`" + ` or` + "\n" +
-							`` + "`" + `idp_metadata_xml` + "`" + ` must be provided.`,
+							`` + "`" + `idp_metadata_xml` + "`" + ` must be provided with a non-empty value. An empty string is treated as not provided.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("oidc_identity_provider_config"),
@@ -214,6 +248,7 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 						},
 					},
 				},
+				Description: `The configuration data for creating an authentication integration.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,

@@ -62,7 +62,10 @@ resource "konnect_identity_auth_server_client" "my_identityauthserverclient" {
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-- `login_uri` (String) The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
+- `login_uri` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
 - `redirect_uris` (List of String) The URIs that the client is allowed to redirect to after authentication in interactive flows. All redirect URIs must be absolute URIs, be secure (HTTPS), and must not include a fragment component.
 - `token_endpoint_auth_method` (String) Requested authentication method for OAuth 2.0 endpoints. possible known values include one of ["private_key_jwt", "client_secret_post", "none"]; Default: "client_secret_post"
 

@@ -32,6 +32,12 @@ func (r *AICostBudgetResourceModel) RefreshFromSharedAICostBudget(ctx context.Co
 					r.Exempt.Labels[key] = types.StringPointerValue(value)
 				}
 			}
+			if len(resp.AICostExemptBudget.ManagedBy) > 0 {
+				r.Exempt.ManagedBy = make(map[string]types.String, len(resp.AICostExemptBudget.ManagedBy))
+				for key1, value1 := range resp.AICostExemptBudget.ManagedBy {
+					r.Exempt.ManagedBy[key1] = types.StringValue(value1)
+				}
+			}
 			r.Exempt.Name = types.StringValue(resp.AICostExemptBudget.Name)
 			r.Name = r.Exempt.Name
 			r.Exempt.Posture = types.StringPointerValue(resp.AICostExemptBudget.Posture)
@@ -59,8 +65,14 @@ func (r *AICostBudgetResourceModel) RefreshFromSharedAICostBudget(ctx context.Co
 			r.ID = r.Limit.ID
 			if len(resp.AICostLimitBudget.Labels) > 0 {
 				r.Limit.Labels = make(map[string]types.String, len(resp.AICostLimitBudget.Labels))
-				for key1, value1 := range resp.AICostLimitBudget.Labels {
-					r.Limit.Labels[key1] = types.StringPointerValue(value1)
+				for key2, value2 := range resp.AICostLimitBudget.Labels {
+					r.Limit.Labels[key2] = types.StringPointerValue(value2)
+				}
+			}
+			if len(resp.AICostLimitBudget.ManagedBy) > 0 {
+				r.Limit.ManagedBy = make(map[string]types.String, len(resp.AICostLimitBudget.ManagedBy))
+				for key3, value3 := range resp.AICostLimitBudget.ManagedBy {
+					r.Limit.ManagedBy[key3] = types.StringValue(value3)
 				}
 			}
 			r.Limit.Name = types.StringValue(resp.AICostLimitBudget.Name)
@@ -104,6 +116,13 @@ func (r *AICostBudgetResourceModel) ToOperationsCreateCostBudgetRequestBody(ctx 
 			}
 			labels[labelsKey] = labelsInst
 		}
+		managedBy := make(map[string]string)
+		for managedByKey := range r.Limit.ManagedBy {
+			var managedByInst string
+			managedByInst = r.Limit.ManagedBy[managedByKey].ValueString()
+
+			managedBy[managedByKey] = managedByInst
+		}
 		priority := new(int64)
 		if !r.Limit.Priority.IsUnknown() && !r.Limit.Priority.IsNull() {
 			*priority = r.Limit.Priority.ValueInt64()
@@ -143,14 +162,15 @@ func (r *AICostBudgetResourceModel) ToOperationsCreateCostBudgetRequestBody(ctx 
 
 		currency := shared.AICostCurrency(r.Limit.Currency.ValueString())
 		aiCostLimitBudgetInput = &shared.AICostLimitBudgetInput{
-			Name:     name,
-			Labels:   labels,
-			Priority: priority,
-			Scope:    scope,
-			Window:   window,
-			Posture:  posture,
-			Value:    value,
-			Currency: currency,
+			Name:      name,
+			Labels:    labels,
+			ManagedBy: managedBy,
+			Priority:  priority,
+			Scope:     scope,
+			Window:    window,
+			Posture:   posture,
+			Value:     value,
+			Currency:  currency,
 		}
 	}
 	if aiCostLimitBudgetInput != nil {
@@ -172,6 +192,13 @@ func (r *AICostBudgetResourceModel) ToOperationsCreateCostBudgetRequestBody(ctx 
 				labelsInst1 = nil
 			}
 			labels1[labelsKey1] = labelsInst1
+		}
+		managedBy1 := make(map[string]string)
+		for managedByKey1 := range r.Exempt.ManagedBy {
+			var managedByInst1 string
+			managedByInst1 = r.Exempt.ManagedBy[managedByKey1].ValueString()
+
+			managedBy1[managedByKey1] = managedByInst1
 		}
 		priority1 := new(int64)
 		if !r.Exempt.Priority.IsUnknown() && !r.Exempt.Priority.IsNull() {
@@ -205,11 +232,12 @@ func (r *AICostBudgetResourceModel) ToOperationsCreateCostBudgetRequestBody(ctx 
 			EndsAt:   endsAt,
 		}
 		aiCostExemptBudgetInput = &shared.AICostExemptBudgetInput{
-			Name:     name1,
-			Labels:   labels1,
-			Priority: priority1,
-			Scope:    scope1,
-			Validity: validity,
+			Name:      name1,
+			Labels:    labels1,
+			ManagedBy: managedBy1,
+			Priority:  priority1,
+			Scope:     scope1,
+			Validity:  validity,
 		}
 	}
 	if aiCostExemptBudgetInput != nil {
@@ -287,6 +315,13 @@ func (r *AICostBudgetResourceModel) ToOperationsUpsertCostBudgetRequestBody(ctx 
 			}
 			labels[labelsKey] = labelsInst
 		}
+		managedBy := make(map[string]string)
+		for managedByKey := range r.Limit.ManagedBy {
+			var managedByInst string
+			managedByInst = r.Limit.ManagedBy[managedByKey].ValueString()
+
+			managedBy[managedByKey] = managedByInst
+		}
 		priority := new(int64)
 		if !r.Limit.Priority.IsUnknown() && !r.Limit.Priority.IsNull() {
 			*priority = r.Limit.Priority.ValueInt64()
@@ -326,14 +361,15 @@ func (r *AICostBudgetResourceModel) ToOperationsUpsertCostBudgetRequestBody(ctx 
 
 		currency := shared.AICostCurrency(r.Limit.Currency.ValueString())
 		aiCostLimitBudgetInput = &shared.AICostLimitBudgetInput{
-			Name:     name,
-			Labels:   labels,
-			Priority: priority,
-			Scope:    scope,
-			Window:   window,
-			Posture:  posture,
-			Value:    value,
-			Currency: currency,
+			Name:      name,
+			Labels:    labels,
+			ManagedBy: managedBy,
+			Priority:  priority,
+			Scope:     scope,
+			Window:    window,
+			Posture:   posture,
+			Value:     value,
+			Currency:  currency,
 		}
 	}
 	if aiCostLimitBudgetInput != nil {
@@ -355,6 +391,13 @@ func (r *AICostBudgetResourceModel) ToOperationsUpsertCostBudgetRequestBody(ctx 
 				labelsInst1 = nil
 			}
 			labels1[labelsKey1] = labelsInst1
+		}
+		managedBy1 := make(map[string]string)
+		for managedByKey1 := range r.Exempt.ManagedBy {
+			var managedByInst1 string
+			managedByInst1 = r.Exempt.ManagedBy[managedByKey1].ValueString()
+
+			managedBy1[managedByKey1] = managedByInst1
 		}
 		priority1 := new(int64)
 		if !r.Exempt.Priority.IsUnknown() && !r.Exempt.Priority.IsNull() {
@@ -388,11 +431,12 @@ func (r *AICostBudgetResourceModel) ToOperationsUpsertCostBudgetRequestBody(ctx 
 			EndsAt:   endsAt,
 		}
 		aiCostExemptBudgetInput = &shared.AICostExemptBudgetInput{
-			Name:     name1,
-			Labels:   labels1,
-			Priority: priority1,
-			Scope:    scope1,
-			Validity: validity,
+			Name:      name1,
+			Labels:    labels1,
+			ManagedBy: managedBy1,
+			Priority:  priority1,
+			Scope:     scope1,
+			Validity:  validity,
 		}
 	}
 	if aiCostExemptBudgetInput != nil {

@@ -16,6 +16,7 @@ const (
 )
 
 // SchemaRegistryAuthenticationScheme - The authentication configuration for the schema registry.
+// The Event Gateway only requires read-only access to the schema registry to fetch schemas for validation, so we recommend using credentials with read-only scope.
 type SchemaRegistryAuthenticationScheme struct {
 	SchemaRegistryAuthenticationBasic *SchemaRegistryAuthenticationBasic `queryParam:"inline" union:"member"`
 

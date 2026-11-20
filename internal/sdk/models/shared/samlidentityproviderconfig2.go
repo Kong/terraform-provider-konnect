@@ -7,7 +7,7 @@ import (
 )
 
 // SAMLIdentityProviderConfig2 - The properties of a SAML identity provider to update. Exactly one of `idp_metadata_url` or
-// `idp_metadata_xml` must be provided.
+// `idp_metadata_xml` must be provided with a non-empty value. An empty string is treated as not provided.
 type SAMLIdentityProviderConfig2 struct {
 	// The identity provider's metadata URL where the identity provider's metadata can be obtained.
 	IdpMetadataURL *string `default:"null" json:"idp_metadata_url"`

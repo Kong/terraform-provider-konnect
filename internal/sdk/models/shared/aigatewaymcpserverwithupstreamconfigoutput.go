@@ -197,7 +197,7 @@ type AIGatewayMCPServerWithUpstreamConfigOutput struct {
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
 	//
-	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
+	Route AIGatewayMCPServerRouteWithMatcher `json:"route"`
 	// Configuration for AI Gateway logging.
 	Logging *AIGatewayMCPServerWithUpstreamConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
@@ -207,7 +207,7 @@ type AIGatewayMCPServerWithUpstreamConfigOutput struct {
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
-	URL string `json:"url"`
+	URL *string `default:"null" json:"url"`
 	// Configuration applied when proxying to the upstream service, including authentication.
 	Upstream *AIGatewayUpstreamConfigOutput `json:"upstream,omitempty"`
 	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
@@ -240,15 +240,15 @@ func (a AIGatewayMCPServerWithUpstreamConfigOutput) MarshalJSON() ([]byte, error
 }
 
 func (a *AIGatewayMCPServerWithUpstreamConfigOutput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"url"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"route"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetRoute() *AIGatewayMCPServerRouteWithMatcher {
+func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetRoute() AIGatewayMCPServerRouteWithMatcher {
 	if a == nil {
-		return nil
+		return AIGatewayMCPServerRouteWithMatcher{}
 	}
 	return a.Route
 }
@@ -274,9 +274,9 @@ func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetServer() *AIGatewayMCPSe
 	return a.Server
 }
 
-func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetURL() string {
+func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetURL() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.URL
 }
@@ -420,7 +420,7 @@ type AIGatewayMCPServerWithUpstreamConfig struct {
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
 	//
-	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
+	Route AIGatewayMCPServerRouteWithMatcher `json:"route"`
 	// Configuration for AI Gateway logging.
 	Logging *AIGatewayMCPServerWithUpstreamConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
@@ -430,7 +430,7 @@ type AIGatewayMCPServerWithUpstreamConfig struct {
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
-	URL string `json:"url"`
+	URL *string `default:"null" json:"url"`
 	// Configuration applied when proxying to the upstream service, including authentication.
 	Upstream *AIGatewayUpstreamConfig `json:"upstream,omitempty"`
 	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
@@ -463,15 +463,15 @@ func (a AIGatewayMCPServerWithUpstreamConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AIGatewayMCPServerWithUpstreamConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"url"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"route"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AIGatewayMCPServerWithUpstreamConfig) GetRoute() *AIGatewayMCPServerRouteWithMatcher {
+func (a *AIGatewayMCPServerWithUpstreamConfig) GetRoute() AIGatewayMCPServerRouteWithMatcher {
 	if a == nil {
-		return nil
+		return AIGatewayMCPServerRouteWithMatcher{}
 	}
 	return a.Route
 }
@@ -497,9 +497,9 @@ func (a *AIGatewayMCPServerWithUpstreamConfig) GetServer() *Server {
 	return a.Server
 }
 
-func (a *AIGatewayMCPServerWithUpstreamConfig) GetURL() string {
+func (a *AIGatewayMCPServerWithUpstreamConfig) GetURL() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.URL
 }

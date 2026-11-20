@@ -89,7 +89,9 @@ type AICostExemptBudgetInput struct {
 	// 1 to 255 characters.
 	Name   string             `json:"name"`
 	Labels map[string]*string `json:"labels,omitempty"`
-	// The budget's priority, from 1, the highest, to 100, the lowest. The budget list can filter and sort by it, but balances and notification rules don't use it.
+	// Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The budget's priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.
 	//
 	// Defaults to `100`.
 	Priority *int64 `default:"100" json:"priority"`
@@ -99,7 +101,7 @@ type AICostExemptBudgetInput struct {
 	Scope AICostExemptBudgetInputScope `json:"scope"`
 	// Always `exempt` for an exemption, which carries the period it covers in `validity`.
 	//
-	// A replacement can't change it.
+	// A replacement can't change it. A person can't exempt their own usage: when the caller has access to only some principals, and the scope lies within the caller's principals rather than within their groups alone, the request fails with `400`. An organization-wide caller can create any exemption, and a Team Manager can create one for their groups.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	effect string `const:"exempt" json:"effect"`
 	// The period the exemption covers, from `starts_at` until `ends_at`.
@@ -129,6 +131,13 @@ func (a *AICostExemptBudgetInput) GetLabels() map[string]*string {
 		return nil
 	}
 	return a.Labels
+}
+
+func (a *AICostExemptBudgetInput) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
 }
 
 func (a *AICostExemptBudgetInput) GetPriority() *int64 {

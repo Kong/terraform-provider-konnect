@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -167,6 +168,9 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 									},
 								},
 								Description: `Insert chat messages at the end of the chat message array. This array preserves exact order when adding messages.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtMost(15),
+								},
 							},
 							"prepend": schema.ListNestedAttribute{
 								Optional: true,
@@ -193,6 +197,9 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 									},
 								},
 								Description: `Insert chat messages at the beginning of the chat message array. This array preserves exact order when adding messages.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtMost(15),
+								},
 							},
 						},
 					},

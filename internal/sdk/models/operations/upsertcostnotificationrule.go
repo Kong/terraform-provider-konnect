@@ -117,6 +117,8 @@ type UpsertCostNotificationRuleRequestBody struct {
 	//
 	// `{{entity.field}}` and `{{entity.value}}` work only on a budget with `each`. Defaults to `null`.
 	Message *Message `json:"message"`
+	// Identifies the tool that manages this resource, such as `{"tool": "terraform-provider-konnect"}`. The service stores the value and never acts on it. An omitted value on replacement resets to `{}`.
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }
 
 func (u UpsertCostNotificationRuleRequestBody) MarshalJSON() ([]byte, error) {
@@ -149,6 +151,13 @@ func (u *UpsertCostNotificationRuleRequestBody) GetMessage() *Message {
 		return nil
 	}
 	return u.Message
+}
+
+func (u *UpsertCostNotificationRuleRequestBody) GetManagedBy() map[string]string {
+	if u == nil {
+		return nil
+	}
+	return u.ManagedBy
 }
 
 type UpsertCostNotificationRuleRequest struct {

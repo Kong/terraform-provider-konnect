@@ -68,11 +68,13 @@ type AIGatewayModelAIGatewayModelModel struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
-	// Names of the Datastores this model references.
-	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// The Datastores this model references, with the feature that uses each one.
+	Datastores []AIGatewayModelDatastoreRef `json:"datastores,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"model" json:"type"`
 	// Routing, logging, and load balancing configuration for the model.
@@ -166,7 +168,7 @@ func (a *AIGatewayModelAIGatewayModelModel) GetManagedBy() map[string]string {
 	return a.ManagedBy
 }
 
-func (a *AIGatewayModelAIGatewayModelModel) GetDatastores() []AIGatewayDatastoreRef {
+func (a *AIGatewayModelAIGatewayModelModel) GetDatastores() []AIGatewayModelDatastoreRef {
 	if a == nil {
 		return nil
 	}
@@ -262,11 +264,13 @@ type AIGatewayModelAIGatewayModelAPI struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
-	// Names of the Datastores this model references.
-	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// The Datastores this model references, with the feature that uses each one.
+	Datastores []AIGatewayModelDatastoreRef `json:"datastores,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"api" json:"type"`
 	// Routing, logging, and load balancing configuration for the model.
@@ -360,7 +364,7 @@ func (a *AIGatewayModelAIGatewayModelAPI) GetManagedBy() map[string]string {
 	return a.ManagedBy
 }
 
-func (a *AIGatewayModelAIGatewayModelAPI) GetDatastores() []AIGatewayDatastoreRef {
+func (a *AIGatewayModelAIGatewayModelAPI) GetDatastores() []AIGatewayModelDatastoreRef {
 	if a == nil {
 		return nil
 	}

@@ -52,12 +52,38 @@ func (c *Colors) GetPrimary() *string {
 	return c.Primary
 }
 
+// BorderRadius - The corner roundness to apply to this portal's theme.
+type BorderRadius string
+
+const (
+	BorderRadiusSoft  BorderRadius = "soft"
+	BorderRadiusSharp BorderRadius = "sharp"
+	BorderRadiusRound BorderRadius = "round"
+)
+
+func (e BorderRadius) ToPointer() *BorderRadius {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *BorderRadius) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "soft", "sharp", "round":
+			return true
+		}
+	}
+	return false
+}
+
 // Theme - The theme settings for this portal.
 type Theme struct {
 	// The theme name to apply to this portal. Supported names are 'mesa', 'grove', 'pebble', or 'ocean'. If another name is provided or this property is omitted, the portal uses the default 'ocean' theme.
 	Name   *string                  `default:"ocean" json:"name"`
 	Mode   *PortalCustomizationMode `json:"mode,omitempty"`
 	Colors *Colors                  `json:"colors,omitempty"`
+	// The corner roundness to apply to this portal's theme.
+	BorderRadius *BorderRadius `json:"border_radius,omitempty"`
 }
 
 func (t Theme) MarshalJSON() ([]byte, error) {
@@ -90,6 +116,13 @@ func (t *Theme) GetColors() *Colors {
 		return nil
 	}
 	return t.Colors
+}
+
+func (t *Theme) GetBorderRadius() *BorderRadius {
+	if t == nil {
+		return nil
+	}
+	return t.BorderRadius
 }
 
 type Menu struct {
@@ -175,8 +208,16 @@ type PortalCustomizationSpecRenderer struct {
 	// Manage visibility of deprecated endpoints and models.
 	HideDeprecated *bool `default:"false" json:"hide_deprecated"`
 	// Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
-	AllowCustomServerUrls *bool                               `default:"true" json:"allow_custom_server_urls"`
-	TryItUIAudience       *PortalCustomizationTryItUIAudience `default:"all" json:"try_it_ui_audience"`
+	AllowCustomServerUrls *bool `default:"true" json:"allow_custom_server_urls"`
+	// The audience for the Try It UI feature.
+	//
+	// `all` means that the Try It UI will be available to all users, including unauthenticated users.
+	//
+	// `authenticated` means that the Try It UI will only be available to authenticated users.
+	//
+	// `registered` means that the Try It UI will only be available to users who have registered for the API.
+	//
+	TryItUIAudience *PortalCustomizationTryItUIAudience `default:"all" json:"try_it_ui_audience"`
 }
 
 func (p PortalCustomizationSpecRenderer) MarshalJSON() ([]byte, error) {
