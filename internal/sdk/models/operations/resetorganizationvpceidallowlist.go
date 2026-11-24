@@ -16,8 +16,9 @@ var ResetOrganizationVpceIDAllowListServerList = []string{
 // ResetOrganizationVpceIDAllowListRequestBody - Reset the VPCE ID allow list to disabled
 type ResetOrganizationVpceIDAllowListRequestBody struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	enabled        *bool    `const:"false" json:"enabled"`
-	AllowedVpceIds []string `json:"allowed_vpce_ids,omitempty"`
+	enabled *bool `const:"false" json:"enabled"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	allowedVpceIds []string `const:"[]" json:"allowed_vpce_ids,omitempty"`
 }
 
 func (r ResetOrganizationVpceIDAllowListRequestBody) MarshalJSON() ([]byte, error) {
@@ -36,10 +37,7 @@ func (r *ResetOrganizationVpceIDAllowListRequestBody) GetEnabled() *bool {
 }
 
 func (r *ResetOrganizationVpceIDAllowListRequestBody) GetAllowedVpceIds() []string {
-	if r == nil {
-		return nil
-	}
-	return r.AllowedVpceIds
+	return []string{}
 }
 
 type ResetOrganizationVpceIDAllowListRequest struct {

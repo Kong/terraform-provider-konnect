@@ -82,13 +82,7 @@ func (r *OrganizationVpceIDAllowListResourceModel) ToOperationsResetOrganization
 func (r *OrganizationVpceIDAllowListResourceModel) ToOperationsResetOrganizationVpceIDAllowListRequestBody(ctx context.Context) (*operations.ResetOrganizationVpceIDAllowListRequestBody, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	allowedVpceIds := make([]string, 0, len(r.AllowedVpceIds))
-	for allowedVpceIdsIndex := range r.AllowedVpceIds {
-		allowedVpceIds = append(allowedVpceIds, r.AllowedVpceIds[allowedVpceIdsIndex].ValueString())
-	}
-	out := operations.ResetOrganizationVpceIDAllowListRequestBody{
-		AllowedVpceIds: allowedVpceIds,
-	}
+	out := operations.ResetOrganizationVpceIDAllowListRequestBody{}
 
 	return &out, diags
 }

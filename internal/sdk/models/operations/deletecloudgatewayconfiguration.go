@@ -41,8 +41,9 @@ type DeleteCloudGatewayConfigurationRequestBody struct {
 	//
 	// Type of Cloud Gateway: `api` for an API Gateway or `ai` for an AI Gateway.
 	// Applies only to dedicated Cloud Gateways. Defaults to `api` when omitted.
-	Type            *shared.ConfigurationType                  `default:"api" json:"type"`
-	DataplaneGroups []shared.CreateConfigurationDataPlaneGroup `json:"dataplane_groups"`
+	Type *shared.ConfigurationType `default:"api" json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	dataplaneGroups []shared.CreateConfigurationDataPlaneGroup `const:"[]" json:"dataplane_groups"`
 }
 
 func (d DeleteCloudGatewayConfigurationRequestBody) MarshalJSON() ([]byte, error) {
@@ -100,10 +101,7 @@ func (d *DeleteCloudGatewayConfigurationRequestBody) GetType() *shared.Configura
 }
 
 func (d *DeleteCloudGatewayConfigurationRequestBody) GetDataplaneGroups() []shared.CreateConfigurationDataPlaneGroup {
-	if d == nil {
-		return []shared.CreateConfigurationDataPlaneGroup{}
-	}
-	return d.DataplaneGroups
+	return []shared.CreateConfigurationDataPlaneGroup{}
 }
 
 type DeleteCloudGatewayConfigurationResponse struct {
