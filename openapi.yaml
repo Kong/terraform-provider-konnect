@@ -28159,6 +28159,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+      servers:
+        - url: 'https://global.api.konghq.com/'
   /v3/authentication-settings#delete:
     patch:
       x-speakeasy-entity-operation: AuthenticationSettings#delete
@@ -117934,6 +117936,11 @@ components:
                 default: null
                 nullable: true
                 x-speakeasy-param-computed: false
+              include_principal_name:
+                description: Whether to include the principal name in the audit log entries sent to the webhook.
+                type: boolean
+                example: true
+                default: false
     PortalUpdateTeam:
       description: Update a team in a portal.
       content:
@@ -120493,6 +120500,11 @@ components:
                 default: null
                 nullable: true
                 x-speakeasy-param-computed: false
+              include_principal_name:
+                description: Whether to include the principal name in the audit log entries sent to the webhook.
+                type: boolean
+                example: true
+                default: false
     PortalWebhookBadRequest:
       description: Bad Request
       content:
