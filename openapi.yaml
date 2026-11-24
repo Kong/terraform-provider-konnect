@@ -25574,6 +25574,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
       servers:
         - url: 'https://global.api.konghq.com/'
       tags:
