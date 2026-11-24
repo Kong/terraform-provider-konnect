@@ -104,6 +104,29 @@ func (e *GetCostExportScheduleDataset) IsExact() bool {
 	return false
 }
 
+// GetCostExportScheduleSchemaVersion - The schema version of each export's data files within the dataset, which fixes their columns and values.
+type GetCostExportScheduleSchemaVersion int64
+
+const (
+	GetCostExportScheduleSchemaVersionOne GetCostExportScheduleSchemaVersion = 1
+	GetCostExportScheduleSchemaVersionTwo GetCostExportScheduleSchemaVersion = 2
+)
+
+func (e GetCostExportScheduleSchemaVersion) ToPointer() *GetCostExportScheduleSchemaVersion {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GetCostExportScheduleSchemaVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case 1, 2:
+			return true
+		}
+	}
+	return false
+}
+
 // GetCostExportScheduleVersion - The FOCUS version that the files follow.
 type GetCostExportScheduleVersion string
 
@@ -269,7 +292,7 @@ type GetCostExportScheduleResponseBody struct {
 	// The data that each export holds.
 	Dataset GetCostExportScheduleDataset `json:"dataset"`
 	// The schema version of each export's data files within the dataset, which fixes their columns and values.
-	SchemaVersion shared.AICostExportSchemaVersion `json:"schema_version"`
+	SchemaVersion GetCostExportScheduleSchemaVersion `json:"schema_version"`
 	// The FOCUS options of each export, with defaults applied.
 	//
 	// `null` unless `dataset` is `focus`.
@@ -347,9 +370,9 @@ func (g *GetCostExportScheduleResponseBody) GetDataset() GetCostExportScheduleDa
 	return g.Dataset
 }
 
-func (g *GetCostExportScheduleResponseBody) GetSchemaVersion() shared.AICostExportSchemaVersion {
+func (g *GetCostExportScheduleResponseBody) GetSchemaVersion() GetCostExportScheduleSchemaVersion {
 	if g == nil {
-		return shared.AICostExportSchemaVersion(0)
+		return GetCostExportScheduleSchemaVersion(0)
 	}
 	return g.SchemaVersion
 }

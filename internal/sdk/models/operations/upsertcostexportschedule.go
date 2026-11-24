@@ -3,8 +3,6 @@
 package operations
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
@@ -92,23 +90,22 @@ type UpsertCostExportScheduleSchemaVersion int64
 
 const (
 	UpsertCostExportScheduleSchemaVersionOne UpsertCostExportScheduleSchemaVersion = 1
+	UpsertCostExportScheduleSchemaVersionTwo UpsertCostExportScheduleSchemaVersion = 2
 )
 
 func (e UpsertCostExportScheduleSchemaVersion) ToPointer() *UpsertCostExportScheduleSchemaVersion {
 	return &e
 }
-func (e *UpsertCostExportScheduleSchemaVersion) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpsertCostExportScheduleSchemaVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case 1, 2:
+			return true
+		}
 	}
-	switch v {
-	case 1:
-		*e = UpsertCostExportScheduleSchemaVersion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpsertCostExportScheduleSchemaVersion: %v", v)
-	}
+	return false
 }
 
 // UpsertCostExportScheduleFormat - The file format of each export's data files.
@@ -194,7 +191,7 @@ type UpsertCostExportScheduleRequestBody struct {
 	//
 	// `none` or `gzip` for `csv`, and `zstd` for `parquet`.
 	Compression UpsertCostExportScheduleCompression `json:"compression"`
-	// Filters that select the events to export, with the same fields, operators, and shape as the `filters` of `POST /v1/ai-cost-management/events/query`. Every filter must match.
+	// Filters that select the events to export, with the same fields, operators, shape, and nesting limit as the `filters` of `POST /v1/ai-cost-management/events/query`. Every filter must match.
 	//
 	// Defaults to `{}`.
 	Filters any                `json:"filters,omitempty"`
@@ -401,6 +398,29 @@ func (e *UpsertCostExportScheduleExportsDataset) IsExact() bool {
 	return false
 }
 
+// UpsertCostExportScheduleExportsSchemaVersion - The schema version of each export's data files within the dataset, which fixes their columns and values.
+type UpsertCostExportScheduleExportsSchemaVersion int64
+
+const (
+	UpsertCostExportScheduleExportsSchemaVersionOne UpsertCostExportScheduleExportsSchemaVersion = 1
+	UpsertCostExportScheduleExportsSchemaVersionTwo UpsertCostExportScheduleExportsSchemaVersion = 2
+)
+
+func (e UpsertCostExportScheduleExportsSchemaVersion) ToPointer() *UpsertCostExportScheduleExportsSchemaVersion {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpsertCostExportScheduleExportsSchemaVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case 1, 2:
+			return true
+		}
+	}
+	return false
+}
+
 // UpsertCostExportScheduleVersion - The FOCUS version that the files follow.
 type UpsertCostExportScheduleVersion string
 
@@ -566,7 +586,7 @@ type UpsertCostExportScheduleResponseBody struct {
 	// The data that each export holds.
 	Dataset UpsertCostExportScheduleExportsDataset `json:"dataset"`
 	// The schema version of each export's data files within the dataset, which fixes their columns and values.
-	SchemaVersion shared.AICostExportSchemaVersion `json:"schema_version"`
+	SchemaVersion UpsertCostExportScheduleExportsSchemaVersion `json:"schema_version"`
 	// The FOCUS options of each export, with defaults applied.
 	//
 	// `null` unless `dataset` is `focus`.
@@ -644,9 +664,9 @@ func (u *UpsertCostExportScheduleResponseBody) GetDataset() UpsertCostExportSche
 	return u.Dataset
 }
 
-func (u *UpsertCostExportScheduleResponseBody) GetSchemaVersion() shared.AICostExportSchemaVersion {
+func (u *UpsertCostExportScheduleResponseBody) GetSchemaVersion() UpsertCostExportScheduleExportsSchemaVersion {
 	if u == nil {
-		return shared.AICostExportSchemaVersion(0)
+		return UpsertCostExportScheduleExportsSchemaVersion(0)
 	}
 	return u.SchemaVersion
 }

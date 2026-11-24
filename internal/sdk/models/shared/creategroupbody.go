@@ -3,6 +3,8 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -11,22 +13,23 @@ type CreateGroupBodyType string
 
 const (
 	CreateGroupBodyTypeGroup CreateGroupBodyType = "group"
-	CreateGroupBodyTypeTeam  CreateGroupBodyType = "team"
 )
 
 func (e CreateGroupBodyType) ToPointer() *CreateGroupBodyType {
 	return &e
 }
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *CreateGroupBodyType) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "group", "team":
-			return true
-		}
+func (e *CreateGroupBodyType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
 	}
-	return false
+	switch v {
+	case "group":
+		*e = CreateGroupBodyType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateGroupBodyType: %v", v)
+	}
 }
 
 // CreateGroupBody - Group to be created

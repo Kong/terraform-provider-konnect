@@ -16,7 +16,6 @@ IdentityDirectory Resource
 resource "konnect_identity_directory" "my_identitydirectory" {
   allow_all_control_planes = false
   allowed_control_planes = [
-    "ae809a12-d526-462e-bd1a-43f66dc49389"
   ]
   description   = "...my_description..."
   force_destroy = "false"

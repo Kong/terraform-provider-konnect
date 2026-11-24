@@ -2062,7 +2062,12 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
 - `gemini` (Attributes) Config for GCP model provider. (see [below for nested schema](#nestedatt--gemini))
 - `huggingface` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--huggingface))
 - `kimi` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--kimi))
-- `llama2` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--llama2))
+- `llama2` (Attributes, Deprecated) Configuration for an upstream `llama2` model provider.
+
+Deprecated: the `llama2` provider is deprecated and will be removed in 3.0. Migrate each
+target by its `format` value: `ollama` maps to the `ollama` provider, `openai` maps to the
+`openai` provider with `upstream_url` set on the target, or to the `vllm` provider; `raw`
+has no replacement provider. (see [below for nested schema](#nestedatt--llama2))
 - `mistral` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--mistral))
 - `ollama` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--ollama))
 - `openai` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--openai))

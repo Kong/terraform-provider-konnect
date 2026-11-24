@@ -285,7 +285,7 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`advisory`),
-						Description: `How the budget responds when spend reaches its limit. With ` + "`" + `advisory` + "`" + `, the default, requests continue past the limit. possible known values include one of ["advisory", "enforce"]; Default: "advisory"`,
+						Description: `What the budget does when spend reaches its limit. ` + "`" + `advisory` + "`" + `, the default, changes nothing at the limit. ` + "`" + `enforce` + "`" + ` belongs to budget blocking, which is in development: a request that sets it fails with ` + "`" + `400` + "`" + ` unless the organization has budget blocking turned on or a replacement keeps a budget's stored ` + "`" + `enforce` + "`" + `. No request is refused because of ` + "`" + `posture` + "`" + `. possible known values include one of ["advisory", "enforce"]; Default: "advisory"`,
 					},
 					"priority": schema.Int64Attribute{
 						Computed: true,
@@ -408,7 +408,7 @@ func (r *AICostBudgetResource) Schema(ctx context.Context, req resource.SchemaRe
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("limit"), FieldPath: path.Root("limit").AtName("posture")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("exempt"), FieldPath: path.Root("exempt").AtName("posture")}}),
 				},
-				Description: `How the budget responds when spend reaches its limit.`,
+				Description: `What the budget does when spend reaches its limit.`,
 			},
 			"priority": schema.Int64Attribute{
 				Computed: true,

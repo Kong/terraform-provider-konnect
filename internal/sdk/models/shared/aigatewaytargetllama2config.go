@@ -31,6 +31,12 @@ func (e *Format) IsExact() bool {
 }
 
 // AIGatewayTargetLlama2Config - Llama2-specific configuration for a model.
+//
+// Deprecated: the `llama2` provider is deprecated and will be removed in 3.0. Migrate by the
+// `format` value: `ollama` maps to the `ollama` provider, `openai` maps to the `openai` provider
+// with `upstream_url` set, or to the `vllm` provider; `raw` has no replacement provider.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 type AIGatewayTargetLlama2Config struct {
 	// The number of dimensions for embedding outputs.
 	EmbeddingsDimensions *int64 `json:"embeddings_dimensions,omitempty"`

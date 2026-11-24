@@ -34,7 +34,14 @@ func (a *AIGatewayModelProviderLlama2Config) GetAuth() AIGatewayModelProviderCon
 // #region class-body-aigatewaymodelproviderllama2config
 // #endregion class-body-aigatewaymodelproviderllama2config
 
-// AIGatewayModelProviderLlama2 - Configuration for an upstream model provider.
+// AIGatewayModelProviderLlama2 - Configuration for an upstream `llama2` model provider.
+//
+// Deprecated: the `llama2` provider is deprecated and will be removed in 3.0. Migrate each
+// target by its `format` value: `ollama` maps to the `ollama` provider, `openai` maps to the
+// `openai` provider with `upstream_url` set on the target, or to the `vllm` provider; `raw`
+// has no replacement provider.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 type AIGatewayModelProviderLlama2 struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"llama2" json:"type"`

@@ -48,7 +48,7 @@ Keys must be 1–63 characters long, start and end with an alphanumeric characte
 Values must be 1–127 characters long and must not be empty.
 Keys and values must not contain spaces or control characters.
 - `metadata` (String) A map of metadata key-value pairs associated with this entity. This metadata is passed to the data plane to enrich the execution context. During authentication, metadata is inherited and overridden in a hierarchical manner: Directory metadata is inherited by Principals, which is then inherited and overridden by Credentials. Parsed as JSON.
-- `type` (String) Type of the group. Immutable after creation. possible known values include one of ["group", "team"]; Requires replacement if changed.
+- `type` (String) Type of the group. Immutable after creation. must be "group"; Requires replacement if changed.
 
 ### Read-Only
 

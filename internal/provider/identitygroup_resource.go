@@ -161,7 +161,10 @@ func (r *IdentityGroupResource) Schema(ctx context.Context, req resource.SchemaR
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Type of the group. Immutable after creation. possible known values include one of ["group", "team"]; Requires replacement if changed.`,
+				Description: `Type of the group. Immutable after creation. must be "group"; Requires replacement if changed.`,
+				Validators: []validator.String{
+					stringvalidator.OneOf("group"),
+				},
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
