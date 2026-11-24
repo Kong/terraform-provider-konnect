@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 67c2635c14a271ccd13e5f8bafd3ea75
+  docChecksum: b1114582a870fffe3399afb480ce0cb9
   docVersion: 2.0.0
   speakeasyVersion: 1.810.0
   generationVersion: 2.961.1
   releaseVersion: 3.29.0
   configChecksum: 99c3c3d13dac4fca5defa2086be29e5d
 persistentEdits:
-  generation_id: e6f8672c-3c93-4151-b194-9d2830fb72c4
-  pristine_commit_hash: 4321ffa159b30e7572e1786a38aaac70e43486fd
-  pristine_tree_hash: 2febcdb46ea763215926ef4f0090b69f6060367d
+  generation_id: 18e23bae-3ce5-4285-9a8c-664f5904fc81
+  pristine_commit_hash: fd3e0f93173e9c44e4b2ef28c32b4733cf280f75
+  pristine_tree_hash: 45647f88137c34feb02b2f15f8333b70b4a5f62e
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -3117,8 +3117,8 @@ trackedFiles:
     pristine_git_object: 35e37cd7188f0971efdc87cd1958ae90b5c55f2b
   examples/resources/konnect_portal_audit_log_webhook/resource.tf:
     id: fbabbe17210a
-    last_write_checksum: sha1:1e438b816d101c3af58b7edf88c5f132a94425be
-    pristine_git_object: 7fb06b3118181f1407fc51f9dc5b25f07726a677
+    last_write_checksum: sha1:a2459177363308bbdccfb31b38f7fe333b1af7aa
+    pristine_git_object: ac524a13180d261f18354960b105c089895bc4e5
   examples/resources/konnect_portal_auth/import-by-string-id.tf:
     id: 72471bcaf9d8
     last_write_checksum: sha1:c323d6428a99309fef996b119d2a24c70527449b
@@ -5669,12 +5669,12 @@ trackedFiles:
     pristine_git_object: b06844e03ceba6672de9ddbfb4acf43944ff3082
   internal/provider/portalauditlogwebhook_resource.go:
     id: 85780041b3ea
-    last_write_checksum: sha1:769cc3d8a3bf826bf4ee8580580f872f94592a83
-    pristine_git_object: 56504f5b4f4fd77f477b1d8ea4cb5c8cb8eef64e
+    last_write_checksum: sha1:fd459684a92af16403cfb21170f66b9f2f426c5c
+    pristine_git_object: bec6d2039347952fe741b5cc739da6cee10b7735
   internal/provider/portalauditlogwebhook_resource_sdk.go:
     id: fa2f47afda0e
-    last_write_checksum: sha1:ba2d0b52b0a832fdcad088e3a419ba7ef548f915
-    pristine_git_object: 88e03e42cb9dcbb39daef219b96a97b79f2a7eef
+    last_write_checksum: sha1:bc08e136b2a1f91d097eb186378a92cd605da8d4
+    pristine_git_object: a34cd0a50aac2f1202978fc8a1ece19a3297f3d9
   internal/provider/portalauth_resource.go:
     id: 3fa75910b5b8
     last_write_checksum: sha1:00343deb1a21ac99dc5a994a89d599a0136f2ba5
@@ -9705,8 +9705,8 @@ trackedFiles:
     pristine_git_object: 0cc33c05be457d0aa9e62887de89994dc15832e6
   internal/sdk/konnect.go:
     id: defee4f1aaf8
-    last_write_checksum: sha1:717f3a960af3e151f10763527c2bfddb4519df1e
-    pristine_git_object: f806003dfb43102ce053d9f192cdbb62c2ddc2e4
+    last_write_checksum: sha1:29ed5d6d6bcd826a0960c1fc525bd470edeccce5
+    pristine_git_object: 1a8b6bcd15298ce8cd3b95b3ab5cdd65feb514d3
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:debb643dd2f4706132d47584ec6eaea61339bd17
@@ -13113,8 +13113,8 @@ trackedFiles:
     pristine_git_object: 2046421cde7a39bc1f269d7939ed221f0b0b41a1
   internal/sdk/models/operations/resetorganizationvpceidallowlist.go:
     id: 25b1e8d2edff
-    last_write_checksum: sha1:369115e457b657c08eb77241ebeb9723130ef446
-    pristine_git_object: acfba4d41a557d2ea892bcfd5636c133047657bf
+    last_write_checksum: sha1:9b5f3ae93566d104118f6446a2cd7a26e08670a0
+    pristine_git_object: 51b11a954ad8cf4a9d9f4b535a00b24913f23eb8
   internal/sdk/models/operations/teamsassignrole.go:
     id: a67420182857
     last_write_checksum: sha1:2a2a1e4eb47fda0b5aa80fb1bed1bb971078173a
@@ -17597,8 +17597,8 @@ trackedFiles:
     pristine_git_object: f2b1478e06e39f2b5f2ffc82a7b285598ecb5a7a
   internal/sdk/models/shared/portalauditlogwebhook.go:
     id: 856bbdc735dc
-    last_write_checksum: sha1:3bec3b245d4e25cbe25430abbe1b040804195edf
-    pristine_git_object: cb166615c375428dde8fa6172ec303bc81ba6593
+    last_write_checksum: sha1:5aca7bba4adffc67d976bd06e7ab0fc2ba1cd60f
+    pristine_git_object: 288000da15796c9a17f8c9e7d5ad8b94a5b37d0d
   internal/sdk/models/shared/portalauthenticationsettingsresponse.go:
     id: 483858d9c90c
     last_write_checksum: sha1:c02a50899e74dfbdef70d8f6ded56417870aeaae
@@ -18493,8 +18493,8 @@ trackedFiles:
     pristine_git_object: dc1c66e78877c6da23ee6c85c4ca003da912a169
   internal/sdk/models/shared/updateportalauditlogwebhook.go:
     id: c08b2fe64c7c
-    last_write_checksum: sha1:2d60f56f33a6cb68dd5303953d8406cc9a52d31a
-    pristine_git_object: 9b646fa4bd035654f68d9000e5f25f5033a5f1cf
+    last_write_checksum: sha1:17da73a6ab5fe4cb72807341d5a494eaa34f1191
+    pristine_git_object: 2acf88e75fc45b26aa45bc0088e4f7660519e52e
   internal/sdk/models/shared/updateportalcustomdomainrequest.go:
     id: 40032d690662
     last_write_checksum: sha1:d104831f03f91fd3579ca134ef67f6eb5f6640fd
@@ -33948,10 +33948,10 @@ examples:
         path:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"enabled": true, "audit_log_destination_id": null}
+        application/json: {"enabled": true, "audit_log_destination_id": null, "include_principal_name": true}
       responses:
         "200":
-          application/json: {"enabled": true, "audit_log_destination_id": null}
+          application/json: {"enabled": true, "audit_log_destination_id": null, "include_principal_name": true}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -33967,7 +33967,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"enabled": true, "audit_log_destination_id": null}
+          application/json: {"enabled": true, "audit_log_destination_id": null, "include_principal_name": true}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":

@@ -9,6 +9,10 @@ import (
 	"net/http"
 )
 
+var ResetOrganizationVpceIDAllowListServerList = []string{
+	"https://global.api.konghq.com/",
+}
+
 // ResetOrganizationVpceIDAllowListRequestBody - Reset the VPCE ID allow list to disabled
 type ResetOrganizationVpceIDAllowListRequestBody struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling

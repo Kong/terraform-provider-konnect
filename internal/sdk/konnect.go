@@ -696,12 +696,11 @@ func (s *Konnect) ResetOrganizationVpceIDAllowList(ctx context.Context, request 
 		}
 	}
 
-	var baseURL string
-	if o.ServerURL == nil {
-		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	} else {
+	baseURL := utils.ReplaceParameters(operations.ResetOrganizationVpceIDAllowListServerList[0], map[string]string{})
+	if o.ServerURL != nil {
 		baseURL = *o.ServerURL
 	}
+
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/organizations/{organizationId}/vpce-id-allow-list", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
