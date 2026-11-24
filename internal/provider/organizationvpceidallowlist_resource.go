@@ -124,6 +124,13 @@ func (r *OrganizationVpceIDAllowListResource) Create(ctx context.Context, req re
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
+		return
+	}
 	switch res.StatusCode {
 	case 200, 201:
 		break

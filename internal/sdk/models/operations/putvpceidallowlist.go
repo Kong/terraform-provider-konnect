@@ -59,6 +59,8 @@ type PutVpceIDAllowListResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+	// Conflict
+	ConflictError *shared.ConflictError
 }
 
 func (p PutVpceIDAllowListResponse) MarshalJSON() ([]byte, error) {
@@ -119,4 +121,11 @@ func (p *PutVpceIDAllowListResponse) GetForbiddenError() *shared.ForbiddenError 
 		return nil
 	}
 	return p.ForbiddenError
+}
+
+func (p *PutVpceIDAllowListResponse) GetConflictError() *shared.ConflictError {
+	if p == nil {
+		return nil
+	}
+	return p.ConflictError
 }
