@@ -7396,6 +7396,209 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
       tags:
         - Mesh
+  '/v1/notifications/configurations/organization/{eventType}/subscriptions':
+    parameters:
+      - $ref: '#/components/parameters/eventType'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrgNotificationSubscription#create
+        terraform-datasource: null
+      operationId: create-org-subscription
+      summary: Create an org subscription
+      description: |-
+        Create a subscription for an org scoped event.
+        The event ID to subscribe is placed in the URL. A destination may be used in multiple subscriptions.
+        Only available to organization administrators.
+      requestBody:
+        $ref: '#/components/requestBodies/OrgSubscriptionCreateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/OrgSubscriptionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Org Configurations
+  '/v1/notifications/configurations/organization/{eventType}/subscriptions/{subscriptionId}':
+    parameters:
+      - $ref: '#/components/parameters/eventType'
+      - $ref: '#/components/parameters/orgSubscriptionId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrgNotificationSubscription#read
+        terraform-datasource: null
+      operationId: get-org-subscription
+      summary: Get an org subscription
+      description: |-
+        Fetch the details of a single org scoped subscription.
+        Only available to organization administrators.
+      responses:
+        '200':
+          $ref: '#/components/responses/OrgSubscriptionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Org Configurations
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrgNotificationSubscription#update
+        terraform-datasource: null
+      operationId: update-org-subscription
+      summary: Update an org subscription
+      description: |-
+        Update the details of an org scoped subscription.
+        Only available to organization administrators.
+      requestBody:
+        $ref: '#/components/requestBodies/OrgSubscriptionUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/OrgSubscriptionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Org Configurations
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrgNotificationSubscription#delete
+        terraform-datasource: null
+      operationId: delete-org-subscription
+      summary: Delete an org subscription
+      description: |-
+        Delete an org scoped subscription.
+        Only available to organization administrators.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Org Configurations
+  /v1/notifications/destinations:
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrgNotificationDestination#create
+        terraform-datasource: null
+      operationId: create-destination
+      summary: Create a destination
+      description: |-
+        Creates a destination for organization event notifications. You can create up to 50 destinations for an organization.
+        For an HTTP destination, the response includes the signing secret. Save it when you create the destination; later responses do not include it.
+      requestBody:
+        $ref: '#/components/requestBodies/DestinationCreateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/DestinationWithSecretResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Destinations
+  '/v1/notifications/destinations/{destinationId}':
+    parameters:
+      - $ref: '#/components/parameters/destinationId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrgNotificationDestination#read
+        terraform-datasource: null
+      operationId: get-destination
+      summary: Get a destination
+      description: Show a destination's details. Does not return sensitive keys such as signing secret.
+      responses:
+        '200':
+          $ref: '#/components/responses/DestinationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Destinations
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrgNotificationDestination#update
+        terraform-datasource: null
+      operationId: update-destination
+      summary: Update a destination
+      description: Update a destination's parameters
+      requestBody:
+        $ref: '#/components/requestBodies/DestinationUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/DestinationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Destinations
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrgNotificationDestination#delete
+        terraform-datasource: null
+      operationId: delete-destination
+      summary: Delete a destination
+      description: |-
+        Deletes the destination and removes it from all subscriptions that use it.
+        If this leaves a subscription with no destinations, that subscription is also deleted.
+        This action also deletes the destination's signing keys and delivery history. You cannot undo this action.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Destinations
   /v1/realms:
     post:
       x-speakeasy-entity-operation:
@@ -28802,6 +29005,15 @@ components:
         type: string
       required: true
       x-speakeasy-match: id
+    destinationId:
+      name: destinationId
+      in: path
+      required: true
+      description: 'ID of the destination, a UUID v7.'
+      schema:
+        type: string
+        format: uuid
+      x-speakeasy-match: id
     DeveloperId:
       schema:
         type: string
@@ -28868,6 +29080,15 @@ components:
       description: |
         Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request.
       required: false
+    eventType:
+      name: eventType
+      in: path
+      required: true
+      description: Formatted string ID of the notification event.
+      schema:
+        type: string
+        example: invoice-ready
+      x-speakeasy-param-computed: false
     ExpandPartials:
       description: Expand partials for the plugin.
       example: true
@@ -29148,6 +29369,15 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/OrganizationId'
+    orgSubscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      description: 'ID of the org subscription, a UUID v7.'
+      schema:
+        type: string
+        format: uuid
+      x-speakeasy-match: id
     PageId:
       schema:
         type: string
@@ -72785,6 +73015,428 @@ components:
       nullable: true
       title: ExpiresAt
       x-speakeasy-param-computed: false
+    DestinationState:
+      description: Destination status. pending_verification means the destination is waiting for verification; enabled means it can receive notifications; disabled means it is paused; disabled_system means it was disabled automatically.
+      type: string
+      enum:
+        - pending_verification
+        - enabled
+        - disabled
+        - disabled_system
+      x-speakeasy-unknown-values: allow
+    DestinationSigningAlgo:
+      description: Signing algorithm of the signing key.
+      type: string
+      enum:
+        - hmac-sha256
+        - ed25519
+      x-speakeasy-unknown-values: allow
+    DestinationCreatePayload:
+      discriminator:
+        propertyName: type
+        mapping:
+          http: '#/components/schemas/HttpDestinationCreatePayload'
+      oneOf:
+        - $ref: '#/components/schemas/HttpDestinationCreatePayload'
+    HttpDestinationCreatePayload:
+      type: object
+      properties:
+        name:
+          description: Destination name. The name must contain 1 to 255 characters after leading and trailing spaces are removed.
+          type: string
+        type:
+          type: string
+          enum:
+            - http
+        url:
+          description: |-
+            Full URL of the endpoint that receives notifications.
+            Must be a publicly resolvable address.
+          type: string
+          maxLength: 2048
+          x-go-type-skip-optional-pointer: true
+        custom_headers:
+          description: |-
+            Custom headers to include in notification requests. You can set up to 10 headers.
+            The Standard Webhooks headers and the transport headers are reserved.
+          type: object
+          default: null
+          additionalProperties:
+            type: string
+          nullable: true
+          x-speakeasy-param-computed: false
+      example:
+        name: Production webhooks
+        type: http
+        url: 'https://example.com/webhooks'
+        custom_headers:
+          X-Environment: production
+      additionalProperties: false
+      required:
+        - name
+        - type
+        - url
+    DestinationUpdatePayload:
+      discriminator:
+        propertyName: type
+        mapping:
+          http: '#/components/schemas/HttpDestinationUpdatePayload'
+      oneOf:
+        - $ref: '#/components/schemas/HttpDestinationUpdatePayload'
+    HttpDestinationUpdatePayload:
+      type: object
+      properties:
+        type:
+          description: Destination type. This value must match the type set when the destination was created. You cannot change the destination type.
+          type: string
+          enum:
+            - http
+        name:
+          description: Name of the destination.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        url:
+          description: Full URL of the endpoint that receives notifications.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        custom_headers:
+          description: Custom headers to add or change. Headers that you do not include keep their current values. Set a header to `null` to remove it. An empty object changes nothing.
+          type: object
+          default: null
+          additionalProperties:
+            type: string
+            nullable: true
+          nullable: true
+          x-speakeasy-param-computed: false
+        state:
+          description: 'Set to enabled to allow notifications to be sent, or disabled to pause them. Setting a destination that was automatically disabled back to enabled restarts delivery attempts.'
+          type: string
+          enum:
+            - enabled
+            - disabled
+          x-speakeasy-unknown-values: allow
+      example:
+        type: http
+        name: Production webhooks
+        custom_headers:
+          X-Environment: staging
+        state: enabled
+      additionalProperties: false
+    Destination:
+      discriminator:
+        propertyName: type
+        mapping:
+          http: '#/components/schemas/HttpDestination'
+      oneOf:
+        - $ref: '#/components/schemas/HttpDestination'
+    HttpDestination:
+      type: object
+      properties:
+        id:
+          description: UUID v7 identifier of the destination.
+          type: string
+        name:
+          description: Name of the destination.
+          type: string
+        type:
+          type: string
+          enum:
+            - http
+        state:
+          $ref: '#/components/schemas/DestinationState'
+        url:
+          description: Endpoint URL of the destination.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        url_host:
+          description: Host part of the target URL.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        custom_header_names:
+          description: Names of the configured custom headers. Header values are not returned.
+          type: array
+          items:
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        last_success_at:
+          description: 'Time of the most recent successful notification delivery, if any.'
+          type: string
+          format: date-time
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        last_failure_at:
+          description: 'Time of the most recent failed notification delivery, if any.'
+          type: string
+          format: date-time
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        last_failure_reason:
+          description: 'Reason for the most recent failed notification delivery, if any.'
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - name
+        - type
+        - state
+        - created_at
+        - updated_at
+    DestinationWithSecret:
+      discriminator:
+        propertyName: type
+        mapping:
+          http: '#/components/schemas/HttpDestinationWithSecret'
+      oneOf:
+        - $ref: '#/components/schemas/HttpDestinationWithSecret'
+    HttpDestinationWithSecret:
+      description: An HTTP destination with its new plaintext signing secret. The signing secret is returned only when a destination is created.
+      type: object
+      properties:
+        id:
+          description: UUID v7 identifier of the destination.
+          type: string
+        name:
+          description: Name of the destination.
+          type: string
+        type:
+          type: string
+          enum:
+            - http
+        state:
+          $ref: '#/components/schemas/DestinationState'
+        url:
+          description: Endpoint URL of the destination.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        url_host:
+          description: Host part of the target URL.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        custom_header_names:
+          description: Names of the configured custom headers. Header values are not returned.
+          type: array
+          items:
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        last_success_at:
+          description: 'Time of the most recent successful notification delivery, if any.'
+          type: string
+          format: date-time
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        last_failure_at:
+          description: 'Time of the most recent failed notification delivery, if any.'
+          type: string
+          format: date-time
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        last_failure_reason:
+          description: 'Reason for the most recent failed notification delivery, if any.'
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        signing_algo:
+          $ref: '#/components/schemas/DestinationSigningAlgo'
+        verified_at:
+          description: 'Time when the destination was verified, if verification is complete.'
+          type: string
+          format: date-time
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        signing_secret:
+          description: Secret used to verify that an HTTP notification was sent by Kong.
+          type: string
+          default: null
+          nullable: true
+          x-sensitive: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-sensitive: true
+      required:
+        - id
+        - name
+        - type
+        - state
+        - created_at
+        - updated_at
+    NotificationRegion:
+      description: Region associated to a notification.
+      type: string
+      enum:
+        - US
+        - EU
+        - AU
+        - ME
+        - IN
+        - '*'
+      x-speakeasy-unknown-values: allow
+    OrgSubscriptionCreatePayload:
+      description: Defines which destinations receive an event and the regions and entities for which notifications are sent.
+      type: object
+      properties:
+        destination_ids:
+          description: IDs of 1 to 50 destinations that receive this event. Each ID must be unique.
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 50
+          minItems: 1
+          uniqueItems: true
+        regions:
+          description: Regions for which notifications are sent. Use `*` for all regions.
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationRegion'
+        entities:
+          description: Entity IDs for which notifications are sent. Use `*` for all entities.
+          type: array
+          items:
+            type: string
+            description: ID of the entity. Use '*' to represent all entities of this type.
+        enabled:
+          description: Set to false to create the subscription in a paused state.
+          type: boolean
+        name:
+          description: Name that identifies the subscription.
+          type: string
+      additionalProperties: false
+      required:
+        - destination_ids
+        - regions
+        - entities
+        - enabled
+        - name
+    OrgSubscriptionUpdatePayload:
+      description: Properties of an org subscription to update. Include only the properties that you want to change. A property that you do not include keeps its current value. A property that you include replaces the current value.
+      type: object
+      properties:
+        destination_ids:
+          description: IDs of 1 to 50 destinations that receive this event. Each ID must be unique. This list replaces the current destinations.
+          type: array
+          items:
+            type: string
+            format: uuid
+          default: null
+          maxItems: 50
+          minItems: 1
+          nullable: true
+          uniqueItems: true
+          x-speakeasy-param-computed: false
+        regions:
+          description: Regions for which notifications are sent. Use `*` for all regions. This replaces the current regions.
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationRegion'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        entities:
+          description: Entity IDs for which notifications are sent. Use `*` for all entities. This replaces the current entities.
+          type: array
+          items:
+            type: string
+            description: ID of the entity. Use '*' to represent all entities of this type.
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Set to false to pause the subscription without deleting it.
+          type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        name:
+          description: Name that identifies the subscription.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+    OrgSubscription:
+      description: Subscription that sends an organization event to one or more destinations for the selected regions and entities.
+      type: object
+      properties:
+        id:
+          description: UUID v7 identifier of the subscription.
+          type: string
+          format: uuid
+        name:
+          description: Name that identifies the subscription.
+          type: string
+        event_type:
+          description: Event type sent by this subscription.
+          type: string
+          x-speakeasy-param-computed: false
+        destination_ids:
+          description: IDs of the destinations that receive this event. Deleting a destination removes its ID from this list. The subscription is deleted if no destinations remain.
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 50
+          minItems: 1
+          uniqueItems: true
+        regions:
+          description: Regions for which this subscription sends notifications. `*` represents all regions.
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationRegion'
+        entities:
+          description: Entity IDs for which this subscription sends notifications. `*` represents all entities.
+          type: array
+          items:
+            type: string
+            description: ID of the entity. Use '*' to represent all entities of this type.
+        enabled:
+          description: Indicates whether this subscription sends notifications.
+          type: boolean
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - event_type
+        - destination_ids
+        - regions
+        - entities
+        - enabled
+        - created_at
+        - updated_at
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -119117,6 +119769,34 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ReplaceTrustedIdpBody'
+    DestinationCreateRequest:
+      description: Request body schema for creating a destination.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DestinationCreatePayload'
+    DestinationUpdateRequest:
+      description: Request body schema for updating a destination.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DestinationUpdatePayload'
+    OrgSubscriptionCreateRequest:
+      description: Request body schema for creating an org subscription.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrgSubscriptionCreatePayload'
+    OrgSubscriptionUpdateRequest:
+      description: Request body schema for updating an org subscription.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrgSubscriptionUpdatePayload'
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -121385,6 +122065,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TrustedIdp'
+    DestinationResponse:
+      description: A single destination.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Destination'
+    DestinationWithSecretResponse:
+      description: A single destination with its new signing secret.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DestinationWithSecret'
+    OrgSubscriptionResponse:
+      description: A single org subscription.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrgSubscription'
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -121815,6 +122513,10 @@ tags:
     description: |
       Trusted IdPs configure the external identity providers a token-vault enabled directory trusts when
       validating tokens. A directory can trust several IdPs, each with a distinct issuer.
+  - name: Org Configurations
+    description: 'Operations related to org scoped notifications and their org subscriptions. The webhook channel of an org scoped notification is set up for the whole organization, and no user can switch it on or off. Only an org admin can use these operations. The routes exist only when webhook destinations are enabled.'
+  - name: Destinations
+    description: Operations related to webhook destinations and their deliveries. Only an org admin can use these operations. The destination routes exist only when webhook destinations are enabled.
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
