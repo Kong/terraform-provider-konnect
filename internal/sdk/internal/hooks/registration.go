@@ -27,6 +27,11 @@ func initHooks(h *Hooks) {
 		ReplaceFullDomain: os.Getenv("KONG_CUSTOM_DOMAIN_REPLACE_FULL_DOMAIN") == "true",
 	})
 
+	// Konnect rejects min_runtime_version in updates of managed and serverless AI
+	// Gateways; drop the value echoed from state. Registered after the domain
+	// customization so the gateway is read from the final host.
+	h.registerBeforeRequestHook(&AIGatewayMinRuntimeVersionHook{})
+
 	// Debug hooks - dump request/response
 	h.registerBeforeRequestHook(&HTTPDumpRequestHook{
 		Enabled: os.Getenv("KONNECT_SDK_HTTP_DUMP_REQUEST") == "true",
