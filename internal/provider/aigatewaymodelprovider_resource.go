@@ -9089,7 +9089,13 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				Description: `Configuration for an upstream model provider.`,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				MarkdownDescription: `Configuration for an upstream ` + "`" + `llama2` + "`" + ` model provider.` + "\n" +
+					`` + "\n" +
+					`Deprecated: the ` + "`" + `llama2` + "`" + ` provider is deprecated and will be removed in 3.0. Migrate each` + "\n" +
+					`target by its ` + "`" + `format` + "`" + ` value: ` + "`" + `ollama` + "`" + ` maps to the ` + "`" + `ollama` + "`" + ` provider, ` + "`" + `openai` + "`" + ` maps to the` + "\n" +
+					`` + "`" + `openai` + "`" + ` provider with ` + "`" + `upstream_url` + "`" + ` set on the target, or to the ` + "`" + `vllm` + "`" + ` provider; ` + "`" + `raw` + "`" + `` + "\n" +
+					`has no replacement provider.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("anthropic"),

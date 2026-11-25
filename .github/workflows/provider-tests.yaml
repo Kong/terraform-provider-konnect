@@ -34,9 +34,13 @@ permissions:
 
 concurrency:
   # The tests share one Konnect org (and its quotas, e.g. 4 portals), so only
-  # one run per ref may use it at a time. A newer push cancels the older run.
+  # one run per ref may use it at a time. No cancel-in-progress: GitHub orders
+  # runs in this group by when each one started waiting, not by push order, so
+  # cancelling the "in progress" run on a new push can cancel the newer run
+  # instead of the older one if the older run's jobs were slower to start. A
+  # new push just waits its turn; only a still-pending (not yet started) run
+  # gets bumped when an even newer push arrives.
   group: provider-tests-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   # 1. Fails if a test file is outside a shard directory, or a test name is duplicated.

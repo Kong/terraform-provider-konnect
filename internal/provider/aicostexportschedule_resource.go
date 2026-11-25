@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -101,7 +100,7 @@ func (r *AICostExportScheduleResource) Schema(ctx context.Context, req resource.
 				CustomType: jsontypes.NormalizedType{},
 				Computed:   true,
 				Optional:   true,
-				MarkdownDescription: `Filters that select the events to export, with the same fields, operators, and shape as the ` + "`" + `filters` + "`" + ` of ` + "`" + `POST /v1/ai-cost-management/events/query` + "`" + `. Every filter must match.` + "\n" +
+				MarkdownDescription: `Filters that select the events to export, with the same fields, operators, shape, and nesting limit as the ` + "`" + `filters` + "`" + ` of ` + "`" + `POST /v1/ai-cost-management/events/query` + "`" + `. Every filter must match.` + "\n" +
 					`` + "\n" +
 					`Defaults to ` + "`" + `{}` + "`" + `.` + "\n" +
 					`Parsed as JSON.`,
@@ -186,10 +185,7 @@ func (r *AICostExportScheduleResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: `The schema version of each export's data files within the dataset, which fixes their columns and values. Each export that the schedule creates copies it, so a newer schema version doesn't change the schedule's exports.` + "\n" +
 					`` + "\n" +
 					`Defaults to ` + "`" + `1` + "`" + `, also once newer schema versions exist, so a replacement that omits ` + "`" + `schema_version` + "`" + ` sets ` + "`" + `1` + "`" + `.` + "\n" +
-					`Default: 1; must be 1`,
-				Validators: []validator.Int64{
-					int64validator.OneOf(1),
-				},
+					`possible known values include one of [1, 2]; Default: 1`,
 			},
 			"status": schema.StringAttribute{
 				Computed: true,

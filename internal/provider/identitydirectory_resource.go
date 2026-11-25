@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -79,6 +80,11 @@ func (r *IdentityDirectoryResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: `List of control plane IDs authorized to make authentication requests to this directory.` + "\n" +
 					`Maximum of 32 control planes can be specified. Use allow_all_control_planes for unrestricted access.` + "\n" +
 					`Default: []`,
+				Validators: []validator.List{
+					listvalidator.SizeAtLeast(0),
+					listvalidator.SizeAtMost(32),
+					listvalidator.UniqueValues(),
+				},
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,

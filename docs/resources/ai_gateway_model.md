@@ -59,7 +59,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       logging = {
         payloads = false
       }
-      max_request_body_size = 8388608
+      max_request_body_size = 3
       proxy = {
         auth = {
           password = "...my_password..."
@@ -273,7 +273,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       logging = {
         payloads = false
       }
-      max_request_body_size = 8388608
+      max_request_body_size = 4
       model = {
         name_header = true
       }
@@ -506,7 +506,11 @@ Optional:
 
 - `balancer` (Attributes) Configuration for a model's load balancer when multiple target models are configured. (see [below for nested schema](#nestedatt--api--config--balancer))
 - `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--api--config--logging))
-- `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
+- `max_request_body_size` (Number) The maximum size, in bytes, of a request body that the gateway reads and sends to the model.
+A request with a larger body fails. Set to 0 for no limit.        
+If you do not set a value, the gateway uses the request size limit that the model's providers publish, 
+with defaults to 8 MB.
+If the targets use more than one provider, the gateway uses the highest of these limits.
 - `proxy` (Attributes) HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider. (see [below for nested schema](#nestedatt--api--config--proxy))
 - `response_streaming` (String) possible known values include one of ["allow", "always", "deny"]; Default: "allow"
 - `route` (Attributes) Configuration for an AI Gateway route. Not Null (see [below for nested schema](#nestedatt--api--config--route))
@@ -1065,7 +1069,11 @@ example, `https://model-{model_id}.api.baseten.co/environments/{environment}/syn
 - `gemini` (Attributes) Google Gemini-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--gemini))
 - `huggingface` (Attributes) Hugging Face-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--huggingface))
 - `kimi` (Attributes) Kimi (Moonshot AI)-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--kimi))
-- `llama2` (Attributes) Llama2-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--llama2))
+- `llama2` (Attributes, Deprecated) Llama2-specific configuration for a model.
+
+Deprecated: the `llama2` provider is deprecated and will be removed in 3.0. Migrate by the
+`format` value: `ollama` maps to the `ollama` provider, `openai` maps to the `openai` provider
+with `upstream_url` set, or to the `vllm` provider; `raw` has no replacement provider. (see [below for nested schema](#nestedatt--api--targets--config--llama2))
 - `mistral` (Attributes) Mistral-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--mistral))
 - `ollama` (Attributes) Ollama-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--ollama))
 - `openai` (Attributes) Openai-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--openai))
@@ -2918,7 +2926,11 @@ Optional:
 
 - `balancer` (Attributes) Configuration for a model's load balancer when multiple target models are configured. (see [below for nested schema](#nestedatt--model--config--balancer))
 - `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--model--config--logging))
-- `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
+- `max_request_body_size` (Number) The maximum size, in bytes, of a request body that the gateway reads and sends to the model.
+A request with a larger body fails. Set to 0 for no limit.        
+If you do not set a value, the gateway uses the request size limit that the model's providers publish, 
+with defaults to 8 MB.
+If the targets use more than one provider, the gateway uses the highest of these limits.
 - `model` (Attributes) (see [below for nested schema](#nestedatt--model--config--model))
 - `proxy` (Attributes) HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider. (see [below for nested schema](#nestedatt--model--config--proxy))
 - `response_streaming` (String) possible known values include one of ["allow", "always", "deny"]; Default: "allow"
@@ -3486,7 +3498,11 @@ example, `https://model-{model_id}.api.baseten.co/environments/{environment}/syn
 - `gemini` (Attributes) Google Gemini-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--gemini))
 - `huggingface` (Attributes) Hugging Face-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--huggingface))
 - `kimi` (Attributes) Kimi (Moonshot AI)-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--kimi))
-- `llama2` (Attributes) Llama2-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--llama2))
+- `llama2` (Attributes, Deprecated) Llama2-specific configuration for a model.
+
+Deprecated: the `llama2` provider is deprecated and will be removed in 3.0. Migrate by the
+`format` value: `ollama` maps to the `ollama` provider, `openai` maps to the `openai` provider
+with `upstream_url` set, or to the `vllm` provider; `raw` has no replacement provider. (see [below for nested schema](#nestedatt--model--targets--config--llama2))
 - `mistral` (Attributes) Mistral-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--mistral))
 - `ollama` (Attributes) Ollama-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--ollama))
 - `openai` (Attributes) Openai-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--openai))

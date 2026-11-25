@@ -9,7 +9,7 @@ import (
 // UpdateSecretPayload - Secret to be updated
 type UpdateSecretPayload struct {
 	// Specifies whether the secret is enabled. If the secret is not enabled, it will not be usable during authentication phase.
-	Enabled *bool `default:"true" json:"enabled"`
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 func (u UpdateSecretPayload) MarshalJSON() ([]byte, error) {

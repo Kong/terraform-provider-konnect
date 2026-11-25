@@ -6,7 +6,9 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// ReplaceGroupBodyType - Type of the group. Immutable after creation.
+// ReplaceGroupBodyType - Type of the group. Immutable after creation. Teams come from the
+// organization import; only `group` and `project` are mutable
+// through this API.
 type ReplaceGroupBodyType string
 
 const (
@@ -37,7 +39,9 @@ type ReplaceGroupBody struct {
 	// Optional description providing additional context about the group's purpose.
 	//
 	Description *string `json:"description,omitempty"`
-	// Type of the group. Immutable after creation.
+	// Type of the group. Immutable after creation. Teams come from the
+	// organization import; only `group` and `project` are mutable
+	// through this API.
 	//
 	Type *ReplaceGroupBodyType `json:"type,omitempty"`
 	// A map of metadata key-value pairs associated with this entity. This metadata is passed to the data plane to enrich the execution context. During authentication, metadata is inherited and overridden in a hierarchical manner: Directory metadata is inherited by Principals, which is then inherited and overridden by Credentials.

@@ -60,7 +60,7 @@ possible known values include one of ["none", "gzip", "zstd"]
 
 ### Optional
 
-- `filters` (String) Filters that select the events to export, with the same fields, operators, and shape as the `filters` of `POST /v1/ai-cost-management/events/query`. Every filter must match.
+- `filters` (String) Filters that select the events to export, with the same fields, operators, shape, and nesting limit as the `filters` of `POST /v1/ai-cost-management/events/query`. Every filter must match.
 
 Defaults to `{}`.
 Parsed as JSON.
@@ -72,7 +72,7 @@ Required when `dataset` is `focus`, and isn't accepted for any other dataset. (s
 - `schema_version` (Number) The schema version of each export's data files within the dataset, which fixes their columns and values. Each export that the schedule creates copies it, so a newer schema version doesn't change the schedule's exports.
 
 Defaults to `1`, also once newer schema versions exist, so a replacement that omits `schema_version` sets `1`.
-Default: 1; must be 1
+possible known values include one of [1, 2]; Default: 1
 - `status` (String) Whether the schedule creates exports.
 
 Defaults to `active`, so a replacement that omits `status` resumes a paused schedule.

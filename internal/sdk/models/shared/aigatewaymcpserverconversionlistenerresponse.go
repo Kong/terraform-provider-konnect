@@ -115,8 +115,6 @@ type AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerC
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
 	URL *string `json:"url,omitempty"`
-	// Configuration applied when proxying to the upstream service, including authentication.
-	Upstream *AIGatewayUpstreamConfigOutput `json:"upstream,omitempty"`
 	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
 	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
 	// AI Gateway.
@@ -150,6 +148,8 @@ type AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerC
 	//
 	// **Requires a minimum runtime version of `2.1`**.
 	Cache *AIGatewayMCPServerConversionListenerResponseCache `json:"cache,omitempty"`
+	// Configuration applied when proxying to the upstream service, including authentication.
+	Upstream *AIGatewayMCPServerUpstreamConfigOutput `json:"upstream,omitempty"`
 }
 
 func (a AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) MarshalJSON() ([]byte, error) {
@@ -198,13 +198,6 @@ func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListe
 	return a.URL
 }
 
-func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetUpstream() *AIGatewayUpstreamConfigOutput {
-	if a == nil {
-		return nil
-	}
-	return a.Upstream
-}
-
 func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetCertificates() []string {
 	if a == nil {
 		return nil
@@ -231,6 +224,13 @@ func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListe
 		return nil
 	}
 	return a.Cache
+}
+
+func (a *AIGatewayMCPServerConversionListenerResponseAIGatewayMCPServerKongListenerConfig) GetUpstream() *AIGatewayMCPServerUpstreamConfigOutput {
+	if a == nil {
+		return nil
+	}
+	return a.Upstream
 }
 
 type AIGatewayMCPServerConversionListenerResponse struct {

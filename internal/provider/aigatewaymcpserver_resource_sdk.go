@@ -3417,9 +3417,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		} else {
 			url = nil
 		}
-		var upstream *shared.AIGatewayUpstreamConfig
+		var upstream *shared.AIGatewayMCPServerUpstreamConfig
 		if r.ConversionOnly.Config.Upstream != nil {
-			var auth *shared.Auth
+			var auth *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.ConversionOnly.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAWS *shared.AIGatewayUpstreamAuthAWS
 				if r.ConversionOnly.Config.Upstream.Auth.Aws != nil {
@@ -3476,12 +3476,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAWS != nil {
-					auth = &shared.Auth{
+					auth = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAWS,
 					}
 				}
 			}
-			upstream = &shared.AIGatewayUpstreamConfig{
+			upstream = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth,
 			}
 		}
@@ -4609,74 +4609,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		} else {
 			url1 = nil
 		}
-		var upstream1 *shared.AIGatewayUpstreamConfig
-		if r.ConversionListener.Config.Upstream != nil {
-			var auth1 *shared.Auth
-			if r.ConversionListener.Config.Upstream.Auth != nil {
-				var aiGatewayUpstreamAuthAws1 *shared.AIGatewayUpstreamAuthAWS
-				if r.ConversionListener.Config.Upstream.Auth.Aws != nil {
-					accessKeyId3 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
-						*accessKeyId3 = r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
-					} else {
-						accessKeyId3 = nil
-					}
-					secretAccessKey3 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
-						*secretAccessKey3 = r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
-					} else {
-						secretAccessKey3 = nil
-					}
-					sessionToken1 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
-						*sessionToken1 = r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.ValueString()
-					} else {
-						sessionToken1 = nil
-					}
-					region3 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsNull() {
-						*region3 = r.ConversionListener.Config.Upstream.Auth.Aws.Region.ValueString()
-					} else {
-						region3 = nil
-					}
-					assumeRoleArn3 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
-						*assumeRoleArn3 = r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
-					} else {
-						assumeRoleArn3 = nil
-					}
-					roleSessionName3 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
-						*roleSessionName3 = r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
-					} else {
-						roleSessionName3 = nil
-					}
-					stsEndpointUrl1 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
-						*stsEndpointUrl1 = r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
-					} else {
-						stsEndpointUrl1 = nil
-					}
-					aiGatewayUpstreamAuthAws1 = &shared.AIGatewayUpstreamAuthAWS{
-						AccessKeyID:     accessKeyId3,
-						SecretAccessKey: secretAccessKey3,
-						SessionToken:    sessionToken1,
-						Region:          region3,
-						AssumeRoleArn:   assumeRoleArn3,
-						RoleSessionName: roleSessionName3,
-						StsEndpointURL:  stsEndpointUrl1,
-					}
-				}
-				if aiGatewayUpstreamAuthAws1 != nil {
-					auth1 = &shared.Auth{
-						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws1,
-					}
-				}
-			}
-			upstream1 = &shared.AIGatewayUpstreamConfig{
-				Auth: auth1,
-			}
-		}
 		certificates1 := make([]string, 0, len(r.ConversionListener.Config.Certificates))
 		for certificatesIndex1 := range r.ConversionListener.Config.Certificates {
 			certificates1 = append(certificates1, r.ConversionListener.Config.Certificates[certificatesIndex1].ValueString())
@@ -4737,17 +4669,85 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Discover:  discover,
 			}
 		}
+		var upstream1 *shared.AIGatewayMCPServerUpstreamConfig
+		if r.ConversionListener.Config.Upstream != nil {
+			var auth1 *shared.AIGatewayMCPServerUpstreamConfigAuth
+			if r.ConversionListener.Config.Upstream.Auth != nil {
+				var aiGatewayUpstreamAuthAws1 *shared.AIGatewayUpstreamAuthAWS
+				if r.ConversionListener.Config.Upstream.Auth.Aws != nil {
+					accessKeyId3 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
+						*accessKeyId3 = r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+					} else {
+						accessKeyId3 = nil
+					}
+					secretAccessKey3 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
+						*secretAccessKey3 = r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+					} else {
+						secretAccessKey3 = nil
+					}
+					sessionToken1 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
+						*sessionToken1 = r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.ValueString()
+					} else {
+						sessionToken1 = nil
+					}
+					region3 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsNull() {
+						*region3 = r.ConversionListener.Config.Upstream.Auth.Aws.Region.ValueString()
+					} else {
+						region3 = nil
+					}
+					assumeRoleArn3 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn3 = r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn3 = nil
+					}
+					roleSessionName3 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
+						*roleSessionName3 = r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName3 = nil
+					}
+					stsEndpointUrl1 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointUrl1 = r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointUrl1 = nil
+					}
+					aiGatewayUpstreamAuthAws1 = &shared.AIGatewayUpstreamAuthAWS{
+						AccessKeyID:     accessKeyId3,
+						SecretAccessKey: secretAccessKey3,
+						SessionToken:    sessionToken1,
+						Region:          region3,
+						AssumeRoleArn:   assumeRoleArn3,
+						RoleSessionName: roleSessionName3,
+						StsEndpointURL:  stsEndpointUrl1,
+					}
+				}
+				if aiGatewayUpstreamAuthAws1 != nil {
+					auth1 = &shared.AIGatewayMCPServerUpstreamConfigAuth{
+						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws1,
+					}
+				}
+			}
+			upstream1 = &shared.AIGatewayMCPServerUpstreamConfig{
+				Auth: auth1,
+			}
+		}
 		config1 := shared.AIGatewayMCPServerKongListenerConfig{
 			Route:              route1,
 			Logging:            logging1,
 			MaxRequestBodySize: maxRequestBodySize1,
 			Server:             server,
 			URL:                url1,
-			Upstream:           upstream1,
 			Certificates:       certificates1,
 			CaCertificates:     caCertificates1,
 			AllowedVersions:    allowedVersions,
 			Cache:              cache1,
+			Upstream:           upstream1,
 		}
 		tools1 := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionListener.Tools))
 		for toolsIndex1 := range r.ConversionListener.Tools {
@@ -7385,9 +7385,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		} else {
 			url2 = nil
 		}
-		var upstream2 *shared.AIGatewayUpstreamConfig
+		certificates2 := make([]string, 0, len(r.PassthroughListener.Config.Certificates))
+		for certificatesIndex2 := range r.PassthroughListener.Config.Certificates {
+			certificates2 = append(certificates2, r.PassthroughListener.Config.Certificates[certificatesIndex2].ValueString())
+		}
+		caCertificates2 := make([]string, 0, len(r.PassthroughListener.Config.CaCertificates))
+		for caCertificatesIndex2 := range r.PassthroughListener.Config.CaCertificates {
+			caCertificates2 = append(caCertificates2, r.PassthroughListener.Config.CaCertificates[caCertificatesIndex2].ValueString())
+		}
+		var upstream2 *shared.AIGatewayMCPServerUpstreamConfig
 		if r.PassthroughListener.Config.Upstream != nil {
-			var auth2 *shared.Auth
+			var auth2 *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.PassthroughListener.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws2 *shared.AIGatewayUpstreamAuthAWS
 				if r.PassthroughListener.Config.Upstream.Auth.Aws != nil {
@@ -7444,22 +7452,14 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAws2 != nil {
-					auth2 = &shared.Auth{
+					auth2 = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws2,
 					}
 				}
 			}
-			upstream2 = &shared.AIGatewayUpstreamConfig{
+			upstream2 = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth2,
 			}
-		}
-		certificates2 := make([]string, 0, len(r.PassthroughListener.Config.Certificates))
-		for certificatesIndex2 := range r.PassthroughListener.Config.Certificates {
-			certificates2 = append(certificates2, r.PassthroughListener.Config.Certificates[certificatesIndex2].ValueString())
-		}
-		caCertificates2 := make([]string, 0, len(r.PassthroughListener.Config.CaCertificates))
-		for caCertificatesIndex2 := range r.PassthroughListener.Config.CaCertificates {
-			caCertificates2 = append(caCertificates2, r.PassthroughListener.Config.CaCertificates[caCertificatesIndex2].ValueString())
 		}
 		var proxy *shared.AIGatewayProxyConfig
 		if r.PassthroughListener.Config.Proxy != nil {
@@ -7546,9 +7546,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			MaxRequestBodySize: maxRequestBodySize3,
 			Server:             server2,
 			URL:                url2,
-			Upstream:           upstream2,
 			Certificates:       certificates2,
 			CaCertificates:     caCertificates2,
+			Upstream:           upstream2,
 			Proxy:              proxy,
 		}
 		tools2 := make([]shared.AIGatewayMCPPassthroughTool, 0, len(r.PassthroughListener.Tools))
@@ -8911,9 +8911,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		} else {
 			url3 = nil
 		}
-		var upstream3 *shared.AIGatewayUpstreamConfig
+		certificates3 := make([]string, 0, len(r.UpstreamServer.Config.Certificates))
+		for certificatesIndex3 := range r.UpstreamServer.Config.Certificates {
+			certificates3 = append(certificates3, r.UpstreamServer.Config.Certificates[certificatesIndex3].ValueString())
+		}
+		caCertificates3 := make([]string, 0, len(r.UpstreamServer.Config.CaCertificates))
+		for caCertificatesIndex3 := range r.UpstreamServer.Config.CaCertificates {
+			caCertificates3 = append(caCertificates3, r.UpstreamServer.Config.CaCertificates[caCertificatesIndex3].ValueString())
+		}
+		var upstream3 *shared.AIGatewayMCPServerUpstreamConfig
 		if r.UpstreamServer.Config.Upstream != nil {
-			var auth4 *shared.Auth
+			var auth4 *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.UpstreamServer.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws3 *shared.AIGatewayUpstreamAuthAWS
 				if r.UpstreamServer.Config.Upstream.Auth.Aws != nil {
@@ -8970,22 +8978,14 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAws3 != nil {
-					auth4 = &shared.Auth{
+					auth4 = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws3,
 					}
 				}
 			}
-			upstream3 = &shared.AIGatewayUpstreamConfig{
+			upstream3 = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth4,
 			}
-		}
-		certificates3 := make([]string, 0, len(r.UpstreamServer.Config.Certificates))
-		for certificatesIndex3 := range r.UpstreamServer.Config.Certificates {
-			certificates3 = append(certificates3, r.UpstreamServer.Config.Certificates[certificatesIndex3].ValueString())
-		}
-		caCertificates3 := make([]string, 0, len(r.UpstreamServer.Config.CaCertificates))
-		for caCertificatesIndex3 := range r.UpstreamServer.Config.CaCertificates {
-			caCertificates3 = append(caCertificates3, r.UpstreamServer.Config.CaCertificates[caCertificatesIndex3].ValueString())
 		}
 		var toolsCacheTTLSeconds int64
 		toolsCacheTTLSeconds = r.UpstreamServer.Config.ToolsCacheTTLSeconds.ValueInt64()
@@ -8996,9 +8996,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			MaxRequestBodySize:   maxRequestBodySize4,
 			Server:               server3,
 			URL:                  url3,
-			Upstream:             upstream3,
 			Certificates:         certificates3,
 			CaCertificates:       caCertificates3,
+			Upstream:             upstream3,
 			ToolsCacheTTLSeconds: toolsCacheTTLSeconds,
 		}
 		tools3 := make([]shared.AIGatewayMCPUpstreamTool, 0, len(r.UpstreamServer.Tools))
@@ -9682,9 +9682,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		} else {
 			url = nil
 		}
-		var upstream *shared.AIGatewayUpstreamConfig
+		var upstream *shared.AIGatewayMCPServerUpstreamConfig
 		if r.ConversionOnly.Config.Upstream != nil {
-			var auth *shared.Auth
+			var auth *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.ConversionOnly.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAWS *shared.AIGatewayUpstreamAuthAWS
 				if r.ConversionOnly.Config.Upstream.Auth.Aws != nil {
@@ -9741,12 +9741,12 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAWS != nil {
-					auth = &shared.Auth{
+					auth = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAWS,
 					}
 				}
 			}
-			upstream = &shared.AIGatewayUpstreamConfig{
+			upstream = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth,
 			}
 		}
@@ -10874,74 +10874,6 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		} else {
 			url1 = nil
 		}
-		var upstream1 *shared.AIGatewayUpstreamConfig
-		if r.ConversionListener.Config.Upstream != nil {
-			var auth1 *shared.Auth
-			if r.ConversionListener.Config.Upstream.Auth != nil {
-				var aiGatewayUpstreamAuthAws1 *shared.AIGatewayUpstreamAuthAWS
-				if r.ConversionListener.Config.Upstream.Auth.Aws != nil {
-					accessKeyId3 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
-						*accessKeyId3 = r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
-					} else {
-						accessKeyId3 = nil
-					}
-					secretAccessKey3 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
-						*secretAccessKey3 = r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
-					} else {
-						secretAccessKey3 = nil
-					}
-					sessionToken1 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
-						*sessionToken1 = r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.ValueString()
-					} else {
-						sessionToken1 = nil
-					}
-					region3 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsNull() {
-						*region3 = r.ConversionListener.Config.Upstream.Auth.Aws.Region.ValueString()
-					} else {
-						region3 = nil
-					}
-					assumeRoleArn3 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
-						*assumeRoleArn3 = r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
-					} else {
-						assumeRoleArn3 = nil
-					}
-					roleSessionName3 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
-						*roleSessionName3 = r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
-					} else {
-						roleSessionName3 = nil
-					}
-					stsEndpointUrl1 := new(string)
-					if !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
-						*stsEndpointUrl1 = r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
-					} else {
-						stsEndpointUrl1 = nil
-					}
-					aiGatewayUpstreamAuthAws1 = &shared.AIGatewayUpstreamAuthAWS{
-						AccessKeyID:     accessKeyId3,
-						SecretAccessKey: secretAccessKey3,
-						SessionToken:    sessionToken1,
-						Region:          region3,
-						AssumeRoleArn:   assumeRoleArn3,
-						RoleSessionName: roleSessionName3,
-						StsEndpointURL:  stsEndpointUrl1,
-					}
-				}
-				if aiGatewayUpstreamAuthAws1 != nil {
-					auth1 = &shared.Auth{
-						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws1,
-					}
-				}
-			}
-			upstream1 = &shared.AIGatewayUpstreamConfig{
-				Auth: auth1,
-			}
-		}
 		certificates1 := make([]string, 0, len(r.ConversionListener.Config.Certificates))
 		for certificatesIndex1 := range r.ConversionListener.Config.Certificates {
 			certificates1 = append(certificates1, r.ConversionListener.Config.Certificates[certificatesIndex1].ValueString())
@@ -11002,17 +10934,85 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Discover:  discover,
 			}
 		}
+		var upstream1 *shared.AIGatewayMCPServerUpstreamConfig
+		if r.ConversionListener.Config.Upstream != nil {
+			var auth1 *shared.AIGatewayMCPServerUpstreamConfigAuth
+			if r.ConversionListener.Config.Upstream.Auth != nil {
+				var aiGatewayUpstreamAuthAws1 *shared.AIGatewayUpstreamAuthAWS
+				if r.ConversionListener.Config.Upstream.Auth.Aws != nil {
+					accessKeyId3 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.IsNull() {
+						*accessKeyId3 = r.ConversionListener.Config.Upstream.Auth.Aws.AccessKeyID.ValueString()
+					} else {
+						accessKeyId3 = nil
+					}
+					secretAccessKey3 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.IsNull() {
+						*secretAccessKey3 = r.ConversionListener.Config.Upstream.Auth.Aws.SecretAccessKey.ValueString()
+					} else {
+						secretAccessKey3 = nil
+					}
+					sessionToken1 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.IsNull() {
+						*sessionToken1 = r.ConversionListener.Config.Upstream.Auth.Aws.SessionToken.ValueString()
+					} else {
+						sessionToken1 = nil
+					}
+					region3 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.Region.IsNull() {
+						*region3 = r.ConversionListener.Config.Upstream.Auth.Aws.Region.ValueString()
+					} else {
+						region3 = nil
+					}
+					assumeRoleArn3 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.IsNull() {
+						*assumeRoleArn3 = r.ConversionListener.Config.Upstream.Auth.Aws.AssumeRoleArn.ValueString()
+					} else {
+						assumeRoleArn3 = nil
+					}
+					roleSessionName3 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.IsNull() {
+						*roleSessionName3 = r.ConversionListener.Config.Upstream.Auth.Aws.RoleSessionName.ValueString()
+					} else {
+						roleSessionName3 = nil
+					}
+					stsEndpointUrl1 := new(string)
+					if !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsUnknown() && !r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.IsNull() {
+						*stsEndpointUrl1 = r.ConversionListener.Config.Upstream.Auth.Aws.StsEndpointURL.ValueString()
+					} else {
+						stsEndpointUrl1 = nil
+					}
+					aiGatewayUpstreamAuthAws1 = &shared.AIGatewayUpstreamAuthAWS{
+						AccessKeyID:     accessKeyId3,
+						SecretAccessKey: secretAccessKey3,
+						SessionToken:    sessionToken1,
+						Region:          region3,
+						AssumeRoleArn:   assumeRoleArn3,
+						RoleSessionName: roleSessionName3,
+						StsEndpointURL:  stsEndpointUrl1,
+					}
+				}
+				if aiGatewayUpstreamAuthAws1 != nil {
+					auth1 = &shared.AIGatewayMCPServerUpstreamConfigAuth{
+						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws1,
+					}
+				}
+			}
+			upstream1 = &shared.AIGatewayMCPServerUpstreamConfig{
+				Auth: auth1,
+			}
+		}
 		config1 := shared.AIGatewayMCPServerKongListenerConfig{
 			Route:              route1,
 			Logging:            logging1,
 			MaxRequestBodySize: maxRequestBodySize1,
 			Server:             server,
 			URL:                url1,
-			Upstream:           upstream1,
 			Certificates:       certificates1,
 			CaCertificates:     caCertificates1,
 			AllowedVersions:    allowedVersions,
 			Cache:              cache1,
+			Upstream:           upstream1,
 		}
 		tools1 := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionListener.Tools))
 		for toolsIndex1 := range r.ConversionListener.Tools {
@@ -13650,9 +13650,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		} else {
 			url2 = nil
 		}
-		var upstream2 *shared.AIGatewayUpstreamConfig
+		certificates2 := make([]string, 0, len(r.PassthroughListener.Config.Certificates))
+		for certificatesIndex2 := range r.PassthroughListener.Config.Certificates {
+			certificates2 = append(certificates2, r.PassthroughListener.Config.Certificates[certificatesIndex2].ValueString())
+		}
+		caCertificates2 := make([]string, 0, len(r.PassthroughListener.Config.CaCertificates))
+		for caCertificatesIndex2 := range r.PassthroughListener.Config.CaCertificates {
+			caCertificates2 = append(caCertificates2, r.PassthroughListener.Config.CaCertificates[caCertificatesIndex2].ValueString())
+		}
+		var upstream2 *shared.AIGatewayMCPServerUpstreamConfig
 		if r.PassthroughListener.Config.Upstream != nil {
-			var auth2 *shared.Auth
+			var auth2 *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.PassthroughListener.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws2 *shared.AIGatewayUpstreamAuthAWS
 				if r.PassthroughListener.Config.Upstream.Auth.Aws != nil {
@@ -13709,22 +13717,14 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAws2 != nil {
-					auth2 = &shared.Auth{
+					auth2 = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws2,
 					}
 				}
 			}
-			upstream2 = &shared.AIGatewayUpstreamConfig{
+			upstream2 = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth2,
 			}
-		}
-		certificates2 := make([]string, 0, len(r.PassthroughListener.Config.Certificates))
-		for certificatesIndex2 := range r.PassthroughListener.Config.Certificates {
-			certificates2 = append(certificates2, r.PassthroughListener.Config.Certificates[certificatesIndex2].ValueString())
-		}
-		caCertificates2 := make([]string, 0, len(r.PassthroughListener.Config.CaCertificates))
-		for caCertificatesIndex2 := range r.PassthroughListener.Config.CaCertificates {
-			caCertificates2 = append(caCertificates2, r.PassthroughListener.Config.CaCertificates[caCertificatesIndex2].ValueString())
 		}
 		var proxy *shared.AIGatewayProxyConfig
 		if r.PassthroughListener.Config.Proxy != nil {
@@ -13811,9 +13811,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			MaxRequestBodySize: maxRequestBodySize3,
 			Server:             server2,
 			URL:                url2,
-			Upstream:           upstream2,
 			Certificates:       certificates2,
 			CaCertificates:     caCertificates2,
+			Upstream:           upstream2,
 			Proxy:              proxy,
 		}
 		tools2 := make([]shared.AIGatewayMCPPassthroughTool, 0, len(r.PassthroughListener.Tools))
@@ -15176,9 +15176,17 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		} else {
 			url3 = nil
 		}
-		var upstream3 *shared.AIGatewayUpstreamConfig
+		certificates3 := make([]string, 0, len(r.UpstreamServer.Config.Certificates))
+		for certificatesIndex3 := range r.UpstreamServer.Config.Certificates {
+			certificates3 = append(certificates3, r.UpstreamServer.Config.Certificates[certificatesIndex3].ValueString())
+		}
+		caCertificates3 := make([]string, 0, len(r.UpstreamServer.Config.CaCertificates))
+		for caCertificatesIndex3 := range r.UpstreamServer.Config.CaCertificates {
+			caCertificates3 = append(caCertificates3, r.UpstreamServer.Config.CaCertificates[caCertificatesIndex3].ValueString())
+		}
+		var upstream3 *shared.AIGatewayMCPServerUpstreamConfig
 		if r.UpstreamServer.Config.Upstream != nil {
-			var auth4 *shared.Auth
+			var auth4 *shared.AIGatewayMCPServerUpstreamConfigAuth
 			if r.UpstreamServer.Config.Upstream.Auth != nil {
 				var aiGatewayUpstreamAuthAws3 *shared.AIGatewayUpstreamAuthAWS
 				if r.UpstreamServer.Config.Upstream.Auth.Aws != nil {
@@ -15235,22 +15243,14 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 				if aiGatewayUpstreamAuthAws3 != nil {
-					auth4 = &shared.Auth{
+					auth4 = &shared.AIGatewayMCPServerUpstreamConfigAuth{
 						AIGatewayUpstreamAuthAWS: aiGatewayUpstreamAuthAws3,
 					}
 				}
 			}
-			upstream3 = &shared.AIGatewayUpstreamConfig{
+			upstream3 = &shared.AIGatewayMCPServerUpstreamConfig{
 				Auth: auth4,
 			}
-		}
-		certificates3 := make([]string, 0, len(r.UpstreamServer.Config.Certificates))
-		for certificatesIndex3 := range r.UpstreamServer.Config.Certificates {
-			certificates3 = append(certificates3, r.UpstreamServer.Config.Certificates[certificatesIndex3].ValueString())
-		}
-		caCertificates3 := make([]string, 0, len(r.UpstreamServer.Config.CaCertificates))
-		for caCertificatesIndex3 := range r.UpstreamServer.Config.CaCertificates {
-			caCertificates3 = append(caCertificates3, r.UpstreamServer.Config.CaCertificates[caCertificatesIndex3].ValueString())
 		}
 		var toolsCacheTTLSeconds int64
 		toolsCacheTTLSeconds = r.UpstreamServer.Config.ToolsCacheTTLSeconds.ValueInt64()
@@ -15261,9 +15261,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			MaxRequestBodySize:   maxRequestBodySize4,
 			Server:               server3,
 			URL:                  url3,
-			Upstream:             upstream3,
 			Certificates:         certificates3,
 			CaCertificates:       caCertificates3,
+			Upstream:             upstream3,
 			ToolsCacheTTLSeconds: toolsCacheTTLSeconds,
 		}
 		tools3 := make([]shared.AIGatewayMCPUpstreamTool, 0, len(r.UpstreamServer.Tools))

@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.30.0
+> Released 2026/11/25
+
+# BREAKING CHANGES
+* NA
+
+# Features
+* Add support for configuring allowed VPCE IDs for a Konnect Organization using `konnect_organization_vpce_id_allow_list` resource
+
 ## 3.29.0
 > Released 2026/11/20
 

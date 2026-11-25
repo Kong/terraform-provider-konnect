@@ -51,7 +51,7 @@ resource "konnect_ai_cost_budget" "my_aicostbudget" {
 `null` for a budget created before the service recorded creators.
 - `id` (String) Contains a unique identifier used for this resource.
 - `name` (String) A human-readable name for the budget.
-- `posture` (String) How the budget responds when spend reaches its limit.
+- `posture` (String) What the budget does when spend reaches its limit.
 - `priority` (Number) The budget's priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
@@ -127,7 +127,7 @@ Optional:
 
 1 to 255 characters.
 Not Null
-- `posture` (String) How the budget responds when spend reaches its limit. With `advisory`, the default, requests continue past the limit. possible known values include one of ["advisory", "enforce"]; Default: "advisory"
+- `posture` (String) What the budget does when spend reaches its limit. `advisory`, the default, changes nothing at the limit. `enforce` belongs to budget blocking, which is in development: a request that sets it fails with `400` unless the organization has budget blocking turned on or a replacement keeps a budget's stored `enforce`. No request is refused because of `posture`. possible known values include one of ["advisory", "enforce"]; Default: "advisory"
 - `priority` (Number) The budget's priority, from 1 (highest) to 100 (lowest). You can filter and sort the budget list by it.
 
 Defaults to `100`.

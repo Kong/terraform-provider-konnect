@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// KongPrincipalKeyWithSecret - A Kong Principal Key
+// KongPrincipalKeyWithSecret - An API key associated with a principal, returned at creation with its secret. `metadata` is always returned in key responses; it is never required on requests.
 type KongPrincipalKeyWithSecret struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`

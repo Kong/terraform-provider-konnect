@@ -53,7 +53,7 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput struct {
 	//
 	URL *string `default:"null" json:"url"`
 	// Configuration applied when proxying to the upstream service, including authentication.
-	Upstream *AIGatewayUpstreamConfigOutput `json:"upstream,omitempty"`
+	Upstream *AIGatewayMCPServerUpstreamConfigOutput `json:"upstream,omitempty"`
 	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
 	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
 	// AI Gateway.
@@ -116,7 +116,7 @@ func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetURL
 	return a.URL
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetUpstream() *AIGatewayUpstreamConfigOutput {
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfigOutput) GetUpstream() *AIGatewayMCPServerUpstreamConfigOutput {
 	if a == nil {
 		return nil
 	}
@@ -153,7 +153,7 @@ type AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig struct {
 	//
 	URL *string `default:"null" json:"url"`
 	// Configuration applied when proxying to the upstream service, including authentication.
-	Upstream *AIGatewayUpstreamConfig `json:"upstream,omitempty"`
+	Upstream *AIGatewayMCPServerUpstreamConfig `json:"upstream,omitempty"`
 	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
 	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
 	// AI Gateway.
@@ -216,7 +216,7 @@ func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetURL() *st
 	return a.URL
 }
 
-func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetUpstream() *AIGatewayUpstreamConfig {
+func (a *AIGatewayMCPServerWithUpstreamNoProxyConfigNoServerConfig) GetUpstream() *AIGatewayMCPServerUpstreamConfig {
 	if a == nil {
 		return nil
 	}
