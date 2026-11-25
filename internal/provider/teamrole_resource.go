@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -21,7 +22,6 @@ import (
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	custom_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -68,7 +68,9 @@ func (r *TeamRoleResource) Schema(ctx context.Context, req resource.SchemaReques
 				DeprecationMessage: `Use entity_ids instead. entity_id is deprecated and will be removed in a future release.`,
 				Description:        `The ID of the entity. Mutually exclusive with ` + "`" + `entity_ids` + "`" + `. Requires replacement if changed.`,
 				Validators: []validator.String{
-					custom_stringvalidators.EntityIDEntityIdsValidator(),
+					stringvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("entity_ids"),
+					}...),
 				},
 			},
 			"entity_ids": schema.ListAttribute{

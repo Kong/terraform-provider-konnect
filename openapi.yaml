@@ -117189,9 +117189,10 @@ components:
                 format: uuid
                 example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
                 deprecated: true
+                x-speakeasy-conflicts-with:
+                  - entity_ids
                 x-speakeasy-deprecation-message: Use entity_ids instead. entity_id is deprecated and will be removed in a future release.
                 x-speakeasy-param-computed: true
-                x-speakeasy-plan-validators: EntityIdEntityIdsValidator
               entity_ids:
                 $ref: '#/components/schemas/EntityIds'
               entity_type_name:
