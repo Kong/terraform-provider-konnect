@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.31.0
+> Released 2026/??
+
+# Bug Fixes
+* Fixed in-place update for `konnect_ai_gateway` resource failing because of `min_runtime_version` when `deployment_type` is `managed` or `serverless`
+
 ## 3.30.0
 > Released 2026/11/25
 
@@ -8,9 +14,6 @@
 
 # Features
 * Add support for configuring allowed VPCE IDs for a Konnect Organization using `konnect_organization_vpce_id_allow_list` resource
-
-# Bug Fixes
-* Fixed in-place update for `konnect_ai_gateway` resource failing because of `min_runtime_version` when `deployment_type` is `managed` or `serverless`
 
 ## 3.29.0
 > Released 2026/11/20
