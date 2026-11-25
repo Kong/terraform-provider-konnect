@@ -7,7 +7,7 @@
 * NA
 
 # Features
-* Add support for configuring allowed VPCE IDs for a Konnect Organization using `konnect_organization_` resource
+* Add support for configuring allowed VPCE IDs for a Konnect Organization using `konnect_organization_vpce_id_allow_list` resource
 
 ## 3.29.0
 > Released 2026/11/20
