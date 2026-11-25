@@ -84,7 +84,7 @@ func (a *AICostLimitBudgetWindow) GetAnchoredAt() string {
 	return a.AnchoredAt
 }
 
-// AICostLimitBudgetPosture - How the budget responds when spend reaches its limit.
+// AICostLimitBudgetPosture - What the budget does when spend reaches its limit.
 type AICostLimitBudgetPosture string
 
 const (
@@ -134,7 +134,7 @@ type AICostLimitBudget struct {
 	effect string `const:"limit" json:"effect"`
 	// The budget window: the period the limit applies to, such as a calendar month. When one window ends, the next starts.
 	Window AICostLimitBudgetWindow `json:"window"`
-	// How the budget responds when spend reaches its limit.
+	// What the budget does when spend reaches its limit.
 	Posture AICostLimitBudgetPosture `json:"posture"`
 	// Always `null`, because only an exemption has `validity`.
 	//lint:ignore U1000 accessed via reflection for JSON marshaling

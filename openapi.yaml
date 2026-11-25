@@ -18,7 +18,7 @@ info:
     A feature whose `x-min-runtime-version` is greater than
     `info.x-latest-public-runtime-version` is not generally available yet and
     will be excluded from publicly available deliverables, exactly as if it were
-    marked `x-internal` and `x-unstable`.
+    marked `x-internal`.
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
@@ -25521,6 +25521,8 @@ paths:
         - konnectAccessToken: []
         - serviceAccessToken: []
         - systemAccountAccessToken: []
+      servers:
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Personal Access Tokens
     patch:
@@ -25545,8 +25547,60 @@ paths:
         - personalAccessToken: []
         - konnectAccessToken: []
         - systemAccountAccessToken: []
+      servers:
+        - url: 'https://global.api.konghq.com/'
       tags:
         - Personal Access Tokens
+  '/v3/organizations/{organizationId}/vpce-id-allow-list':
+    parameters:
+      - $ref: '#/components/parameters/OrganizationIdParameter'
+    put:
+      x-speakeasy-entity-operation: 'OrganizationVpceIdAllowList#create,update'
+      operationId: put-vpce-id-allow-list
+      summary: Set VPCE ID restriction for organization
+      description: |
+        Sets the VPCE ID restriction for an organization, replacing any existing configuration.
+        Returns `201` when the configuration is created and `200` when an existing configuration is replaced.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateOrganizationVpceIdRestriction'
+      responses:
+        '200':
+          $ref: '#/components/responses/OrganizationVpceIdRestriction'
+        '201':
+          $ref: '#/components/responses/OrganizationVpceIdRestriction'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Organizations
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrganizationVpceIdAllowList#read
+        terraform-datasource: null
+      operationId: get-vpce-id-allow-list
+      summary: Get VPCE ID restriction for organization
+      description: |
+        Gets the VPCE ID restriction configuration for an organization.
+      responses:
+        '200':
+          $ref: '#/components/responses/OrganizationVpceIdRestriction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Organizations
   /v3/portals:
     get:
       x-speakeasy-entity-operation:
@@ -28072,6 +28126,43 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Audit Logs
+  '/v3/organizations/{organizationId}/vpce-id-allow-list#delete':
+    put:
+      x-speakeasy-entity-operation: OrganizationVpceIdAllowList#delete
+      operationId: reset-organization-vpce-id-allow-list
+      summary: Reset organization VPCE ID allow list
+      description: Disable the VPCE ID allow list.
+      parameters:
+        - $ref: '#/components/parameters/OrganizationIdParameter'
+      requestBody:
+        description: Reset the VPCE ID allow list to disabled
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                  default: null
+                  const: false
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                allowed_vpce_ids:
+                  type: array
+                  items:
+                    type: string
+                  const: []
+      responses:
+        '200':
+          $ref: '#/components/responses/OrganizationVpceIdRestriction'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      servers:
+        - url: 'https://global.api.konghq.com/'
   /v3/authentication-settings#delete:
     patch:
       x-speakeasy-entity-operation: AuthenticationSettings#delete
@@ -29050,6 +29141,13 @@ components:
       schema:
         $ref: '#/components/schemas/NetworksFilterParameters'
       style: deepObject
+    OrganizationIdParameter:
+      name: organizationId
+      in: path
+      description: UUID representing an organization.
+      required: true
+      schema:
+        $ref: '#/components/schemas/OrganizationId'
     PageId:
       schema:
         type: string
@@ -49234,7 +49332,7 @@ components:
       type: object
       properties:
         enabled:
-          $ref: '#/components/schemas/SecretEnabled'
+          $ref: '#/components/schemas/UpdateSecretEnabled'
     ClientSecretItem:
       description: The client secret. The secret value is only returned when creating a new secret item.
       type: object
@@ -49508,6 +49606,9 @@ components:
       description: 'Specifies whether the secret is enabled. If the secret is not enabled, it will not be usable during authentication phase.'
       type: boolean
       default: true
+    UpdateSecretEnabled:
+      description: 'Specifies whether the secret is enabled. If the secret is not enabled, it will not be usable during authentication phase.'
+      type: boolean
     Claim:
       type: object
       properties:
@@ -49664,10 +49765,45 @@ components:
       writeOnly: true
       x-speakeasy-param-sensitive: true
       x-speakeasy-terraform-plan-only: true
+    VpceIdEnabled:
+      description: Whether VPCE ID restriction is enabled for the organization.
+      type: boolean
+      example: true
+      default: false
+    AllowedVpceIds:
+      description: The list of allowed AWS VPC endpoint IDs for the organization.
+      type: array
+      items:
+        type: string
+        maxLength: 100
+        minLength: 1
+      example:
+        - vpce-0123456789abcdef0
+      maxItems: 1000
+      uniqueItems: true
+    OrganizationVpceIdRestriction:
+      type: object
+      properties:
+        enabled:
+          $ref: '#/components/schemas/VpceIdEnabled'
+        allowed_vpce_ids:
+          $ref: '#/components/schemas/AllowedVpceIds'
+      additionalProperties: false
+      required:
+        - enabled
+        - allowed_vpce_ids
+      title: Organization VPCE ID Restriction
     MaxPATExpirationPeriodDays:
       type: integer
       maximum: 365
       minimum: 1
+    OrganizationId:
+      description: UUID representing an organization.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
     TargetModel:
       description: An upstream LLM target the AI Model proxies.
       type: object
@@ -51835,11 +51971,15 @@ components:
             - deny
           x-speakeasy-unknown-values: allow
         max_request_body_size:
-          description: Maximum size of request body to parse. Set to 0 for unlimited.
+          description: |
+            The maximum size, in bytes, of a request body that the gateway reads and sends to the model.
+            A request with a larger body fails. Set to 0 for no limit.        
+            If you do not set a value, the gateway uses the request size limit that the model's providers publish, 
+            with defaults to 8 MB.
+            If the targets use more than one provider, the gateway uses the highest of these limits.
           type: integer
-          default: 8388608
-          maximum: 2147483646
           minimum: 0
+          x-speakeasy-param-computed: true
         model:
           type: object
           default:
@@ -51874,11 +52014,15 @@ components:
             - deny
           x-speakeasy-unknown-values: allow
         max_request_body_size:
-          description: Maximum size of request body to parse. Set to 0 for unlimited.
+          description: |
+            The maximum size, in bytes, of a request body that the gateway reads and sends to the model.
+            A request with a larger body fails. Set to 0 for no limit.        
+            If you do not set a value, the gateway uses the request size limit that the model's providers publish, 
+            with defaults to 8 MB.
+            If the targets use more than one provider, the gateway uses the highest of these limits.
           type: integer
-          default: 8388608
-          maximum: 2147483646
           minimum: 0
+          x-speakeasy-param-computed: true
         balancer:
           $ref: '#/components/schemas/AIGatewayModelBalancerConfig'
         proxy:
@@ -55141,7 +55285,12 @@ components:
       required:
         - type
     AIGatewayTargetLlama2Config:
-      description: Llama2-specific configuration for a model.
+      description: |
+        Llama2-specific configuration for a model.
+
+        Deprecated: the `llama2` provider is deprecated and will be removed in 3.0. Migrate by the
+        `format` value: `ollama` maps to the `ollama` provider, `openai` maps to the `openai` provider
+        with `upstream_url` set, or to the `vllm` provider; `raw` has no replacement provider.
       type: object
       properties:
         embeddings_dimensions:
@@ -55264,6 +55413,7 @@ components:
             - openai
             - raw
           x-speakeasy-unknown-values: allow
+      deprecated: true
       required:
         - type
         - format
@@ -59897,8 +60047,6 @@ components:
               minLength: 1
               nullable: true
               x-speakeasy-param-computed: false
-            upstream:
-              $ref: '#/components/schemas/AIGatewayUpstreamConfig'
             certificates:
               description: |
                 Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
@@ -59965,6 +60113,8 @@ components:
                   $ref: '#/components/schemas/AIGatewayMCPServerCacheHint'
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
+            upstream:
+              $ref: '#/components/schemas/AIGatewayMCPServerUpstreamConfig'
           required:
             - route
           title: AIGatewayMCPServerKongListenerConfig
@@ -61281,7 +61431,7 @@ components:
           nullable: true
           x-speakeasy-param-computed: false
         upstream:
-          $ref: '#/components/schemas/AIGatewayUpstreamConfig'
+          $ref: '#/components/schemas/AIGatewayMCPServerUpstreamConfig'
         certificates:
           description: |
             Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
@@ -61415,8 +61565,6 @@ components:
           minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
-        upstream:
-          $ref: '#/components/schemas/AIGatewayUpstreamConfig'
         certificates:
           description: |
             Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
@@ -61447,6 +61595,8 @@ components:
           items:
             $ref: '#/components/schemas/AIGatewayCACertificateReference'
           x-speakeasy-param-computed: true
+        upstream:
+          $ref: '#/components/schemas/AIGatewayMCPServerUpstreamConfig'
         proxy:
           $ref: '#/components/schemas/AIGatewayProxyConfig'
       additionalProperties: false
@@ -61497,8 +61647,6 @@ components:
           minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
-        upstream:
-          $ref: '#/components/schemas/AIGatewayUpstreamConfig'
         certificates:
           description: |
             Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
@@ -61529,6 +61677,8 @@ components:
           items:
             $ref: '#/components/schemas/AIGatewayCACertificateReference'
           x-speakeasy-param-computed: true
+        upstream:
+          $ref: '#/components/schemas/AIGatewayMCPServerUpstreamConfig'
         tools_cache_ttl_seconds:
           description: |
             The time-to-live (TTL) for the upstream tools cache in seconds. Set to `0` to refresh on
@@ -61975,8 +62125,6 @@ components:
               minLength: 1
               nullable: true
               x-speakeasy-param-computed: false
-            upstream:
-              $ref: '#/components/schemas/AIGatewayUpstreamConfig'
             certificates:
               description: |
                 Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
@@ -62043,6 +62191,8 @@ components:
                   $ref: '#/components/schemas/AIGatewayMCPServerCacheHint'
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
+            upstream:
+              $ref: '#/components/schemas/AIGatewayMCPServerUpstreamConfig'
           required:
             - route
           title: AIGatewayMCPServerKongListenerConfig
@@ -62523,6 +62673,7 @@ components:
           description: |
             Configuration for the key-auth auth strategy.
           type: object
+          additionalProperties: false
           properties:
             anonymous:
               description: |
@@ -62543,6 +62694,7 @@ components:
                   id:
                     description: A string representing a UUID (universally unique identifier).
                     type: string
+                    nullable: true
                   region:
                     type: string
                     nullable: true
@@ -62640,6 +62792,7 @@ components:
           description: |
             Configuration for the OpenID Connect auth strategy.
           type: object
+          additionalProperties: false
           properties:
             anonymous:
               description: 'An optional string (consumer UUID or username) value that functions as an “anonymous” consumer if authentication fails. If empty (default null), requests that fail authentication will return a `4xx` HTTP status code. This value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.'
@@ -65557,7 +65710,12 @@ components:
         - config
     AIGatewayModelProviderLlama2:
       description: |
-        Configuration for an upstream model provider.
+        Configuration for an upstream `llama2` model provider.
+
+        Deprecated: the `llama2` provider is deprecated and will be removed in 3.0. Migrate each
+        target by its `format` value: `ollama` maps to the `ollama` provider, `openai` maps to the
+        `openai` provider with `upstream_url` set on the target, or to the `vllm` provider; `raw`
+        has no replacement provider.
       type: object
       properties:
         type:
@@ -65591,6 +65749,7 @@ components:
               $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
           required:
             - auth
+      deprecated: true
       required:
         - type
         - display_name
@@ -66061,6 +66220,19 @@ components:
         - type
       title: AIGatewayModelProviderConfigAuthAWS
     AIGatewayUpstreamConfig:
+      description: 'Configuration applied when proxying to the upstream service, including authentication.'
+      type: object
+      properties:
+        auth:
+          description: Authentication to use when proxying to the upstream service.
+          discriminator:
+            propertyName: type
+            mapping:
+              aws: '#/components/schemas/AIGatewayUpstreamAuthAWS'
+          oneOf:
+            - $ref: '#/components/schemas/AIGatewayUpstreamAuthAWS'
+      additionalProperties: false
+    AIGatewayMCPServerUpstreamConfig:
       description: 'Configuration applied when proxying to the upstream service, including authentication.'
       type: object
       properties:
@@ -66790,6 +66962,7 @@ components:
           description: |
             Configuration for the key-auth auth strategy.
           type: object
+          additionalProperties: false
           properties:
             anonymous:
               description: |
@@ -66810,6 +66983,7 @@ components:
                   id:
                     description: A string representing a UUID (universally unique identifier).
                     type: string
+                    nullable: true
                   region:
                     type: string
                     nullable: true
@@ -66916,6 +67090,7 @@ components:
           description: |
             Configuration for the OpenID Connect auth strategy.
           type: object
+          additionalProperties: false
           properties:
             anonymous:
               description: 'An optional string (consumer UUID or username) value that functions as an “anonymous” consumer if authentication fails. If empty (default null), requests that fail authentication will return a `4xx` HTTP status code. This value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.'
@@ -69620,7 +69795,7 @@ components:
             - interval
             - anchored_at
         posture:
-          description: How the budget responds when spend reaches its limit.
+          description: What the budget does when spend reaches its limit.
           allOf:
             - $ref: '#/components/schemas/AICostBudgetPosture'
         validity:
@@ -69731,6 +69906,7 @@ components:
         - `model`: the model that the provider reports as served.
         - `provider`: the provider that served the invocation.
         - `request_mode`: how the invocation was served: `stream`, `oneshot`, or `realtime`.
+        - `cost_center`: the person's Kong Identity cost center at the time of the request, as the gateway reported it. It isn't the ledger of a funded budget. Usage has at most one, so `neq` and `nin` match only usage with a cost center, and the budgets that `each` derives from it don't overlap.
 
         A scope can also use `tags.<key>` for the value of one tag.
       type: string
@@ -69743,6 +69919,7 @@ components:
         - model
         - provider
         - request_mode
+        - cost_center
       x-speakeasy-unknown-values: allow
     AICostBudgetScopeValueOperator:
       description: |-
@@ -69878,7 +70055,7 @@ components:
         - op
         - filters
     AICostBudgetPosture:
-      description: 'How the budget responds when spend reaches its limit. With `advisory`, requests continue past the limit.'
+      description: 'What a limit budget does when spend reaches its limit. `advisory` changes nothing at the limit. `enforce` belongs to budget blocking, which is in development. No request is refused because of `posture`.'
       type: string
       enum:
         - advisory
@@ -70190,6 +70367,8 @@ components:
         The data an export holds, which also decides how its files divide the range.
 
         `usage_events` has one row per stored usage event, with the fields that `GET /v1/ai-cost-management/events` returns for an event, and one file for each day of the range. `focus` holds the AI usage as FinOps FOCUS cost-and-usage data, with one file for each calendar month. Each `focus` row sums the events of one charge period that share a provider, model, region, subject, application, list of groups, list of teams, and values of the named tag keys.
+
+        Schema version `2` adds the usage's Kong Identity cost center to each dataset: `usage_events` gains a `cost_center` column after `teams`, and `focus` gains an `x_CostCenter` column after `x_TeamIds` and splits its rows by cost center too. Both columns are `null` for usage without a cost center.
       type: string
       enum:
         - usage_events
@@ -70199,11 +70378,13 @@ components:
       description: |-
         A version of an export's data files within its dataset: their columns and the values those columns hold. A change to either ships as a new schema version, so the files of a schema version never change. Each dataset counts its schema versions from `1` on its own. For `focus`, a schema version applies within the chosen FOCUS version. Each dataset offers these schema versions:
 
-        - `usage_events`: `1`.
-        - `focus`: `1`.
+        - `usage_events`: `1`, `2`.
+        - `focus`: `1`, `2`.
       type: integer
       enum:
         - 1
+        - 2
+      x-speakeasy-unknown-values: allow
     AICostFocusOptions:
       description: 'The FOCUS options of a `focus` export or schedule, with each option''s value or its default.'
       type: object
@@ -70500,7 +70681,7 @@ components:
       description: |-
         A condition on one usage field. `op` selects the comparison and the shape of `value`.
 
-        Usage without a value for the field matches only `nexists`. A `subject`, `group`, or `team` predicate takes only `eq`, `neq`, `in`, `nin`, `exists`, and `nexists`. Its values are complete references: a subject is `principal/{uuid}`, `consumer/{uuid}`, or `oidc/{sub}`, a group is `principal/{uuid}`, `consumer_group/{uuid}`, or `oidc/{group}`, and a team is `principal/{uuid}`. `subject_id` matches a subject's identifier without its type. A `tags.<key>` predicate's values each have at most 256 characters, none of them a control character.
+        Usage without a value for the field matches only `nexists`. A `subject`, `group`, or `team` predicate takes only `eq`, `neq`, `in`, `nin`, `exists`, and `nexists`. Its values are complete references: a subject is `principal/{uuid}`, `consumer/{uuid}`, or `oidc/{sub}`, a group is `principal/{uuid}`, `consumer_group/{uuid}`, or `oidc/{group}`, and a team is `principal/{uuid}`. `subject_id` matches a subject's identifier without its type. A `tags.<key>` or `cost_center` predicate's values each have at most 256 characters, none of them a control character.
       discriminator:
         propertyName: op
         mapping:
@@ -70785,7 +70966,7 @@ components:
                 - $ref: '#/components/schemas/AICostExportCompression'
             filters:
               description: |-
-                Filters that select the events to export, with the same fields, operators, and shape as the `filters` of `POST /v1/ai-cost-management/events/query`. Every filter must match.
+                Filters that select the events to export, with the same fields, operators, shape, and nesting limit as the `filters` of `POST /v1/ai-cost-management/events/query`. Every filter must match.
 
                 Defaults to `{}`.
               type: object
@@ -70941,7 +71122,7 @@ components:
             - interval
             - anchored_at
         posture:
-          description: 'How the budget responds when spend reaches its limit. With `advisory`, the default, requests continue past the limit.'
+          description: 'What the budget does when spend reaches its limit. `advisory`, the default, changes nothing at the limit. `enforce` belongs to budget blocking, which is in development: a request that sets it fails with `400` unless the organization has budget blocking turned on or a replacement keeps a budget''s stored `enforce`. No request is refused because of `posture`.'
           type: string
           default: advisory
           enum:
@@ -71079,11 +71260,11 @@ components:
       items:
         type: string
         format: uuid
-        uniqueItems: true
-        minItems: 0
-        maxItems: 32
       default: []
+      maxItems: 32
+      minItems: 0
       nullable: false
+      uniqueItems: true
     KongIdentityAllowAllControlPlanes:
       description: |
         When set to true, all control planes within the organization can make authentication requests to this directory.
@@ -71191,6 +71372,19 @@ components:
           $ref: '#/components/schemas/ManagedBy'
         active:
           $ref: '#/components/schemas/KongPrincipalActive'
+    CreateGroupType:
+      description: |-
+        Classifies the kind of group to create. There are three group types
+        (`group`, `team`, `project`), but only `group` and `project` are
+        mutable through this API; teams come from the organization import.
+        When omitted or null, the group is a `group`.
+      type: string
+      enum:
+        - group
+      nullable: true
+      x-enum-varnames:
+        - CreateGroupTypeGroup
+        - CreateGroupTypeProject
     CreateGroupBody:
       type: object
       properties:
@@ -71202,7 +71396,7 @@ components:
           description: |
             Type of the group. Immutable after creation.
           allOf:
-            - $ref: '#/components/schemas/KongGroupType'
+            - $ref: '#/components/schemas/CreateGroupType'
           x-speakeasy-param-force-new: true
         metadata:
           $ref: '#/components/schemas/KongIdentityMetadata'
@@ -71221,7 +71415,9 @@ components:
           $ref: '#/components/schemas/KongGroupDescription'
         type:
           description: |
-            Type of the group. Immutable after creation.
+            Type of the group. Immutable after creation. Teams come from the
+            organization import; only `group` and `project` are mutable
+            through this API.
           allOf:
             - $ref: '#/components/schemas/KongGroupType'
           x-speakeasy-param-force-new: true
@@ -71296,7 +71492,7 @@ components:
         - type
       x-terraform-no-default-null: true
     UpdatePrincipalKeyBody:
-      description: Request body for updating an API key's metadata
+      description: 'Request body for updating an API key. When updating `metadata`, a present map replaces the stored map, and an absent or explicit `null` field keeps the stored map.'
       type: object
       properties:
         name:
@@ -71453,6 +71649,8 @@ components:
         - member
         - created_at
     KongPrincipalKey:
+      description: |
+        An API key associated with a principal. `metadata` is always returned in key responses; it is never required on requests.
       type: object
       properties:
         id:
@@ -71475,6 +71673,8 @@ components:
         - expires_at
         - managed_by
     KongPrincipalKeyWithSecret:
+      description: |
+        An API key associated with a principal, returned at creation with its secret. `metadata` is always returned in key responses; it is never required on requests.
       type: object
       properties:
         id:
@@ -71695,6 +71895,8 @@ components:
         Teams (`team`) are nodes of the organization chart whose members are
         principals of type `user` and other `team` groups; they may carry an
         `team_manager` custom identity referencing a principal of type `user`.
+        Projects (`project`) group `user` and `agent` principals; projects
+        cannot contain groups or be members of groups.
       type: object
       properties:
         id:
@@ -72557,12 +72759,17 @@ components:
       x-speakeasy-unknown-values: allow
     KongGroupType:
       description: |-
-        Classifies the kind of group. `group` is the default policy-attachment
-        point for access across principals. `team` is a node of the
-        organization chart: its members are principals of type `user` and other
-        `team` groups, and it may carry an `owner` custom identity
-        referencing a principal of type `user`. When omitted or null, the
-        group is a `group`.
+        Classifies the kind of group. There are three group types: `group`,
+        `team`, and `project`. `group` is the default policy-attachment point
+        for access across principals. `team` is a node of the organization
+        chart: its members are principals of type `user` and other `team`
+        groups, and it may carry an `owner` custom identity referencing a
+        principal of type `user`. `project` groups `user` and `agent`
+        principals; projects cannot contain groups or be members of groups.
+        When omitted or null, the group is a `group`.
+
+        Teams come from the organization import; of the three group types,
+        only `group` and `project` are mutable through this API.
       type: string
       enum:
         - group
@@ -117731,6 +117938,11 @@ components:
                 default: null
                 nullable: true
                 x-speakeasy-param-computed: false
+              include_principal_name:
+                description: Whether to include the principal name in the audit log entries sent to the webhook.
+                type: boolean
+                example: true
+                default: false
     PortalUpdateTeam:
       description: Update a team in a portal.
       content:
@@ -118707,6 +118919,12 @@ components:
                 $ref: '#/components/schemas/MaxPATExpirationPeriodDays'
             additionalProperties: false
             minProperties: 1
+    CreateOrganizationVpceIdRestriction:
+      description: The request schema to set an organization's VPCE ID restriction configuration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganizationVpceIdRestriction'
     CreateCatalogMCPRequest:
       required: true
       content:
@@ -120284,6 +120502,11 @@ components:
                 default: null
                 nullable: true
                 x-speakeasy-param-computed: false
+              include_principal_name:
+                description: Whether to include the principal name in the audit log entries sent to the webhook.
+                type: boolean
+                example: true
+                default: false
     PortalWebhookBadRequest:
       description: Bad Request
       content:
@@ -120677,6 +120900,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreatedClient'
+    OrganizationVpceIdRestriction:
+      description: The organization's VPCE ID restriction configuration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganizationVpceIdRestriction'
     PersonalAccessTokenSettingsResponse:
       description: Response containing personal access token settings.
       content:
@@ -121499,6 +121728,8 @@ tags:
     description: 'Claims are statements about the Client, included in tokens issued by the Auth Server. The management API will give you the ability to create, configure and manage multiple Claims per Auth Server, and include them in tokens based on the requested Scopes.'
   - name: Auth Server Scopes
     description: 'Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.'
+  - name: Organizations
+    description: API related to the management of Konnect Organizations
   - name: Catalog AI Models
     description: Manage AI Models - a catalogable proxy for AI Gateway models
   - name: Catalog AI Model Versions

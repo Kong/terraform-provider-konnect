@@ -132,83 +132,12 @@ func (r *CloudGatewayConfigurationResourceModel) ToOperationsDeleteCloudGatewayC
 	} else {
 		typeVar = nil
 	}
-	dataplaneGroups := make([]shared.CreateConfigurationDataPlaneGroup, 0, len(r.DataplaneGroups))
-	for dataplaneGroupsIndex := range r.DataplaneGroups {
-		provider := shared.ProviderName(r.DataplaneGroups[dataplaneGroupsIndex].Provider.ValueString())
-		var region string
-		region = r.DataplaneGroups[dataplaneGroupsIndex].Region.ValueString()
-
-		cloudGatewayNetworkID := new(string)
-		if !r.DataplaneGroups[dataplaneGroupsIndex].CloudGatewayNetworkID.IsUnknown() && !r.DataplaneGroups[dataplaneGroupsIndex].CloudGatewayNetworkID.IsNull() {
-			*cloudGatewayNetworkID = r.DataplaneGroups[dataplaneGroupsIndex].CloudGatewayNetworkID.ValueString()
-		} else {
-			cloudGatewayNetworkID = nil
-		}
-		var autoscale *shared.ConfigurationDataPlaneGroupAutoscaleInput
-		if r.DataplaneGroups[dataplaneGroupsIndex].Autoscale != nil {
-			var configurationDataPlaneGroupAutoscaleStatic *shared.ConfigurationDataPlaneGroupAutoscaleStatic
-			if r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic != nil {
-				kind1 := shared.Kind(r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.Kind.ValueString())
-				instanceType := shared.InstanceTypeName(r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.InstanceType.ValueString())
-				var requestedInstances int64
-				requestedInstances = r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.RequestedInstances.ValueInt64()
-
-				configurationDataPlaneGroupAutoscaleStatic = &shared.ConfigurationDataPlaneGroupAutoscaleStatic{
-					Kind:               kind1,
-					InstanceType:       instanceType,
-					RequestedInstances: requestedInstances,
-				}
-			}
-			if configurationDataPlaneGroupAutoscaleStatic != nil {
-				autoscale = &shared.ConfigurationDataPlaneGroupAutoscaleInput{
-					ConfigurationDataPlaneGroupAutoscaleStatic: configurationDataPlaneGroupAutoscaleStatic,
-				}
-			}
-			var configurationDataPlaneGroupAutoscaleAutopilotInput *shared.ConfigurationDataPlaneGroupAutoscaleAutopilotInput
-			if r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot != nil {
-				kind2 := shared.ConfigurationDataPlaneGroupAutoscaleAutopilotKind(r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.Kind.ValueString())
-				var baseRps int64
-				baseRps = r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps.ValueInt64()
-
-				configurationDataPlaneGroupAutoscaleAutopilotInput = &shared.ConfigurationDataPlaneGroupAutoscaleAutopilotInput{
-					Kind:    kind2,
-					BaseRps: baseRps,
-				}
-			}
-			if configurationDataPlaneGroupAutoscaleAutopilotInput != nil {
-				autoscale = &shared.ConfigurationDataPlaneGroupAutoscaleInput{
-					ConfigurationDataPlaneGroupAutoscaleAutopilotInput: configurationDataPlaneGroupAutoscaleAutopilotInput,
-				}
-			}
-		}
-		environment := make([]shared.ConfigurationDataPlaneGroupEnvironmentField, 0, len(r.DataplaneGroups[dataplaneGroupsIndex].Environment))
-		for environmentIndex := range r.DataplaneGroups[dataplaneGroupsIndex].Environment {
-			var name string
-			name = r.DataplaneGroups[dataplaneGroupsIndex].Environment[environmentIndex].Name.ValueString()
-
-			var value string
-			value = r.DataplaneGroups[dataplaneGroupsIndex].Environment[environmentIndex].Value.ValueString()
-
-			environment = append(environment, shared.ConfigurationDataPlaneGroupEnvironmentField{
-				Name:  name,
-				Value: value,
-			})
-		}
-		dataplaneGroups = append(dataplaneGroups, shared.CreateConfigurationDataPlaneGroup{
-			Provider:              provider,
-			Region:                region,
-			CloudGatewayNetworkID: cloudGatewayNetworkID,
-			Autoscale:             autoscale,
-			Environment:           environment,
-		})
-	}
 	out := operations.DeleteCloudGatewayConfigurationRequestBody{
 		ControlPlaneID:  controlPlaneID,
 		ControlPlaneGeo: controlPlaneGeo,
 		Version:         version,
 		Kind:            kind,
 		Type:            typeVar,
-		DataplaneGroups: dataplaneGroups,
 	}
 
 	return &out, diags

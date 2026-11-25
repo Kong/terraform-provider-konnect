@@ -12,6 +12,8 @@ import (
 // Teams (`team`) are nodes of the organization chart whose members are
 // principals of type `user` and other `team` groups; they may carry an
 // `team_manager` custom identity referencing a principal of type `user`.
+// Projects (`project`) group `user` and `agent` principals; projects
+// cannot contain groups or be members of groups.
 type KongGroup struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
@@ -21,12 +23,17 @@ type KongGroup struct {
 	// Optional description providing additional context about the group's purpose.
 	//
 	Description string `json:"description"`
-	// Classifies the kind of group. `group` is the default policy-attachment
-	// point for access across principals. `team` is a node of the
-	// organization chart: its members are principals of type `user` and other
-	// `team` groups, and it may carry an `owner` custom identity
-	// referencing a principal of type `user`. When omitted or null, the
-	// group is a `group`.
+	// Classifies the kind of group. There are three group types: `group`,
+	// `team`, and `project`. `group` is the default policy-attachment point
+	// for access across principals. `team` is a node of the organization
+	// chart: its members are principals of type `user` and other `team`
+	// groups, and it may carry an `owner` custom identity referencing a
+	// principal of type `user`. `project` groups `user` and `agent`
+	// principals; projects cannot contain groups or be members of groups.
+	// When omitted or null, the group is a `group`.
+	//
+	// Teams come from the organization import; of the three group types,
+	// only `group` and `project` are mutable through this API.
 	Type *KongGroupType `json:"type,omitempty"`
 	// A map of metadata key-value pairs associated with this entity. This metadata is passed to the data plane to enrich the execution context. During authentication, metadata is inherited and overridden in a hierarchical manner: Directory metadata is inherited by Principals, which is then inherited and overridden by Credentials.
 	Metadata any `json:"metadata"`

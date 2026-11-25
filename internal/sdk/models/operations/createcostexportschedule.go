@@ -3,8 +3,6 @@
 package operations
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
@@ -92,23 +90,22 @@ type SchemaVersion int64
 
 const (
 	SchemaVersionOne SchemaVersion = 1
+	SchemaVersionTwo SchemaVersion = 2
 )
 
 func (e SchemaVersion) ToPointer() *SchemaVersion {
 	return &e
 }
-func (e *SchemaVersion) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SchemaVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case 1, 2:
+			return true
+		}
 	}
-	switch v {
-	case 1:
-		*e = SchemaVersion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SchemaVersion: %v", v)
-	}
+	return false
 }
 
 // Format - The file format of each export's data files.
@@ -194,7 +191,7 @@ type CreateCostExportScheduleRequestBody struct {
 	//
 	// `none` or `gzip` for `csv`, and `zstd` for `parquet`.
 	Compression Compression `json:"compression"`
-	// Filters that select the events to export, with the same fields, operators, and shape as the `filters` of `POST /v1/ai-cost-management/events/query`. Every filter must match.
+	// Filters that select the events to export, with the same fields, operators, shape, and nesting limit as the `filters` of `POST /v1/ai-cost-management/events/query`. Every filter must match.
 	//
 	// Defaults to `{}`.
 	Filters any                `json:"filters,omitempty"`
@@ -370,6 +367,29 @@ func (e *CreateCostExportScheduleDataset) IsExact() bool {
 	return false
 }
 
+// CreateCostExportScheduleSchemaVersion - The schema version of each export's data files within the dataset, which fixes their columns and values.
+type CreateCostExportScheduleSchemaVersion int64
+
+const (
+	CreateCostExportScheduleSchemaVersionOne CreateCostExportScheduleSchemaVersion = 1
+	CreateCostExportScheduleSchemaVersionTwo CreateCostExportScheduleSchemaVersion = 2
+)
+
+func (e CreateCostExportScheduleSchemaVersion) ToPointer() *CreateCostExportScheduleSchemaVersion {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CreateCostExportScheduleSchemaVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case 1, 2:
+			return true
+		}
+	}
+	return false
+}
+
 // Version - The FOCUS version that the files follow.
 type Version string
 
@@ -535,7 +555,7 @@ type CreateCostExportScheduleResponseBody struct {
 	// The data that each export holds.
 	Dataset CreateCostExportScheduleDataset `json:"dataset"`
 	// The schema version of each export's data files within the dataset, which fixes their columns and values.
-	SchemaVersion shared.AICostExportSchemaVersion `json:"schema_version"`
+	SchemaVersion CreateCostExportScheduleSchemaVersion `json:"schema_version"`
 	// The FOCUS options of each export, with defaults applied.
 	//
 	// `null` unless `dataset` is `focus`.
@@ -613,9 +633,9 @@ func (c *CreateCostExportScheduleResponseBody) GetDataset() CreateCostExportSche
 	return c.Dataset
 }
 
-func (c *CreateCostExportScheduleResponseBody) GetSchemaVersion() shared.AICostExportSchemaVersion {
+func (c *CreateCostExportScheduleResponseBody) GetSchemaVersion() CreateCostExportScheduleSchemaVersion {
 	if c == nil {
-		return shared.AICostExportSchemaVersion(0)
+		return CreateCostExportScheduleSchemaVersion(0)
 	}
 	return c.SchemaVersion
 }

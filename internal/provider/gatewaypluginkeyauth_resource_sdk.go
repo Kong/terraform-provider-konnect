@@ -22,10 +22,10 @@ func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(ctx c
 			r.Config = &tfTypes.KeyAuthPluginConfig{}
 			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-			r.Config.IdentityRealms = []tfTypes.IdentityRealms{}
+			r.Config.IdentityRealms = []tfTypes.KeyAuthPluginIdentityRealms{}
 
 			for _, identityRealmsItem := range resp.Config.IdentityRealms {
-				var identityRealms tfTypes.IdentityRealms
+				var identityRealms tfTypes.KeyAuthPluginIdentityRealms
 
 				identityRealms.ID = types.StringPointerValue(identityRealmsItem.ID)
 				identityRealms.Region = types.StringPointerValue(identityRealmsItem.Region)

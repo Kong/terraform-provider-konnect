@@ -16,6 +16,7 @@ func (r *PortalAuditLogWebhookResourceModel) RefreshFromSharedPortalAuditLogWebh
 	if resp != nil {
 		r.AuditLogDestinationID = types.StringPointerValue(resp.AuditLogDestinationID)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.IncludePrincipalName = types.BoolPointerValue(resp.IncludePrincipalName)
 	}
 
 	return diags
@@ -83,9 +84,16 @@ func (r *PortalAuditLogWebhookResourceModel) ToSharedUpdatePortalAuditLogWebhook
 	} else {
 		auditLogDestinationID = nil
 	}
+	includePrincipalName := new(bool)
+	if !r.IncludePrincipalName.IsUnknown() && !r.IncludePrincipalName.IsNull() {
+		*includePrincipalName = r.IncludePrincipalName.ValueBool()
+	} else {
+		includePrincipalName = nil
+	}
 	out := shared.UpdatePortalAuditLogWebhook{
 		Enabled:               enabled,
 		AuditLogDestinationID: auditLogDestinationID,
+		IncludePrincipalName:  includePrincipalName,
 	}
 
 	return &out, diags

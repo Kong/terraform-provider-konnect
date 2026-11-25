@@ -409,6 +409,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewIntegrationInstanceAuthCredentialResource,
 		NewMeshControlPlaneResource,
 		NewOrganizationPersonalAccessTokenSettingsResource,
+		NewOrganizationVpceIDAllowListResource,
 		NewPortalResource,
 		NewPortalAppearanceResource,
 		NewPortalApplicationResource,

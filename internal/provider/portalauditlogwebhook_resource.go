@@ -32,6 +32,7 @@ type PortalAuditLogWebhookResource struct {
 type PortalAuditLogWebhookResourceModel struct {
 	AuditLogDestinationID types.String `tfsdk:"audit_log_destination_id"`
 	Enabled               types.Bool   `tfsdk:"enabled"`
+	IncludePrincipalName  types.Bool   `tfsdk:"include_principal_name"`
 	PortalID              types.String `tfsdk:"portal_id"`
 }
 
@@ -52,6 +53,12 @@ func (r *PortalAuditLogWebhookResource) Schema(ctx context.Context, req resource
 				Optional:    true,
 				Default:     booldefault.StaticBool(false),
 				Description: `Indicates if the data should be sent to the configured destination. Default: false`,
+			},
+			"include_principal_name": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     booldefault.StaticBool(false),
+				Description: `Whether to include the principal name in the audit log entries sent to the webhook. Default: false`,
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,

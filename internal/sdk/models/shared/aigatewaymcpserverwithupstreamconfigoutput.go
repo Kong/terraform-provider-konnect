@@ -208,8 +208,6 @@ type AIGatewayMCPServerWithUpstreamConfigOutput struct {
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
 	URL *string `default:"null" json:"url"`
-	// Configuration applied when proxying to the upstream service, including authentication.
-	Upstream *AIGatewayUpstreamConfigOutput `json:"upstream,omitempty"`
 	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
 	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
 	// AI Gateway.
@@ -231,6 +229,8 @@ type AIGatewayMCPServerWithUpstreamConfigOutput struct {
 	// If unset, the default trust store is used to verify the upstream's TLS certificate.
 	//
 	CaCertificates []string `json:"ca_certificates,omitempty"`
+	// Configuration applied when proxying to the upstream service, including authentication.
+	Upstream *AIGatewayMCPServerUpstreamConfigOutput `json:"upstream,omitempty"`
 	// HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider.
 	Proxy *AIGatewayProxyConfigOutput `json:"proxy,omitempty"`
 }
@@ -281,13 +281,6 @@ func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetURL() *string {
 	return a.URL
 }
 
-func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetUpstream() *AIGatewayUpstreamConfigOutput {
-	if a == nil {
-		return nil
-	}
-	return a.Upstream
-}
-
 func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetCertificates() []string {
 	if a == nil {
 		return nil
@@ -300,6 +293,13 @@ func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetCaCertificates() []strin
 		return nil
 	}
 	return a.CaCertificates
+}
+
+func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetUpstream() *AIGatewayMCPServerUpstreamConfigOutput {
+	if a == nil {
+		return nil
+	}
+	return a.Upstream
 }
 
 func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetProxy() *AIGatewayProxyConfigOutput {
@@ -431,8 +431,6 @@ type AIGatewayMCPServerWithUpstreamConfig struct {
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
 	URL *string `default:"null" json:"url"`
-	// Configuration applied when proxying to the upstream service, including authentication.
-	Upstream *AIGatewayUpstreamConfig `json:"upstream,omitempty"`
 	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
 	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
 	// AI Gateway.
@@ -454,6 +452,8 @@ type AIGatewayMCPServerWithUpstreamConfig struct {
 	// If unset, the default trust store is used to verify the upstream's TLS certificate.
 	//
 	CaCertificates []string `json:"ca_certificates,omitempty"`
+	// Configuration applied when proxying to the upstream service, including authentication.
+	Upstream *AIGatewayMCPServerUpstreamConfig `json:"upstream,omitempty"`
 	// HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider.
 	Proxy *AIGatewayProxyConfig `json:"proxy,omitempty"`
 }
@@ -504,13 +504,6 @@ func (a *AIGatewayMCPServerWithUpstreamConfig) GetURL() *string {
 	return a.URL
 }
 
-func (a *AIGatewayMCPServerWithUpstreamConfig) GetUpstream() *AIGatewayUpstreamConfig {
-	if a == nil {
-		return nil
-	}
-	return a.Upstream
-}
-
 func (a *AIGatewayMCPServerWithUpstreamConfig) GetCertificates() []string {
 	if a == nil {
 		return nil
@@ -523,6 +516,13 @@ func (a *AIGatewayMCPServerWithUpstreamConfig) GetCaCertificates() []string {
 		return nil
 	}
 	return a.CaCertificates
+}
+
+func (a *AIGatewayMCPServerWithUpstreamConfig) GetUpstream() *AIGatewayMCPServerUpstreamConfig {
+	if a == nil {
+		return nil
+	}
+	return a.Upstream
 }
 
 func (a *AIGatewayMCPServerWithUpstreamConfig) GetProxy() *AIGatewayProxyConfig {

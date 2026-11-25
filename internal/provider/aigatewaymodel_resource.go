@@ -1548,12 +1548,15 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								Description: `Configuration for AI Gateway logging.`,
 							},
 							"max_request_body_size": schema.Int64Attribute{
-								Computed:    true,
-								Optional:    true,
-								Default:     int64default.StaticInt64(8388608),
-								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The maximum size, in bytes, of a request body that the gateway reads and sends to the model.` + "\n" +
+									`A request with a larger body fails. Set to 0 for no limit.        ` + "\n" +
+									`If you do not set a value, the gateway uses the request size limit that the model's providers publish, ` + "\n" +
+									`with defaults to 8 MB.` + "\n" +
+									`If the targets use more than one provider, the gateway uses the highest of these limits.`,
 								Validators: []validator.Int64{
-									int64validator.Between(0, 2147483646),
+									int64validator.AtLeast(0),
 								},
 							},
 							"proxy": schema.SingleNestedAttribute{
@@ -5813,7 +5816,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 											},
-											Description: `Llama2-specific configuration for a model.`,
+											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+											MarkdownDescription: `Llama2-specific configuration for a model.` + "\n" +
+												`` + "\n" +
+												`Deprecated: the ` + "`" + `llama2` + "`" + ` provider is deprecated and will be removed in 3.0. Migrate by the` + "\n" +
+												`` + "`" + `format` + "`" + ` value: ` + "`" + `ollama` + "`" + ` maps to the ` + "`" + `ollama` + "`" + ` provider, ` + "`" + `openai` + "`" + ` maps to the ` + "`" + `openai` + "`" + ` provider` + "\n" +
+												`with ` + "`" + `upstream_url` + "`" + ` set, or to the ` + "`" + `vllm` + "`" + ` provider; ` + "`" + `raw` + "`" + ` has no replacement provider.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),
@@ -9520,12 +9528,15 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								Description: `Configuration for AI Gateway logging.`,
 							},
 							"max_request_body_size": schema.Int64Attribute{
-								Computed:    true,
-								Optional:    true,
-								Default:     int64default.StaticInt64(8388608),
-								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The maximum size, in bytes, of a request body that the gateway reads and sends to the model.` + "\n" +
+									`A request with a larger body fails. Set to 0 for no limit.        ` + "\n" +
+									`If you do not set a value, the gateway uses the request size limit that the model's providers publish, ` + "\n" +
+									`with defaults to 8 MB.` + "\n" +
+									`If the targets use more than one provider, the gateway uses the highest of these limits.`,
 								Validators: []validator.Int64{
-									int64validator.Between(0, 2147483646),
+									int64validator.AtLeast(0),
 								},
 							},
 							"model": schema.SingleNestedAttribute{
@@ -13797,7 +13808,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 											},
-											Description: `Llama2-specific configuration for a model.`,
+											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+											MarkdownDescription: `Llama2-specific configuration for a model.` + "\n" +
+												`` + "\n" +
+												`Deprecated: the ` + "`" + `llama2` + "`" + ` provider is deprecated and will be removed in 3.0. Migrate by the` + "\n" +
+												`` + "`" + `format` + "`" + ` value: ` + "`" + `ollama` + "`" + ` maps to the ` + "`" + `ollama` + "`" + ` provider, ` + "`" + `openai` + "`" + ` maps to the ` + "`" + `openai` + "`" + ` provider` + "\n" +
+												`with ` + "`" + `upstream_url` + "`" + ` set, or to the ` + "`" + `vllm` + "`" + ` provider; ` + "`" + `raw` + "`" + ` has no replacement provider.`,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
 													path.MatchRelative().AtParent().AtName("anthropic"),

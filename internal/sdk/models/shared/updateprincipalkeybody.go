@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// UpdatePrincipalKeyBody - Request body for updating an API key's metadata
+// UpdatePrincipalKeyBody - Request body for updating an API key. When updating `metadata`, a present map replaces the stored map, and an absent or explicit `null` field keeps the stored map.
 type UpdatePrincipalKeyBody struct {
 	// Human-readable name of the API key. `null` if the key has no name.
 	//
