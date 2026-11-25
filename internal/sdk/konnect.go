@@ -515,10 +515,10 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		SDKVersion: "3.29.0",
+		SDKVersion: "3.30.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:         "speakeasy-sdk/terraform 3.29.0 2.968.1 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
-			SDKVersion:        "3.29.0",
+			UserAgent:         "speakeasy-sdk/terraform 3.30.0 2.968.1 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
+			SDKVersion:        "3.30.0",
 			GenVersion:        "2.968.1",
 			OpenAPIDocVersion: "2.0.0",
 			ServerList:        ServerList,
