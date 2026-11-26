@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 5f8e5367518f266857408219f744eb8b
+  docChecksum: a979123ed60bfaf28568d9499ae3c5cf
   docVersion: 2.0.0
   speakeasyVersion: 1.811.0
   generationVersion: 2.968.1
   releaseVersion: 3.30.0
   configChecksum: 30f308d4b5db042596c7bbcc2d999635
 persistentEdits:
-  generation_id: 87b564ea-718c-4cb3-9b77-9c07faff471a
-  pristine_commit_hash: b64d5dcb07beade04bbb3fbd8e35491d598e9b6c
-  pristine_tree_hash: c2b226386d1e1b67191751eb4117e1eff576ee1d
+  generation_id: 9c0dd670-63b4-4bdf-9da2-cd80d2180a8e
+  pristine_commit_hash: 41b2847f70661d796e2fed4c0c2001a4f9a788af
+  pristine_tree_hash: a3597d8b1676f3e640a4105cc61d83cfb0643923
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -5934,8 +5934,8 @@ trackedFiles:
     pristine_git_object: 3a7b9aae843fdcb17cea0a668ced40627ef17ecc
   internal/provider/systemaccountrole_resource.go:
     id: 83f90249aba9
-    last_write_checksum: sha1:dad5cf3e0cd517558bc2f56254d7b44f394fd2fd
-    pristine_git_object: c455079c90236b5d795ab8e6490ecef17351f6cb
+    last_write_checksum: sha1:ca81125d27921260a5b7bbf489f0024c877dc97e
+    pristine_git_object: ced059650b810942bc659db6fb69ff0a9349035f
   internal/provider/systemaccountrole_resource_sdk.go:
     id: 6be20d676175
     last_write_checksum: sha1:949dffe290c052ed7957463c33915cc18560b103
@@ -5974,8 +5974,8 @@ trackedFiles:
     pristine_git_object: 9b3d06124c0495a6103d52c4a90548578e5322ff
   internal/provider/teamrole_resource.go:
     id: d74f466c05c1
-    last_write_checksum: sha1:abadd748a0b3650bef8660d288023c041ae24091
-    pristine_git_object: bccb4397787c4db0fa7efebea0611f74a9a41059
+    last_write_checksum: sha1:1e5ffea4c17235b86c4a141596ddce1f1765c324
+    pristine_git_object: b55e0e2981752ee4b062cfeab4d89f76d3588943
   internal/provider/teamrole_resource_sdk.go:
     id: ecb2e1dc06b3
     last_write_checksum: sha1:71ceedfff3318652125f1e8764697442e55098bd
@@ -9258,8 +9258,8 @@ trackedFiles:
     pristine_git_object: 37447d25574d2a0725dc1a1016e167ce1787e297
   internal/provider/userrole_resource.go:
     id: d881a3659fe7
-    last_write_checksum: sha1:68a51ea6b4b4601edea51d2efdf4b4c0647264d5
-    pristine_git_object: 3403399f9186b9601e7904a59b24c5d3a4ae3b99
+    last_write_checksum: sha1:b52b421c2e2c436b58038daf48c310092cface33
+    pristine_git_object: 5562873d1660797128b95b02f24c16c2cb573426
   internal/provider/userrole_resource_sdk.go:
     id: f35c9d87b02f
     last_write_checksum: sha1:c8cb68e86b3987d339095af36bcddea868ac3ffb
