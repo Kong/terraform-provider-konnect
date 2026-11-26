@@ -111,7 +111,7 @@ func TestTeamRole(t *testing.T) {
 				{
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestNameDirectory(),
-					ExpectError:     regexp.MustCompile(`The 'entity_id' and 'entity_ids' fields are mutually exclusive`),
+					ExpectError:     regexp.MustCompile(`Attribute "entity_ids" cannot be specified when "entity_id" is\s+specified`),
 				},
 			},
 		})
