@@ -6,26 +6,26 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// State - The current state of the managed cache add-on in the data-plane group. Possible values:
+// ManagedCacheAddOnDataPlaneGroupState - The current state of the managed cache add-on in the data-plane group. Possible values:
 // - `initializing` - The add-on is in the process of being initialized/updated and is setting up necessary resources for this data-plane group.
 // - `ready` - The add-on is fully operational for this data-plane group.
 // - `error` - The add-on is in an error state, and is not operational for this data-plane group.
 // - `terminating` - The add-on is in the process of being deleted for this data-plane group.
-type State string
+type ManagedCacheAddOnDataPlaneGroupState string
 
 const (
-	StateInitializing State = "initializing"
-	StateReady        State = "ready"
-	StateError        State = "error"
-	StateTerminating  State = "terminating"
+	ManagedCacheAddOnDataPlaneGroupStateInitializing ManagedCacheAddOnDataPlaneGroupState = "initializing"
+	ManagedCacheAddOnDataPlaneGroupStateReady        ManagedCacheAddOnDataPlaneGroupState = "ready"
+	ManagedCacheAddOnDataPlaneGroupStateError        ManagedCacheAddOnDataPlaneGroupState = "error"
+	ManagedCacheAddOnDataPlaneGroupStateTerminating  ManagedCacheAddOnDataPlaneGroupState = "terminating"
 )
 
-func (e State) ToPointer() *State {
+func (e ManagedCacheAddOnDataPlaneGroupState) ToPointer() *ManagedCacheAddOnDataPlaneGroupState {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *State) IsExact() bool {
+func (e *ManagedCacheAddOnDataPlaneGroupState) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "initializing", "ready", "error", "terminating":
@@ -76,7 +76,7 @@ type ManagedCacheAddOnDataPlaneGroup struct {
 	// - `error` - The add-on is in an error state, and is not operational for this data-plane group.
 	// - `terminating` - The add-on is in the process of being deleted for this data-plane group.
 	//
-	State State `json:"state"`
+	State ManagedCacheAddOnDataPlaneGroupState `json:"state"`
 	// Metadata describing the state of the managed cache add-on in the data-plane group.
 	//
 	StateMetadata StateMetadata `json:"state_metadata"`
@@ -121,9 +121,9 @@ func (m *ManagedCacheAddOnDataPlaneGroup) GetRegion() string {
 	return m.Region
 }
 
-func (m *ManagedCacheAddOnDataPlaneGroup) GetState() State {
+func (m *ManagedCacheAddOnDataPlaneGroup) GetState() ManagedCacheAddOnDataPlaneGroupState {
 	if m == nil {
-		return State("")
+		return ManagedCacheAddOnDataPlaneGroupState("")
 	}
 	return m.State
 }
