@@ -15,6 +15,8 @@ func initHooks(h *Hooks) {
 	h.registerBeforeRequestHook(&AuthServerClientCreateHook{})
 	// Remove fields covered by partials so the server uses the partial's values
 	h.registerBeforeRequestHook(&PluginWithPartialHook{})
+	// The API returns pending_verification, but does not accept it on updates.
+	h.registerBeforeRequestHook(&OrgNotificationDestinationStateHook{})
 
 	// Kong Identity is not served by the global endpoint, so send the default to the US region.
 	// Registered before CustomizeKongDomainHook, which rewrites the konghq.com host.
