@@ -221,6 +221,10 @@ type Konnect struct {
 	// Manage an MCP's version.
 	CatalogMCPVersions *CatalogMCPVersions
 	Mesh               *Mesh
+	// Operations related to org scoped notifications and their org subscriptions. The webhook channel of an org scoped notification is set up for the whole organization, and no user can switch it on or off. Only an org admin can use these operations. The routes exist only when webhook destinations are enabled.
+	OrgConfigurations *OrgConfigurations
+	// Operations related to webhook destinations and their deliveries. Only an org admin can use these operations. The destination routes exist only when webhook destinations are enabled.
+	Destinations *Destinations
 	// Use a realm to group consumers around an identity, defined by organizational boundaries, such as a production realm or a development realm. Realms are connected to a [geographic region](https://docs.konghq.com/konnect/geo/) in Konnect. Centrally managed consumers defined in realms can be used across multiple control planes.
 	//
 	Realms *Realms
@@ -593,6 +597,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.CatalogMCPImplementations = newCatalogMCPImplementations(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CatalogMCPVersions = newCatalogMCPVersions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Mesh = newMesh(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.OrgConfigurations = newOrgConfigurations(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Destinations = newDestinations(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Realms = newRealms(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CentrallyManagedConsumers = newCentrallyManagedConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CentrallyManagedKeys = newCentrallyManagedKeys(sdk, sdk.sdkConfiguration, sdk.hooks)

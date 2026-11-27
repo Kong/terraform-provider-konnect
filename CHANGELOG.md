@@ -1,7 +1,13 @@
 # Changelog
 
 ## 3.31.0
-> Released 2026/??
+> Released 2026/??/??
+
+# BREAKING CHANGES
+* NA
+
+# Features
+* Add support for organization notification destinations and subscriptions using the `konnect_org_notification_destination` and `konnect_org_notification_subscription` resources
 
 # Bug Fixes
 * Fixed in-place update for `konnect_ai_gateway` resource failing because of `min_runtime_version` when `deployment_type` is `managed` or `serverless`
